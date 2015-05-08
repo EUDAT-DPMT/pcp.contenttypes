@@ -1,0 +1,2 @@
+recursive-include pcp *
+global-exclude *pyc
