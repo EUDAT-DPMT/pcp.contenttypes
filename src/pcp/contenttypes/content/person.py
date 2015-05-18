@@ -51,6 +51,10 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
+    atapi.TextField('text',
+                    primary=True,
+                    widget=atapi.RichWidget(),
+                    ),
 ))
 
 
