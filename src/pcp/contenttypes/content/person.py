@@ -22,30 +22,12 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
         subfield_labels={'firstnames':'First name(s)',
                          'lastname':'Last name(s)'},
     ),
-    ateapi.AddressField('address',
-                        searchable=1,
-                        subfields=('street1', 'street2', 'zip',
-                                   'city', 'state', 'country'),
-                        ),
-    ateapi.LabeledUrlField('affiliation',
-             #FIXME: This should be updated, so we can use target="_blank" in html
-             required=True,
-             searchable=1,
-             default={},
-             subfield_labels={'label':'Name'},
-             subfield_maxlength={'label':120,
-                                 'url':120,
-                                 },
-             widget=ateapi.LabeledUrlWidget(description="Institutional affiliation, e.g. an "
-                                                        "institute or department at a university or "
-                                                        "a company.",
-                                            ),
-    ),
-    
-   ateapi.PhoneNumbersField('phone'),
-
-    
-
+    ateapi.EmailField('email'),
+    atapi.ReferenceField('affiliation',
+                         relationship='affiliated',
+                         allowed_types=('Center', 'Community'),
+                         ),
+    ateapi.PhoneNumbersField('phone'),    
 ))
 
 

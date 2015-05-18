@@ -7,15 +7,18 @@ from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
+from Products.ATExtensions import ateapi
+
 # -*- Message Factory Imported Here -*-
 
 from pcp.contenttypes.interfaces import ICommunity
 from pcp.contenttypes.config import PROJECTNAME
 
 CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
+    
+    ateapi.UrlField('url'),
+    ateapi.AddressField('address'),
+    
 ))
 
 

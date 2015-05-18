@@ -7,15 +7,19 @@ from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
+from Products.ATExtensions import ateapi
+
 # -*- Message Factory Imported Here -*-
 
 from pcp.contenttypes.interfaces import IService
 from pcp.contenttypes.config import PROJECTNAME
 
 ServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
+    ateapi.UrlField('url'),
+    atapi.ReferenceField('managed_by',
+                         relationship='managed_by',
+                         allowed_types=('Person',),
+                         ),
 ))
 
 
