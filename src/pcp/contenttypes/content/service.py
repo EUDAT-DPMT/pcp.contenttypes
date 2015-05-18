@@ -8,6 +8,8 @@ from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
 from Products.ATExtensions import ateapi
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
 
 # -*- Message Factory Imported Here -*-
 
@@ -20,6 +22,18 @@ ServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='managed_by',
                          allowed_types=('Person',),
                          ),
+    BackReferenceField('resources_used',
+                       relationship='used_by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('used_by_project',
+                       relationship='using',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
 ))
 
 

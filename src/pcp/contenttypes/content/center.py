@@ -25,6 +25,18 @@ CenterSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        widget=BackReferenceWidget(visible={'edit':'invisible'},
                                                   ),
                        ),
+    BackReferenceField('hosts',
+                       relationship='hosted_by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('projects_invloved',
+                       relationship='provided_by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
 ))
 
 

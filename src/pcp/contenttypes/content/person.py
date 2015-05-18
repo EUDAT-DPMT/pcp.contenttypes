@@ -8,6 +8,9 @@ from Products.ATExtensions import ateapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
+
 # -*- Message Factory Imported Here -*-
 
 from pcp.contenttypes.interfaces import IPerson
@@ -27,7 +30,25 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='affiliated',
                          allowed_types=('Center', 'Community'),
                          ),
-    ateapi.PhoneNumbersField('phone'),    
+    ateapi.PhoneNumbersField('phone'),
+    BackReferenceField('manages',
+                       relationship='managed_by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('community_contact_for',
+                       relationship='community_contact',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('enables',
+                       relationship='enabled-by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),
+                       ),
 ))
 
 
