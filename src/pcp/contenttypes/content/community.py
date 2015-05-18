@@ -8,6 +8,8 @@ from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
 from Products.ATExtensions import ateapi
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
 
 # -*- Message Factory Imported Here -*-
 
@@ -18,7 +20,12 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
     
     ateapi.UrlField('url'),
     ateapi.AddressField('address'),
-    
+    BackReferenceField('affiliated',
+                       relationship='affiliated',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  ),                       
+                       ),    
 ))
 
 

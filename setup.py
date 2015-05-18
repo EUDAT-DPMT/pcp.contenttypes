@@ -57,6 +57,7 @@ setup(name='pcp.contenttypes',
       install_requires=['setuptools',
                         # -*- Extra requirements: -*-
                         'Products.ATExtensions',
+                        'Products.ATBackRef',
                         ],
       tests_require=tests_require,
       extras_require=dict(test=tests_require),
