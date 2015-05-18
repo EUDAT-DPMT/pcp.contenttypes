@@ -20,15 +20,21 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('managed_by',
                          relationship='managed_by',
                          allowed_types=('Person',),
+                         widget=atapi.ReferenceWidget(label='Managed by',
+                                                      ),
                          ),
     atapi.ReferenceField('hosted_by',
                          relationship='hosted_by',
                          allowed_types=('Center',),
-                         ),
+                         widget=atapi.ReferenceWidget(label='Hosted by',
+                                                      ),
+                        ),
     atapi.ReferenceField('used_by',
                          relationship='used_by',
                          allowed_types=('Service',),
-                         ),                     
+                         widget=atapi.ReferenceWidget(label='Used by',
+                                                      ),
+                        ),                     
 ))
 
 
