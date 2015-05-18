@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="project_workflow" title="Data Project Workflow Definition" description="EUDAT's data projects are subject to this workflow" state_variable="review_state" initial_state="considered" manager_bypass="False">
+ <state state_id="considered" title="Being considered">
+  <exit-transition transition_id="start_planning"/>
+ </state>
+ <state state_id="enabling" title="">
+  <exit-transition transition_id="promote2preproduction"/>
+  <exit-transition transition_id="terminate"/>
+ </state>
+ <state state_id="planned" title="">
+  <exit-transition transition_id="enable"/>
+  <exit-transition transition_id="terminate"/>
+ </state>
+ <state state_id="pre_production" title="pre-production">
+  <exit-transition transition_id="promote2production"/>
+  <exit-transition transition_id="terminate"/>
+ </state>
+ <state state_id="production" title="">
+  <exit-transition transition_id="terminate"/>
+ </state>
+ <state state_id="terminated" title="">
+  <exit-transition transition_id="reconsider"/>
+ </state>
+ <transition transition_id="enable" title="Enable" new_state="enabling" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=enable" category="workflow" icon="">Enable</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="promote2preproduction" title="Promote to pre-production" new_state="pre_production" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=promote2preproduction" category="workflow" icon="">Promote</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="promote2production" title="Promote to production" new_state="production" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=promote2production" category="workflow" icon="">Promote</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="reconsider" title="Reconsider" new_state="considered" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reconsider" category="workflow" icon="">Reconsider</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="start_planning" title="Start planning" new_state="planned" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=start_planning" category="workflow" icon="">Start planning</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="terminate" title="Terminate" new_state="terminated" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=terminate" category="workflow" icon="">Terminate</action>
+  <guard>
+  </guard>
+ </transition>
+ <worklist worklist_id="reviewer_queue" title="">
+  <description>Reviewer tasks</description>
+  <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+  <match name="review_state" values="pending"/>
+ </worklist>
+ <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
+  <description>Previous transition</description>
+  <default>
+   
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
+  <description>The ID of the user who performed the previous transition</description>
+  <default>
+   
+   <expression>user/getId</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
+  <description>Comment about the last transition</description>
+  <default>
+   
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+   
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
+  <description>When the previous transition was performed</description>
+  <default>
+   
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+</dc-workflow>
