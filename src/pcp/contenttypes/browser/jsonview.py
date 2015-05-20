@@ -16,6 +16,8 @@ from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
 from DateTime import DateTime
 
+from Products.ATExtensions.ateapi import FormattableName
+
 #: Private attributes we add to the export list
 EXPORT_ATTRIBUTES = ["portal_type", "id"]
 
@@ -37,6 +39,8 @@ class JSONView(BrowserView):
             # Zope DateTime
             # http://pypi.python.org/pypi/DateTime/3.0.2
             return value.ISO8601()
+        elif isinstance(value, FormattableName):
+            return dict(value.items())
         elif hasattr(value, "isBinary") and value.isBinary():
 
             if not EXPORT_BINARY:
