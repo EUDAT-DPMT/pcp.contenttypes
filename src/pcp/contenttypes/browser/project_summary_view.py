@@ -1,6 +1,11 @@
+from types import UnicodeType
+from datetime import datetime
+from StringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import ReferenceField
+
+CSV_TEMPLATE = '"%s"'
 
 
 class ProjectOverview(BrowserView):
@@ -61,3 +66,44 @@ class ProjectOverview(BrowserView):
             results.append(result)
 
         return results
+
+
+class CsvView(ProjectOverview):
+    """View class for the CSV output of projects"""
+
+    def csv_export(self,
+                   states=None,
+                   fields=None,
+                   filenamebase='projects',
+                   delimiter=',',
+                   newline='\r\n',
+                   ):
+        """Main method to be called for the csv export"""
+        
+        if fields is None:
+            fields = self.fields()
+            
+        out = StringIO()
+        out.write(delimiter.join(fields) + newline)
+
+        for project in self.data():
+            values = []
+            for field in project:
+                text = field['text']
+                if type(text) is UnicodeType:
+                    text = text.encode('utf8')
+                value = CSV_TEMPLATE % text
+                values.append(value)
+            out.write(delimiter.join(values) + newline)
+            
+        value = out.getvalue()
+        out.close()
+
+        timestamp = datetime.today().strftime("%Y%m%d%H%M")
+        filename = filenamebase + timestamp + '.csv'
+        
+        self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
+        self.request.RESPONSE.setHeader("Content-Disposition", 
+                                        "inline;filename=%s"%filename)
+
+        return value
