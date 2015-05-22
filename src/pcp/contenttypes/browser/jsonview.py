@@ -14,8 +14,10 @@ except ImportError:
 
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
 from DateTime import DateTime
 
+from Products.Archetypes.atapi import ReferenceField
 from Products.ATExtensions.ateapi import FormattableName
 
 #: Private attributes we add to the export list
@@ -30,6 +32,10 @@ else:
 
 class JSONView(BrowserView):
     """Present Archetypes-based content as JSON"""
+
+    @property
+    def url_tool(self):
+        return getToolByName(self.context, 'portal_url')
 
     def convert(self, value):
         """
@@ -60,7 +66,18 @@ class JSONView(BrowserView):
         data = {}
         for field in context.Schema().viewableFields(context):
             name = field.getName()
-            value = field.getRaw(context)
+            if isinstance(field, ReferenceField):
+                value = []
+                objs = field.get(context, aslist=True)
+                uids = field.getRaw(context, aslist=True)
+                for o,u in zip(objs, uids):
+                    d = {}
+                    d['uid'] = u
+                    d['title'] = o.Title()
+                    d['path'] = '/'.join(self.url_tool.getRelativeContentPath(o))
+                    value.append(d)
+            else:
+                value = field.getRaw(context)
             data[name] = self.convert(value)
         return data
 
