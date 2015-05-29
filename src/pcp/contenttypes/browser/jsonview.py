@@ -87,19 +87,25 @@ class JSONView(BrowserView):
             data[key] = self.convert(getattr(context, key, None))
         return data
 
-    def export(self, context):
+    def export(self, context, recursive=False):
         """Export fields and selected attributes"""
 
         data = self.fieldData(context)
         data.update(self.attributeData(context))
 
+        if recursive and IFolderish.providedBy(context):
+            children = []
+            for obj in context.listFolderContents():
+                children.append(self.export(obj, True))
+            data['children'] = children
+
         return [data]
 
-    def json_view(self):
+    def json_view(self, recursive=False):
         """AT-based content as JSON"""
 
         context = self.context.aq_inner
-        data = self.export(context)
+        data = self.export(context, recursive=recursive)
         pretty = json.dumps(data, sort_keys=True, indent=4)
         self.request.response.setHeader("Content-type", "application/json")
         return pretty
