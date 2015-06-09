@@ -11,10 +11,11 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
-# -*- Message Factory Imported Here -*-
-
 from pcp.contenttypes.interfaces import IProject
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('community',
@@ -69,7 +70,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     ),
     atapi.StringField('repository'),
     atapi.StringField('topics'),
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -79,7 +80,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class Project(folder.ATFolder):
+class Project(folder.ATFolder, CommonUtilities):
     """A project managed by this site."""
     implements(IProject)
 

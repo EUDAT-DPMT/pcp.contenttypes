@@ -11,10 +11,11 @@ from Products.ATContentTypes.content import schemata
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
-# -*- Message Factory Imported Here -*-
-
 from pcp.contenttypes.interfaces import IPerson
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
@@ -55,7 +56,7 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     primary=True,
                     widget=atapi.RichWidget(),
                     ),
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -65,7 +66,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class Person(folder.ATFolder):
+class Person(folder.ATFolder, CommonUtilities):
     """A person involved in a project."""
     implements(IPerson)
 

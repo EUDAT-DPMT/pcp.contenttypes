@@ -11,10 +11,11 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
-# -*- Message Factory Imported Here -*-
-
 from pcp.contenttypes.interfaces import ICommunity
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
     
@@ -33,7 +34,7 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -43,7 +44,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class Community(folder.ATFolder):
+class Community(folder.ATFolder, CommonUtilities):
     """A community served by a project on this site."""
     implements(ICommunity)
 

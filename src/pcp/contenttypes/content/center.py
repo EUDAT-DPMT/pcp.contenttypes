@@ -11,10 +11,11 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
-# -*- Message Factory Imported Here -*-
-
 from pcp.contenttypes.interfaces import ICenter
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 CenterSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('url'),
@@ -38,7 +39,7 @@ CenterSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -48,7 +49,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class Center(folder.ATFolder):
+class Center(folder.ATFolder, CommonUtilities):
     """A center providing services managed by projects on this site."""
     implements(ICenter)
 

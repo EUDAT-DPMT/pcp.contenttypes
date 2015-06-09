@@ -11,10 +11,11 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
-# -*- Message Factory Imported Here -*-
-
 from pcp.contenttypes.interfaces import IResource
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('managed_by',
@@ -35,7 +36,7 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          widget=atapi.ReferenceWidget(label='Used by',
                                                       ),
                         ),                     
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -45,7 +46,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class Resource(folder.ATFolder):
+class Resource(folder.ATFolder, CommonUtilities):
     """A resource needed to provide a service managed by a project on this site."""
     implements(IResource)
 
