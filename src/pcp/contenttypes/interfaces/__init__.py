@@ -1,4 +1,5 @@
 # -*- extra stuff goes here -*-
+from provider import IProvider
 from person import IPerson
 from resource import IResource
 from center import ICenter
