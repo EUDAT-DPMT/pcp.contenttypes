@@ -42,6 +42,7 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        relationship='community_contact',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Community contact for',
+                                                  description="The person from the community side responsible for this.",
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
