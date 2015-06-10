@@ -30,7 +30,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          ),
     atapi.ReferenceField('service_provider',
                          relationship='provided_by',
-                         allowed_types=('Center',),
+                         allowed_types=('Provider',),
                          widget=atapi.ReferenceWidget(label='Service provider',
                                                       ),
                          ),

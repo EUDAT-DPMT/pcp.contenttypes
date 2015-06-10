@@ -26,7 +26,7 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          ),
     atapi.ReferenceField('hosted_by',
                          relationship='hosted_by',
-                         allowed_types=('Center',),
+                         allowed_types=('Provider',),
                          widget=atapi.ReferenceWidget(label='Hosted by',
                                                       ),
                         ),
