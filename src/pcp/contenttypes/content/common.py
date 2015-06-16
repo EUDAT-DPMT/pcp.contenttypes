@@ -6,11 +6,13 @@ from Products.ATExtensions import ateapi
 
 CommonFields = atapi.Schema((
     ateapi.RecordsField('identifiers',
-                        searchable=1,
+                        searchable=0,  # RR: we should probably provide an index method
                         required=0,
                         subfields = ('type', 'value'),
                         subfield_labels ={'type':'Identifier'},
                         subfield_vocabularies = {'type':'identifierTypes'},
+                        innerJoin = ': ',
+                        outerJoin = '<br />',
                         widget=ateapi.RecordsWidget(
                             description = "Other identifiers used to refer "\
                             "to this information.",
@@ -22,6 +24,8 @@ CommonFields = atapi.Schema((
                         minimalSize=3,
                         subfield_sizes={'key': 15,
                                         },
+                        innerJoin = ': ',
+                        outerJoin = '<br />',
                         widget=ateapi.RecordsWidget(
                             description="Other key-value pairs to characterise "\
                             "this item. Use this specifically to signal information "\
