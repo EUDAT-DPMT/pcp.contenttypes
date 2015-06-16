@@ -18,6 +18,7 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 
 ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
+    ateapi.UrlField('website'),
     atapi.ReferenceField('community',
                          relationship='done_for',
                          allowed_types=('Community',),
