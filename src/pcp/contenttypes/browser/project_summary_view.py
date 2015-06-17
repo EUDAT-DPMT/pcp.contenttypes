@@ -44,14 +44,23 @@ class ProjectOverview(BrowserView):
                 f = project.schema[field]
                 if isinstance(f, ReferenceField):
                     obj = f.get(project)
-                    value['text'] = obj.Title()
-                    value['url'] = obj.absolute_url()
+                    if obj is not None:
+                        value['text'] = obj.Title()
+                        value['url'] = obj.absolute_url()
+                    else:
+                        value['text'] = 'no reference set'
+                        value['url'] = '.'
                 elif field == 'title':
                     value['text'] = f.get(project)
                     value['url'] = project.absolute_url()
                 elif field == 'start_date':
-                    value['text'] = f.get(project).Date()
-                    value['url'] = None 
+                    date = f.get(project)
+                    if date is not None:
+                        value['text'] = f.get(project).Date()
+                        value['url'] = None 
+                    else:
+                        value['text'] = 'no date set'
+                        value['url'] = None    
                 elif field == 'resources':
                     data = f.get(project)
                     values = []
