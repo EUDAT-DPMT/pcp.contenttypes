@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+
 from pcp.contenttypes.interfaces import IProject
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
@@ -26,8 +28,10 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('community_contact',
                          relationship='community_contact',
                          allowed_types=('Person',),
-                         widget=atapi.ReferenceWidget(label='Community contact',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Community contact',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                          ),
     atapi.ReferenceField('service_provider',
                          relationship='provided_by',

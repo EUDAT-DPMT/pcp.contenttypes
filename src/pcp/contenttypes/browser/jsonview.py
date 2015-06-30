@@ -77,7 +77,10 @@ class JSONView(BrowserView):
                     d['path'] = '/'.join(self.url_tool.getRelativeContentPath(o))
                     value.append(d)
             else:
-                value = field.getRaw(context)
+                try:
+                    value = field.getRaw(context)
+                except AttributeError:   # happens for computed fields
+                    value = field.get(context) 
             data[name] = self.convert(value)
         return data
 

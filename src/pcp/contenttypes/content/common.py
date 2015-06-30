@@ -5,6 +5,9 @@ from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
 
 CommonFields = atapi.Schema((
+    atapi.ComputedField('uid',
+                        expression="here.UID()",
+                        ),
     ateapi.RecordsField('identifiers',
                         searchable=0,  # RR: we should probably provide an index method
                         required=0,
