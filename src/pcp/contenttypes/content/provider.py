@@ -20,6 +20,35 @@ from pcp.contenttypes.content.common import CommonUtilities
 ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('url'),
     ateapi.AddressField('address'),
+    atapi.ReferenceField('contact',
+                         relationship='contact',
+                         allowed_types=('Person',),
+                         ),
+    atapi.ReferenceField('admins',
+                         relationship='admin_of',
+                         multiValued=True,
+                         allowed_types=('Person',),
+                         ),
+    atapi.LinesField('supported_os',
+                     multiValued=True,
+                     vocabulary='getOSVocab',
+                     widget=atapi.MultiSelectionWidget(),
+                     ),
+    atapi.StringField('committed_cores', schemata='resources'),
+    atapi.StringField('committed_disk', schemata='resources'),
+    atapi.StringField('committed_tape', schemata='resources'),
+    atapi.StringField('used_disk', schemata='resources'),
+    atapi.StringField('used_tape', schemata='resources'),
+    atapi.ReferenceField('communities_primary',
+                         relationship='primary_provider_for',
+                         multiValued=True,
+                         allowed_types=('Community',),
+                         ),
+    atapi.ReferenceField('communities_secondary',
+                         relationship='secondary_provider_for',
+                         multiValued=True,
+                         allowed_types=('Community',),
+                         ),        
     BackReferenceField('affiliated',
                        relationship='affiliated',
                        multiValued=True,
@@ -39,6 +68,11 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
+    ateapi.UrlField('getAccount',
+                    widget=ateapi.UrlWidget(label='Account',
+                                            description='URL to instructions on how to get an account',
+                                            ),
+                    ),
 )) + CommonFields.copy()
 
 
@@ -56,5 +90,9 @@ class Provider(folder.ATFolder, CommonUtilities):
     meta_type = "Provider"
     schema = ProviderSchema
 
+    def getOSVocab(self):
+        """provides the vocabulary for the 'supported_os' field"""
+
+        return ateapi.getDisplayList(self, 'operating_systems', add_select=False)
 
 atapi.registerType(Provider, PROJECTNAME)
