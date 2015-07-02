@@ -32,7 +32,7 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.LinesField('supported_os',
                      multiValued=True,
                      vocabulary='getOSVocab',
-                     widget=atapi.MultiSelectionWidget(),
+                     widget=atapi.MultiSelectionWidget(format='checkbox'),
                      ),
     atapi.IntegerField('committed_cores', schemata='resources'),
     atapi.IntegerField('committed_disk', schemata='resources', size=20),
