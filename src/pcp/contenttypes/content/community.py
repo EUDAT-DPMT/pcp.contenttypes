@@ -47,6 +47,20 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
+    BackReferenceField('primary_provider',
+                       relationship='primary_provider_for',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Primary provider',
+                                                  visible={'edit':'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('secondary_provider',
+                       relationship='secondary_provider_for',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Secondary provider',
+                                                  visible={'edit':'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 
