@@ -30,6 +30,7 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          allowed_types=('Person',),
                          ),
     atapi.LinesField('supported_os',
+                     searchable=True,
                      multiValued=True,
                      vocabulary='getOSVocab',
                      widget=atapi.MultiSelectionWidget(format='checkbox'),
