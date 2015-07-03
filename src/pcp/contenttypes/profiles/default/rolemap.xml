@@ -2,6 +2,10 @@
 <rolemap>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="pcp.contenttypes: Add Environment" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
     <permission name="pcp.contenttypes: Add Provider" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />

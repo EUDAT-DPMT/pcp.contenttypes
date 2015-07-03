@@ -6,6 +6,12 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
+  <class class=".environment.Environment">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IEnvironment"
+        />
+  </class>
   <class class=".provider.Provider">
     <require
         permission="zope2.View"
