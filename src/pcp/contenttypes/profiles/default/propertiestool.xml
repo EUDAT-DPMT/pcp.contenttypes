@@ -7,5 +7,13 @@
    <element value="epic"/>
    <element value="orcid"/>
   </property>
+  <property name="operating_systems" type="lines">
+   <element value="SLES - SuSE Linux Enterprise Server from Novell"/>
+   <element value="RHEL - Red Hat Enterprise Linux from Red Hat"/>
+   <element value="Ubuntu - Ubuntu Server from Canonical"/>
+   <element value="SL - Scientific Linux"/>
+   <element value="Debian - Debian"/>
+   <element value="CentOS - The Community Enterprise Operating System"/>
+  </property>
  </object>
 </object>

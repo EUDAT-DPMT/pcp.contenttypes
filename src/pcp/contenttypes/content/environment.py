@@ -28,12 +28,17 @@ EnvironmentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                              use_wildcard_search=True,
                              ),
                          ),
-    atapi.TextField('details'),
-    atapi.TextField('account'),
+    atapi.TextField('account',
+                    widget=atapi.TextAreaWidget(),
+                    ),
     ateapi.UrlField('terms_of_use'),
     atapi.BooleanField('rootaccess'),
-    atapi.TextField('setup_procedure'),
-    atapi.TextField('firewall_policy'),
+    atapi.TextField('setup_procedure',
+                    widget=atapi.TextAreaWidget(),
+                    ),
+    atapi.TextField('firewall_policy',
+                    widget=atapi.TextAreaWidget(),
+                    ),
 )) + CommonFields
 
 
