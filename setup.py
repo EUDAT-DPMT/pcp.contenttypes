@@ -55,7 +55,7 @@ setup(name='pcp.contenttypes',
       include_package_data=True,
       zip_safe=False,
       install_requires=['setuptools',
-                        # -*- Extra requirements: -*-
+                        'pint',
                         'Products.ATExtensions',
                         'Products.ATBackRef',
                         ],

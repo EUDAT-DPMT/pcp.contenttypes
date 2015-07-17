@@ -59,5 +59,35 @@ class CommonUtilities(object):
         """Controlled vocabulary for the supported PID systems"""
 
         return ateapi.getDisplayList(instance, 'identifier_types', add_select=True)
-
         
+    def convert(self, value, from_unit, to_unit):
+        """Helper function doing unit conversions"""
+        result = {}
+        source_unit = unit_map[from_unit]
+        target_unit = unit_map[to_unit]
+
+        source = float(value) * source_unit
+        target = source.to(target_unit)
+
+        result['value'] = target.magnitude
+        result['unit'] = to_unit
+
+        return result
+
+
+# we don't want to use eval so we define an explicit mapping of supported units
+
+from pint import UnitRegistry
+ur = UnitRegistry()
+
+unit_map = {'kB': ur.kilobyte,
+            'MB': ur.megabyte,
+            'GB': ur.gigabyte,
+            'TB': ur.terabyte,
+            'PB': ur.petabyte,
+            'KiB': ur.kibibyte,
+            'MiB': ur.mebibyte,
+            'GiB': ur.gibibyte,
+            'TiB': ur.tebibyte,
+            'PiB': ur.pebibyte
+            }

@@ -48,6 +48,9 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.RecordField('resources',
                        subfields=('allocated (TB)', 'used (TB)', '# of objects'),
                        ),
+    ateapi.RecordField('allocated',
+                       subfields=('value', 'unit'),
+                       ),
     atapi.ReferenceField('project_enabler',
                          relationship='enabled_by',
                          allowed_types=('Person',),
@@ -92,5 +95,26 @@ class Project(folder.ATFolder, CommonUtilities):
     meta_type = "Project"
     schema = ProjectSchema
 
+    def getAllocated(self):
+        """Specialized accessor that can handle unit conversions."""
+
+        raw = self.schema['allocated'].get(self)
+
+        v = raw.get('value','')
+        u = raw.get('unit','')
+        
+        request = self.REQUEST
+        try:
+            target_unit = request['unit']  # no conversion yet
+            if target_unit != u:
+                converted = self.convert(v, u, target_unit)
+        except KeyError:
+            converted = {}
+            converted['value'] = v
+            converted['unit'] = u
+
+        return converted
+    
 
 atapi.registerType(Project, PROJECTNAME)
+
