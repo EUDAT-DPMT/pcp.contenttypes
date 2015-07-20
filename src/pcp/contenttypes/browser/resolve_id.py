@@ -9,10 +9,15 @@ class ResolveID(BrowserView):
         return getToolByName(self.context, 'portal_catalog')
 
     def resolve_id(self, id=None, verbose=False):
-        """lookup the id passed in and redirect to content if 
+        """Lookup the id passed in and redirect to content if 
         exactly one match is found.
-        If no match is found it says so and a list of URLs
-        i sretunr if the id resolves to more than one object."""
+        
+        If no match is found and 'verbose' is False (default) 
+        it returns None or if 'verbose' is true it tells which
+        id is not found.
+        
+        A list of URLs is returned if the id resolves to more 
+        than one object."""
 
         if id is None:
             return None
