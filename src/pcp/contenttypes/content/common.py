@@ -9,7 +9,8 @@ CommonFields = atapi.Schema((
                         expression="here.UID()",
                         ),
     ateapi.RecordsField('identifiers',
-                        searchable=0,  # RR: we should probably provide an index method
+                        searchable=1,  # RR: we should probably provide an index method
+                        index_method='ids',
                         required=0,
                         subfields = ('type', 'value'),
                         subfield_labels ={'type':'Identifier'},
@@ -59,6 +60,12 @@ class CommonUtilities(object):
         """Controlled vocabulary for the supported PID systems"""
 
         return ateapi.getDisplayList(instance, 'identifier_types', add_select=True)
+
+    def ids(self):
+        """Tuple of all identifiers - from the field plus uid"""
+        ids = [entry.get('value','') for entry in self.getIdentifiers()]
+        ids.append(self.UID())
+        return tuple(ids)
         
     def pint_convert(self, value, from_unit, to_unit):
         """Helper function doing unit conversions using Pint"""
@@ -82,6 +89,7 @@ from pint import UnitRegistry
 ur = UnitRegistry()
 
 unit_map = {'bit': ur.bit,
+            'byte':ur.byte,
             'B':   ur.byte,
             'kB':  ur.kilobyte,
             'MB':  ur.megabyte,

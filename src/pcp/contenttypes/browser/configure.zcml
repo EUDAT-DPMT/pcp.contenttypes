@@ -37,4 +37,12 @@
 	permission="zope2.View"
 	/>
 
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="resolve_id"
+	class="pcp.contenttypes.browser.resolve_id.ResolveID"
+	attribute="resolve_id"
+	permission="zope2.View"
+	/>
+
 </configure>
