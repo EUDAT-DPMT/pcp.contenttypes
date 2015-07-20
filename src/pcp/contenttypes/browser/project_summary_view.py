@@ -21,11 +21,16 @@ class ProjectOverview(BrowserView):
 
     def fields(self):
         """hardcoded for a start"""
-        return ('title', 'services_used', 'service_provider', 'resources', 'community', 'topics', 'start_date', 'state')
+        return ('title', 'services_used', 'service_provider', 
+                'allocated', 'used', 'resources', 'community', 
+                'topics', 'start_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start"""
-        return ('Title', 'Service', 'Service provider', 'Resources', 'Community', 'Topics', 'Start date', 'State')
+        return ('Title', 'Service', 'Service provider', 
+                'Allocated storage', 'Used storage', 
+                'Resources', 'Community', 'Topics', 
+                'Start date', 'State')
 
     def data(self):
         projects = [element.getObject() for element in self.catalog(portal_type='Project')]
@@ -68,6 +73,11 @@ class ProjectOverview(BrowserView):
                          values.append('%s: %s' % (k, v))
                     value['text'] = '<br />'.join(values)
                     value['url'] = None
+                elif field in ['allocated', 'used']:
+                    raw = f.getRaw(project)
+                    value['text'] = "%s %s" % (raw.get('value', ''), 
+                                               raw.get('unit', ''))
+                    value['url'] = None                     
                 else:
                     value['text'] = f.get(project)
                     value['url'] = None 

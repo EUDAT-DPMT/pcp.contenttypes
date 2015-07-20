@@ -60,17 +60,18 @@ class CommonUtilities(object):
 
         return ateapi.getDisplayList(instance, 'identifier_types', add_select=True)
         
-    def convert(self, value, from_unit, to_unit):
-        """Helper function doing unit conversions"""
-        result = {}
+    def pint_convert(self, value, from_unit, to_unit):
+        """Helper function doing unit conversions using Pint"""
+
         source_unit = unit_map[from_unit]
         target_unit = unit_map[to_unit]
 
         source = float(value) * source_unit
         target = source.to(target_unit)
 
-        result['value'] = target.magnitude
-        result['unit'] = to_unit
+        result = {'value': target.magnitude,
+                  'unit': to_unit,
+                  }
 
         return result
 
@@ -80,14 +81,18 @@ class CommonUtilities(object):
 from pint import UnitRegistry
 ur = UnitRegistry()
 
-unit_map = {'kB': ur.kilobyte,
-            'MB': ur.megabyte,
-            'GB': ur.gigabyte,
-            'TB': ur.terabyte,
-            'PB': ur.petabyte,
+unit_map = {'bit': ur.bit,
+            'B':   ur.byte,
+            'kB':  ur.kilobyte,
+            'MB':  ur.megabyte,
+            'GB':  ur.gigabyte,
+            'TB':  ur.terabyte,
+            'PB':  ur.petabyte,
+            'EB':  ur.exabyte,
             'KiB': ur.kibibyte,
             'MiB': ur.mebibyte,
             'GiB': ur.gibibyte,
             'TiB': ur.tebibyte,
-            'PiB': ur.pebibyte
+            'PiB': ur.pebibyte,
+            'EiB': ur.exbibyte,
             }

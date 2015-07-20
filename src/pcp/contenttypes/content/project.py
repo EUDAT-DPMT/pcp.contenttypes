@@ -51,6 +51,9 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.RecordField('allocated',
                        subfields=('value', 'unit'),
                        ),
+    ateapi.RecordField('used',
+                       subfields=('value', 'unit'),
+                       ),
     atapi.ReferenceField('project_enabler',
                          relationship='enabled_by',
                          allowed_types=('Person',),
@@ -99,22 +102,33 @@ class Project(folder.ATFolder, CommonUtilities):
         """Specialized accessor that can handle unit conversions."""
 
         raw = self.schema['allocated'].get(self)
+        return self.convert(raw)
 
+    def getUsed(self):
+        """Specialized accessor supporting unit conversion"""
+        raw = self.schema['used'].get(self)
+        return self.convert(raw)
+    
+    def convert(self, raw):
+        """Checking REQUEST for a target unit and converting
+        if necessary"""
+        
         v = raw.get('value','')
         u = raw.get('unit','')
+        result = {'value': v,
+                  'unit': u,
+                  }
         
         request = self.REQUEST
         try:
-            target_unit = request['unit']  # no conversion yet
+            target_unit = request['unit'] 
             if target_unit != u:
-                converted = self.convert(v, u, target_unit)
+                result = self.pint_convert(v, u, target_unit)
         except KeyError:
-            converted = {}
-            converted['value'] = v
-            converted['unit'] = u
+            pass # no target unit specified
+        
+        return result
 
-        return converted
-    
 
 atapi.registerType(Project, PROJECTNAME)
 
