@@ -6,6 +6,7 @@
    <element value="doi"/>
    <element value="epic"/>
    <element value="orcid"/>
+   <element value="rct_uid"/>
   </property>
   <property name="operating_systems" type="lines">
    <element value="SLES - SuSE Linux Enterprise Server from Novell"/>
