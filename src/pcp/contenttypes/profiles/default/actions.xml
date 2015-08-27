@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_actions"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="document_actions">
+  <object name="json" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title">JSON</property>
+   <property name="description">View as JSON</property>
+   <property name="url_expr">string:${object_url}/json</property>
+   <property name="icon_expr">string:${portal_url}/json.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+</object>
