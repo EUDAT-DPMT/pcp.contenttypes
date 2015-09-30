@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A CDI admin registers a new service</property>
   <property name="content_meta_type">Registered Service</property>
-  <property name="content_icon">document_icon.gif</property>
+  <property name="content_icon">string:${portal_url}/maintenance_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addRegisteredService</property>
   <property name="immediate_view">atct_edit</property>
