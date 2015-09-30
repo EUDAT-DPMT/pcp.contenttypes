@@ -8,6 +8,22 @@
   -->
 <object name="portal_types" meta_type="Plone Types Tool">
   <!-- -*- extra stuff goes here -*- -->
+  <object name="RegisteredResource"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="RegisteredServiceComponent"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="RegisteredService"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ResourceRequest"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ServiceComponentRequest"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ServiceRequest"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ServiceComponentOffer"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ResourceOffer"
+    meta_type="Factory-based Type Information with dynamic views" />
   <object name="Plan"
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="Environment"

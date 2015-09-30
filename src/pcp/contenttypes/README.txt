@@ -48,6 +48,990 @@ Finally, let's return to the front page of our site before continuing
     >>> browser.open(portal_url)
 
 -*- extra stuff goes here -*-
+The RegisteredResource content type
+===============================
+
+In this section we are tesing the RegisteredResource content type by performing
+basic operations like adding, updadating and deleting RegisteredResource content
+items.
+
+Adding a new RegisteredResource content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'RegisteredResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'RegisteredResource' content item to the portal.
+
+Updating an existing RegisteredResource content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New RegisteredResource Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New RegisteredResource Sample' in browser.contents
+    True
+
+Removing a/an RegisteredResource content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New RegisteredResource
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredResource Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New RegisteredResource Sample' object. First we
+go to the contents tab and select the 'New RegisteredResource Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New RegisteredResource Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New RegisteredResource
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredResource Sample' in browser.contents
+    False
+
+Adding a new RegisteredResource content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add RegisteredResource content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'RegisteredResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new RegisteredResource content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The RegisteredServiceComponent content type
+===============================
+
+In this section we are tesing the RegisteredServiceComponent content type by performing
+basic operations like adding, updadating and deleting RegisteredServiceComponent content
+items.
+
+Adding a new RegisteredServiceComponent content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'RegisteredServiceComponent' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredServiceComponent').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredServiceComponent' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredServiceComponent Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'RegisteredServiceComponent' content item to the portal.
+
+Updating an existing RegisteredServiceComponent content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New RegisteredServiceComponent Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New RegisteredServiceComponent Sample' in browser.contents
+    True
+
+Removing a/an RegisteredServiceComponent content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New RegisteredServiceComponent
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredServiceComponent Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New RegisteredServiceComponent Sample' object. First we
+go to the contents tab and select the 'New RegisteredServiceComponent Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New RegisteredServiceComponent Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New RegisteredServiceComponent
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredServiceComponent Sample' in browser.contents
+    False
+
+Adding a new RegisteredServiceComponent content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add RegisteredServiceComponent content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'RegisteredServiceComponent' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredServiceComponent').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredServiceComponent' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredServiceComponent Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new RegisteredServiceComponent content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The RegisteredService content type
+===============================
+
+In this section we are tesing the RegisteredService content type by performing
+basic operations like adding, updadating and deleting RegisteredService content
+items.
+
+Adding a new RegisteredService content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'RegisteredService' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredService').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredService' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredService Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'RegisteredService' content item to the portal.
+
+Updating an existing RegisteredService content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New RegisteredService Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New RegisteredService Sample' in browser.contents
+    True
+
+Removing a/an RegisteredService content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New RegisteredService
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredService Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New RegisteredService Sample' object. First we
+go to the contents tab and select the 'New RegisteredService Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New RegisteredService Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New RegisteredService
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredService Sample' in browser.contents
+    False
+
+Adding a new RegisteredService content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add RegisteredService content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'RegisteredService' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredService').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredService' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredService Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new RegisteredService content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The ResourceRequest content type
+===============================
+
+In this section we are tesing the ResourceRequest content type by performing
+basic operations like adding, updadating and deleting ResourceRequest content
+items.
+
+Adding a new ResourceRequest content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'ResourceRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ResourceRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ResourceRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ResourceRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'ResourceRequest' content item to the portal.
+
+Updating an existing ResourceRequest content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New ResourceRequest Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New ResourceRequest Sample' in browser.contents
+    True
+
+Removing a/an ResourceRequest content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New ResourceRequest
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New ResourceRequest Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New ResourceRequest Sample' object. First we
+go to the contents tab and select the 'New ResourceRequest Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New ResourceRequest Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New ResourceRequest
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New ResourceRequest Sample' in browser.contents
+    False
+
+Adding a new ResourceRequest content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add ResourceRequest content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'ResourceRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ResourceRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ResourceRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ResourceRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new ResourceRequest content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The ServiceComponentRequest content type
+===============================
+
+In this section we are tesing the ServiceComponentRequest content type by performing
+basic operations like adding, updadating and deleting ServiceComponentRequest content
+items.
+
+Adding a new ServiceComponentRequest content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'ServiceComponentRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceComponentRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceComponentRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceComponentRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'ServiceComponentRequest' content item to the portal.
+
+Updating an existing ServiceComponentRequest content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New ServiceComponentRequest Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New ServiceComponentRequest Sample' in browser.contents
+    True
+
+Removing a/an ServiceComponentRequest content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New ServiceComponentRequest
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceComponentRequest Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New ServiceComponentRequest Sample' object. First we
+go to the contents tab and select the 'New ServiceComponentRequest Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New ServiceComponentRequest Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New ServiceComponentRequest
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceComponentRequest Sample' in browser.contents
+    False
+
+Adding a new ServiceComponentRequest content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add ServiceComponentRequest content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'ServiceComponentRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceComponentRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceComponentRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceComponentRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new ServiceComponentRequest content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The ServiceRequest content type
+===============================
+
+In this section we are tesing the ServiceRequest content type by performing
+basic operations like adding, updadating and deleting ServiceRequest content
+items.
+
+Adding a new ServiceRequest content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'ServiceRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'ServiceRequest' content item to the portal.
+
+Updating an existing ServiceRequest content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New ServiceRequest Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New ServiceRequest Sample' in browser.contents
+    True
+
+Removing a/an ServiceRequest content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New ServiceRequest
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceRequest Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New ServiceRequest Sample' object. First we
+go to the contents tab and select the 'New ServiceRequest Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New ServiceRequest Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New ServiceRequest
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceRequest Sample' in browser.contents
+    False
+
+Adding a new ServiceRequest content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add ServiceRequest content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'ServiceRequest' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceRequest').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceRequest' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceRequest Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new ServiceRequest content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The ServiceComponentOffer content type
+===============================
+
+In this section we are tesing the ServiceComponentOffer content type by performing
+basic operations like adding, updadating and deleting ServiceComponentOffer content
+items.
+
+Adding a new ServiceComponentOffer content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'ServiceComponentOffer' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceComponentOffer').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceComponentOffer' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceComponentOffer Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'ServiceComponentOffer' content item to the portal.
+
+Updating an existing ServiceComponentOffer content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New ServiceComponentOffer Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New ServiceComponentOffer Sample' in browser.contents
+    True
+
+Removing a/an ServiceComponentOffer content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New ServiceComponentOffer
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceComponentOffer Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New ServiceComponentOffer Sample' object. First we
+go to the contents tab and select the 'New ServiceComponentOffer Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New ServiceComponentOffer Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New ServiceComponentOffer
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New ServiceComponentOffer Sample' in browser.contents
+    False
+
+Adding a new ServiceComponentOffer content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add ServiceComponentOffer content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'ServiceComponentOffer' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ServiceComponentOffer').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ServiceComponentOffer' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ServiceComponentOffer Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new ServiceComponentOffer content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The ResourceOffer content type
+===============================
+
+In this section we are tesing the ResourceOffer content type by performing
+basic operations like adding, updadating and deleting ResourceOffer content
+items.
+
+Adding a new ResourceOffer content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'ResourceOffer' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ResourceOffer').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ResourceOffer' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ResourceOffer Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'ResourceOffer' content item to the portal.
+
+Updating an existing ResourceOffer content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New ResourceOffer Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New ResourceOffer Sample' in browser.contents
+    True
+
+Removing a/an ResourceOffer content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New ResourceOffer
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New ResourceOffer Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New ResourceOffer Sample' object. First we
+go to the contents tab and select the 'New ResourceOffer Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New ResourceOffer Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New ResourceOffer
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New ResourceOffer Sample' in browser.contents
+    False
+
+Adding a new ResourceOffer content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add ResourceOffer content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'ResourceOffer' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('ResourceOffer').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'ResourceOffer' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'ResourceOffer Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new ResourceOffer content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
 The Plan content type
 ===============================
 

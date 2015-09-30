@@ -6,6 +6,54 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
+  <class class=".registeredresource.RegisteredResource">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRegisteredResource"
+        />
+  </class>
+  <class class=".registeredservicecomponent.RegisteredServiceComponent">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRegisteredServiceComponent"
+        />
+  </class>
+  <class class=".registeredservice.RegisteredService">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRegisteredService"
+        />
+  </class>
+  <class class=".resourcerequest.ResourceRequest">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IResourceRequest"
+        />
+  </class>
+  <class class=".servicecomponentrequest.ServiceComponentRequest">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceComponentRequest"
+        />
+  </class>
+  <class class=".servicerequest.ServiceRequest">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceRequest"
+        />
+  </class>
+  <class class=".servicecomponentoffer.ServiceComponentOffer">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceComponentOffer"
+        />
+  </class>
+  <class class=".resourceoffer.ResourceOffer">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IResourceOffer"
+        />
+  </class>
   <class class=".plan.Plan">
     <require
         permission="zope2.View"

@@ -2,6 +2,38 @@
 <rolemap>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="pcp.contenttypes: Add RegisteredResource" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add RegisteredServiceComponent" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add RegisteredService" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ResourceRequest" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ServiceComponentRequest" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ServiceRequest" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ServiceComponentOffer" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ResourceOffer" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
     <permission name="pcp.contenttypes: Add Plan" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
