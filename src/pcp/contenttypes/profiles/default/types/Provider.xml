@@ -17,6 +17,11 @@
    <element value="Environment"/>
    <element value="File"/>
    <element value="Folder"/>
+   <element value="ResourceOffer"/>
+   <element value="ServiceComponentOffer"/>
+   <element value="RegisteredService"/>
+   <element value="RegisteredServiceComponent"/>
+   <element value="RegisteredResource"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table_view</property>

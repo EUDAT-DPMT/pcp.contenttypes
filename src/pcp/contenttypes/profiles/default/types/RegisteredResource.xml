@@ -2,7 +2,7 @@
 <object name="RegisteredResource"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">RegisteredResource</property>
+  <property name="title" i18n:translate="">Registered Resource</property>
   <property name="description"
     i18n:translate="">A CDI admin registers a new resource</property>
   <property name="content_meta_type">RegisteredResource</property>

@@ -2,10 +2,10 @@
 <object name="RegisteredService"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">RegisteredService</property>
+  <property name="title" i18n:translate="">Registered Service</property>
   <property name="description"
     i18n:translate="">A CDI admin registers a new service</property>
-  <property name="content_meta_type">RegisteredService</property>
+  <property name="content_meta_type">Registered Service</property>
   <property name="content_icon">document_icon.gif</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addRegisteredService</property>
