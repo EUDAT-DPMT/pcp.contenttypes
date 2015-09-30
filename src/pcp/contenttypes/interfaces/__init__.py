@@ -1,4 +1,5 @@
 # -*- extra stuff goes here -*-
+from plan import IPlan
 from environment import IEnvironment
 from provider import IProvider
 from person import IPerson
