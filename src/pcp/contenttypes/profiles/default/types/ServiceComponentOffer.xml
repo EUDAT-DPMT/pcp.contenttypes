@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">Provider offers service components</property>
   <property name="content_meta_type">ServiceComponentOffer</property>
-  <property name="content_icon">string:${portal_url}/maintenance_icon.png</property>
+  <property name="content_icon">maintenance_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceComponentOffer</property>
   <property name="immediate_view">atct_edit</property>

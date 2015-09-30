@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A project requests a specific service component</property>
   <property name="content_meta_type">ServiceComponentRequest</property>
-  <property name="content_icon">string:${portal_url}/maintenance_icon.png</property>
+  <property name="content_icon">maintenance_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceComponentRequest</property>
   <property name="immediate_view">atct_edit</property>

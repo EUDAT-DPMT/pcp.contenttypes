@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A CDI admin registers a new resource</property>
   <property name="content_meta_type">RegisteredResource</property>
-  <property name="content_icon">string:${portal_url}/product_icon.png</property>
+  <property name="content_icon">product_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addRegisteredResource</property>
   <property name="immediate_view">atct_edit</property>
