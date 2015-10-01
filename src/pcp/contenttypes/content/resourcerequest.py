@@ -36,17 +36,18 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          ),
     ateapi.RecordsField('compute_resources',
                         required=0,
-                        minimalSize=3,
+                        minimalSize=2,
                         subfields = ('cpus', 'memory', 'disk', 
                                      'virtualization', 'software'),
                         subfield_labels ={'cpus':'CPUs',
                                           'virtualization':'virtualization OK?',
                                           'software':'requires OS/software',
                                           },
+                        subfield_vocabularies = {'virtualization': 'yesno'},
                         ),
     ateapi.RecordsField('storage_resources',
                         required=0,
-                        minimalSize=3,
+                        minimalSize=2,
                         subfields = ('size', 'type'),
                         subfield_vocabularies = {'type':'storageTypes'},
                         ),
@@ -69,6 +70,10 @@ class ResourceRequest(base.ATCTContent, CommonUtilities):
         from the properties tool"""
         
         return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
+
+    def yesno(self, instance):
+        """Seems like RecordsFields do not support checkboxes"""
+        return atapi.DisplayList([['yes', 'yes'],['no', 'no']])
 
 
 atapi.registerType(ResourceRequest, PROJECTNAME)
