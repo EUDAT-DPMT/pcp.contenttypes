@@ -39,6 +39,7 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         minimalSize=2,
                         subfields = ('cpus', 'memory', 'disk', 
                                      'virtualization', 'software'),
+                        subfield_types = {'virtualization': 'selection'},
                         subfield_labels ={'cpus':'CPUs',
                                           'virtualization':'virtualization OK?',
                                           'software':'requires OS/software',

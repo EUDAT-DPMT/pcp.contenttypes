@@ -2,6 +2,7 @@
 <object name="portal_workflow">
  <object name="project_workflow" meta_type="Workflow"/>
  <object name="offer_workflow" meta_type="Workflow"/>
+ <object name="request_workflow" meta_type="Workflow"/>
  <bindings>
   <type type_id="Project">
    <bound-workflow workflow_id="project_workflow"/>
@@ -11,6 +12,15 @@
    </type>
    <type type_id="ServiceComponentOffer">
     <bound-workflow workflow_id="offer_workflow"/>
+  </type>
+  <type type_id="ResourceRequest">
+   <bound-workflow workflow_id="request_workflow"/>
+  </type>
+  <type type_id="ServiceComponentRequest">
+   <bound-workflow workflow_id="request_workflow"/>
+  </type>
+  <type type_id="ServiceRequest">
+   <bound-workflow workflow_id="request_workflow"/>
   </type>
  </bindings>
 </object>
