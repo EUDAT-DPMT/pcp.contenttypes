@@ -8,6 +8,11 @@
    <element value="orcid"/>
    <element value="rct_uid"/>
   </property>
+  <property name="storage_types" type="lines">
+   <element value="online"/>
+   <element value="nearline"/>
+   <element value="offline"/>
+  </property>
   <property name="operating_systems" type="lines">
    <element value="SLES - SuSE Linux Enterprise Server from Novell"/>
    <element value="RHEL - Red Hat Enterprise Linux from Red Hat"/>

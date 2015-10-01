@@ -9,7 +9,7 @@ CommonFields = atapi.Schema((
                         expression="here.UID()",
                         ),
     ateapi.RecordsField('identifiers',
-                        searchable=1,  # RR: we should probably provide an index method
+                        searchable=1,
                         index_method='ids',
                         required=0,
                         subfields = ('type', 'value'),
