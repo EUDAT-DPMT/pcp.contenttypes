@@ -85,7 +85,8 @@ class CommonUtilities(object):
         except KeyError:
             pass # no target unit specified
         
-        return result
+        raw.update(result)
+        return raw
 
         
     def pint_convert(self, value, from_unit, to_unit):
@@ -102,6 +103,15 @@ class CommonUtilities(object):
                   }
 
         return result
+
+    def informationUnits(self, instance=None):
+        """
+        Controlled vocabulary (DisplayList) of information units 
+        supported
+        """
+        units = unit_map.keys()
+        units.sort()
+        return atapi.DisplayList(zip(units, units))
 
 
 # we don't want to use eval so we define an explicit mapping of supported units

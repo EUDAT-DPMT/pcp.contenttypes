@@ -23,12 +23,15 @@ ServiceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          allowed_types=('Service',),
                          ),
     ateapi.RecordField('size',
-                       subfields=('value', 'unit'),
+                       subfields=('value', 'unit', 'type'),
+                       subfield_vocabularies = {'unit': 'informationUnits',
+                                                'type': 'storageTypes',
+                                                },
                        ),
-    atapi.StringField('storage_type',
-                      vocabulary='storageTypes',
-                      widget=atapi.SelectionWidget(),
-                      ),                  
+#    atapi.StringField('storage_type',
+#                      vocabulary='storageTypes',
+#                      widget=atapi.SelectionWidget(),
+#                      ),                  
 )) + CommonFields.copy()
 
 
@@ -47,7 +50,9 @@ class ServiceRequest(base.ATCTContent, CommonUtilities):
         raw = self.schema['size'].get(self)
         return self.convert(raw)
 
-    def storageTypes(self):
-        return ateapi.getDisplayList(self, 'storage_types', add_select=True)
+    def storageTypes(self, instance=None):
+        if instance is None:
+            return ateapi.getDisplayList(self, 'storage_types', add_select=True)
+        return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
 
 atapi.registerType(ServiceRequest, PROJECTNAME)
