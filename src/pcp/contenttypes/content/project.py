@@ -109,26 +109,6 @@ class Project(folder.ATFolder, CommonUtilities):
         raw = self.schema['used'].get(self)
         return self.convert(raw)
     
-    def convert(self, raw):
-        """Checking REQUEST for a target unit and converting
-        if necessary"""
-        
-        v = raw.get('value','')
-        u = raw.get('unit','')
-        result = {'value': v,
-                  'unit': u,
-                  }
-        
-        request = self.REQUEST
-        try:
-            target_unit = request['unit'] 
-            if target_unit != u:
-                result = self.pint_convert(v, u, target_unit)
-        except KeyError:
-            pass # no target unit specified
-        
-        return result
-
 
 atapi.registerType(Project, PROJECTNAME)
 

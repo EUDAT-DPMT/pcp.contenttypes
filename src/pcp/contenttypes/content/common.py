@@ -66,6 +66,27 @@ class CommonUtilities(object):
         ids = [entry.get('value','') for entry in self.getIdentifiers()]
         ids.append(self.UID())
         return tuple(ids)
+
+    def convert(self, raw):
+        """Checking REQUEST for a target unit and converting
+        if necessary"""
+        
+        v = raw.get('value','')
+        u = raw.get('unit','')
+        result = {'value': v,
+                  'unit': u,
+                  }
+        
+        request = self.REQUEST
+        try:
+            target_unit = request['unit'] 
+            if target_unit != u:
+                result = self.pint_convert(v, u, target_unit)
+        except KeyError:
+            pass # no target unit specified
+        
+        return result
+
         
     def pint_convert(self, value, from_unit, to_unit):
         """Helper function doing unit conversions using Pint"""
