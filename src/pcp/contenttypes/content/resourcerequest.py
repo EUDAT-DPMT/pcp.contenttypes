@@ -21,17 +21,19 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
     atapi.DateTimeField('startDate',
-                        widget=atapi.CalendarWidget(show_hm=False),
+                        widget=atapi.CalendarWidget(label='Start date',
+                                                    show_hm=False),
                         ),
     atapi.DateTimeField('endDate',
-                        widget=atapi.CalendarWidget(show_hm=False),
+                        widget=atapi.CalendarWidget(label='End date',
+                                                    show_hm=False),
                         ),
     atapi.StringField('ticketid'),
     atapi.ReferenceField('preferred_providers',
                          relationship='preferred_providers',
                          multiValued=True,
                          allowed_types=('Provider',),
-                         widget=atapi.ReferenceWidget(label="Preferred provider",
+                         widget=atapi.ReferenceWidget(label="Preferred providers",
                                                       ),
                          ),
     ateapi.RecordsField('compute_resources',
@@ -45,12 +47,14 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                           'software':'requires OS/software',
                                           },
                         subfield_vocabularies = {'virtualization': 'yesno'},
+                        widget=ateapi.RecordsWidget(label='Compute resources'),
                         ),
     ateapi.RecordsField('storage_resources',
                         required=0,
                         minimalSize=2,
                         subfields = ('size', 'type'),
                         subfield_vocabularies = {'type':'storageTypes'},
+                        widget=ateapi.RecordsWidget(label='Storage resources'),
                         ),
 
 )) + CommonFields.copy()
@@ -74,7 +78,7 @@ class ResourceRequest(base.ATCTContent, CommonUtilities):
 
     def yesno(self, instance):
         """Seems like RecordsFields do not support checkboxes"""
-        return atapi.DisplayList([['yes', 'yes'],['no', 'no']])
+        return atapi.DisplayList([['', 'Select'], ['yes', 'yes'], ['no', 'no']])
 
 
 atapi.registerType(ResourceRequest, PROJECTNAME)
