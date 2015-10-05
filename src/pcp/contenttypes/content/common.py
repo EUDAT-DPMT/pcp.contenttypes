@@ -9,7 +9,7 @@ CommonFields = atapi.Schema((
                         expression="here.UID()",
                         ),
     atapi.ComputedField('pid',
-                        expression="here.restrictedTraverse('@@handle')",
+                        expression="here.PID()",
                         ),
     ateapi.RecordsField('identifiers',
                         searchable=1,
@@ -72,6 +72,10 @@ class CommonUtilities(object):
         if handle is not None:
             ids.append(handle)
         return tuple(ids)
+
+    def PID(self):
+        """Return the handle PID if existing; None otherwise"""
+        return self.handle_client._getHandle(self)
 
     def convert(self, raw):
         """Checking REQUEST for a target unit and converting
