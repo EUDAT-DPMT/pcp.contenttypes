@@ -37,6 +37,10 @@ class JSONView(BrowserView):
     def url_tool(self):
         return getToolByName(self.context, 'portal_url')
 
+    @property
+    def handle_client(self):
+        return getToolByName(self.context, 'handle_client', None)
+
     def convert(self, value):
         """
         Convert value to more JSON friendly format.
@@ -75,6 +79,10 @@ class JSONView(BrowserView):
                     d['uid'] = u
                     d['title'] = o.Title()
                     d['path'] = '/'.join(self.url_tool.getRelativeContentPath(o))
+                    if self.handle_client is not None:
+                        handle = self.handle_client._getHandle(o)
+                        if handle:
+                            d['handle'] = handle
                     value.append(d)
             else:
                 try:
