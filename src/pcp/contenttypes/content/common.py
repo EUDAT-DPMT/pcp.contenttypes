@@ -8,6 +8,9 @@ CommonFields = atapi.Schema((
     atapi.ComputedField('uid',
                         expression="here.UID()",
                         ),
+    atapi.ComputedField('pid',
+                        expression="here.restrictedTraverse('@@handle')",
+                        ),
     ateapi.RecordsField('identifiers',
                         searchable=1,
                         index_method='ids',
@@ -62,9 +65,12 @@ class CommonUtilities(object):
         return ateapi.getDisplayList(instance, 'identifier_types', add_select=True)
 
     def ids(self):
-        """Tuple of all identifiers - from the field plus uid"""
+        """Tuple of all identifiers - from the field plus uid and pid"""
         ids = [entry.get('value','') for entry in self.getIdentifiers()]
         ids.append(self.UID())
+        handle = self.handle_client._getHandle(self)
+        if handle is not None:
+            ids.append(handle)
         return tuple(ids)
 
     def convert(self, raw):
