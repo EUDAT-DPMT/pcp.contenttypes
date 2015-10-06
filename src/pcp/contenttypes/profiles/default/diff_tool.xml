@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<object>
+ <difftypes>
+  <type portal_type="Community">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Environment">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Person">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Plan">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Project">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Provider">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="RegisteredResource">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="RegisteredService">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="RegisteredServiceComponent">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Resource">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ResourceOffer">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ResourceRequest">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Service">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ServiceComponentOffer">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ServiceComponentRequest">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ServiceRequest">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+ </difftypes>
+</object>
