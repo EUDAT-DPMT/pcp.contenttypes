@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="pcp.contenttypes">
     
@@ -11,7 +12,10 @@
   <include package=".browser" />
   <include package=".content" />
   <include package=".portlets" />
-  
+
+  <!-- Include support for monkey patching. -->
+  <include package="collective.monkeypatcher" />
+
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"
@@ -21,6 +25,13 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
-  <!-- -*- extra stuff goes here -*- -->
+  <!-- -*- apply custom patches -*- -->
+  <monkey:patch
+    description="Add diff support for ATExtensions' fields"
+    module="Products.CMFDiffTool.ATCompoundDiff"
+    original="AT_FIELD_MAPPING"
+    replacement=".patches.patched_field_mapping"
+    handler=".patches.apply_patched_mapping"
+    />
 
 </configure>
