@@ -28,6 +28,7 @@ NEW_AT_FIELD_MAPPING = {'text': 'variable_text',
                         'record': AsTextDiff,
                         'address': AsTextDiff,
                         'records': AsTextDiff,
+                        'url': 'variable_text',
                         'reference': 'raw:ListDiff'}
 
 patched_field_mapping = lambda : NEW_AT_FIELD_MAPPING  # Now we have a callable method!
