@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+
 from pcp.contenttypes.interfaces import IResource
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
@@ -21,20 +23,26 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('managed_by',
                          relationship='managed_by',
                          allowed_types=('Person',),
-                         widget=atapi.ReferenceWidget(label='Managed by',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Managed by',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                          ),
     atapi.ReferenceField('hosted_by',
                          relationship='hosted_by',
                          allowed_types=('Provider',),
-                         widget=atapi.ReferenceWidget(label='Hosted by',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Hosted by',
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                       ),
                         ),
     atapi.ReferenceField('used_by',
                          relationship='used_by',
                          allowed_types=('Service',),
-                         widget=atapi.ReferenceWidget(label='Used by',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Used by',
+                                                       allow_browse=1,
+                                                       startup_directory='/services',
+                                                       ),
                         ),                     
 )) + CommonFields.copy()
 
