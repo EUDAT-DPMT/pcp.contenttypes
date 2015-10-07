@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+
 from pcp.contenttypes.interfaces import IService
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
@@ -22,8 +24,10 @@ ServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('managed_by',
                          relationship='managed_by',
                          allowed_types=('Person',),
-                         widget=atapi.ReferenceWidget(label='Managed by',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Managed by',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                          ),
     BackReferenceField('resources_used',
                        relationship='used_by',
