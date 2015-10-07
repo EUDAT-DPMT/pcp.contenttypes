@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+
 from pcp.contenttypes.interfaces import ICommunity
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
@@ -24,15 +26,19 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('representative',
                          relationship='representative',
                          allowed_types=('Person',),
-                         widget=atapi.ReferenceWidget(label='Representative',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Representative',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                         ),
     atapi.ReferenceField('admins',
                          relationship='community_admins',
                          multiValued=True,
                          allowed_types=('Person',),
-                         widget=atapi.ReferenceWidget(label='Administrators',
-                                                      ),
+                         widget=ReferenceBrowserWidget(label='Administrators',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                         ),
     BackReferenceField('affiliated',
                        relationship='affiliated',

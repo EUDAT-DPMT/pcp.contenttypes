@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+
 from pcp.contenttypes.interfaces import IProvider
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
@@ -23,11 +25,19 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('contact',
                          relationship='contact',
                          allowed_types=('Person',),
+                         widget=ReferenceBrowserWidget(label='Contact',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                          ),
     atapi.ReferenceField('admins',
                          relationship='admin_of',
                          multiValued=True,
                          allowed_types=('Person',),
+                         widget=ReferenceBrowserWidget(label='Administrators',
+                                                       allow_browse=1,
+                                                       startup_directory='/people',
+                                                       ),
                          ),
     atapi.LinesField('supported_os',
                      searchable=True,
@@ -44,11 +54,19 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='primary_provider_for',
                          multiValued=True,
                          allowed_types=('Community',),
+                         widget=ReferenceBrowserWidget(label='Primary provider for',
+                                                       allow_browse=1,
+                                                       startup_directory='/communities',
+                                                       ),
                          ),
     atapi.ReferenceField('communities_secondary',
                          relationship='secondary_provider_for',
                          multiValued=True,
                          allowed_types=('Community',),
+                         widget=ReferenceBrowserWidget(label='Secondary provider for',
+                                                       allow_browse=1,
+                                                       startup_directory='/communities',
+                                                       ),
                          ),        
     BackReferenceField('affiliated',
                        relationship='affiliated',
