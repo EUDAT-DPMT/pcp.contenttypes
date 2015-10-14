@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <object name="portal_properties">
  <object name="extensions_properties">
-  <property name="identifier_types" type="lines">
+  <property name="identifier_types" type="lines" purge="False">
    <element value="handle"/>
    <element value="doi"/>
    <element value="epic"/>
    <element value="orcid"/>
    <element value="rct_uid"/>
+   <element value="dmp_online"/>
   </property>
-  <property name="storage_types" type="lines">
+  <property name="storage_types" type="lines" purge="False">
    <element value="online"/>
    <element value="nearline"/>
    <element value="offline"/>
   </property>
-  <property name="operating_systems" type="lines">
+  <property name="operating_systems" type="lines" purge="False">
    <element value="SLES - SuSE Linux Enterprise Server from Novell"/>
    <element value="RHEL - Red Hat Enterprise Linux from Red Hat"/>
    <element value="Ubuntu - Ubuntu Server from Canonical"/>
