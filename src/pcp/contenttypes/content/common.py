@@ -73,6 +73,11 @@ class CommonUtilities(object):
             ids.append(handle)
         return tuple(ids)
 
+    def stateIn(self, states):
+        """Helper method to control visibility of fields"""
+        review_state = self.portal_workflow.getInfoFor(self, 'review_state')
+        return review_state in states
+
     def PID(self):
         """Return the handle PID if existing; None otherwise"""
         return self.handle_client._getHandle(self)
