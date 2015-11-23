@@ -49,6 +49,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='using',
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Services used',
+                                                       description="Select all services the project requires",
                                                        allow_browse=1,
                                                        startup_directory='/services',
                                                        condition='python:here.stateIn(["enabling","pre_production","production"])'),
