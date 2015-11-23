@@ -51,7 +51,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          widget=ReferenceBrowserWidget(label='Services used',
                                                        allow_browse=1,
                                                        startup_directory='/services',
-                                                       condition='python:here.stateIn(["pre_production","production"])'),
+                                                       condition='python:here.stateIn(["enabling","pre_production","production"])'),
 
                                                       ),
 #    ateapi.RecordField('resources',
