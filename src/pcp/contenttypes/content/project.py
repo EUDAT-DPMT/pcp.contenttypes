@@ -97,7 +97,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     widget=ateapi.UrlWidget(label='Uptake plan',
                                             description='URL to the project '\
                                             'uptake plan (if not available on this site). '\
-                                            'Otherwise, offen found on the '\
+                                            'Otherwise, often found on the '\
                                             'confluence site.',
                                             ),
                     ),
