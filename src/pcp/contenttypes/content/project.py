@@ -25,6 +25,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='done_for',
                          allowed_types=('Community',),
                          widget=ReferenceBrowserWidget(label='Community',
+                                                       description='Main community '\
+                                                       'involved in this project',
                                                        allow_browse=1,
                                                        startup_directory='/communities',
                                                        ),
@@ -41,6 +43,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='provided_by',
                          allowed_types=('Provider',),
                          widget=ReferenceBrowserWidget(label='Service provider',
+                                                      description='Choose server '\
+                                                      'in the list',
                                                        allow_browse=1,
                                                        startup_directory='/providers',
                                                       ),
@@ -73,7 +77,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('project_enabler',
                          relationship='enabled_by',
                          allowed_types=('Person',),
-                         widget=ReferenceBrowserWidget(label='Enabled by',
+                         widget=ReferenceBrowserWidget(label='Project enabled by',
                                                        allow_browse=1,
                                                        startup_directory='/people',
                                                       ),
@@ -91,9 +95,9 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     ),
     ateapi.UrlField('uptake_plan',
                     widget=ateapi.UrlWidget(label='Uptake plan',
-                                            description='URL to the projects '\
-                                            'uptake plan (if not on this site). '\
-                                            'Often to be found on the '\
+                                            description='URL to the project '\
+                                            'uptake plan (if not available on this site). '\
+                                            'Otherwise, offen found on the '\
                                             'confluence site.',
                                             ),
                     ),
