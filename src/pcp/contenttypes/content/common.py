@@ -35,8 +35,8 @@ CommonFields = atapi.Schema((
                         outerJoin = '<br />',
                         widget=ateapi.RecordsWidget(
                             description="Other key-value pairs to characterise "\
-                            "this item: to be specically used to signal information "\
-                            "to include in the fields above."
+                            "this item: to be specically used to signal additional information "\
+                            "not included in the previous fields."
                             ),
                         ),
     atapi.TextField('text',
