@@ -52,8 +52,8 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        relationship='done_for',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Projects involved',
-                                                  description='List of projects '\
-                                                  involved in this Community. '\,
+                                                  description='Projects '\
+                                                  involving this Community. '\,
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
