@@ -21,8 +21,8 @@ CommonFields = atapi.Schema((
                         innerJoin = ': ',
                         outerJoin = '<br />',
                         widget=ateapi.RecordsWidget(
-                            description = "Other identifiers used to refer "\
-                            "to this information.",
+                            description = "Other types of identifiers used "\
+                            "to refer to this item.",
                             label = u"Identifiers",
                             ),
     ),
@@ -35,8 +35,8 @@ CommonFields = atapi.Schema((
                         outerJoin = '<br />',
                         widget=ateapi.RecordsWidget(
                             description="Other key-value pairs to characterise "\
-                            "this item. Use this specifically to signal information "\
-                            "that you think should be included in the fields above."
+                            "this item: to be specically used to signal additional information "\
+                            "not included in the previous fields."
                             ),
                         ),
     atapi.TextField('text',
