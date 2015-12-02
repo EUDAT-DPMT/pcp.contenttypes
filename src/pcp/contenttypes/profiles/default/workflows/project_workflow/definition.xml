@@ -3,11 +3,11 @@
  <state state_id="considered" title="Being considered">
   <exit-transition transition_id="start_planning"/>
  </state>
- <state state_id="enabling" title="">
+ <state state_id="enabling" title="Being enabled">
   <exit-transition transition_id="promote2preproduction"/>
   <exit-transition transition_id="terminate"/>
  </state>
- <state state_id="planned" title="">
+ <state state_id="planned" title="Being planned">
   <exit-transition transition_id="enable"/>
   <exit-transition transition_id="terminate"/>
  </state>
