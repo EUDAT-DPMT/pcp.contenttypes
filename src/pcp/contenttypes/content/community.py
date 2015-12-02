@@ -28,6 +28,8 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Representative',
                                                        allow_browse=1,
+                                                       description='Main person '\
+                                                       representing the Community. '\,
                                                        startup_directory='/people',
                                                        ),
                         ),
@@ -50,6 +52,8 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        relationship='done_for',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Projects involved',
+                                                  description='Projects '\
+                                                  involving this Community. '\,
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
