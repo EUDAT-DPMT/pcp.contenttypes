@@ -7,9 +7,11 @@ from Products.ATExtensions import ateapi
 CommonFields = atapi.Schema((
     atapi.ComputedField('uid',
                         expression="here.UID()",
+                         widget=atapi.StringWidget(condition="python:here.stateNotIn(['considered'])"),
                         ),
     atapi.ComputedField('pid',
                         expression="here.PID()",
+                        widget=atapi.StringWidget(condition="python:here.stateNotIn(['considered'])"),
                         ),
     ateapi.RecordsField('identifiers',
                         searchable=1,
@@ -24,6 +26,7 @@ CommonFields = atapi.Schema((
                             description = "Other types of identifiers used "\
                             "to refer to this item.",
                             label = u"Identifiers",
+                            condition="python:here.stateNotIn(['considered'])",
                             ),
     ),
     ateapi.RecordsField('additional',
@@ -36,7 +39,8 @@ CommonFields = atapi.Schema((
                         widget=ateapi.RecordsWidget(
                             description="Other key-value pairs to characterise "\
                             "this item: to be specically used to signal additional information "\
-                            "not included in the previous fields."
+                            "not included in the previous fields.",
+                            condition="python:here.stateNotIn(['considered'])",
                             ),
                         ),
     atapi.TextField('text',
@@ -77,6 +81,11 @@ class CommonUtilities(object):
         """Helper method to control visibility of fields"""
         review_state = self.portal_workflow.getInfoFor(self, 'review_state')
         return review_state in states
+
+    def stateNotIn(self, states):
+        """Helper method to control visibility of fields"""
+        review_state = self.portal_workflow.getInfoFor(self, 'review_state')
+        return review_state not in states
 
     def PID(self):
         """Return the handle PID if existing; None otherwise"""
