@@ -28,12 +28,12 @@
   </guard>
  </transition>
  <transition transition_id="promote2preproduction" title="Promote to pre-production" new_state="pre_production" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=promote2preproduction" category="workflow" icon="">Promote</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=promote2preproduction" category="workflow" icon="">Promote to preproduction</action>
   <guard>
   </guard>
  </transition>
  <transition transition_id="promote2production" title="Promote to production" new_state="production" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=promote2production" category="workflow" icon="">Promote</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=promote2production" category="workflow" icon="">Promote to production</action>
   <guard>
   </guard>
  </transition>

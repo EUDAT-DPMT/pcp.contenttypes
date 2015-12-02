@@ -57,7 +57,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        description="Select all services the project requires",
                                                        allow_browse=1,
                                                        startup_directory='/services',
-                                                       condition='python:here.stateIn(["enabling","pre_production","production"])'),
+                                                       condition='python:here.stateIn(["enabling","pre_production","production","terminated"])'),
 
                                                       ),
 #    ateapi.RecordField('resources',
@@ -67,13 +67,13 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        subfields=('value', 'unit'),
                        subfield_vocabularies={'unit': 'informationUnits'},
                        widget=ateapi.RecordWidget(condition=
-                                                  'python:here.stateIn(["planned","enabling","pre_production","production"])'),
+                                                  'python:here.stateIn(["planned","enabling","pre_production","production","terminated"])'),
                        ),
     ateapi.RecordField('used',
                        subfields=('value', 'unit'),
                        subfield_vocabularies={'unit': 'informationUnits'},
                        widget=ateapi.RecordWidget(condition=
-                                                  'python:here.stateIn(["pre_production","production"])'),
+                                                  'python:here.stateIn(["pre_production","production","terminated"])'),
                        ),
     atapi.ReferenceField('project_enabler',
                          relationship='enabled_by',
