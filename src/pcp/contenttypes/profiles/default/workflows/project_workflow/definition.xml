@@ -9,6 +9,7 @@
  </state>
  <state state_id="planned" title="Being planned">
   <exit-transition transition_id="enable"/>
+  <exit-transition transition_id="promote2preproduction"/>
   <exit-transition transition_id="terminate"/>
  </state>
  <state state_id="pre_production" title="pre-production">
