@@ -48,10 +48,15 @@ class ProjectOverview(BrowserView):
                     continue
                 f = project.schema[field]
                 if isinstance(f, ReferenceField):
-                    obj = f.get(project)
-                    if obj is not None:
-                        value['text'] = obj.Title()
-                        value['url'] = obj.absolute_url()
+                    objs = f.get(project)
+                    if objs:
+                        text = []
+                        if not isinstance(objs, list):
+                            objs = [objs]
+                        for item in objs:
+                            text.append(item.Title())
+                        value['text'] = ', '.join(text)
+                        value['url'] = '.'
                     else:
                         value['text'] = 'no reference set'
                         value['url'] = '.'
