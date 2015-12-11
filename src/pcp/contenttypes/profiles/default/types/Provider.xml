@@ -19,7 +19,6 @@
    <element value="Folder"/>
    <element value="ResourceOffer"/>
    <element value="ServiceComponentOffer"/>
-   <element value="RegisteredService"/>
    <element value="RegisteredServiceComponent"/>
    <element value="RegisteredResource"/>
   </property>

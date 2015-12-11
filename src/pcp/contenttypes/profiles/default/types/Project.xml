@@ -17,6 +17,7 @@
    <element value="File"/>
    <element value="Folder"/>
    <element value="ServiceRequest"/>
+   <element value="RegisteredService"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table_view</property>

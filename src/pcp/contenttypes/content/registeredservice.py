@@ -7,12 +7,36 @@ from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
 
-# -*- Message Factory Imported Here -*-
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.config import PROJECTNAME
 
 RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+    atapi.ReferenceField('original_request',
+                         relationship='original_request',
+                         allowed_types=('ServiceRequest',),
+                         widget=ReferenceBrowserWidget(label='Request',
+                                                       allow_browse=1,
+                                                       description='The original request '\
+                                                       'that triggered the establishment '\
+                                                       'of this service.',
+                                                       startup_directory='..',
+                                                       ),
+                         ),
+    atapi.ReferenceField('service_components',
+                         relationship='service_componemts',
+                         multiValued=True,
+                         allowed_types=('RegisteredServiceComponent',),
+                         widget=ReferenceBrowserWidget(label='Service components',
+                                                       description='The service components '\
+                                                       'providing the service.',
+                                                       base_query={'portal_type':'RegisteredServiceComponent'},
+                                                       allow_search=1,
+                                                       allow_browse=0,
+                                                       show_results_without_query=1,
+                                                       ),
+                        ),
 
     # -*- Your Archetypes field definitions here ... -*-
 
