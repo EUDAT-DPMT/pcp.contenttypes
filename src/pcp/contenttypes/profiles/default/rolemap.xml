@@ -29,11 +29,13 @@
     </permission>
     <permission name="pcp.contenttypes: Add ResourceRequest" acquire="False">
       <role name="Manager" />
-      <role name="Contributor" />
+      <role name="CDI Member" />
+      <role name="CDI Manager" />
     </permission>
     <permission name="pcp.contenttypes: Add ServiceComponentRequest" acquire="False">
       <role name="Manager" />
-      <role name="Contributor" />
+      <role name="CDI Manager" />
+      <role name="CDI Member" />
     </permission>
     <permission name="pcp.contenttypes: Add ServiceRequest" acquire="False">
       <role name="Manager" />
