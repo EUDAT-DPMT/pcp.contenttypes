@@ -11,8 +11,11 @@ from Products.ATContentTypes.content import schemata
 
 from pcp.contenttypes.interfaces import IRegisteredResource
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import ResourceFields
+from pcp.contenttypes.content.common import CommonUtilities
 
-RegisteredResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+RegisteredResourceSchema = schemata.ATContentTypeSchema.copy() + ResourceFields.copy() \
+                           + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
@@ -22,7 +25,7 @@ RegisteredResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 schemata.finalizeATCTSchema(RegisteredResourceSchema, moveDiscussion=False)
 
 
-class RegisteredResource(base.ATCTContent):
+class RegisteredResource(base.ATCTContent,CommonUtilities):
     """A CDI admin registers a new resource"""
     implements(IRegisteredResource)
 

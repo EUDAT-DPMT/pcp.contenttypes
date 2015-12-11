@@ -14,6 +14,7 @@ from Products.ATContentTypes.content import schemata
 from pcp.contenttypes.interfaces import IResourceRequest
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import ResourceFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 
@@ -36,28 +37,8 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          widget=atapi.ReferenceWidget(label="Preferred providers",
                                                       ),
                          ),
-    ateapi.RecordsField('compute_resources',
-                        required=0,
-                        minimalSize=2,
-                        subfields = ('cpus', 'memory', 'disk', 
-                                     'virtualization', 'software'),
-                        subfield_types = {'virtualization': 'selection'},
-                        subfield_labels ={'cpus':'CPUs',
-                                          'virtualization':'virtualization OK?',
-                                          'software':'requires OS/software',
-                                          },
-                        subfield_vocabularies = {'virtualization': 'yesno'},
-                        widget=ateapi.RecordsWidget(label='Compute resources'),
-                        ),
-    ateapi.RecordsField('storage_resources',
-                        required=0,
-                        minimalSize=2,
-                        subfields = ('size', 'type'),
-                        subfield_vocabularies = {'type':'storageTypes'},
-                        widget=ateapi.RecordsWidget(label='Storage resources'),
-                        ),
 
-)) + CommonFields.copy()
+)) + ResourceFields.copy() + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ResourceRequestSchema, moveDiscussion=False)

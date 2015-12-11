@@ -59,6 +59,29 @@ CommonFields = atapi.Schema((
     ),
 ))
 
+ResourceFields = atapi.Schema((
+    ateapi.RecordsField('compute_resources',
+                        required=0,
+                        minimalSize=2,
+                        subfields = ('cpus', 'memory', 'disk', 
+                                     'virtualization', 'software'),
+                        subfield_types = {'virtualization': 'selection'},
+                        subfield_labels ={'cpus':'CPUs',
+                                          'virtualization':'virtualization OK?',
+                                          'software':'requires OS/software',
+                                          },
+                        subfield_vocabularies = {'virtualization': 'yesno'},
+                        widget=ateapi.RecordsWidget(label='Compute resources'),
+                        ),
+    ateapi.RecordsField('storage_resources',
+                        required=0,
+                        minimalSize=2,
+                        subfields = ('size', 'type'),
+                        subfield_vocabularies = {'type':'storageTypes'},
+                        widget=ateapi.RecordsWidget(label='Storage resources'),
+                        ),
+
+))
 
 class CommonUtilities(object):
     """Mixin class to provide shared functionality across content types"""
@@ -137,6 +160,16 @@ class CommonUtilities(object):
         units.sort()
         return atapi.DisplayList(zip(units, units))
 
+    # helper methods for resource handling
+    def storageTypes(self, instance):
+        """Look up the controlled vocabulary for the storage types
+        from the properties tool"""
+        
+        return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
+
+    def yesno(self, instance):
+        """Seems like RecordsFields do not support checkboxes"""
+        return atapi.DisplayList([['', 'Select'], ['yes', 'yes'], ['no', 'no']])
 
 # we don't want to use eval so we define an explicit mapping of supported units
 

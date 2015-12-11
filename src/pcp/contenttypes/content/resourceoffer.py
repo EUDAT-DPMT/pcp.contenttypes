@@ -4,6 +4,8 @@
 from zope.interface import implements
 
 from Products.Archetypes import atapi
+from Products.ATExtensions import ateapi
+
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
 
@@ -11,18 +13,16 @@ from Products.ATContentTypes.content import schemata
 
 from pcp.contenttypes.interfaces import IResourceOffer
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import ResourceFields
+from pcp.contenttypes.content.common import CommonUtilities
 
-ResourceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
-))
+ResourceOfferSchema = schemata.ATContentTypeSchema.copy() + ResourceFields.copy()
 
 
 schemata.finalizeATCTSchema(ResourceOfferSchema, moveDiscussion=False)
 
 
-class ResourceOffer(base.ATCTContent):
+class ResourceOffer(base.ATCTContent, CommonUtilities):
     """Provider offers compute or storage resources"""
     implements(IResourceOffer)
 
