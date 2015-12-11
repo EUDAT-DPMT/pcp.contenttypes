@@ -4,7 +4,7 @@
 from zope.interface import implements
 
 from Products.Archetypes import atapi
-from Products.ATContentTypes.content import base
+from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
 # -*- Message Factory Imported Here -*-
@@ -12,7 +12,7 @@ from Products.ATContentTypes.content import schemata
 from pcp.contenttypes.interfaces import IServiceComponentRequest
 from pcp.contenttypes.config import PROJECTNAME
 
-ServiceComponentRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
@@ -22,7 +22,7 @@ ServiceComponentRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Sche
 schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
 
 
-class ServiceComponentRequest(base.ATCTContent):
+class ServiceComponentRequest(folder.ATFolder):
     """A project requests a specific service component"""
     implements(IServiceComponentRequest)
 

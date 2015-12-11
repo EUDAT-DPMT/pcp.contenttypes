@@ -24,6 +24,16 @@
       description="Content types for the Project Coordination Portal application"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+  <!-- Define custom permissions -->
+  <permission
+    id="pcp.contenttypes.view_internals"
+    title="View internals"
+    />  
+  
+  <permission
+    id="pcp.contenttypes.modify_internals"
+    title="Modify internals"
+    />  
   
   <!-- -*- apply custom patches -*- -->
   <monkey:patch

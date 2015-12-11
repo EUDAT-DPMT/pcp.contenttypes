@@ -1,0 +1,15 @@
+<sharing xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+         i18n:domain="plone">
+  <role
+      id="CDI Manager"
+      title="CDI Manager"
+      permission="Manage portal"
+      i18n:attributes="title"
+      />
+  <role
+      id="CDI Member"
+      title="CDI Member"
+      permission="Modify internals"
+      i18n:attributes="title"
+      />
+</sharing>

@@ -5,17 +5,17 @@ from zope.interface import implements
 
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
-from Products.ATContentTypes.content import base
+from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
-# -*- Message Factory Imported Here -*-
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IServiceRequest
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
-ServiceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
     atapi.ReferenceField('service',
@@ -28,6 +28,14 @@ ServiceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                 'type': 'storageTypes',
                                                 },
                        ),
+    atapi.ReferenceField('service_hours',
+                         relationship='service_hours',
+                         allowed_types=('Document',),
+                         widget=ReferenceBrowserWidget(label='Service hours',
+                                                       allow_browse=1,
+                                                       startup_directory='/services/hours',
+                                                       ),
+                         ),
 #    atapi.StringField('storage_type',
 #                      vocabulary='storageTypes',
 #                      widget=atapi.SelectionWidget(),
@@ -38,7 +46,7 @@ ServiceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 schemata.finalizeATCTSchema(ServiceRequestSchema, moveDiscussion=False)
 
 
-class ServiceRequest(base.ATCTContent, CommonUtilities):
+class ServiceRequest(folder.ATFolder, CommonUtilities):
     """A project requests a service"""
     implements(IServiceRequest)
 

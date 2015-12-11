@@ -1,7 +1,20 @@
 <?xml version="1.0"?>
 <rolemap>
+  <roles>
+    <role name="CDI Member"/>
+    <role name="CDI Manager"/>
+  </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="View internals" acquire="False">
+      <role name="Manager" />
+      <role name="CDI Member" />
+      <role name="CDI Manager" />
+    </permission>
+    <permission name="Modify internals" acquire="False">
+      <role name="Manager" />
+      <role name="CDI Manager" />
+    </permission>
     <permission name="pcp.contenttypes: Add RegisteredResource" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
