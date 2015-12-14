@@ -17,11 +17,14 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          relationship='original_request',
                          allowed_types=('ServiceRequest',),
                          widget=ReferenceBrowserWidget(label='Request',
-                                                       allow_browse=1,
                                                        description='The original request '\
                                                        'that triggered the establishment '\
                                                        'of this service.',
-                                                       startup_directory='..',
+                                                       base_query={'portal_type':'ServiceRequest'},
+                                                       allow_search=1,
+                                                       allow_browse=0,
+                                                       show_results_without_query=1,
+                                                       show_review_state=1,
                                                        ),
                          ),
     atapi.ReferenceField('service_components',
