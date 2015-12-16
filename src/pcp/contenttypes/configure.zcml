@@ -8,11 +8,6 @@
     
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Include the sub-packages that use their own configure.zcml files. -->
-  <include package=".browser" />
-  <include package=".content" />
-  <include package=".portlets" />
-
   <!-- Include support for monkey patching. -->
   <include package="collective.monkeypatcher" />
 
@@ -35,6 +30,11 @@
     title="Modify internals"
     />  
   
+  <!-- Include the sub-packages that use their own configure.zcml files. -->
+  <include package=".browser" />
+  <include package=".content" />
+  <include package=".portlets" />
+
   <!-- -*- apply custom patches -*- -->
   <monkey:patch
     description="Add diff support for ATExtensions' fields"
