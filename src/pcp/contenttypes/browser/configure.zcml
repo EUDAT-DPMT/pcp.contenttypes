@@ -10,7 +10,7 @@
 	name="json"
 	class="pcp.contenttypes.browser.jsonview.JSONView"
 	attribute="json_view"
-	permission="zope2.View"
+	permission="pcp.contenttypes.view_internals"
 	/>
 
   <browser:page
