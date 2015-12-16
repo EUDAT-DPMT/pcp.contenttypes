@@ -26,7 +26,7 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=0,
                                                        base_query={'portal_type':'Service'},
                                                        show_results_without_query=1,
-                                                       only_for_review_states=['published'],
+                                                       only_for_review_states=['external'],
                                                        ),
                          ),
     ateapi.RecordField('size',
