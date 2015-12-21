@@ -22,6 +22,8 @@ from pcp.contenttypes.content.common import CommonUtilities
 ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('website'),
     atapi.ReferenceField('community',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
                          relationship='done_for',
                          allowed_types=('Community',),
                          widget=ReferenceBrowserWidget(label='Community',
@@ -32,6 +34,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        ),
                          ),    
     atapi.ReferenceField('community_contact',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
                          relationship='community_contact',
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Community contact',
@@ -40,6 +44,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        ),
                          ),
     atapi.ReferenceField('service_provider',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
                          relationship='provided_by',
                          allowed_types=('Provider',),
                          multiValued=True,
@@ -50,7 +56,10 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/providers',
                                                       ),
                          ),
+#TODO: do we need this field at all?
     atapi.ReferenceField('services_used',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
                          relationship='using',
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Services used',
@@ -76,6 +85,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   'python:here.stateIn(["pre_production","production","terminated"])'),
                        ),
     atapi.ReferenceField('project_enabler',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
                          relationship='enabled_by',
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Project enabled by',
@@ -103,6 +114,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                             ),
                     ),
     ateapi.UrlField('uptake_plan',
+                    read_permission='View internals',
+                    write_permission='Modify internals',
                     widget=ateapi.UrlWidget(label='Uptake plan',
                                             description='URL to the project '\
                                             'uptake plan (if not available on this site). '\
@@ -110,8 +123,17 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                             'confluence site.',
                                             ),
                     ),
-    atapi.StringField('repository'),
-    atapi.StringField('topics'),
+    atapi.StringField('repository',
+                      widget=atapi.StringWidget(description="If the data to be "\
+                                                "dealt with here are in a web-accessible "\
+                                                "repository already you should specify "\
+                                                "its URL here.",),
+                  ),
+    atapi.StringField('topics',
+                      widget=atapi.StringWidget(description='Please mention the '\
+                                                'scientific field(s) the data '\
+                                                'originate from.'),
+                  ),
 )) + CommonFields.copy()
 
 
