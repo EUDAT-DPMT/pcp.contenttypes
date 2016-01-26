@@ -32,7 +32,7 @@ class ServiceComponentRequest(folder.ATFolder):
     atapi.ReferenceField('service_providers',
                          read_permission='View internals',
                          write_permission='Modify internals',
-                         relationship='provided_by',
+                         relationship='preferred_providers',
                          allowed_types=('Provider',),
                          multiValued=True,
                          widget=ReferenceBrowserWidget(label='Preferred service provider(s)',
