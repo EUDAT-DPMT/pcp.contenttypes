@@ -7,7 +7,7 @@ from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
-# -*- Message Factory Imported Here -*-
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IServiceComponentRequest
 from pcp.contenttypes.config import PROJECTNAME
@@ -28,6 +28,19 @@ class ServiceComponentRequest(folder.ATFolder):
 
     meta_type = "ServiceComponentRequest"
     schema = ServiceComponentRequestSchema
+
+    atapi.ReferenceField('service_providers',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
+                         relationship='provided_by',
+                         allowed_types=('Provider',),
+                         multiValued=True,
+                         widget=ReferenceBrowserWidget(label='Preferred service provider(s)',
+                                                       description='The provider(s) preferred for hosting this service component.',
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                      ),
+                         ),
 
 
 atapi.registerType(ServiceComponentRequest, PROJECTNAME)

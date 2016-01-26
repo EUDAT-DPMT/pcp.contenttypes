@@ -61,6 +61,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          read_permission='View internals',
                          write_permission='Modify internals',
                          relationship='using',
+                         multiValued=1,
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Services used',
                                                        description="Select all services the project requires",
