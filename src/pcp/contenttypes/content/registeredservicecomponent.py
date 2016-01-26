@@ -13,22 +13,6 @@ from pcp.contenttypes.interfaces import IRegisteredServiceComponent
 from pcp.contenttypes.config import PROJECTNAME
 
 RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
-))
-
-
-schemata.finalizeATCTSchema(RegisteredServiceComponentSchema, moveDiscussion=False)
-
-
-class RegisteredServiceComponent(base.ATCTContent):
-    """A CDI admin registers a new service component"""
-    implements(IRegisteredServiceComponent)
-
-    meta_type = "RegisteredServiceComponent"
-    schema = RegisteredServiceComponentSchema
-
     atapi.ReferenceField('service_providers',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -41,6 +25,17 @@ class RegisteredServiceComponent(base.ATCTContent):
                                                        startup_directory='/providers',
                                                       ),
                          ),
+))
 
+
+schemata.finalizeATCTSchema(RegisteredServiceComponentSchema, moveDiscussion=False)
+
+
+class RegisteredServiceComponent(base.ATCTContent):
+    """A CDI admin registers a new service component"""
+    implements(IRegisteredServiceComponent)
+
+    meta_type = "RegisteredServiceComponent"
+    schema = RegisteredServiceComponentSchema
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)

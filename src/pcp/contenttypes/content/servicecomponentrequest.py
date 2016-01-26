@@ -13,22 +13,6 @@ from pcp.contenttypes.interfaces import IServiceComponentRequest
 from pcp.contenttypes.config import PROJECTNAME
 
 ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
-))
-
-
-schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
-
-
-class ServiceComponentRequest(folder.ATFolder):
-    """A project requests a specific service component"""
-    implements(IServiceComponentRequest)
-
-    meta_type = "ServiceComponentRequest"
-    schema = ServiceComponentRequestSchema
-
     atapi.ReferenceField('service_providers',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -41,6 +25,17 @@ class ServiceComponentRequest(folder.ATFolder):
                                                        startup_directory='/providers',
                                                       ),
                          ),
+))
 
+
+schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
+
+
+class ServiceComponentRequest(folder.ATFolder):
+    """A project requests a specific service component"""
+    implements(IServiceComponentRequest)
+
+    meta_type = "ServiceComponentRequest"
+    schema = ServiceComponentRequestSchema
 
 atapi.registerType(ServiceComponentRequest, PROJECTNAME)
