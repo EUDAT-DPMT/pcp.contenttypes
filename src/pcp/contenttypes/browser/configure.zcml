@@ -23,6 +23,14 @@
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
+	name="new_project_summary_view"
+	class="pcp.contenttypes.browser.project_summary_view-ng.ProjectOverview"
+	template="project_summary_view-ng.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
 	name="projects.csv"
 	class="pcp.contenttypes.browser.project_summary_view.CsvView"
 	attribute="csv_export"
