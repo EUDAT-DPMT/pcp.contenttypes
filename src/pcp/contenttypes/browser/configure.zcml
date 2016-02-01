@@ -22,7 +22,7 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="project_overview"
 	class="pcp.contenttypes.browser.summary_views.ProjectOverview"
 	template="summary_views.pt"
@@ -30,7 +30,7 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="registered_service_overview"
 	class="pcp.contenttypes.browser.summary_views.RegisteredServiceOverview"
 	template="summary_views.pt"
@@ -38,7 +38,7 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="registered_service_component_overview"
 	class="pcp.contenttypes.browser.summary_views.RegisteredServiceComponentOverview"
 	template="summary_views.pt"
@@ -46,7 +46,7 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="registered_resource_overview"
 	class="pcp.contenttypes.browser.summary_views.RegisteredResourceOverview"
 	template="summary_views.pt"
