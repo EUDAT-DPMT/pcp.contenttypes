@@ -23,9 +23,33 @@
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
-	name="new_project_summary_view"
-	class="pcp.contenttypes.browser.project_summary_view-ng.ProjectOverview"
-	template="project_summary_view-ng.pt"
+	name="project_overview"
+	class="pcp.contenttypes.browser.summary_views.ProjectOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
+	name="registered_service_overview"
+	class="pcp.contenttypes.browser.summary_views.RegisteredServiceOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
+	name="registered_service_component_overview"
+	class="pcp.contenttypes.browser.summary_views.RegisteredServiceComponentOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
+	name="registered_resource_overview"
+	class="pcp.contenttypes.browser.summary_views.RegisteredResourceOverview"
+	template="summary_views.pt"
 	permission="zope2.View"
 	/>
 

@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+           tal:define="kssClassesView context/@@kss_field_decorator_view;
+                       getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                       portal context/portal_url/getPortalObject;
+                       templateId template/getId;
+                       abstracts view/getAbstractsForCurrentMember|nothing;">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading" 
+            tal:content="view/title">
+        </h1>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription"
+            tal:content="view/description">
+        </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+	<table class="listing" id="overview-table">
+	  <thead>
+	    <tr>
+		<th tal:repeat="label view/field_labels"
+		    tal:content="label">Header</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr tal:repeat="content view/content_items">
+		<td tal:repeat="field view/fields">
+                  <div tal:condition="python:field in view.simple_fields()">
+                    <metal:field use-macro="python:content.widget(field, mode='view')">
+                      Field value
+                    </metal:field>	
+	          </div>
+                  <div tal:condition="python:field not in view.simple_fields()"
+                       tal:content="structure python:view.render(content, field)">
+                    field value
+                  </div>
+                </td>
+	    </tr>
+	  </tbody>
+	</table>
+    
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

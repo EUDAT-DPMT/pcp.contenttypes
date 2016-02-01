@@ -6,6 +6,7 @@ from zope.interface import implements
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
+from Products.ATExtensions import ateapi
 
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
@@ -43,10 +44,10 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                       widget=atapi.StringWidget(label='Service type',
                                             ),
                   ), # should there be a controlled vocabulary for this?
-    atapi.StringField('service_url',
-                      widget=atapi.StringWidget(label='Sevice URL',
-                                                description='[http|https|irods|gsiftp|ssh]://URL:port',
-                                            ),
+    ateapi.UrlField('service_url',
+                    widget=ateapi.UrlWidget(label='Service URL',
+                                            description='[http|https|irods|gsiftp|ssh]://URL:port',
+                                        ),
                   ),
     atapi.StringField('host_name',
                       widget=atapi.StringWidget(label='Host name',
