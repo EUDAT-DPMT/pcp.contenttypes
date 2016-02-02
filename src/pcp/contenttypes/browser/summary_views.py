@@ -166,6 +166,17 @@ class RegisteredResourceOverview(BaseSummaryView):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('compute_resources', 'storage_resources')
 
+class ResourceOfferOverview(RegisteredResourceOverview):
+    """Overview of all resource offers no matter which provider made them"""
+    
+    title = "Resource Offers"
+
+    description = "All resource offers from all providers."
+
+    def content_items(self):
+        """All resource offers regardless of location"""
+        return [element.getObject() for element in self.catalog(portal_type='ResourceOffer')]
+
 
 
 class CsvView(ProjectOverview):

@@ -54,6 +54,14 @@
 	/>
 
   <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="resource_offer_overview"
+	class="pcp.contenttypes.browser.summary_views.ResourceOfferOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="projects.csv"
 	class="pcp.contenttypes.browser.project_summary_view.CsvView"
