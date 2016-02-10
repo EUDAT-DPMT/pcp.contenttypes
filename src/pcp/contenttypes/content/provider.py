@@ -146,6 +146,10 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                             description='URL to instructions on how to get an account',
                                             ),
                     ),
+    atapi.ComputedField('registry_link',
+                        expression='here.getCregURL()',
+                        widget=atapi.ComputedWidget(label='Central Registry'),
+                    ),
 )) + CommonFields.copy()
 
 

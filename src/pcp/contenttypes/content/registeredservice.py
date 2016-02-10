@@ -45,7 +45,7 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                               ),
                    ),
     atapi.ReferenceField('service_components',
-                         relationship='service_componemts',
+                         relationship='service_components',
                          multiValued=True,
                          allowed_types=('RegisteredServiceComponent',),
                          widget=ReferenceBrowserWidget(label='Service components',
@@ -71,6 +71,10 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        show_review_state=1,
                                                        ),
                          ),
+    atapi.ComputedField('registry_link',
+                        expression='here.getCregURL()',
+                        widget=atapi.ComputedWidget(label='Central Registry'),
+                    ),
 )) + CommonFields.copy()
 
 

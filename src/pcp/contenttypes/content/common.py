@@ -124,6 +124,45 @@ class CommonUtilities(object):
         """Return the handle PID if existing; None otherwise"""
         return self.handle_client._getHandle(self)
 
+    # Enable backlinks to the central registry
+
+    url_pattern = 'https://creg.eudat.eu/view_portal/index.php?Page_Type=%s&id=%s'
+
+    # Type mapping (DP -> CREG)
+    dptype2cregtype = {
+        "Provider":"Site",
+        "RegisteredService":"Service_Group",
+        "RegisteredServiceComponent":"Service",
+    }
+    def getCregId(self, id_key = 'creg_id'):
+        """
+        Looks up the 'id_key' in the list of 'additional' KV pairs 
+        and returns its value if found. Otherwise returns None.
+        """
+        for entry in self.getAdditional():
+            if entry['key'] == id_key:
+                return entry['value']
+        return None
+
+    def getCregURL(self):
+        """
+        Returns an anchor tag with the annotated URL to the 
+        corresponding entry in EUDAT's central registry if 
+        it can be constructed.
+        Returns an explanatory message otherwise.
+        """
+        creg_id = self.getCregId()
+        if creg_id is None:
+            return "No 'creg_id' found"
+        try:
+            ctype = self.dptype2cregtype[self.portal_type]
+        except KeyError:
+            return "No corresponding type known"
+        url = self.url_pattern % (ctype, creg_id)
+        title='Link to the corresponding entry in the central registry'
+        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (url, title, url)
+        return anchor
+
     def convert(self, raw):
         """Checking REQUEST for a target unit and converting
         if necessary"""

@@ -8,6 +8,9 @@ from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
 from Products.ATExtensions import ateapi
 
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
+
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
@@ -49,6 +52,13 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                                                 description='[http|https|irods|gsiftp|ssh]://URL:port',
                                             ),
                   ),
+    BackReferenceField('parent_services',
+                       relationship='service_components',
+                       multiValued=True,
+                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                                                  label='Part of these services',
+                                                  ),
+                       ),
     atapi.StringField('host_name',
                       widget=atapi.StringWidget(label='Host name',
                                                 description='In valid FQDN format (fully qualified domain name)',
@@ -82,6 +92,10 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                                             ),
                   ),
     atapi.BooleanField('monitored'),
+    atapi.ComputedField('registry_link',
+                        expression='here.getCregURL()',
+                        widget=atapi.ComputedWidget(label='Central Registry'),
+                    ),
 )) + CommonFields.copy()
 
 
