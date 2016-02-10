@@ -20,8 +20,12 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 
 ServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-    ateapi.UrlField('url'),
-    ateapi.UrlField('helpdesk'),
+    ateapi.UrlField('url',
+                    searchable=1,
+                ),
+    ateapi.UrlField('helpdesk',
+                    searchable=1,
+                ),
     atapi.ReferenceField('managed_by',
                          relationship='managed_by',
                          allowed_types=('Person',),

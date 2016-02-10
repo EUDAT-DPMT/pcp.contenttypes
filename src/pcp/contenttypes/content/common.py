@@ -38,6 +38,8 @@ CommonFields = atapi.Schema((
                         schemata='details',
                         read_permission='View internals',
                         write_permission='Modify internals',
+                        searchable=1,
+                        index_method='additional_content',
                         subfields = ('key', 'value'),
                         minimalSize=3,
                         subfield_sizes={'key': 15,
@@ -109,6 +111,14 @@ class CommonUtilities(object):
         if handle is not None:
             ids.append(handle)
         return tuple(ids)
+
+    def additional_content(self):
+        """Values of the additional key/value pairs for indexing"""
+        content = []
+        for entry in self.getAdditional():
+            content.append(entry.get('key',''))
+            content.append(entry.get('value',''))
+        return ' '.join(content)
 
     def stateIn(self, states):
         """Helper method to control visibility of fields"""

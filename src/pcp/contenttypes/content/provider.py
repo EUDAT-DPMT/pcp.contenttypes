@@ -20,12 +20,17 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 
 ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-    ateapi.UrlField('url'),
+    ateapi.UrlField('url',
+                    searchable=1,
+                ),
     atapi.StringField('infrastructure',
+                      searchable=1,
                       widget=atapi.StringWidget(label='Infrastructure status',
                                             ),
                   ),
-    atapi.StringField('domain'),
+    atapi.StringField('domain',
+                      searchable=1,
+                  ),
     ateapi.AddressField('address'),
     atapi.StringField('timezone'),  # from a controlled vocab maybe?
     atapi.StringField('latitude',
@@ -77,17 +82,20 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        ),
                          ),
     atapi.StringField('emergency_phone',
+                      searchable=1,
                       widget=atapi.StringWidget(label='Emergency telephone number',
                                                 description='Include '\
                                                 'international prefix and area code',
                                             ),
                   ),
     ateapi.EmailField('alarm_email',
+                      searchable=1,
                       widget=ateapi.EmailWidget(label='Alarm E-mail',
                                                 description='To be used in emergencies',
                                             ),
                       ),
     ateapi.EmailField('helpdesk_email',
+                      searchable=1,
                       widget=ateapi.EmailWidget(label='Helpdesk E-mail',
                                                 description='Generic helpdesk email address of this '\
                                                 'provider; not specific to any service.',
