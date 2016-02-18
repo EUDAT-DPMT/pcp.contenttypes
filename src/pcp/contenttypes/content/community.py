@@ -72,7 +72,7 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   ),
                        ),
     atapi.StringField('topics',
-                      widget=atapi.StringWidget(description='If spplicable, please mention the '\
+                      widget=atapi.StringWidget(description='If applicable, please mention the '\
                                                 'scientific field(s) this community or orgnization '\
                                                 'is focussing on.'),
                   ),
