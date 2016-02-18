@@ -71,6 +71,11 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
+    atapi.StringField('topics',
+                      widget=atapi.StringWidget(description='If spplicable, please mention the '\
+                                                'scientific field(s) this community or orgnization '\
+                                                'is focussing on.'),
+                  ),
 )) + CommonFields.copy()
 
 

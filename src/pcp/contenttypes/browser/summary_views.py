@@ -128,13 +128,13 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_url', 'service_providers', 'contacts', 
+        return ('title', 'service_url', 'parent_provider', 'contacts', 
                 'monitored', 'host_name', 
                 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title', 'URL', 'Provider(s)', 'Contact(s)', 'Monitored', 'Host name',
+        return ('Title', 'URL', 'Provider', 'Contact(s)', 'Monitored', 'Host name',
                 'State')
 
     def simple_fields(self):
