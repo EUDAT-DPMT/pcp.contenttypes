@@ -6,6 +6,7 @@ from zope.interface import implements
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
+from Products.ATVocabularyManager import NamedVocabulary
 from Products.ATExtensions import ateapi
 
 from Products.ATBackRef import BackReferenceField
@@ -45,9 +46,10 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                          ),
     atapi.StringField('service_type',
                       searchable=1,
-                      widget=atapi.StringWidget(label='Service type',
+                      vocabulary=NamedVocabulary('service_types'),
+                      widget=atapi.SelectionWidget(label='Service type',
                                             ),
-                  ), # should there be a controlled vocabulary for this?
+                  ),
     atapi.StringField('service_url',
                       searchable=1,
                       widget=atapi.StringWidget(label='Service URL',
