@@ -23,6 +23,14 @@
 
   <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="home_page"
+	class="pcp.contenttypes.browser.home_page.HomePage"
+	template="home_page.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="project_overview"
 	class="pcp.contenttypes.browser.summary_views.ProjectOverview"
 	template="summary_views.pt"
