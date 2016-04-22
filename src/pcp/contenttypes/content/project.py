@@ -30,7 +30,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        description='Main customer '\
                                                        'involved in this project',
                                                        allow_browse=1,
-                                                       startup_directory='/communities',
+                                                       startup_directory='/customers',
                                                        ),
                          ),    
     atapi.ReferenceField('community_contact',
