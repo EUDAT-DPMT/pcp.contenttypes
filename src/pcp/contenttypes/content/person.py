@@ -71,7 +71,7 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     BackReferenceField('community_contact_for',
                        relationship='community_contact',
                        multiValued=True,
-                       widget=BackReferenceWidget(label='Community contact for',
+                       widget=BackReferenceWidget(label='Customer contact for',
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
@@ -107,7 +107,7 @@ schemata.finalizeATCTSchema(
 
 
 class Person(folder.ATFolder, CommonUtilities):
-    """A person involved in a project."""
+    """Contact details - typically of a person - for a project."""
     implements(IPerson)
 
     meta_type = "Person"
