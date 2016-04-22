@@ -29,7 +29,7 @@ class ProjectOverview(BrowserView):
         """hardcoded for a start"""
         return ('Title', 'Service',  
                 'Allocated storage', 'Used storage', 
-                'Community', 'Topics', 
+                'Customer', 'Topics', 
                 'Start date', 'State')
 
     def data(self):
