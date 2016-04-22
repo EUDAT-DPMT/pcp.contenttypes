@@ -29,7 +29,7 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          widget=ReferenceBrowserWidget(label='Representative',
                                                        allow_browse=1,
                                                        description='Main person '\
-                                                       'representing the Community.',
+                                                       'representing the Customer.',
                                                        startup_directory='/people',
                                                        ),
                         ),
@@ -53,7 +53,7 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        multiValued=True,
                        widget=BackReferenceWidget(label='Projects involved',
                                                   description='Projects '\
-                                                  'involving this Community.',
+                                                  'involving this Customer.',
                                                   visible={'edit':'invisible'},
                                                   ),
                        ),
@@ -73,7 +73,7 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        ),
     atapi.StringField('topics',
                       widget=atapi.StringWidget(description='If applicable, please mention the '\
-                                                'scientific field(s) this community or orgnization '\
+                                                'scientific field(s) this customer '\
                                                 'is focussing on.'),
                   ),
 )) + CommonFields.copy()
@@ -87,7 +87,7 @@ schemata.finalizeATCTSchema(
 
 
 class Community(folder.ATFolder, CommonUtilities):
-    """A community served by a project on this site."""
+    """A customer served by a project on this site."""
     implements(ICommunity)
 
     meta_type = "Community"

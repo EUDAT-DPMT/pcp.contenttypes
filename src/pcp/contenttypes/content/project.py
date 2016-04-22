@@ -26,8 +26,8 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          write_permission='Modify internals',
                          relationship='done_for',
                          allowed_types=('Community',),
-                         widget=ReferenceBrowserWidget(label='Community',
-                                                       description='Main community '\
+                         widget=ReferenceBrowserWidget(label='Customer',
+                                                       description='Main customer '\
                                                        'involved in this project',
                                                        allow_browse=1,
                                                        startup_directory='/communities',
@@ -38,7 +38,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          write_permission='Modify internals',
                          relationship='community_contact',
                          allowed_types=('Person',),
-                         widget=ReferenceBrowserWidget(label='Community contact',
+                         widget=ReferenceBrowserWidget(label='Customer contact',
                                                        allow_browse=1,
                                                        startup_directory='/people',
                                                        ),
