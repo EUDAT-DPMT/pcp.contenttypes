@@ -17,7 +17,7 @@
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading"> 
-            Welcome to the EUDAT Data Project Coordination Portal 
+            Welcome to the EUDAT Data Project Management Tool 
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
