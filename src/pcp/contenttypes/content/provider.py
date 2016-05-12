@@ -192,7 +192,7 @@ class Provider(folder.ATFolder, CommonUtilities):
         result['dpmt_url'] = self.absolute_url()
         result['creg_url'] = self.getCregURL()
         result['url'] = self.getUrl()
-        result['country'] = self.getAddress()['country']
+        result['country'] = self.getAddress().get('country','XX')
         result['infrastructure'] = self.getInfrastructure()
         result['timezone'] = self.getTimezone()
         result['latitude'] = self.getLatitude()
