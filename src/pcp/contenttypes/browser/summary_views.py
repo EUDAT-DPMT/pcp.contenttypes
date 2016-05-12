@@ -33,12 +33,17 @@ def render_parent_provider(content, field_id):
     url = parent.absolute_url()
     return "<a href='%s'>%s</a>" % (url, title)
 
+def modification_date(content, field_id):
+    value = content.modified()
+    return value.Date()
+
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
     render_methods = {'state':render_state,
                       'title':render_with_link,
                       'parent_provider':render_parent_provider,
+                      'modified':modification_date,
                       # add more as needed; reference fields don't need to be included here
     }
         
@@ -76,6 +81,33 @@ class BaseSummaryView(BrowserView):
         """Dispatcher for rendering not-so-simple fields"""
         renderer = self.render_methods.get(field_id, render_reference_field)
         return renderer(content, field_id)
+
+class CustomerOverview(BaseSummaryView):
+    """Overview of all customers/sponsors/communities"""
+    
+    title = "EUDAT Customers"
+
+    description = "All current and past EUDAT customers/sponsors/communities"
+
+    def content_items(self):
+        """All customers regardless of location"""
+        # customers were originally called communities
+        return [element.getObject() for element in self.catalog(portal_type='Community')]
+
+    def fields(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('title', 'topics', 'representative', 'projects_involved', 'primary_provider',
+                'modified', 'state')
+
+    def field_labels(self):
+        """hardcoded for a start - to be overwritten in hte specific classes"""
+        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider',  
+                'Modified', 'State')
+
+    def simple_fields(self):
+        """Manually maintained subset of fields where it is safe to just render the widget."""
+        return ('topics',)
+
 
 class ProjectOverview(BaseSummaryView):
     """Overview of all projects"""
