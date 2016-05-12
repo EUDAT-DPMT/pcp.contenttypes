@@ -108,6 +108,31 @@ class CustomerOverview(BaseSummaryView):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('topics',)
 
+class ProviderOverview(BaseSummaryView):
+    """Overview of all providers of EUDAT services"""
+    
+    title = "EUDAT Provider"
+
+    description = "All current and past providers of EUDAT services"
+
+    def content_items(self):
+        """All providers regardless of location"""
+        return [element.getObject() for element in self.catalog(portal_type='Provider')]
+
+    def fields(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('title', 'url', 'contact', 'alarm_email', 'helpdesk_email',
+                'modified', 'state')
+
+    def field_labels(self):
+        """hardcoded for a start - to be overwritten in hte specific classes"""
+        return ('Title', 'Website', 'Contact', 'Alarm email', 'Helpdesk email',  
+                'Modified', 'State')
+
+    def simple_fields(self):
+        """Manually maintained subset of fields where it is safe to just render the widget."""
+        return ('url', 'alarm_email', 'helpdesk_email',)
+
 
 class ProjectOverview(BaseSummaryView):
     """Overview of all projects"""
