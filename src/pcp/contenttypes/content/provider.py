@@ -188,9 +188,9 @@ class Provider(folder.ATFolder, CommonUtilities):
         result['id'] = self.Title()
         result['description'] = self.Description()
         result['creg_id'] = self.getCregId()
-        result['pk'] = 1
+        result['pk'] = 'XYZ'
         result['dpmt_url'] = self.absolute_url()
-        result['creg_url'] = self.getCregURL()
+        result['creg_url'] = self.getCregURL(url_only=True)
         result['url'] = self.getUrl()
         result['country'] = self.getAddress().get('country','XX')
         result['infrastructure'] = self.getInfrastructure()

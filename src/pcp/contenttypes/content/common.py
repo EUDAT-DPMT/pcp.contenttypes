@@ -154,12 +154,13 @@ class CommonUtilities(object):
                 return entry['value']
         return None
 
-    def getCregURL(self):
+    def getCregURL(self, url_only=False):
         """
         Returns an anchor tag with the annotated URL to the 
         corresponding entry in EUDAT's central registry if 
         it can be constructed.
         Returns an explanatory message otherwise.
+        If 'url_only' is True it just returns the URL.
         """
         creg_id = self.getCregId()
         if creg_id is None:
@@ -169,6 +170,8 @@ class CommonUtilities(object):
         except KeyError:
             return "No corresponding type known"
         url = self.url_pattern % (ctype, creg_id)
+        if url_only:
+            return url
         title='Link to the corresponding entry in the central registry'
         anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (url, title, url)
         return anchor
