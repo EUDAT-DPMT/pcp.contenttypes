@@ -6,15 +6,16 @@
   <property name="description"
     i18n:translate="">Detailed information about a service</property>
   <property name="content_meta_type">ServiceDetails</property>
-  <property name="content_icon">folder_icon.gif</property>
+  <property name="content_icon">treeCollapsed.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceDetails</property>
   <property name="immediate_view">atct_edit</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">base_view</property>
+  <property name="default_view">table_view</property>
   <property name="view_methods">
+    <element value="table_view" />
     <element value="base_view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
