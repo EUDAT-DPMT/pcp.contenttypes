@@ -1,4 +1,5 @@
 # -*- extra stuff goes here -*-
+from servicedetails import IServiceDetails
 from registeredresource import IRegisteredResource
 from registeredservicecomponent import IRegisteredServiceComponent
 from registeredservice import IRegisteredService
