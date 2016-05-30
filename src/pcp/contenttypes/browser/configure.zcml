@@ -133,4 +133,12 @@
 	permission="zope2.View"
 	/>
 
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="get_site_list"
+	class="pcp.contenttypes.browser.gocdb_views.ProviderView"
+	attribute="get_site_list"
+	permission="zope2.View"
+	/>
+
 </configure>

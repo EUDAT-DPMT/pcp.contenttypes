@@ -5,6 +5,9 @@ header =  """<?xml version="1.0" encoding="UTF-8"?>
 
 footer = """</results>"""
 
+provider_list_template = """
+  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}" COUNTRY="{country}" COUNTRY_CODE="? XX ?" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
+
 provider_template = """
   <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}">
     <PRIMARY_KEY>{pk}</PRIMARY_KEY>
@@ -73,9 +76,10 @@ service_template = """
 class ProviderView(BrowserView):
     """Render a provider info like GOCDB does."""
 
-    def collect_data(self):
+    def collect_data(self, context=None):
         """Helper to ccollect the values to be rendered as XML"""
-        context = self.context
+        if context is None:
+            context = self.context
         result = {}
         result['id'] = context.Title()
         result['description'] = context.Description()
@@ -104,6 +108,20 @@ class ProviderView(BrowserView):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
 
+    def get_site_list(self):
+        """XML formatted listing of providers"""
+        context = self.context
+        sites = context.portal_catalog(portal_type='Provider')
+        bodies = []
+        for site in sites:
+            data = self.collect_data(context=site.getObject())
+            body = provider_list_template.format(**data)
+            bodies.append(body)
+        body = ''.join(bodies)
+        body = body.replace('&', '&amp;')
+        full = header + body + footer
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        return full
 
 class ServiceView(BrowserView):
     """Render a registered service component info like GOCDB does."""
