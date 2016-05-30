@@ -5,6 +5,38 @@ header =  """<?xml version="1.0" encoding="UTF-8"?>
 
 footer = """</results>"""
 
+provider_template = """
+  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}">
+    <PRIMARY_KEY>{pk}</PRIMARY_KEY>
+    <SHORT_NAME>{id}</SHORT_NAME>
+    <OFFICIAL_NAME>{description}</OFFICIAL_NAME>
+    <DPMT_URL>{dpmt_url}</DPMT_URL>
+    <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
+    <HOME_URL>{url}</HOME_URL>
+    <CONTACT_EMAIL>eudat-support@bsc.es</CONTACT_EMAIL>
+    <CONTACT_TEL>+34 934 054 221</CONTACT_TEL>
+    <COUNTRY_CODE>XX</COUNTRY_CODE>
+    <COUNTRY>{country}</COUNTRY>
+    <ROC>EUDAT_REGISTRY</ROC>
+    <PRODUCTION_INFRASTRUCTURE>{infrastructure}</PRODUCTION_INFRASTRUCTURE>
+    <CERTIFICATION_STATUS>Candidate</CERTIFICATION_STATUS>
+    <TIMEZONE>{timezone}</TIMEZONE>
+    <LATITUDE>{latitude}</LATITUDE>
+    <LONGITUDE>{longitude}</LONGITUDE>
+    <CSIRT_EMAIL>eudat-security@bsc.es</CSIRT_EMAIL>
+    <DOMAIN>
+      <DOMAIN_NAME>{domain}</DOMAIN_NAME>
+    </DOMAIN>
+    <EXTENSIONS>
+      <EXTENSION>
+        <LOCAL_ID>182</LOCAL_ID>
+        <KEY>type</KEY>
+        <VALUE>generic</VALUE>
+      </EXTENSION>
+    </EXTENSIONS>
+  </SITE>
+"""
+
 service_template = """  
   <SERVICE_ENDPOINT PRIMARY_KEY="{pk}">
     <PRIMARY_KEY>{pk}</PRIMARY_KEY>
@@ -37,6 +69,41 @@ service_template = """
     </EXTENSIONS>
   </SERVICE_ENDPOINT>
 """
+
+class ProviderView(BrowserView):
+    """Render a provider info like GOCDB does."""
+
+    def collect_data(self):
+        """Helper to ccollect the values to be rendered as XML"""
+        context = self.context
+        result = {}
+        result['id'] = context.Title()
+        result['description'] = context.Description()
+        result['creg_id'] = context.getCregId()
+        result['pk'] = '??? what to use here ???'
+        result['dpmt_url'] = context.absolute_url()
+        result['creg_url'] = context.getCregURL(url_only=True)
+        result['url'] = context.getUrl()
+        result['country'] = context.getAddress().get('country','not set')
+        result['infrastructure'] = context.getInfrastructure()
+        result['timezone'] = context.getTimezone()
+        result['latitude'] = context.getLatitude()
+        result['longitude'] = context.getLongitude()
+        result['domain'] = context.getDomain()
+        #result[''] = 1
+        return result
+
+    def xml(self, core=False, indent=2):
+        """Render as XML compatible with GOCDB"""
+        data = self.collect_data()
+        body = provider_template.format(**data)
+        body = body.replace('&', '&amp;')
+        if core:
+            return body
+        full = header + body + footer
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        return full
+
 
 class ServiceView(BrowserView):
     """Render a registered service component info like GOCDB does."""
