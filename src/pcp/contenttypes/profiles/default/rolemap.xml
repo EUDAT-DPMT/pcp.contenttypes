@@ -6,6 +6,18 @@
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="pcp.contenttypes: Add ServiceComponentImplementationDetails" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ServiceComponentImplementation" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add ServiceComponent" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
     <permission name="pcp.contenttypes: Add Service Details" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />

@@ -6,6 +6,24 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
+  <class class=".servicecomponentimplementationdetails.ServiceComponentImplementationDetails">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceComponentImplementationDetails"
+        />
+  </class>
+  <class class=".servicecomponentimplementation.ServiceComponentImplementation">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceComponentImplementation"
+        />
+  </class>
+  <class class=".servicecomponent.ServiceComponent">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IServiceComponent"
+        />
+  </class>
   <class class=".servicedetails.ServiceDetails">
     <require
         permission="zope2.View"
