@@ -16,9 +16,8 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 
 ServiceComponentImplementationDetailsSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
-
+    atapi.StringField('version'),
+    atapi.LinesField('configuration_parameters'),
 )) + CommonFields.copy()
 
 
