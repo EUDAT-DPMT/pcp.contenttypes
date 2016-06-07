@@ -11,12 +11,15 @@ from Products.ATContentTypes.content import schemata
 
 from pcp.contenttypes.interfaces import IServiceComponentImplementation
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 ServiceComponentImplementationSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -26,7 +29,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class ServiceComponentImplementation(folder.ATFolder):
+class ServiceComponentImplementation(folder.ATFolder, CommonUtilities):
     """Specific implementation of a service component"""
     implements(IServiceComponentImplementation)
 

@@ -11,18 +11,21 @@ from Products.ATContentTypes.content import schemata
 
 from pcp.contenttypes.interfaces import IServiceComponentImplementationDetails
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 ServiceComponentImplementationDetailsSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ServiceComponentImplementationDetailsSchema, moveDiscussion=False)
 
 
-class ServiceComponentImplementationDetails(base.ATCTContent):
+class ServiceComponentImplementationDetails(base.ATCTContent, CommonUtilities):
     """Details of a specific implementation of a service component"""
     implements(IServiceComponentImplementationDetails)
 

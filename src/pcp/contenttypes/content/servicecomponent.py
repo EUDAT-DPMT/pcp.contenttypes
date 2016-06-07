@@ -11,12 +11,15 @@ from Products.ATContentTypes.content import schemata
 
 from pcp.contenttypes.interfaces import IServiceComponent
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
+
 
 ServiceComponentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(
@@ -26,7 +29,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class ServiceComponent(folder.ATFolder):
+class ServiceComponent(folder.ATFolder, CommonUtilities):
     """Component of an EUDAT service"""
     implements(IServiceComponent)
 
