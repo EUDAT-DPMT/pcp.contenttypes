@@ -14,7 +14,8 @@
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
    <element value="Folder"/>
-   <element value="RegisteredServiceComponent"/>
+   <element value="ServiceComponent"/>
+   <element value="Service Details"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table_view</property>

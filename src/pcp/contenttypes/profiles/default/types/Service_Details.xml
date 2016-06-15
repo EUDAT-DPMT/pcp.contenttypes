@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">Detailed information about a service</property>
   <property name="content_meta_type">ServiceDetails</property>
-  <property name="content_icon">treeCollapsed.png</property>
+  <property name="content_icon">fullscreenexpand_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceDetails</property>
   <property name="immediate_view">atct_edit</property>

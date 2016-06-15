@@ -40,6 +40,18 @@
   <type portal_type="Service">
    <field name="any" difftype="Compound Diff for AT types"/>
   </type>
+  <type portal_type="ServiceComponent">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="Service Details">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ServiceComponentImplementation">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+  <type portal_type="ServiceComponentImplementationDetails">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
   <type portal_type="ServiceComponentOffer">
    <field name="any" difftype="Compound Diff for AT types"/>
   </type>
