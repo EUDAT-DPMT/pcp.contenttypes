@@ -20,6 +20,7 @@ ServiceComponentImplementationDetailsSchema = schemata.ATContentTypeSchema.copy(
     atapi.LinesField('configuration_parameters'),
 )) + CommonFields.copy()
 
+ServiceComponentImplementationDetailsSchema['configuration_parameters'].widget.label = 'Configuration parameters'
 
 schemata.finalizeATCTSchema(ServiceComponentImplementationDetailsSchema, moveDiscussion=False)
 

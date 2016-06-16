@@ -22,6 +22,13 @@
 	/>
 
   <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
+	name="service_edit"
+	template="service_edit.pt"
+	permission="cmf.ModifyPortalContent"
+	/>
+
+  <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="home_page"
 	class="pcp.contenttypes.browser.home_page.HomePage"

@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master">
+
+    <metal:block fill-slot="main">
+            <h2>Caution: This content originates from SPMT</h2>
+	    <p>
+	      The content of this item is pulled in automatically 
+              from the "Service Portfolio Management Tool". You are
+              therefore not supposed to edit this item here on this site.
+	    </p>
+	    <p>
+            Exception: the <em>'text'</em> and <em>'additional'</em> fields only exist 
+            on this site and are not overwritten by the synchronization.
+            </p>
+            <p>
+            So if you know what you are doing you can proceed to 
+            <a href="./atct_edit">the edit form</a> but be aware 
+            that most changes will be overwritten next time the
+            synchronization is triggered.
+            </p>
+    </metal:block>
+
+</html>

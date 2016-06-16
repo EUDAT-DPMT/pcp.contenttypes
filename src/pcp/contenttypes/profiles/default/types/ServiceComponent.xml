@@ -12,6 +12,10 @@
   <property name="immediate_view">atct_edit</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>
+  <property name="allowed_content_types">
+    <element value="Folder"/>
+    <element value="ServiceComponentImplementation"/>
+  </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table_view</property>
   <property name="view_methods">
@@ -27,7 +31,7 @@
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/service_edit" visible="True">
     <permission value="Modify portal content" />
   </action>
 </object>

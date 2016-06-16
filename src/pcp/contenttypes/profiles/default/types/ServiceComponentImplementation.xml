@@ -6,16 +6,21 @@
   <property name="description"
     i18n:translate="">Specific implementation of a service component</property>
   <property name="content_meta_type">ServiceComponentImplementation</property>
-  <property name="content_icon">folder_icon.gif</property>
+  <property name="content_icon">maintenance_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceComponentImplementation</property>
   <property name="immediate_view">atct_edit</property>
   <property name="global_allow">False</property>
-  <property name="filter_content_types">False</property>
+  <property name="filter_content_types">True</property>
+  <property name="allowed_content_types">
+   <element value="ServiceComponentImplementationDetails"/>
+   <element value="Folder"/>
+  </property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">base_view</property>
+  <property name="default_view">table_view</property>
   <property name="view_methods">
     <element value="base_view" />
+    <element value="table_view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
   <alias from="edit" to="atct_edit" />
@@ -26,7 +31,7 @@
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/service_edit" visible="True">
     <permission value="Modify portal content" />
   </action>
 </object>

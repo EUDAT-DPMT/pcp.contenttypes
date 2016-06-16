@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">Details of a specific implementation of a service component</property>
   <property name="content_meta_type">ServiceComponentImplementationDetails</property>
-  <property name="content_icon">treeCollapsed.png</property>
+  <property name="content_icon">info_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addServiceComponentImplementationDetails</property>
   <property name="immediate_view">atct_edit</property>
@@ -27,7 +27,7 @@
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/service_edit" visible="True">
     <permission value="Modify portal content" />
   </action>
 </object>

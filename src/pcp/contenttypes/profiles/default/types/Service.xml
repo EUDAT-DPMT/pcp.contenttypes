@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A service managed by this site.</property>
   <property name="content_meta_type">Service</property>
-  <property name="content_icon">maintenance_icon.png</property>
+  <property name="content_icon">book_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addService</property>
   <property name="immediate_view">atct_edit</property>
@@ -32,7 +32,7 @@
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/service_edit" visible="True">
     <permission value="Modify portal content" />
   </action>
 </object>
