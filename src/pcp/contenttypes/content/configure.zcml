@@ -6,6 +6,12 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
+  <class class=".accountingrecord.AccountingRecord">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IAccountingRecord"
+        />
+  </class>
   <class class=".downtime.Downtime">
     <require
         permission="zope2.View"
