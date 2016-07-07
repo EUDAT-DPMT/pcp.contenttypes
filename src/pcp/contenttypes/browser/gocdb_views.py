@@ -1,4 +1,5 @@
 from Products.Five.browser import BrowserView
+from incf.countryutils.datatypes import Country
 
 header =  """<?xml version="1.0" encoding="UTF-8"?>
 <results>"""
@@ -6,7 +7,7 @@ header =  """<?xml version="1.0" encoding="UTF-8"?>
 footer = """</results>"""
 
 provider_list_template = """
-  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}" COUNTRY="{country}" COUNTRY_CODE="? XX ?" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
+  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}" COUNTRY="{country}" COUNTRY_CODE="{country_code}" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
 
 provider_template = """
   <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}">
@@ -16,9 +17,9 @@ provider_template = """
     <DPMT_URL>{dpmt_url}</DPMT_URL>
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
     <HOME_URL>{url}</HOME_URL>
-    <CONTACT_EMAIL>eudat-support@bsc.es</CONTACT_EMAIL>
-    <CONTACT_TEL>+34 934 054 221</CONTACT_TEL>
-    <COUNTRY_CODE>XX</COUNTRY_CODE>
+    <CONTACT_EMAIL>{contact_email}</CONTACT_EMAIL>
+    <CONTACT_TEL>{contact_tel}</CONTACT_TEL>
+    <COUNTRY_CODE>{country_code}</COUNTRY_CODE>
     <COUNTRY>{country}</COUNTRY>
     <ROC>EUDAT_REGISTRY</ROC>
     <PRODUCTION_INFRASTRUCTURE>{infrastructure}</PRODUCTION_INFRASTRUCTURE>
@@ -26,7 +27,7 @@ provider_template = """
     <TIMEZONE>{timezone}</TIMEZONE>
     <LATITUDE>{latitude}</LATITUDE>
     <LONGITUDE>{longitude}</LONGITUDE>
-    <CSIRT_EMAIL>eudat-security@bsc.es</CSIRT_EMAIL>
+    <CSIRT_EMAIL>{csirt_email}</CSIRT_EMAIL>
     <DOMAIN>
       <DOMAIN_NAME>{domain}</DOMAIN_NAME>
     </DOMAIN>
@@ -53,8 +54,8 @@ service_template = """
     <IN_PRODUCTION>Y</IN_PRODUCTION>
     <NODE_MONITORED>{monitored}</NODE_MONITORED>
     <SITENAME>DKRZ</SITENAME>
-    <COUNTRY_NAME>Germany</COUNTRY_NAME>
-    <COUNTRY_CODE>DE</COUNTRY_CODE>
+    <COUNTRY_NAME>{country}</COUNTRY_NAME>
+    <COUNTRY_CODE>{country_code}</COUNTRY_CODE>
     <ROC_NAME>EUDAT_REGISTRY</ROC_NAME>
     <URL>{url}</URL>
     <ENDPOINTS/>
@@ -88,12 +89,33 @@ class ProviderView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['url'] = context.getUrl()
-        result['country'] = context.getAddress().get('country','not set')
+        country = context.getAddress().get('country','not set')
+        if country == 'not set':
+            result['country_code'] = 'not set'
+        elif country == 'United Kingdom':
+            result['country_code'] = 'UK'
+        else:
+            result['country_code'] = Country(country).alpha2
+        result['country'] = country
         result['infrastructure'] = context.getInfrastructure()
         result['timezone'] = context.getTimezone()
         result['latitude'] = context.getLatitude()
         result['longitude'] = context.getLongitude()
         result['domain'] = context.getDomain()
+        contact = context.getContact()
+        try:
+            result['contact_email'] = contact.getEmail()
+        except AttributeError:
+            result['contact_email'] = 'not set'
+            result['contact_tel'] = 'not set'
+        try:
+            result['contact_tel'] = contact.getPhone()[0]['number']
+        except (AttributeError, IndexError, KeyError):
+            result['contact_tel'] = 'not set'
+        try:
+            result['csirt_email'] = context.getSecurity_contact().getEmail()
+        except AttributeError:
+            result['csirt_email'] = 'not set'
         #result[''] = 1
         return result
 
