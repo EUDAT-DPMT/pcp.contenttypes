@@ -9,6 +9,13 @@ footer = """</results>"""
 provider_list_template = """
   <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}" COUNTRY="{country}" COUNTRY_CODE="{country_code}" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
 
+extension_template = """
+      <EXTENSION>
+        <LOCAL_ID>undefined</LOCAL_ID>
+        <KEY>{key}</KEY>
+        <VALUE>{value}</VALUE>
+      </EXTENSION>"""
+
 provider_template = """
   <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}">
     <PRIMARY_KEY>{pk}</PRIMARY_KEY>
@@ -31,13 +38,7 @@ provider_template = """
     <DOMAIN>
       <DOMAIN_NAME>{domain}</DOMAIN_NAME>
     </DOMAIN>
-    <EXTENSIONS>
-      <EXTENSION>
-        <LOCAL_ID>182</LOCAL_ID>
-        <KEY>type</KEY>
-        <VALUE>generic</VALUE>
-      </EXTENSION>
-    </EXTENSIONS>
+{extensions}
   </SITE>
 """
 
@@ -73,6 +74,19 @@ service_template = """
     </EXTENSIONS>
   </SERVICE_ENDPOINT>
 """
+
+# helper methods
+
+def getExtensions(data):
+    """data holds the list of additional properties as key/value pairs"""
+    if not data:
+        return ''
+    result = ['    <EXTENSIONS>']
+    for d in data:
+        ext = extension_template.format(**d)
+        result.append(ext)
+    result.append('    </EXTENSIONS>')
+    return "\n".join(result)
 
 class ProviderView(BrowserView):
     """Render a provider info like GOCDB does."""
@@ -116,6 +130,11 @@ class ProviderView(BrowserView):
             result['csirt_email'] = context.getSecurity_contact().getEmail()
         except AttributeError:
             result['csirt_email'] = 'not set'
+        additional = context.getAdditional()
+        if additional:
+            result['extensions'] = getExtensions(additional)
+        else:
+            result['extensions'] = '<EXTENSIONS/>'
         #result[''] = 1
         return result
 
