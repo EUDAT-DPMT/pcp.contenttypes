@@ -64,6 +64,13 @@ service_template = """
   </SERVICE_ENDPOINT>
 """
 
+term_template = """
+  <SERVICE_TYPE TYPE_ID="{id}G0" PRIMARY_KEY="{id}G0">
+    <SERVICE_TYPE_NAME>{title}</SERVICE_TYPE_NAME>
+    <SERVICE_TYPE_DESC>{description}</SERVICE_TYPE_DESC>
+  </SERVICE_TYPE>
+"""
+
 # helper methods
 
 def getExtensions(data):
@@ -192,6 +199,31 @@ class ServiceView(BrowserView):
         """Render as XML compatible with GOCDB"""
         data = self.collect_data()
         body = service_template.format(**data)
+        if core:
+            return body
+        full = header + body + footer
+        full = full.replace('&', '&amp;')
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        return full
+
+class TermView(BrowserView):
+    """Render a simple vocabulary term info like GOCDB does.
+       This is needed for teh service types.
+    """
+
+    def collect_data(self):
+        """Helper to ccollect the values to be rendered as XML"""
+        context = self.context
+        result = {}
+        result['id'] = context.getId()
+        result['title'] = context.Title()
+        result['description'] = context.Description()
+        return result
+
+    def xml(self, core=False, indent=2):
+        """Render as XML compatible with GOCDB"""
+        data = self.collect_data()
+        body = term_template.format(**data)
         if core:
             return body
         full = header + body + footer
