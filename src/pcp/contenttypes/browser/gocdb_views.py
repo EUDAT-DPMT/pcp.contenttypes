@@ -48,30 +48,19 @@ service_template = """
     <HOSTNAME>{hostname}</HOSTNAME>
     <DPMT_URL>{dpmt_url}</DPMT_URL>
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
-    <BETA>N</BETA>
+    <BETA>XXX do we need to track this? </BETA>
     <SERVICE_TYPE>{service_type}</SERVICE_TYPE>
     <HOST_IP>{host_ip}</HOST_IP>
-    <CORE></CORE>
-    <IN_PRODUCTION>Y</IN_PRODUCTION>
+    <CORE>XXX what is this?</CORE>
+    <IN_PRODUCTION>XXX how do we track this? via workflow state?</IN_PRODUCTION>
     <NODE_MONITORED>{monitored}</NODE_MONITORED>
-    <SITENAME>DKRZ</SITENAME>
+    <SITENAME>{site_name}</SITENAME>
     <COUNTRY_NAME>{country}</COUNTRY_NAME>
     <COUNTRY_CODE>{country_code}</COUNTRY_CODE>
     <ROC_NAME>EUDAT_REGISTRY</ROC_NAME>
     <URL>{url}</URL>
     <ENDPOINTS/>
-    <EXTENSIONS>
-      <EXTENSION>
-        <LOCAL_ID>302</LOCAL_ID>
-        <KEY>epic_version</KEY>
-        <VALUE>2.3</VALUE>
-      </EXTENSION>
-      <EXTENSION>
-        <LOCAL_ID>301</LOCAL_ID>
-        <KEY>handle_version</KEY>
-        <VALUE>7.3.1</VALUE>
-      </EXTENSION>
-    </EXTENSIONS>
+{extensions}
   </SERVICE_ENDPOINT>
 """
 
@@ -176,12 +165,27 @@ class ServiceView(BrowserView):
         result['creg_id'] = context.getCregId()
         result['pk'] = "??? can we use our uid here ???"
         result['dpmt_url'] = context.absolute_url()
-        result['creg_url'] = context.getCregURL()
+        result['creg_url'] = context.getCregURL(url_only=True)
         result['service_type'] = context.getService_type()
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
         result['url'] = context.getService_url()
         result['hostname'] = context.getHost_name()
+        # the below assumes that our acquisition parent is a provider
+        result['site_name'] = context.aq_parent.getId().upper()
+        country = context.aq_parent.getAddress().get('country', 'not set')
+        if country == 'not set':
+            result['country_code'] = 'not set'
+        elif country == 'United Kingdom':
+            result['country_code'] = 'UK'
+        else:
+            result['country_code'] = Country(country).alpha2
+        result['country'] = country        
+        additional = context.getAdditional()
+        if additional:
+            result['extensions'] = getExtensions(additional)
+        else:
+            result['extensions'] = '<EXTENSIONS/>'        
         return result
 
     def xml(self, core=False, indent=2):
@@ -191,5 +195,6 @@ class ServiceView(BrowserView):
         if core:
             return body
         full = header + body + footer
+        full = full.replace('&', '&amp;')
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
