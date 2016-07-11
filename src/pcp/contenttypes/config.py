@@ -5,6 +5,7 @@ PROJECTNAME = 'pcp.contenttypes'
 
 ADD_PERMISSIONS = {
     # -*- extra stuff goes here -*-
+    'ServiceOffer': 'pcp.contenttypes: Add ServiceOffer',
     'AccountingRecord': 'pcp.contenttypes: Add AccountingRecord',
     'Downtime': 'pcp.contenttypes: Add Downtime',
     'ServiceComponentImplementationDetails': 'pcp.contenttypes: Add ServiceComponentImplementationDetails',

@@ -1,4 +1,5 @@
 # -*- extra stuff goes here -*-
+from serviceoffer import IServiceOffer
 from accountingrecord import IAccountingRecord
 from downtime import IDowntime
 from servicecomponentimplementationdetails import IServiceComponentImplementationDetails

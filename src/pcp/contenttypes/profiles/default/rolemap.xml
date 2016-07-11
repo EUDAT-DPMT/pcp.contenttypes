@@ -6,6 +6,10 @@
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="pcp.contenttypes: Add ServiceOffer" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
     <permission name="pcp.contenttypes: Add AccountingRecord" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
