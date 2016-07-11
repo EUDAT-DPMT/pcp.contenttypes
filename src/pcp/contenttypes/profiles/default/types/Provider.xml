@@ -18,6 +18,7 @@
    <element value="File"/>
    <element value="Folder"/>
    <element value="ResourceOffer"/>
+   <element value="ServiceOffer"/>
    <element value="ServiceComponentOffer"/>
    <element value="RegisteredServiceComponent"/>
    <element value="RegisteredResource"/>
