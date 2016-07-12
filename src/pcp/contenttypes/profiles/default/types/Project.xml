@@ -17,6 +17,8 @@
    <element value="File"/>
    <element value="Folder"/>
    <element value="ServiceRequest"/>
+   <element value="ServiceComponentRequest"/>
+   <element value="ResourceRequest"/>
    <element value="RegisteredService"/>
   </property>
   <property name="allow_discussion">False</property>

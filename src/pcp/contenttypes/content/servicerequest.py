@@ -16,17 +16,26 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
+#    atapi.ReferenceField('service',
+#                         relationship='service',
+#                         allowed_types=('Service',),
+#                         widget=ReferenceBrowserWidget(label='Service',
+#                                                       allow_search=1,
+#                                                       allow_browse=0,
+#                                                       base_query={'portal_type':'Service'},
+#                                                       show_results_without_query=1,
+#                                                       only_for_review_states=['external'],
+#                                                       ),
+#                         ),
     atapi.ReferenceField('service',
                          relationship='service',
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Service',
+                                                       description='The service '\
+                                                       'being requested',
+                                                       allow_browse=1,
+                                                       startup_directory='/catalog',
                                                        allow_search=1,
-                                                       allow_browse=0,
-                                                       base_query={'portal_type':'Service'},
-                                                       show_results_without_query=1,
-                                                       only_for_review_states=['external'],
                                                        ),
                          ),
     ateapi.RecordField('size',
@@ -34,6 +43,9 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        subfield_vocabularies = {'unit': 'informationUnits',
                                                 'type': 'storageTypes',
                                                 },
+                       widget=ateapi.RecordWidget(description='The size of storage to be '\
+                                                  'made available through this service - if '\
+                                                  'any.'),
                        ),
     atapi.ReferenceField('service_hours',
                          relationship='service_hours',

@@ -18,9 +18,8 @@ from pcp.contenttypes.content.common import ResourceFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 
-ResourceRequestSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-
-    # -*- Your Archetypes field definitions here ... -*-
+ResourceRequestSchema = schemata.ATContentTypeSchema.copy()  + ResourceFields.copy() \
+                        + atapi.Schema((
     atapi.DateTimeField('startDate',
                         widget=atapi.CalendarWidget(label='Start date',
                                                     show_hm=False),
