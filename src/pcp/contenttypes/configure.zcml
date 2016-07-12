@@ -29,7 +29,14 @@
     id="pcp.contenttypes.modify_internals"
     title="Modify internals"
     />  
-  
+  <!-- support custom info via string interpolation-->
+  <adapter
+    for='*'
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".adapters.DPMTRequestSubstitution"
+    name="request_details"
+    />
+
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" />
   <include package=".content" />

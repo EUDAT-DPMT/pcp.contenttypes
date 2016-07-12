@@ -50,6 +50,16 @@ class ResourceRequest(base.ATCTContent, CommonUtilities):
     meta_type = "ResourceRequest"
     schema = ResourceRequestSchema
 
+    def request_details(self):
+        """Helper method used for string interpolation"""
+        values = []
+        compute = self.getCompute_resources()
+        storage = self.getStorage_resources()
+        if compute:
+            values.append("Compute: %s" % compute)
+        if storage:
+            values.append("Storage: %s" % storage)
+        return "\n".join(values)
 
 
 atapi.registerType(ResourceRequest, PROJECTNAME)
