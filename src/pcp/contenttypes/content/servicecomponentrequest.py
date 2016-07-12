@@ -11,6 +11,8 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IServiceComponentRequest
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import CommonUtilities
 
 ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('service_component',
@@ -51,13 +53,13 @@ ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/providers',
                                                       ),
                          ),
-))
+)) + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
 
 
-class ServiceComponentRequest(folder.ATFolder):
+class ServiceComponentRequest(folder.ATFolder, CommonUtilities):
     """A project requests a specific service component"""
     implements(IServiceComponentRequest)
 
