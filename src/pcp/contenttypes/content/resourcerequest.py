@@ -33,7 +33,7 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy()  + ResourceFields.co
                          relationship='preferred_providers',
                          multiValued=True,
                          allowed_types=('Provider',),
-                         widget=atapi.ReferenceWidget(label="Preferred providers",
+                         widget=atapi.ReferenceWidget(label="Preferred provider(s)",
                                                       ),
                          ),
 
@@ -50,15 +50,6 @@ class ResourceRequest(base.ATCTContent, CommonUtilities):
     meta_type = "ResourceRequest"
     schema = ResourceRequestSchema
 
-    def storageTypes(self, instance):
-        """Look up the controlled vocabulary for the storage types
-        from the properties tool"""
-        
-        return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
-
-    def yesno(self, instance):
-        """Seems like RecordsFields do not support checkboxes"""
-        return atapi.DisplayList([['', 'Select'], ['yes', 'yes'], ['no', 'no']])
 
 
 atapi.registerType(ResourceRequest, PROJECTNAME)

@@ -87,9 +87,10 @@ ResourceFields = atapi.Schema((
     ateapi.RecordsField('storage_resources',
                         required=0,
                         minimalSize=2,
-                        subfields = ('size', 'storage class'),
-                        subfield_sizes = {'size': 10},
-                        subfield_vocabularies = {'storage class':'storageTypes'},
+                        subfields = ('value', 'unit', 'storage class'),
+                        subfield_sizes = {'value': 10},
+                        subfield_vocabularies = {'unit':'informationUnits',
+                                                 'storage class':'storageTypes'},
                         widget=ateapi.RecordsWidget(label='Storage resources'),
                         ),
 
@@ -133,6 +134,16 @@ class CommonUtilities(object):
     def PID(self):
         """Return the handle PID if existing; None otherwise"""
         return self.handle_client._getHandle(self)
+
+    def getStorage_resources(self):
+        """Specialized accessor supporting unit conversion"""
+        raw = self.schema['storage_resources'].get(self)
+        converted = []
+        for item in raw:
+            if not item.get('value', None):
+                continue
+            converted.append(self.convert(item))
+        return converted
 
     # Enable backlinks to the central registry
 
@@ -223,10 +234,11 @@ class CommonUtilities(object):
         return atapi.DisplayList(zip(units, units))
 
     # helper methods for resource handling
-    def storageTypes(self, instance):
+    def storageTypes(self, instance=None):
         """Look up the controlled vocabulary for the storage types
         from the properties tool"""
-        
+        if instance is None:
+            return ateapi.getDisplayList(self, 'storage_types', add_select=True)        
         return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
 
     def yesno(self, instance):
