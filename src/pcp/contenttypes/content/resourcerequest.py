@@ -3,13 +3,12 @@
 
 from zope.interface import implements
 
+from DateTime.DateTime import DateTime
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
 
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
-
-# -*- Message Factory Imported Here -*-
 
 from pcp.contenttypes.interfaces import IResourceRequest
 from pcp.contenttypes.config import PROJECTNAME
@@ -17,6 +16,7 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import ResourceFields
 from pcp.contenttypes.content.common import CommonUtilities
 
+END_OF_EUDAT2020 = "2018-02-28"
 
 ResourceRequestSchema = schemata.ATContentTypeSchema.copy()  + ResourceFields.copy() \
                         + atapi.Schema((
@@ -25,6 +25,7 @@ ResourceRequestSchema = schemata.ATContentTypeSchema.copy()  + ResourceFields.co
                                                     show_hm=False),
                         ),
     atapi.DateTimeField('endDate',
+                        default=DateTime(END_OF_EUDAT2020),
                         widget=atapi.CalendarWidget(label='End date',
                                                     show_hm=False),
                         ),
