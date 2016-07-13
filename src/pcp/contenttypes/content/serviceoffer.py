@@ -27,10 +27,11 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     atapi.ReferenceField('slas',
                          relationship='slas_offered',
                          allowed_types=('Document',),
+                         multiValued=True,
                          widget=ReferenceBrowserWidget(label='SLAs offered',
                                                        description='Potential Service Level Agreements under which the service is being offered.',
                                                        allow_browse=1,
-                                                       startup_directory='/services',
+                                                       startup_directory='/services/hours',
                                                       ),
 
                      ),
