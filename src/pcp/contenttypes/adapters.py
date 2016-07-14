@@ -40,6 +40,7 @@ class DPMTStartDateSubstitution(BaseSubstitution):
     def safe_call(self):
         try:
             value = self.context.getStartDate()
+            return value.Date()
         except AttributeError:
-            return value = _(u'not specified')
-        return value.Date()
+            return _(u'not specified')
+
