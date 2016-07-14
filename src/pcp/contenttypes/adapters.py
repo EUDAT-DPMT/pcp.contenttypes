@@ -30,3 +30,16 @@ class DPMTProviderSubstitution(BaseSubstitution):
         except AttributeError:
             value = _(u'not specified')
         return value
+
+class DPMTStartDateSubstitution(BaseSubstitution):
+    adapts(IContentish)
+
+    category = _(u'Service or resource requests')
+    description = _(u'Start date')
+
+    def safe_call(self):
+        try:
+            value = self.context.getStartDate()
+        except AttributeError:
+            return value = _(u'not specified')
+        return value.Date()
