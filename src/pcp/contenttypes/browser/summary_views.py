@@ -11,6 +11,10 @@ CSV_TEMPLATE = '"%s"'
 def render_state(content, field_id):
     return content.portal_workflow.getInfoFor(content, 'review_state')
 
+def render_type(content, field_id):
+    ti = content.getTypeInfo()
+    return ti.Title()
+
 def render_reference_field(content, field_id):
     field = content.schema[field_id]
     objs = field.get(content, aslist=True)
@@ -27,7 +31,7 @@ def render_with_link(content, field_id):
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
 
-def render_parent_provider(content, field_id):
+def render_parent(content, field_id):
     parent = content.aq_inner.aq_parent
     title = parent.Title()
     url = parent.absolute_url()
@@ -37,13 +41,32 @@ def modification_date(content, field_id):
     value = content.modified()
     return value.Date()
 
+def render_date(content, field_id):
+    field = content.schema[field_id]
+    value = field.get(content)
+    try:
+        return value.Date()
+    except AttributeError:
+        return 'not set'
+
+def render_resources(content, field_id):
+    """Specific for requests"""
+    try:
+        return content.request_details()
+    except AttributeError:
+        return 'none specified'
+    
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
     render_methods = {'state':render_state,
+                      'portal_type':render_type,
                       'title':render_with_link,
-                      'parent_provider':render_parent_provider,
+                      'parent_provider':render_parent,
+                      'parent_project':render_parent,
                       'modified':modification_date,
+                      'startDate':render_date,
+                      'resources':render_resources,
                       # add more as needed; reference fields don't need to be included here
     }
         
@@ -222,7 +245,44 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('service_url', 'monitored', 'host_name')
+
+
+class RequestOverview(BaseSummaryView):
+    """Overview of all requests no matter what type or state or where they are located"""
     
+    title = "All Requests"
+
+    description = "All requests across the entire site."
+
+    def content_items(self):
+        """All requests regardless of location"""
+        types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest']
+        return [element.getObject() for element in self.catalog(portal_type=types)]
+
+    def fields(self):
+        """hardcoded for a starts"""
+        return ('parent_project', 'portal_type', 'title', 'resources', 'startDate', 
+                'preferred_providers', 'state')
+
+    def field_labels(self):
+        """Hardcoded label"""
+        return ('Requesting Project', 'Request Type', 'Request Title', 'Requested Resources', 
+                'Requested Start Date', 'Preferred Provider(s)', 'State')
+
+class ApprovedRequests(RequestOverview):
+    """All approved but unfulfilled requests"""
+
+    title = "Approved Requests"
+
+    description = "All appoved but unfulfilled requests, i.e., those that need to be acted upon"
+
+    def content_items(self):
+        """All approved requests regardless of location"""
+        types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest']
+        return [element.getObject() for element in \
+                self.catalog(portal_type=types, review_state='approved')]
+
+
 class RegisteredResourceOverview(BaseSummaryView):
     """Overview of all registered resources no matter where they are located"""
     

@@ -46,6 +46,22 @@
 
   <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="request_overview"
+	class="pcp.contenttypes.browser.summary_views.RequestOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="approved_requests"
+	class="pcp.contenttypes.browser.summary_views.ApprovedRequests"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="registered_service_overview"
 	class="pcp.contenttypes.browser.summary_views.RegisteredServiceOverview"
 	template="summary_views.pt"
