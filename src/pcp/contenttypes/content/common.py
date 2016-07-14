@@ -93,7 +93,9 @@ ResourceFields = atapi.Schema((
                         required=0,
                         minimalSize=2,
                         subfields = ('value', 'unit', 'storage class'),
-                        subfield_sizes = {'value': 10},
+                        subfield_sizes = {'value': 10,
+                                          'storage class': 60,
+                                          },
                         subfield_vocabularies = {'unit':'informationUnits',
                                                  'storage class':'storageTypes'},
                         widget=ateapi.RecordsWidget(label='Storage resources'),
@@ -119,8 +121,8 @@ RequestFields = atapi.Schema((
                          multiValued=True,
                          allowed_types=('Provider',),
                          widget=ReferenceBrowserWidget(label="Preferred provider(s)",
-                                                       description="If only certain provider(s) are "\
-                                                       "acceptable this can be specified here. Usually "\
+                                                       description="If there is a reason to prefer certain "\
+                                                       "provider(s) this can be specified here. Usually "\
                                                        "this can be left empty",
                                                        allow_browse=1,
                                                        startup_directory='/providers',

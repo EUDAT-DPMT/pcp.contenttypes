@@ -14,19 +14,11 @@ from pcp.contenttypes.interfaces import IServiceRequest
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
+from pcp.contenttypes.content.common import ResourceFields
+from pcp.contenttypes.content.common import RequestFields
+from pcp.contenttypes.content.common import RequestUtilities
 
 ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
-#    atapi.ReferenceField('service',
-#                         relationship='service',
-#                         allowed_types=('Service',),
-#                         widget=ReferenceBrowserWidget(label='Service',
-#                                                       allow_search=1,
-#                                                       allow_browse=0,
-#                                                       base_query={'portal_type':'Service'},
-#                                                       show_results_without_query=1,
-#                                                       only_for_review_states=['external'],
-#                                                       ),
-#                         ),
     atapi.ReferenceField('service',
                          relationship='service',
                          allowed_types=('Service',),
@@ -38,15 +30,6 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_search=1,
                                                        ),
                          ),
-    ateapi.RecordField('size',
-                       subfields=('value', 'unit', 'type'),
-                       subfield_vocabularies = {'unit': 'informationUnits',
-                                                'type': 'storageTypes',
-                                                },
-                       widget=ateapi.RecordWidget(description='The size of storage to be '\
-                                                  'made available through this service - if '\
-                                                  'any.'),
-                       ),
     atapi.ReferenceField('service_hours',
                          relationship='service_hours',
                          allowed_types=('Document',),
@@ -56,31 +39,24 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        show_results_without_query=1,
                                                        ),
                          ),
-#    atapi.StringField('storage_type',
-#                      vocabulary='storageTypes',
-#                      widget=atapi.SelectionWidget(),
-#                      ),                  
-)) + CommonFields.copy()
+)) + RequestFields.copy() + atapi.Schema((
+    ateapi.CommentField('resource_comment',
+                        comment="If applicable and already known how much resources shall be provisioned "\
+                        "through this service then this should be specified here. Otherwise this "\
+                        "can be left empty (or added later).",
+                    ),
+)) + ResourceFields.copy() + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ServiceRequestSchema, moveDiscussion=False)
 
 
-class ServiceRequest(folder.ATFolder, CommonUtilities):
+class ServiceRequest(folder.ATFolder, CommonUtilities, RequestUtilities):
     """A project requests a service"""
     implements(IServiceRequest)
 
     meta_type = "ServiceRequest"
     schema = ServiceRequestSchema
 
-    def getSize(self):
-        """Specialized accessor supporting unit conversion"""
-        raw = self.schema['size'].get(self)
-        return self.convert(raw)
-
-    def storageTypes(self, instance=None):
-        if instance is None:
-            return ateapi.getDisplayList(self, 'storage_types', add_select=True)
-        return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
 
 atapi.registerType(ServiceRequest, PROJECTNAME)
