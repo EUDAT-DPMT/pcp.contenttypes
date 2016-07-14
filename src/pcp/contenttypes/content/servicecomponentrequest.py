@@ -4,6 +4,7 @@
 from zope.interface import implements
 
 from Products.Archetypes import atapi
+from Products.ATExtensions import ateapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
@@ -13,6 +14,10 @@ from pcp.contenttypes.interfaces import IServiceComponentRequest
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
+from pcp.contenttypes.content.common import ResourceFields
+from pcp.contenttypes.content.common import RequestFields
+from pcp.contenttypes.content.common import RequestUtilities
+
 
 ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('service_component',
@@ -39,27 +44,29 @@ ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/catalog',
                                                       ),
                          ),
-    atapi.ReferenceField('service_providers',
-                         read_permission='View internals',
-                         write_permission='Modify internals',
-                         relationship='preferred_providers',
-                         allowed_types=('Provider',),
-                         multiValued=True,
-                         widget=ReferenceBrowserWidget(label='Preferred service provider(s)',
-                                                       description='The provider(s) preferred '\
-                                                       'for hosting this service component '\
-                                                       '- if any.',
-                                                       allow_browse=1,
-                                                       startup_directory='/providers',
-                                                      ),
+    atapi.ReferenceField('service_hours',
+                         relationship='service_hours',
+                         allowed_types=('Document',),
+                         widget=ReferenceBrowserWidget(label='Service hours',
+                                                       allow_search=1,
+                                                       base_query={'Subject':["Support hours"]},
+                                                       show_results_without_query=1,
+                                                       ),
                          ),
-)) + CommonFields.copy()
+)) + RequestFields.copy() + atapi.Schema((
+    ateapi.CommentField('resource_comment',
+                        comment="If applicable and already known how much resources shall be provisioned "\
+                        "through this service then this should be specified here. Otherwise this "\
+                        "can be left empty (or added later).",
+                    ),
+)) + ResourceFields.copy() + CommonFields.copy()
+
 
 
 schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
 
 
-class ServiceComponentRequest(folder.ATFolder, CommonUtilities):
+class ServiceComponentRequest(folder.ATFolder, CommonUtilities, RequestUtilities):
     """A project requests a specific service component"""
     implements(IServiceComponentRequest)
 
