@@ -1,8 +1,13 @@
 """Common components shared by content types
 """
 
+END_OF_EUDAT2020 = "2018-02-28"
+
+from DateTime.DateTime import DateTime
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
+
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 CommonFields = atapi.Schema((
     atapi.ComputedField('uid',
@@ -95,6 +100,75 @@ ResourceFields = atapi.Schema((
                         ),
 
 ))
+
+RequestFields = atapi.Schema((
+    atapi.DateTimeField('startDate',
+                        widget=atapi.CalendarWidget(label='Start date',
+                                                    description='Until when is this needed?',
+                                                    show_hm=False),
+                        ),
+    atapi.DateTimeField('endDate',
+                        default=DateTime(END_OF_EUDAT2020),
+                        widget=atapi.CalendarWidget(label='End date',
+                                                    description="The defualt is the end of EUDAT's "\
+                                                    "current project phase.",
+                                                    show_hm=False),
+                        ),
+    atapi.ReferenceField('preferred_providers',
+                         relationship='preferred_providers',
+                         multiValued=True,
+                         allowed_types=('Provider',),
+                         widget=ReferenceBrowserWidget(label="Preferred provider(s)",
+                                                       description="If only certain provider(s) are "\
+                                                       "acceptable this can be specified here. Usually "\
+                                                       "this can be left empty",
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                      ),
+                         ),
+    atapi.StringField('ticketid',
+                      widget=atapi.StringWidget(label="Ticket ID",
+                                                description="Once a ticket in EUDAT's Trouble Ticket "\
+                                                "System (TTS) has been created its ID can be entered "\
+                                                "here for easy reference.",
+                                            ),
+                  ),
+))
+
+class RequestUtilities(object):
+    """Mixin class to provide shared functionality across request types"""
+
+    def request_details(self):
+        """Helper method used for string interpolation"""
+        values = []
+        compute = self.getCompute_resources()
+        storage = self.getStorage_resources()
+        if compute:
+            for c in compute:
+                formatted = self.comp2string(c)
+                values.append("Compute: " + formatted)
+        if storage:
+            for s in storage:
+                formatted = self.storage2string(s)
+                values.append("Storage: " + formatted)
+        return "\n".join(values)
+
+    def comp2string(self, comp):
+        template = "{nCores} Cores, {ram} RAM, {diskspace} disk, {system}"
+        return template.format(**comp)
+
+    def storage2string(self, storage):
+        storage['class'] = storage['storage class']
+        template = "{value} {unit} {class}"
+        return template.format(**storage)
+
+    def providers2string(self):
+        """Helper method used for string interpolation"""
+        providers = self.getPreferred_providers()
+        if not providers:
+            return "not specified"
+        return ", ".join([p.Title() for p in providers])
+
 
 class CommonUtilities(object):
     """Mixin class to provide shared functionality across content types"""
