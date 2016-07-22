@@ -165,7 +165,7 @@ class ServiceOverview(BaseSummaryView):
 
     def content_items(self):
         """All services regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='Service')]
+        return [element.getObject() for element in self.catalog(portal_type='Service', path='/pcp/catalog')]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""

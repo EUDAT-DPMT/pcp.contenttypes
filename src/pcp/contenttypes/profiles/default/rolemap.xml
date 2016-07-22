@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <rolemap>
   <roles>
+    <role name="Site Manager"/>
     <role name="CDI Member"/>
     <role name="CDI Manager"/>
   </roles>

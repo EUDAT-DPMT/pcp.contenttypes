@@ -11,6 +11,8 @@ from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
 
+#from Products.UserField import UserField
+
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IProvider
@@ -158,6 +160,11 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                         expression='here.getCregURL()',
                         widget=atapi.ComputedWidget(label='Central Registry'),
                     ),
+#    UserField('site_managers',
+#              multiValued=True,
+#              localrole='CDI Manager',
+#              cumulative=True,
+#          ),
 )) + CommonFields.copy()
 
 
