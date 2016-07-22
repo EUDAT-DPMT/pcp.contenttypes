@@ -4,6 +4,7 @@
 END_OF_EUDAT2020 = "2018-02-28"
 
 from DateTime.DateTime import DateTime
+from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
 
@@ -188,6 +189,30 @@ class CommonUtilities(object):
         if handle is not None:
             ids.append(handle)
         return tuple(ids)
+
+    def country(self):
+        """
+        Look for the country in the address field including the aq_parent 
+        for indexing. Returns 'not set' if nothing found. Should not fail.
+        """
+        try:
+            address = self.getAddress()
+        except AttributeError:
+            try:
+                address = self.aq_parent.getAddress()
+            except AttributeError:
+                return "not set"
+        return address.get('country', 'not set')
+
+    def country_code(self):
+        """Two letter country code infered from the address - if found"""
+        country = self.country()
+        if country == 'not set':
+            return country
+        # a hard-coded exception
+        if country == "United Kingdom":
+            return "UK"
+        return Country(country).alpha2
 
     def additional_content(self):
         """Values of the additional key/value pairs for indexing"""
