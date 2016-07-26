@@ -52,7 +52,7 @@ class Accountable(object):
         """
         id = self.UID()
         domain = test and 'test/' or 'eudat/'
-        credentails = self.getCredentials()
+        credentials = self.getCredentials()
         if credentials is None:
             return "No credentials found in the environment - doing nothing"
         url = SERVER_URL + domain + id + '/listRecords?n=' + n
