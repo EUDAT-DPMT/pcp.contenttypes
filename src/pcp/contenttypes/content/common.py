@@ -136,7 +136,7 @@ ResourceContextFields = atapi.Schema((
                                                        description="The primary contact for this "\
                                                        "resource.",
                                                        allow_browse=1,
-                                                       startup_directory='/contacts',
+                                                       startup_directory='/people',
                                                       ),
                          ),
     atapi.ReferenceField('request',
@@ -154,8 +154,8 @@ ResourceContextFields = atapi.Schema((
                          relationship='services',
                          multiValued=True,
                          allowed_types=('RegisteredService', 'RegisteredServiceComponent'),
-                         widget=ReferenceBrowserWidget(label="Project",
-                                                       description="The service (components) using "\
+                         widget=ReferenceBrowserWidget(label="Components",
+                                                       description="The service components using "\
                                                        "this resource.",
                                                        allow_browse=1,
                                                        startup_directory='/providers',
