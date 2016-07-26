@@ -55,7 +55,10 @@ class Accountable(object):
         credentials = self.getCredentials()
         if credentials is None:
             return "No credentials found in the environment - doing nothing"
-        url = SERVER_URL + domain + id + '/listRecords?n=' + n
+        url = SERVER_URL + domain + id + '/listRecords?n=' + str(n)
         r = requests.get(url, auth=credentials)
-        data = json.loads(r.content)
+        try:
+            data = json.loads(r.content)
+        except ValueError:
+            return r.content
         return data
