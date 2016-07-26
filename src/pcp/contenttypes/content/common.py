@@ -104,6 +104,76 @@ ResourceFields = atapi.Schema((
 
 ))
 
+ResourceContextFields = atapi.Schema((
+    # Provider is assumed to be available via the context - usually the aquisition parent
+    atapi.ReferenceField('project',
+                         relationship='project',
+                         multiValued=False,
+                         allowed_types=('Project',),
+                         widget=ReferenceBrowserWidget(label="Project",
+                                                       description="The project for which this "\
+                                                       "resource has been established.",
+                                                       allow_browse=1,
+                                                       startup_directory='/projects',
+                                                      ),
+                         ),
+    atapi.ReferenceField('customer',
+                         relationship='customer',
+                         multiValued=False,
+                         allowed_types=('Community',),
+                         widget=ReferenceBrowserWidget(label="Customer",
+                                                       description="The customer for which this "\
+                                                       "resource has been established.",
+                                                       allow_browse=1,
+                                                       startup_directory='/customers',
+                                                      ),
+                         ),
+    atapi.ReferenceField('contact',
+                         relationship='contact',
+                         multiValued=False,
+                         allowed_types=('Person',),
+                         widget=ReferenceBrowserWidget(label="Contact",
+                                                       description="The primary contact for this "\
+                                                       "resource.",
+                                                       allow_browse=1,
+                                                       startup_directory='/contacts',
+                                                      ),
+                         ),
+    atapi.ReferenceField('request',
+                         relationship='request',
+                         multiValued=False,
+                         allowed_types=('ResourceRequest', 'ServiceRequest'),
+                         widget=ReferenceBrowserWidget(label="Request",
+                                                       description="The request that triggered the "\
+                                                       "establishment of this resource.",
+                                                       allow_browse=1,
+                                                       startup_directory='/projects',
+                                                      ),
+                         ),
+    atapi.ReferenceField('services',
+                         relationship='services',
+                         multiValued=True,
+                         allowed_types=('RegisteredService', 'RegisteredServiceComponent'),
+                         widget=ReferenceBrowserWidget(label="Project",
+                                                       description="The service (components) using "\
+                                                       "this resource.",
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                      ),
+                         ),
+    atapi.ReferenceField('linked_resources',
+                         relationship='linked_resources',
+                         multiValued=True,
+                         allowed_types=('RegisteredComputeResource', 'RegisteredStorageResource'),
+                         widget=ReferenceBrowserWidget(label="Linked resources",
+                                                       description="Other resources linked to this "\
+                                                       "resource.",
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                      ),
+                         ),
+))
+
 RequestFields = atapi.Schema((
     atapi.DateTimeField('startDate',
                         widget=atapi.CalendarWidget(label='Start date',
