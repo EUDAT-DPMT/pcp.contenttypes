@@ -48,6 +48,252 @@ Finally, let's return to the front page of our site before continuing
     >>> browser.open(portal_url)
 
 -*- extra stuff goes here -*-
+The RegisteredStorageResource content type
+===============================
+
+In this section we are tesing the RegisteredStorageResource content type by performing
+basic operations like adding, updadating and deleting RegisteredStorageResource content
+items.
+
+Adding a new RegisteredStorageResource content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'RegisteredStorageResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredStorageResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredStorageResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredStorageResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'RegisteredStorageResource' content item to the portal.
+
+Updating an existing RegisteredStorageResource content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New RegisteredStorageResource Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New RegisteredStorageResource Sample' in browser.contents
+    True
+
+Removing a/an RegisteredStorageResource content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New RegisteredStorageResource
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredStorageResource Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New RegisteredStorageResource Sample' object. First we
+go to the contents tab and select the 'New RegisteredStorageResource Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New RegisteredStorageResource Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New RegisteredStorageResource
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredStorageResource Sample' in browser.contents
+    False
+
+Adding a new RegisteredStorageResource content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add RegisteredStorageResource content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'RegisteredStorageResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredStorageResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredStorageResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredStorageResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new RegisteredStorageResource content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
+The RegisteredComputeResource content type
+===============================
+
+In this section we are tesing the RegisteredComputeResource content type by performing
+basic operations like adding, updadating and deleting RegisteredComputeResource content
+items.
+
+Adding a new RegisteredComputeResource content item
+--------------------------------
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+Then we select the type of item we want to add. In this case we select
+'RegisteredComputeResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredComputeResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredComputeResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredComputeResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+And we are done! We added a new 'RegisteredComputeResource' content item to the portal.
+
+Updating an existing RegisteredComputeResource content item
+---------------------------------------
+
+Let's click on the 'edit' tab and update the object attribute values.
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl(name='title').value = 'New RegisteredComputeResource Sample'
+    >>> browser.getControl('Save').click()
+
+We check that the changes were applied.
+
+    >>> 'Changes saved' in browser.contents
+    True
+    >>> 'New RegisteredComputeResource Sample' in browser.contents
+    True
+
+Removing a/an RegisteredComputeResource content item
+--------------------------------
+
+If we go to the home page, we can see a tab with the 'New RegisteredComputeResource
+Sample' title in the global navigation tabs.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredComputeResource Sample' in browser.contents
+    True
+
+Now we are going to delete the 'New RegisteredComputeResource Sample' object. First we
+go to the contents tab and select the 'New RegisteredComputeResource Sample' for
+deletion.
+
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('New RegisteredComputeResource Sample').click()
+
+We click on the 'Delete' button.
+
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted' in browser.contents
+    True
+
+So, if we go back to the home page, there is no longer a 'New RegisteredComputeResource
+Sample' tab.
+
+    >>> browser.open(portal_url)
+    >>> 'New RegisteredComputeResource Sample' in browser.contents
+    False
+
+Adding a new RegisteredComputeResource content item as contributor
+------------------------------------------------
+
+Not only site managers are allowed to add RegisteredComputeResource content items, but
+also site contributors.
+
+Let's logout and then login as 'contributor', a portal member that has the
+contributor role assigned.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'contributor'
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+We use the 'Add new' menu to add a new content item.
+
+    >>> browser.getLink('Add new').click()
+
+We select 'RegisteredComputeResource' and click the 'Add' button to get to the add form.
+
+    >>> browser.getControl('RegisteredComputeResource').click()
+    >>> browser.getControl(name='form.button.Add').click()
+    >>> 'RegisteredComputeResource' in browser.contents
+    True
+
+Now we fill the form and submit it.
+
+    >>> browser.getControl(name='title').value = 'RegisteredComputeResource Sample'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Done! We added a new RegisteredComputeResource content item logged in as contributor.
+
+Finally, let's login back as manager.
+
+    >>> browser.getLink('Log out').click()
+    >>> browser.open(portal_url + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+    >>> browser.open(portal_url)
+
+
 The ServiceOffer content type
 ===============================
 

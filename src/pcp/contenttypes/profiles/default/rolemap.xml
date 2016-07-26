@@ -7,6 +7,14 @@
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="pcp.contenttypes: Add RegisteredStorageResource" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
+    <permission name="pcp.contenttypes: Add RegisteredComputeResource" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
     <permission name="pcp.contenttypes: Add ServiceOffer" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />

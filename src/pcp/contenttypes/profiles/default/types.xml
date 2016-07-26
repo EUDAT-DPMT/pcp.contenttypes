@@ -8,6 +8,10 @@
   -->
 <object name="portal_types" meta_type="Plone Types Tool">
   <!-- -*- extra stuff goes here -*- -->
+  <object name="RegisteredStorageResource"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="RegisteredComputeResource"
+    meta_type="Factory-based Type Information with dynamic views" />
   <object name="ServiceOffer"
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="AccountingRecord"

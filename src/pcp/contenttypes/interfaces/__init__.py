@@ -1,4 +1,6 @@
 # -*- extra stuff goes here -*-
+from registeredstorageresource import IRegisteredStorageResource
+from registeredcomputeresource import IRegisteredComputeResource
 from serviceoffer import IServiceOffer
 from accountingrecord import IAccountingRecord
 from downtime import IDowntime

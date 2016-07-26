@@ -6,6 +6,18 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
+  <class class=".registeredstorageresource.RegisteredStorageResource">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRegisteredStorageResource"
+        />
+  </class>
+  <class class=".registeredcomputeresource.RegisteredComputeResource">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRegisteredComputeResource"
+        />
+  </class>
   <class class=".serviceoffer.ServiceOffer">
     <require
         permission="zope2.View"
