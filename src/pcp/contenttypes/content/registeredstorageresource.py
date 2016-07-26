@@ -15,6 +15,7 @@ from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 from pcp.contenttypes.content.common import ResourceContextFields
+from pcp.contenttypes.content.accountable import Accountable
 
 
 RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
@@ -48,7 +49,7 @@ RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Sc
 schemata.finalizeATCTSchema(RegisteredStorageResourceSchema, moveDiscussion=False)
 
 
-class RegisteredStorageResource(base.ATCTContent, CommonUtilities):
+class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
     """A provisioned storage space of a certain type"""
     implements(IRegisteredStorageResource)
 
