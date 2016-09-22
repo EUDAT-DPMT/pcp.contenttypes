@@ -21,7 +21,7 @@ class ProjectOverview(BrowserView):
 
     def fields(self):
         """hardcoded for a start"""
-        return ('title', 'services_used', 
+        return ('title', 'registered_services_used', 
                 'allocated', 'used', 'community', 
                 'topics', 'start_date', 'state')
 
