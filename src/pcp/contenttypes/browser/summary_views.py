@@ -159,7 +159,7 @@ class ProviderOverview(BaseSummaryView):
 class ServiceOverview(BaseSummaryView):
     """Overview of all EUDAT services"""
     
-    title = "EUDAT Services"
+    title = "EUDAT Catalog"
 
     description = "All current and past EUDAT services"
 
