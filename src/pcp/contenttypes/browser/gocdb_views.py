@@ -48,11 +48,11 @@ service_template = """
     <HOSTNAME>{hostname}</HOSTNAME>
     <DPMT_URL>{dpmt_url}</DPMT_URL>
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
-    <BETA>XXX do we need to track this? </BETA>
+    <BETA></BETA>
     <SERVICE_TYPE>{service_type}</SERVICE_TYPE>
     <HOST_IP>{host_ip}</HOST_IP>
-    <CORE>XXX what is this?</CORE>
-    <IN_PRODUCTION>XXX how do we track this? via workflow state?</IN_PRODUCTION>
+    <CORE></CORE>
+    <IN_PRODUCTION></IN_PRODUCTION>
     <NODE_MONITORED>{monitored}</NODE_MONITORED>
     <SITENAME>{site_name}</SITENAME>
     <COUNTRY_NAME>{country}</COUNTRY_NAME>
@@ -95,7 +95,7 @@ class ProviderView(BrowserView):
         result['id'] = context.Title()
         result['description'] = context.Description()
         result['creg_id'] = context.getCregId()
-        result['pk'] = '??? what to use here ???'
+        result['pk'] = context.UID()
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['url'] = context.getUrl()
@@ -170,7 +170,7 @@ class ServiceView(BrowserView):
         result['id'] = context.Title()
         result['description'] = context.Description()
         result['creg_id'] = context.getCregId()
-        result['pk'] = "??? can we use our uid here ???"
+        result['pk'] = context.UID()
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['service_type'] = context.getService_type()
