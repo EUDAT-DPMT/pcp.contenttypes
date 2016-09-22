@@ -192,6 +192,12 @@ schemata.finalizeATCTSchema(
     moveDiscussion=False
 )
 
+ProviderSchema['committed_cores'].widget.condition='object/show_all'
+ProviderSchema['supported_os'].widget.condition='object/show_all'
+ProviderSchema['committed_disk'].widget.condition='object/show_all'
+ProviderSchema['committed_tape'].widget.condition='object/show_all'
+ProviderSchema['used_disk'].widget.condition='object/show_all'
+ProviderSchema['used_tape'].widget.condition='object/show_all'
 
 class Provider(folder.ATFolder, CommonUtilities):
     """Compute or data service provider"""
@@ -214,5 +220,13 @@ class Provider(folder.ATFolder, CommonUtilities):
         """provides the vocabulary for the 'provider_status' field"""
 
         return ateapi.getDisplayList(self, 'provider_stati', add_select=False)
+
+    def show_all(self):
+        """Used in widget condition to suppress some fields in default view"""
+        try:
+            self.REQUEST['show_all']
+            return True
+        except KeyError:
+            return False
 
 atapi.registerType(Provider, PROJECTNAME)
