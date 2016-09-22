@@ -25,6 +25,24 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('url',
                     searchable=1,
                 ),
+    atapi.StringField('provider_type',
+                      searchable=1,
+                      vocabulary='provider_types',
+                      default='generic',
+                      widget=atapi.SelectionWidget(label='Provider type',
+                                               ),
+                  ),
+    atapi.StringField('provider_status',
+                      searchable=1,
+                      vocabulary='provider_stati',
+                      widget=atapi.SelectionWidget(label='Provider status',
+                                               ),
+                  ),
+    atapi.StringField('status_details',
+                      searchable=1,
+                      widget=atapi.StringWidget(label='Status details/comment',
+                                            ),
+                  ),
     atapi.StringField('infrastructure',
                       searchable=1,
                       widget=atapi.StringWidget(label='Infrastructure status',
@@ -186,5 +204,15 @@ class Provider(folder.ATFolder, CommonUtilities):
         """provides the vocabulary for the 'supported_os' field"""
 
         return ateapi.getDisplayList(self, 'operating_systems', add_select=False)
+
+    def provider_types(self):
+        """provides the vocabulary for the 'provider_type' field"""
+
+        return ateapi.getDisplayList(self, 'provider_types', add_select=False)
+
+    def provider_stati(self):
+        """provides the vocabulary for the 'provider_status' field"""
+
+        return ateapi.getDisplayList(self, 'provider_stati', add_select=False)
 
 atapi.registerType(Provider, PROJECTNAME)
