@@ -25,6 +25,10 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('url',
                     searchable=1,
                 ),
+    atapi.ComputedField('link2offers',
+                        expression="here.getOffersURL()",
+                        widget=atapi.ComputedWidget(label="Resource offers"),
+                    ),
     atapi.StringField('provider_type',
                       searchable=1,
                       vocabulary='provider_types',
@@ -220,6 +224,19 @@ class Provider(folder.ATFolder, CommonUtilities):
         """provides the vocabulary for the 'provider_status' field"""
 
         return ateapi.getDisplayList(self, 'provider_stati', add_select=False)
+
+    def getOffersURL(self):
+        """URL to the resource offers embedded in an anchor tag.
+        Used by the computed field 'offers'."""
+        try:
+            offers = self.offers
+        except AttributeError:
+            return "No offers found"
+        url = offers.absolute_url()
+        title = "Resources offered by %s" % self.Title()
+        anchor = "<a href='%s?unit=TiB' title='%s'>%s</a>" % (url, title, title)
+        return anchor
+
 
     def show_all(self):
         """Used in widget condition to suppress some fields in default view"""
