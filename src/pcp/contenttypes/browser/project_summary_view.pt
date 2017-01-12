@@ -32,7 +32,10 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-	<table class="listing" id="project_overview-table">
+    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+
+	<table class="listing dt-table" id="project_overview-table">
 	  <thead>
 	    <tr>
 		<th tal:repeat="label view/field_labels"
@@ -48,6 +51,7 @@
 	    </tr>
 	  </tbody>
 	</table>
+    <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
     
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
