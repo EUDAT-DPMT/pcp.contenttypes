@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+    <metal:main fill-slot="content-core" tal:define="rows view/records">
+
+    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+
+	<table class="listing dt-table" id="accounting-table">
+	  <thead>
+          <tr>
+            <th>foo</th>
+	    </tr>
+	  </thead>
+      <tbody> 
+        <tr tal:repeat="row rows">
+            <td tal:content="row"/>
+	     </tr>
+	  </tbody>
+	</table>
+
+   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+</metal:main>
+
+</body>
+</html>

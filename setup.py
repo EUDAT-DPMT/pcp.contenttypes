@@ -63,6 +63,7 @@ setup(name='pcp.contenttypes',
                         'collective.handleclient',
                         'collective.monkeypatcher',
                         'incf.countryutils',
+                        'furl'
                         ],
       tests_require=tests_require,
       extras_require=dict(test=tests_require),

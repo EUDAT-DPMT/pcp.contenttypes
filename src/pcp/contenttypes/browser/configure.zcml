@@ -180,6 +180,14 @@
 	/>
 
   <browser:page
+	for="pcp.contenttypes.interfaces.registeredstorageresource.IRegisteredStorageResource"
+	name="list-account-records"
+	class=".accounting.Accounting"
+    template="accounting.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
 	for="*"
 	name="dt_macros"
 	template="dt_macros.pt"
