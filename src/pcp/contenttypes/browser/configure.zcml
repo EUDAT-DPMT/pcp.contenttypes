@@ -172,4 +172,16 @@
 	permission="zope2.View"
 	/>
 
+  <browser:page
+	for="*"
+	name="dt_macros"
+	template="dt_macros.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:resourceDirectory
+    name="pcp.contenttypes"
+    directory="resources"
+    />
+
 </configure>

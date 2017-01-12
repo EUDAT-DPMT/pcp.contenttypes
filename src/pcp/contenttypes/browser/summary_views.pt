@@ -8,6 +8,10 @@
 <body>
 
 <metal:main fill-slot="main">
+
+    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+
     <tal:main-macro metal:define-macro="main"
            tal:define="kssClassesView context/@@kss_field_decorator_view;
                        getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
@@ -29,7 +33,7 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-	<table class="listing" id="overview-table">
+	<table class="listing dt-table" id="overview-table">
 	  <thead>
 	    <tr>
 		<th tal:repeat="label view/field_labels"
@@ -52,7 +56,9 @@
 	    </tr>
 	  </tbody>
 	</table>
-    
+
+
+       <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>
