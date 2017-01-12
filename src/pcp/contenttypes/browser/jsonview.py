@@ -30,6 +30,7 @@ if EXPORT_BINARY:
 else:
     EXPORT_BINARY = False
 
+
 class JSONView(BrowserView):
     """Present Archetypes-based content as JSON"""
 
@@ -73,7 +74,7 @@ class JSONView(BrowserView):
                 value = []
                 objs = field.get(context, aslist=True)
                 uids = field.getRaw(context, aslist=True)
-                for o,u in zip(objs, uids):
+                for o, u in zip(objs, uids):
                     d = {}
                     d['uid'] = u
                     d['title'] = o.Title()
@@ -87,7 +88,7 @@ class JSONView(BrowserView):
                 try:
                     value = field.getRaw(context)
                 except AttributeError:   # happens for computed fields
-                    value = field.get(context) 
+                    value = field.get(context)
             data[name] = self.convert(value)
         return data
 

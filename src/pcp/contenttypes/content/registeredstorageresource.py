@@ -20,33 +20,34 @@ from pcp.contenttypes.content.accountable import Accountable
 
 RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     ateapi.RecordField('size',
-                       subfields = ('value', 'unit', 'storage class'),
-                       subfield_sizes = {'value': 10,
-                                         'storage class': 60,
-                                     },
-                       subfield_vocabularies = {'unit':'informationUnits',
-                                                'storage class':'storageTypes'},
+                       subfields=('value', 'unit', 'storage class'),
+                       subfield_sizes={'value': 10,
+                                       'storage class': 60,
+                                       },
+                       subfield_vocabularies={'unit': 'informationUnits',
+                                              'storage class': 'storageTypes'},
                        widget=ateapi.RecordWidget(label='Size',
-                                                  description='Maximal size and type of this '\
+                                                  description='Maximal size and type of this '
                                                   'storage resource',
-                                              ),
-                   ),
+                                                  ),
+                       ),
     atapi.IntegerField('max_objects',
                        widget=atapi.IntegerWidget(label='Max. Objects',
                                                   description='Allocated (maximum) number of objects',
-                                              ),
-                   ),
+                                                  ),
+                       ),
     atapi.FloatField('cost_factor'),
     atapi.DateTimeField('preserve_until',
                         widget=atapi.CalendarWidget(label='Preserve until',
-                                                    description='Until when does this resource need '\
+                                                    description='Until when does this resource need '
                                                     'to be allocated?',
                                                     show_hm=False),
-                    ),
+                        ),
 )) + ResourceContextFields.copy() + CommonFields.copy()
 
 
-schemata.finalizeATCTSchema(RegisteredStorageResourceSchema, moveDiscussion=False)
+schemata.finalizeATCTSchema(
+    RegisteredStorageResourceSchema, moveDiscussion=False)
 
 
 class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):

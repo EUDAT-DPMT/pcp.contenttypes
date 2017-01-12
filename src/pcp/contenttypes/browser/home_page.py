@@ -3,6 +3,7 @@ from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 
+
 class HomePage(BrowserView):
     """Logic needed for the homepage view"""
 
@@ -13,8 +14,6 @@ class HomePage(BrowserView):
         self.context = context
         self.request = request
 
-
-    
     def newbie(self):
         """True if 'Member' role not assigned"""
         roles = api.user.get_roles(obj=self.context)

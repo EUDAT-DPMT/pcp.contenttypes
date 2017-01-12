@@ -73,6 +73,7 @@ term_template = """
 
 # helper methods
 
+
 def getExtensions(data):
     """data holds the list of additional properties as key/value pairs"""
     if not data:
@@ -83,6 +84,7 @@ def getExtensions(data):
         result.append(ext)
     result.append('    </EXTENSIONS>')
     return "\n".join(result)
+
 
 class ProviderView(BrowserView):
     """Render a provider info like GOCDB does."""
@@ -99,7 +101,7 @@ class ProviderView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['url'] = context.getUrl()
-        country = context.getAddress().get('country','not set')
+        country = context.getAddress().get('country', 'not set')
         if country == 'not set':
             result['country_code'] = 'not set'
         elif country == 'United Kingdom':
@@ -160,6 +162,7 @@ class ProviderView(BrowserView):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
 
+
 class ServiceView(BrowserView):
     """Render a registered service component info like GOCDB does."""
 
@@ -187,12 +190,12 @@ class ServiceView(BrowserView):
             result['country_code'] = 'UK'
         else:
             result['country_code'] = Country(country).alpha2
-        result['country'] = country        
+        result['country'] = country
         additional = context.getAdditional()
         if additional:
             result['extensions'] = getExtensions(additional)
         else:
-            result['extensions'] = '<EXTENSIONS/>'        
+            result['extensions'] = '<EXTENSIONS/>'
         return result
 
     def xml(self, core=False, indent=2):
@@ -205,6 +208,7 @@ class ServiceView(BrowserView):
         full = full.replace('&', '&amp;')
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
+
 
 class TermView(BrowserView):
     """Render a simple vocabulary term info like GOCDB does.

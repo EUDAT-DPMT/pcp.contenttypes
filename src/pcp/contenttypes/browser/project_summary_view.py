@@ -21,19 +21,20 @@ class ProjectOverview(BrowserView):
 
     def fields(self):
         """hardcoded for a start"""
-        return ('title', 'registered_services_used', 
-                'allocated', 'used', 'community', 
+        return ('title', 'registered_services_used',
+                'allocated', 'used', 'community',
                 'topics', 'start_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start"""
-        return ('Title', 'Service',  
-                'Allocated storage', 'Used storage', 
-                'Customer', 'Topics', 
+        return ('Title', 'Service',
+                'Allocated storage', 'Used storage',
+                'Customer', 'Topics',
                 'Start date', 'State')
 
     def data(self):
-        projects = [element.getObject() for element in self.catalog(portal_type='Project')]
+        projects = [element.getObject()
+                    for element in self.catalog(portal_type='Project')]
 
         results = []
 
@@ -42,7 +43,8 @@ class ProjectOverview(BrowserView):
             for field in self.fields():
                 value = {}
                 if field == 'state':
-                    value['text'] = self.workflow_tool.getInfoFor(project, 'review_state')
+                    value['text'] = self.workflow_tool.getInfoFor(
+                        project, 'review_state')
                     value['url'] = None
                     result.append(value)
                     continue
@@ -67,25 +69,25 @@ class ProjectOverview(BrowserView):
                     date = f.get(project)
                     if date is not None:
                         value['text'] = f.get(project).Date()
-                        value['url'] = None 
+                        value['url'] = None
                     else:
                         value['text'] = 'no date set'
-                        value['url'] = None    
+                        value['url'] = None
                 elif field == 'resources':
                     data = f.get(project)
                     values = []
                     for k, v in data.items():
-                         values.append('%s: %s' % (k, v))
+                        values.append('%s: %s' % (k, v))
                     value['text'] = '<br />'.join(values)
                     value['url'] = None
                 elif field in ['allocated', 'used']:
                     raw = f.getRaw(project)
-                    value['text'] = "%s %s" % (raw.get('value', ''), 
+                    value['text'] = "%s %s" % (raw.get('value', ''),
                                                raw.get('unit', ''))
-                    value['url'] = None                     
+                    value['url'] = None
                 else:
                     value['text'] = f.get(project)
-                    value['url'] = None 
+                    value['url'] = None
                 result.append(value)
             results.append(result)
 
@@ -103,10 +105,10 @@ class CsvView(ProjectOverview):
                    newline='\r\n',
                    ):
         """Main method to be called for the csv export"""
-        
+
         if fields is None:
             fields = self.fields()
-            
+
         out = StringIO()
         out.write(delimiter.join(fields) + newline)
 
@@ -119,15 +121,16 @@ class CsvView(ProjectOverview):
                 value = CSV_TEMPLATE % text
                 values.append(value)
             out.write(delimiter.join(values) + newline)
-            
+
         value = out.getvalue()
         out.close()
 
         timestamp = datetime.today().strftime("%Y%m%d%H%M")
         filename = filenamebase + timestamp + '.csv'
-        
-        self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
-        self.request.RESPONSE.setHeader("Content-Disposition", 
-                                        "inline;filename=%s"%filename)
+
+        self.request.RESPONSE.setHeader(
+            'Content-Type', 'application/x-msexcel')
+        self.request.RESPONSE.setHeader("Content-Disposition",
+                                        "inline;filename=%s" % filename)
 
         return value

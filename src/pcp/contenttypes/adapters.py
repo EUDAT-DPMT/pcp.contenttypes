@@ -18,6 +18,7 @@ class DPMTRequestSubstitution(BaseSubstitution):
             value = _(u'No request specification found.')
         return value
 
+
 class DPMTProviderSubstitution(BaseSubstitution):
     adapts(IContentish)
 
@@ -31,6 +32,7 @@ class DPMTProviderSubstitution(BaseSubstitution):
             value = _(u'not specified')
         return value
 
+
 class DPMTStartDateSubstitution(BaseSubstitution):
     adapts(IContentish)
 
@@ -43,4 +45,3 @@ class DPMTStartDateSubstitution(BaseSubstitution):
             return value.Date()
         except AttributeError:
             return _(u'not specified')
-

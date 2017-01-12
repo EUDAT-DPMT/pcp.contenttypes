@@ -27,12 +27,12 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='done_for',
                          allowed_types=('Community',),
                          widget=ReferenceBrowserWidget(label='Customer',
-                                                       description='Main customer '\
+                                                       description='Main customer '
                                                        'involved in this project',
                                                        allow_browse=1,
                                                        startup_directory='/customers',
                                                        ),
-                         ),    
+                         ),
     atapi.ReferenceField('community_contact',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -43,19 +43,19 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/people',
                                                        ),
                          ),
-#TODO: do we need this field at all?
-#    atapi.ReferenceField('services_used',
-#                         read_permission='View internals',
-#                         write_permission='Modify internals',
-#                         relationship='using',
-#                         multiValued=1,
-#                         allowed_types=('Service',),
-#                         widget=ReferenceBrowserWidget(label='Services used',
-#                                                       description="Select all services the project requires",
-#                                                       allow_browse=1,
-#                                                       startup_directory='/services',
-#                                                       condition='python:here.stateIn(["enabling","pre_production","production","terminated"])'),
-#
+    # TODO: do we need this field at all?
+    #    atapi.ReferenceField('services_used',
+    #                         read_permission='View internals',
+    #                         write_permission='Modify internals',
+    #                         relationship='using',
+    #                         multiValued=1,
+    #                         allowed_types=('Service',),
+    #                         widget=ReferenceBrowserWidget(label='Services used',
+    #                                                       description="Select all services the project requires",
+    #                                                       allow_browse=1,
+    #                                                       startup_directory='/services',
+    #                                                       condition='python:here.stateIn(["enabling","pre_production","production","terminated"])'),
+    #
     atapi.ReferenceField('registered_services_used',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -68,21 +68,21 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/operations',
                                                        condition='python:here.stateIn(["enabling","pre_production","production","terminated"])'),
 
-                                                      ),
-#    ateapi.RecordField('resources',
-#                       subfields=('allocated (TB)', 'used (TB)', '# of objects'),
-#                       ),
+                         ),
+    #    ateapi.RecordField('resources',
+    #                       subfields=('allocated (TB)', 'used (TB)', '# of objects'),
+    #                       ),
     ateapi.RecordField('allocated',
                        subfields=('value', 'unit'),
                        subfield_vocabularies={'unit': 'informationUnits'},
-                       widget=ateapi.RecordWidget(condition=
-                                                  'python:here.stateIn(["planned","enabling","pre_production","production","terminated"])'),
+                       widget=ateapi.RecordWidget(
+                           condition='python:here.stateIn(["planned","enabling","pre_production","production","terminated"])'),
                        ),
     ateapi.RecordField('used',
                        subfields=('value', 'unit'),
                        subfield_vocabularies={'unit': 'informationUnits'},
-                       widget=ateapi.RecordWidget(condition=
-                                                  'python:here.stateIn(["pre_production","production","terminated"])'),
+                       widget=ateapi.RecordWidget(
+                           condition='python:here.stateIn(["pre_production","production","terminated"])'),
                        ),
     atapi.ReferenceField('project_enabler',
                          read_permission='View internals',
@@ -93,7 +93,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/people',
                                                        condition="python:here.stateNotIn(['considered'])",
-                                                      ),
+                                                       ),
                          ),
     atapi.DateTimeField('start_date',
                         widget=atapi.CalendarWidget(label='Start date',
@@ -128,12 +128,12 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                 "dealt with here are in a web-accessible "\
                                                 "repository already you should specify "\
                                                 "its URL here.",),
-                  ),
+                      ),
     atapi.StringField('topics',
                       widget=atapi.StringWidget(description='Please mention the '\
                                                 'scientific field(s) the data '\
                                                 'originate from.'),
-                  ),
+                      ),
 )) + CommonFields.copy()
 
 
@@ -161,8 +161,6 @@ class Project(folder.ATFolder, CommonUtilities):
         """Specialized accessor supporting unit conversion"""
         raw = self.schema['used'].get(self)
         return self.convert(raw)
-    
 
 
 atapi.registerType(Project, PROJECTNAME)
-

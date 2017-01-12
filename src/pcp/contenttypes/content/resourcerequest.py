@@ -19,9 +19,9 @@ from pcp.contenttypes.content.common import RequestUtilities
 
 
 ResourceRequestSchema = schemata.ATContentTypeSchema.copy() \
-                        + ResourceFields.copy() \
-                        + RequestFields.copy() \
-                        + CommonFields.copy()
+    + ResourceFields.copy() \
+    + RequestFields.copy() \
+    + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ResourceRequestSchema, moveDiscussion=False)
@@ -33,7 +33,6 @@ class ResourceRequest(base.ATCTContent, CommonUtilities, RequestUtilities):
 
     meta_type = "ResourceRequest"
     schema = ResourceRequestSchema
-
 
 
 atapi.registerType(ResourceRequest, PROJECTNAME)

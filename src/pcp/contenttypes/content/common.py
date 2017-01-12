@@ -14,12 +14,14 @@ CommonFields = atapi.Schema((
     atapi.ComputedField('uid',
                         read_permission='View internals',
                         expression="here.UID()",
-                        widget=atapi.StringWidget(condition="python:here.stateNotIn(['considered'])"),
+                        widget=atapi.StringWidget(
+                            condition="python:here.stateNotIn(['considered'])"),
                         ),
     atapi.ComputedField('pid',
                         read_permission='View internals',
                         expression="here.PID()",
-                        widget=atapi.StringWidget(condition="python:here.stateNotIn(['considered'])"),
+                        widget=atapi.StringWidget(
+                            condition="python:here.stateNotIn(['considered'])"),
                         ),
     ateapi.RecordsField('identifiers',
                         schemata='details',
@@ -28,36 +30,36 @@ CommonFields = atapi.Schema((
                         searchable=1,
                         index_method='ids',
                         required=0,
-                        subfields = ('type', 'value'),
-                        subfield_labels ={'type':'Identifier'},
-                        subfield_vocabularies = {'type':'identifierTypes'},
-                        innerJoin = ': ',
-                        outerJoin = '<br />',
+                        subfields=('type', 'value'),
+                        subfield_labels={'type': 'Identifier'},
+                        subfield_vocabularies={'type': 'identifierTypes'},
+                        innerJoin=': ',
+                        outerJoin='<br />',
                         widget=ateapi.RecordsWidget(
-                            description = "Other types of identifiers used "\
+                            description="Other types of identifiers used "
                             "to refer to this item.",
-                            label = u"Identifiers",
+                            label=u"Identifiers",
                             condition="python:here.stateNotIn(['considered'])",
-                            ),
-    ),
+                        ),
+                        ),
     ateapi.RecordsField('additional',
                         schemata='details',
                         read_permission='View internals',
                         write_permission='Modify internals',
                         searchable=1,
                         index_method='additional_content',
-                        subfields = ('key', 'value'),
+                        subfields=('key', 'value'),
                         minimalSize=3,
                         subfield_sizes={'key': 15,
                                         },
-                        innerJoin = ': ',
-                        outerJoin = '<br />',
+                        innerJoin=': ',
+                        outerJoin='<br />',
                         widget=ateapi.RecordsWidget(
-                            description="Other key-value pairs to characterise "\
-                            "this item: to be specically used to signal additional information "\
+                            description="Other key-value pairs to characterise "
+                            "this item: to be specically used to signal additional information "
                             "not included in the previous fields.",
                             condition="python:here.stateNotIn(['considered'])",
-                            ),
+                        ),
                         ),
     atapi.TextField('text',
                     required=False,
@@ -67,45 +69,47 @@ CommonFields = atapi.Schema((
                     validators=('isTidyHtmlWithCleanup',),
                     default_output_type='text/x-html-safe',
                     widget=atapi.RichWidget(
-                        description=u'Any other additional information not '\
+                        description=u'Any other additional information not '
                         'covered so far.',
                         label=u'Text',
                         rows=15,
-                        ),
-    ),
+                    ),
+                    ),
 ))
 
 ResourceFields = atapi.Schema((
     ateapi.RecordsField('compute_resources',
                         required=0,
                         minimalSize=2,
-                        subfields = ('nCores', 'ram', 'diskspace', 
-                                     'system', 'virtualization'),
-                        subfield_sizes = {'nCores': 10, 'ram': 10, 'diskspace': 10},
-                        subfield_types = {'virtualization': 'selection'},
-                        subfield_labels ={'cpus':'CPUs',
-                                          'virtualization':'virtualization OK?',
-                                          'system':'requires OS/software',
-                                          },
-                        subfield_vocabularies = {'virtualization': 'yesno'},
+                        subfields=('nCores', 'ram', 'diskspace',
+                                   'system', 'virtualization'),
+                        subfield_sizes={'nCores': 10,
+                                        'ram': 10, 'diskspace': 10},
+                        subfield_types={'virtualization': 'selection'},
+                        subfield_labels={'cpus': 'CPUs',
+                                         'virtualization': 'virtualization OK?',
+                                         'system': 'requires OS/software',
+                                         },
+                        subfield_vocabularies={'virtualization': 'yesno'},
                         widget=ateapi.RecordsWidget(label='Compute resources'),
                         ),
     ateapi.RecordsField('storage_resources',
                         required=0,
                         minimalSize=2,
-                        subfields = ('value', 'unit', 'storage class'),
-                        subfield_sizes = {'value': 10,
-                                          'storage class': 60,
-                                          },
-                        subfield_vocabularies = {'unit':'informationUnits',
-                                                 'storage class':'storageTypes'},
+                        subfields=('value', 'unit', 'storage class'),
+                        subfield_sizes={'value': 10,
+                                        'storage class': 60,
+                                        },
+                        subfield_vocabularies={'unit': 'informationUnits',
+                                               'storage class': 'storageTypes'},
                         widget=ateapi.RecordsWidget(label='Storage resources'),
                         ),
 
 ))
 
 ResourceContextFields = atapi.Schema((
-    # Provider is assumed to be available via the context - usually the aquisition parent
+    # Provider is assumed to be available via the context - usually the
+    # aquisition parent
     atapi.ReferenceField('project',
                          relationship='project',
                          multiValued=False,
@@ -115,7 +119,7 @@ ResourceContextFields = atapi.Schema((
                                                        "resource has been established.",
                                                        allow_browse=1,
                                                        startup_directory='/projects',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('customer',
                          relationship='customer',
@@ -126,7 +130,7 @@ ResourceContextFields = atapi.Schema((
                                                        "resource has been established.",
                                                        allow_browse=1,
                                                        startup_directory='/customers',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('contact',
                          relationship='contact',
@@ -137,7 +141,7 @@ ResourceContextFields = atapi.Schema((
                                                        "resource.",
                                                        allow_browse=1,
                                                        startup_directory='/people',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('request',
                          relationship='request',
@@ -148,29 +152,31 @@ ResourceContextFields = atapi.Schema((
                                                        "establishment of this resource.",
                                                        allow_browse=1,
                                                        startup_directory='/projects',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('services',
                          relationship='services',
                          multiValued=True,
-                         allowed_types=('RegisteredService', 'RegisteredServiceComponent'),
+                         allowed_types=('RegisteredService',
+                                        'RegisteredServiceComponent'),
                          widget=ReferenceBrowserWidget(label="Components",
                                                        description="The service components using "\
                                                        "this resource.",
                                                        allow_browse=1,
                                                        startup_directory='/providers',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('linked_resources',
                          relationship='linked_resources',
                          multiValued=True,
-                         allowed_types=('RegisteredComputeResource', 'RegisteredStorageResource'),
+                         allowed_types=('RegisteredComputeResource',
+                                        'RegisteredStorageResource'),
                          widget=ReferenceBrowserWidget(label="Linked resources",
                                                        description="Other resources linked to this "\
                                                        "resource.",
                                                        allow_browse=1,
                                                        startup_directory='/providers',
-                                                      ),
+                                                       ),
                          ),
 ))
 
@@ -183,7 +189,7 @@ RequestFields = atapi.Schema((
     atapi.DateTimeField('endDate',
                         default=DateTime(END_OF_EUDAT2020),
                         widget=atapi.CalendarWidget(label='End date',
-                                                    description="The defualt is the end of EUDAT's "\
+                                                    description="The defualt is the end of EUDAT's "
                                                     "current project phase.",
                                                     show_hm=False),
                         ),
@@ -192,21 +198,22 @@ RequestFields = atapi.Schema((
                          multiValued=True,
                          allowed_types=('Provider',),
                          widget=ReferenceBrowserWidget(label="Preferred provider(s)",
-                                                       description="If there is a reason to prefer certain "\
-                                                       "provider(s) this can be specified here. Usually "\
+                                                       description="If there is a reason to prefer certain "
+                                                       "provider(s) this can be specified here. Usually "
                                                        "this can be left empty",
                                                        allow_browse=1,
                                                        startup_directory='/providers',
-                                                      ),
+                                                       ),
                          ),
     atapi.StringField('ticketid',
                       widget=atapi.StringWidget(label="Ticket ID",
-                                                description="Once a ticket in EUDAT's Trouble Ticket "\
-                                                "System (TTS) has been created its ID can be entered "\
+                                                description="Once a ticket in EUDAT's Trouble Ticket "
+                                                "System (TTS) has been created its ID can be entered "
                                                 "here for easy reference.",
-                                            ),
-                  ),
+                                                ),
+                      ),
 ))
+
 
 class RequestUtilities(object):
     """Mixin class to provide shared functionality across request types"""
@@ -253,7 +260,7 @@ class CommonUtilities(object):
 
     def ids(self):
         """Tuple of all identifiers - from the field plus uid and pid"""
-        ids = [entry.get('value','') for entry in self.getIdentifiers()]
+        ids = [entry.get('value', '') for entry in self.getIdentifiers()]
         ids.append(self.UID())
         handle = self.handle_client._getHandle(self)
         if handle is not None:
@@ -288,8 +295,8 @@ class CommonUtilities(object):
         """Values of the additional key/value pairs for indexing"""
         content = []
         for entry in self.getAdditional():
-            content.append(entry.get('key',''))
-            content.append(entry.get('value',''))
+            content.append(entry.get('key', ''))
+            content.append(entry.get('value', ''))
         return ' '.join(content)
 
     def stateIn(self, states):
@@ -322,11 +329,12 @@ class CommonUtilities(object):
 
     # Type mapping (DP -> CREG)
     dptype2cregtype = {
-        "Provider":"Site",
-        "RegisteredService":"Service_Group",
-        "RegisteredServiceComponent":"Service",
+        "Provider": "Site",
+        "RegisteredService": "Service_Group",
+        "RegisteredServiceComponent": "Service",
     }
-    def getCregId(self, id_key = 'creg_id'):
+
+    def getCregId(self, id_key='creg_id'):
         """
         Looks up the 'id_key' in the list of 'additional' KV pairs 
         and returns its value if found. Otherwise returns None.
@@ -354,32 +362,32 @@ class CommonUtilities(object):
         url = self.url_pattern % (ctype, creg_id)
         if url_only:
             return url
-        title='Link to the corresponding entry in the central registry'
-        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (url, title, url)
+        title = 'Link to the corresponding entry in the central registry'
+        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (
+            url, title, url)
         return anchor
 
     def convert(self, raw):
         """Checking REQUEST for a target unit and converting
         if necessary"""
-        
-        v = raw.get('value','')
-        u = raw.get('unit','')
+
+        v = raw.get('value', '')
+        u = raw.get('unit', '')
         result = {'value': v,
                   'unit': u,
                   }
-        
+
         request = self.REQUEST
         try:
-            target_unit = request['unit'] 
+            target_unit = request['unit']
             if target_unit != u:
                 result = self.pint_convert(v, u, target_unit)
         except KeyError:
-            pass # no target unit specified
-        
+            pass  # no target unit specified
+
         raw.update(result)
         return raw
 
-        
     def pint_convert(self, value, from_unit, to_unit):
         """Helper function doing unit conversions using Pint"""
 
@@ -409,7 +417,7 @@ class CommonUtilities(object):
         """Look up the controlled vocabulary for the storage types
         from the properties tool"""
         if instance is None:
-            return ateapi.getDisplayList(self, 'storage_types', add_select=True)        
+            return ateapi.getDisplayList(self, 'storage_types', add_select=True)
         return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
 
     def yesno(self, instance):
@@ -422,7 +430,7 @@ from pint import UnitRegistry
 ur = UnitRegistry()
 
 unit_map = {'bit': ur.bit,
-            'byte':ur.byte,
+            'byte': ur.byte,
             'B':   ur.byte,
             'kB':  ur.kilobyte,
             'MB':  ur.megabyte,

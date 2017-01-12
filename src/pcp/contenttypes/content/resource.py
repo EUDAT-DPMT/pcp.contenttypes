@@ -35,7 +35,7 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/providers',
                                                        ),
-                        ),
+                         ),
     atapi.ReferenceField('used_by',
                          relationship='used_by',
                          allowed_types=('Service',),
@@ -43,7 +43,7 @@ ResourceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/services',
                                                        ),
-                        ),                     
+                         ),
 )) + CommonFields.copy()
 
 

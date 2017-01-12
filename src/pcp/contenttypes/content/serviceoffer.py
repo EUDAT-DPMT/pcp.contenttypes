@@ -22,8 +22,8 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        description='Reference to the catalog entry of the service being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
-                                                      ),
-                     ),
+                                                       ),
+                         ),
     atapi.ReferenceField('slas',
                          relationship='slas_offered',
                          allowed_types=('Document',),
@@ -32,9 +32,9 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        description='Potential Service Level Agreements under which the service is being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/services/hours',
-                                                      ),
+                                                       ),
 
-                     ),
+                         ),
     atapi.ReferenceField('contact',
                          relationship='contact_for',
                          allowed_types=('Person',),
@@ -42,8 +42,8 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        description='Contact responsible for this service offer.',
                                                        allow_browse=1,
                                                        startup_directory='/people',
-                                                      ),
-                     ),
+                                                       ),
+                         ),
     atapi.TextField('constraints',
                     required=False,
                     searchable=True,
@@ -51,14 +51,14 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                     validators=('isTidyHtmlWithCleanup',),
                     default_output_type='text/x-html-safe',
                     widget=atapi.RichWidget(
-                        description=u'Any constraints under which this service '\
-                        'can only be made available should be described here. '\
-                        'If there are none leave this field empty. Other comments '\
+                        description=u'Any constraints under which this service '
+                        'can only be made available should be described here. '
+                        'If there are none leave this field empty. Other comments '
                         'should go into the "text" field below.',
                         label=u'Constraints',
                         rows=15,
-                        ),
-                ),
+                    ),
+                    ),
 )) + CommonFields.copy()
 
 

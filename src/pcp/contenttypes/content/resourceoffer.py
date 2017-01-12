@@ -18,8 +18,8 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 ResourceOfferSchema = schemata.ATContentTypeSchema.copy() \
-                      + ResourceFields.copy() \
-                      + CommonFields.copy()
+    + ResourceFields.copy() \
+    + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ResourceOfferSchema, moveDiscussion=False)

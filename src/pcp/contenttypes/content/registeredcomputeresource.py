@@ -19,40 +19,41 @@ from pcp.contenttypes.content.common import ResourceContextFields
 RegisteredComputeResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     atapi.StringField('hostname',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('ip',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('cpus',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('memory',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('localdisk',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('virtualization',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('os',
                       searchable=True,
-                  ), 
+                      ),
 
     atapi.StringField('software',
                       searchable=True,
-                  ), 
+                      ),
 
 )) + ResourceContextFields.copy() + CommonFields.copy()
 
 
-schemata.finalizeATCTSchema(RegisteredComputeResourceSchema, moveDiscussion=False)
+schemata.finalizeATCTSchema(
+    RegisteredComputeResourceSchema, moveDiscussion=False)
 
 
 class RegisteredComputeResource(base.ATCTContent, CommonUtilities):

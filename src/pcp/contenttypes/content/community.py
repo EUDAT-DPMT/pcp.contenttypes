@@ -20,7 +20,7 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 
 CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
-    
+
     ateapi.UrlField('url'),
     ateapi.AddressField('address'),
     atapi.ReferenceField('representative',
@@ -28,11 +28,11 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Representative',
                                                        allow_browse=1,
-                                                       description='Main person '\
+                                                       description='Main person '
                                                        'representing the Customer.',
                                                        startup_directory='/people',
                                                        ),
-                        ),
+                         ),
     atapi.ReferenceField('admins',
                          relationship='community_admins',
                          multiValued=True,
@@ -41,41 +41,44 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/people',
                                                        ),
-                        ),
+                         ),
     BackReferenceField('affiliated',
                        relationship='affiliated',
                        multiValued=True,
-                       widget=BackReferenceWidget(visible={'edit':'invisible'},
-                                                  ),                       
-                       ),    
+                       widget=BackReferenceWidget(visible={'edit': 'invisible'},
+                                                  ),
+                       ),
     BackReferenceField('projects_involved',
                        relationship='done_for',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Projects involved',
-                                                  description='Projects '\
+                                                  description='Projects '
                                                   'involving this Customer.',
-                                                  visible={'edit':'invisible'},
+                                                  visible={
+                                                      'edit': 'invisible'},
                                                   ),
                        ),
     BackReferenceField('primary_provider',
                        relationship='primary_provider_for',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Primary provider',
-                                                  visible={'edit':'invisible'},
+                                                  visible={
+                                                      'edit': 'invisible'},
                                                   ),
                        ),
     BackReferenceField('secondary_provider',
                        relationship='secondary_provider_for',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Secondary provider',
-                                                  visible={'edit':'invisible'},
+                                                  visible={
+                                                      'edit': 'invisible'},
                                                   ),
                        ),
     atapi.StringField('topics',
-                      widget=atapi.StringWidget(description='If applicable, please mention the '\
-                                                'scientific field(s) this customer '\
+                      widget=atapi.StringWidget(description='If applicable, please mention the '
+                                                'scientific field(s) this customer '
                                                 'is focussing on.'),
-                  ),
+                      ),
 )) + CommonFields.copy()
 
 

@@ -26,7 +26,7 @@ EnvironmentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                              force_close_on_insert=1,
                              startup_directory='/people',
                              use_wildcard_search=True,
-                             ),
+                         ),
                          ),
     atapi.TextField('account',
                     widget=atapi.TextAreaWidget(),

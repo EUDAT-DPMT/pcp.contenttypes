@@ -9,6 +9,7 @@ import os
 import json
 import requests
 
+
 class Accountable(object):
     """Mixin class for things that are accountable"""
 
@@ -31,7 +32,6 @@ class Accountable(object):
             url = SERVER_URL + 'eudat/addAccount' + data
         r = requests.post(url, auth=credentials)
         return r
-            
 
     def getCredentials(self):
         """

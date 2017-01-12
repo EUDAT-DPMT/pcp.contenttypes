@@ -1,10 +1,10 @@
 # patches to by applied using collective.monkeypatcher
-# follows advice from 
+# follows advice from
 # http://docs.plone.org/develop/plone/misc/monkeypatch.html
 
 
 #
-# patch the diff tool to support some of ATEXtensions' fields 
+# patch the diff tool to support some of ATEXtensions' fields
 # (record(s) in particular) in diff view
 #
 
@@ -31,7 +31,9 @@ NEW_AT_FIELD_MAPPING = {'text': 'variable_text',
                         'url': 'variable_text',
                         'reference': 'raw:ListDiff'}
 
-patched_field_mapping = lambda : NEW_AT_FIELD_MAPPING  # Now we have a callable method!
+# Now we have a callable method!
+patched_field_mapping = lambda: NEW_AT_FIELD_MAPPING
+
 
 def apply_patched_mapping(scope, original, replacement):
     setattr(scope, original, replacement())

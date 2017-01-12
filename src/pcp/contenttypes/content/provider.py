@@ -24,59 +24,59 @@ from pcp.contenttypes.content.common import CommonUtilities
 ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.UrlField('url',
                     searchable=1,
-                ),
+                    ),
     atapi.ComputedField('link2offers',
                         expression="here.getOffersURL()",
                         widget=atapi.ComputedWidget(label="Resource offers"),
-                    ),
+                        ),
     atapi.StringField('provider_type',
                       searchable=1,
                       vocabulary='provider_types',
                       default='generic',
                       widget=atapi.SelectionWidget(label='Provider type',
-                                               ),
-                  ),
+                                                   ),
+                      ),
     atapi.StringField('provider_status',
                       searchable=1,
                       vocabulary='provider_stati',
                       widget=atapi.SelectionWidget(label='Provider status',
-                                               ),
-                  ),
+                                                   ),
+                      ),
     atapi.StringField('status_details',
                       searchable=1,
                       widget=atapi.StringWidget(label='Status details/comment',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.StringField('infrastructure',
                       searchable=1,
                       widget=atapi.StringWidget(label='Infrastructure status',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.StringField('domain',
                       searchable=1,
-                  ),
+                      ),
     ateapi.AddressField('address'),
     atapi.StringField('timezone'),  # from a controlled vocab maybe?
     atapi.StringField('latitude',
                       widget=atapi.StringWidget(description='If known; GOCDB can use this. '\
                                                 '(-90 <= number <= 90)',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.StringField('longitude',
                       widget=atapi.StringWidget(description='If known; GOCDB can use this. '\
                                                 '(-180 <= number <= 180)',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.StringField('ip4range',
                       widget=atapi.StringWidget(label='IPv4 range',
                                                 description='(a.b.c.d/e.f.g.h)',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.StringField('ip6range',
                       widget=atapi.StringWidget(label='IPv6 range',
-                                                #description='(a.b.c.d/e.f.g.h)',
-                                            ),
-                  ),
+                                                # description='(a.b.c.d/e.f.g.h)',
+                                                ),
+                      ),
     atapi.ReferenceField('contact',
                          relationship='contact',
                          allowed_types=('Person',),
@@ -110,21 +110,21 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                       widget=atapi.StringWidget(label='Emergency telephone number',
                                                 description='Include '\
                                                 'international prefix and area code',
-                                            ),
-                  ),
+                                                ),
+                      ),
     ateapi.EmailField('alarm_email',
                       searchable=1,
                       widget=ateapi.EmailWidget(label='Alarm E-mail',
                                                 description='To be used in emergencies',
-                                            ),
+                                                ),
                       ),
     ateapi.EmailField('helpdesk_email',
                       searchable=1,
                       widget=ateapi.EmailWidget(label='Helpdesk E-mail',
                                                 description='Generic helpdesk email address of this '\
                                                 'provider; not specific to any service.',
-                                            ),
-                  ),
+                                                ),
+                      ),
     atapi.LinesField('supported_os',
                      searchable=True,
                      multiValued=True,
@@ -153,24 +153,25 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/communities',
                                                        ),
-                         ),        
+                         ),
     BackReferenceField('affiliated',
                        relationship='affiliated',
                        multiValued=True,
-                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                       widget=BackReferenceWidget(visible={'edit': 'invisible'},
                                                   ),
                        ),
     BackReferenceField('hosts',
                        relationship='hosted_by',
                        multiValued=True,
-                       widget=BackReferenceWidget(visible={'edit':'invisible'},
+                       widget=BackReferenceWidget(visible={'edit': 'invisible'},
                                                   ),
                        ),
     BackReferenceField('projects_invloved',
                        relationship='provided_by',
                        multiValued=True,
                        widget=BackReferenceWidget(label='Projects involved',
-                                                  visible={'edit':'invisible'},
+                                                  visible={
+                                                      'edit': 'invisible'},
                                                   ),
                        ),
     ateapi.UrlField('getAccount',
@@ -181,12 +182,12 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ComputedField('registry_link',
                         expression='here.getCregURL()',
                         widget=atapi.ComputedWidget(label='Central Registry'),
-                    ),
-#    UserField('site_managers',
-#              multiValued=True,
-#              localrole='CDI Manager',
-#              cumulative=True,
-#          ),
+                        ),
+    #    UserField('site_managers',
+    #              multiValued=True,
+    #              localrole='CDI Manager',
+    #              cumulative=True,
+    #          ),
 )) + CommonFields.copy()
 
 
@@ -196,12 +197,13 @@ schemata.finalizeATCTSchema(
     moveDiscussion=False
 )
 
-ProviderSchema['committed_cores'].widget.condition='object/show_all'
-ProviderSchema['supported_os'].widget.condition='object/show_all'
-ProviderSchema['committed_disk'].widget.condition='object/show_all'
-ProviderSchema['committed_tape'].widget.condition='object/show_all'
-ProviderSchema['used_disk'].widget.condition='object/show_all'
-ProviderSchema['used_tape'].widget.condition='object/show_all'
+ProviderSchema['committed_cores'].widget.condition = 'object/show_all'
+ProviderSchema['supported_os'].widget.condition = 'object/show_all'
+ProviderSchema['committed_disk'].widget.condition = 'object/show_all'
+ProviderSchema['committed_tape'].widget.condition = 'object/show_all'
+ProviderSchema['used_disk'].widget.condition = 'object/show_all'
+ProviderSchema['used_tape'].widget.condition = 'object/show_all'
+
 
 class Provider(folder.ATFolder, CommonUtilities):
     """Compute or data service provider"""
@@ -234,9 +236,9 @@ class Provider(folder.ATFolder, CommonUtilities):
             return "No offers found"
         url = offers.absolute_url()
         title = "Resources offered by %s" % self.Title()
-        anchor = "<a href='%s?unit=TiB' title='%s'>%s</a>" % (url, title, title)
+        anchor = "<a href='%s?unit=TiB' title='%s'>%s</a>" % (
+            url, title, title)
         return anchor
-
 
     def show_all(self):
         """Used in widget condition to suppress some fields in default view"""

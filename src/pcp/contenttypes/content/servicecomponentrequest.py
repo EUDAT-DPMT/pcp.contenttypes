@@ -25,45 +25,46 @@ ServiceComponentRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          allowed_types=('ServiceComponent',),
                          multiValued=False,
                          widget=ReferenceBrowserWidget(label='Service component',
-                                                       description='The service component '\
+                                                       description='The service component '
                                                        'being requested',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('implementations',
                          relationship='requested_component_implementations',
                          allowed_types=('ServiceComponentImplementation',),
                          multiValued=True,
                          widget=ReferenceBrowserWidget(label='Implementation',
-                                                       description='If only certain '\
-                                                       'implemenations are acceptable, this '\
-                                                       'can be specified here. Leave empty '\
+                                                       description='If only certain '
+                                                       'implemenations are acceptable, this '
+                                                       'can be specified here. Leave empty '
                                                        'if any implementation is fine.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('service_hours',
                          relationship='service_hours',
                          allowed_types=('Document',),
                          widget=ReferenceBrowserWidget(label='Service hours',
                                                        allow_search=1,
-                                                       base_query={'Subject':["Support hours"]},
+                                                       base_query={
+                                                           'Subject': ["Support hours"]},
                                                        show_results_without_query=1,
                                                        ),
                          ),
 )) + RequestFields.copy() + atapi.Schema((
     ateapi.CommentField('resource_comment',
-                        comment="If applicable and already known how much resources shall be provisioned "\
-                        "through this service then this should be specified here. Otherwise this "\
+                        comment="If applicable and already known how much resources shall be provisioned "
+                        "through this service then this should be specified here. Otherwise this "
                         "can be left empty (or added later).",
-                    ),
+                        ),
 )) + ResourceFields.copy() + CommonFields.copy()
 
 
-
-schemata.finalizeATCTSchema(ServiceComponentRequestSchema, moveDiscussion=False)
+schemata.finalizeATCTSchema(
+    ServiceComponentRequestSchema, moveDiscussion=False)
 
 
 class ServiceComponentRequest(folder.ATFolder, CommonUtilities, RequestUtilities):

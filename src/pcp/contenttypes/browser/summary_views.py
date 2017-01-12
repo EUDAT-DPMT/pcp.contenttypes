@@ -8,12 +8,16 @@ from Products.Archetypes.atapi import ReferenceField
 CSV_TEMPLATE = '"%s"'
 
 # helper functions to render not so simple fields
+
+
 def render_state(content, field_id):
     return content.portal_workflow.getInfoFor(content, 'review_state')
+
 
 def render_type(content, field_id):
     ti = content.getTypeInfo()
     return ti.Title()
+
 
 def render_reference_field(content, field_id):
     field = content.schema[field_id]
@@ -22,8 +26,10 @@ def render_reference_field(content, field_id):
     if objs == []:
         return "no reference set"
     for item in objs:
-        text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
+        text.append("<a href='%s'>%s</a>" %
+                    (item.absolute_url(), item.Title()))
     return "<br />".join(text)
+
 
 def render_with_link(content, field_id):
     field = content.schema[field_id]
@@ -31,15 +37,18 @@ def render_with_link(content, field_id):
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
 
+
 def render_parent(content, field_id):
     parent = content.aq_inner.aq_parent
     title = parent.Title()
     url = parent.absolute_url()
     return "<a href='%s'>%s</a>" % (url, title)
 
+
 def modification_date(content, field_id):
     value = content.modified()
     return value.Date()
+
 
 def render_date(content, field_id):
     field = content.schema[field_id]
@@ -49,27 +58,30 @@ def render_date(content, field_id):
     except AttributeError:
         return 'not set'
 
+
 def render_resources(content, field_id):
     """Specific for requests"""
     try:
         return content.request_details()
     except AttributeError:
         return 'none specified'
-    
+
+
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
-    render_methods = {'state':render_state,
-                      'portal_type':render_type,
-                      'title':render_with_link,
-                      'parent_provider':render_parent,
-                      'parent_project':render_parent,
-                      'modified':modification_date,
-                      'startDate':render_date,
-                      'resources':render_resources,
-                      # add more as needed; reference fields don't need to be included here
-    }
-        
+    render_methods = {'state': render_state,
+                      'portal_type': render_type,
+                      'title': render_with_link,
+                      'parent_provider': render_parent,
+                      'parent_project': render_parent,
+                      'modified': modification_date,
+                      'startDate': render_date,
+                      'resources': render_resources,
+                      # add more as needed; reference fields don't need to be
+                      # included here
+                      }
+
     @property
     def catalog(self):
         return getToolByName(self.context, 'portal_catalog')
@@ -80,15 +92,15 @@ class BaseSummaryView(BrowserView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'services_used', 
-                'allocated', 'used', 'community', 
+        return ('title', 'services_used',
+                'allocated', 'used', 'community',
                 'topics', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Service',  
-                'Allocated storage', 'Used storage', 
-                'Customer', 'Topics', 
+        return ('Title', 'Service',
+                'Allocated storage', 'Used storage',
+                'Customer', 'Topics',
                 'Start date', 'End date', 'State')
 
     def simple_fields(self):
@@ -99,15 +111,15 @@ class BaseSummaryView(BrowserView):
         """The content items to show"""
         return [element.getObject() for element in self.catalog(portal_type=portal_type)]
 
-
     def render(self, content, field_id):
         """Dispatcher for rendering not-so-simple fields"""
         renderer = self.render_methods.get(field_id, render_reference_field)
         return renderer(content, field_id)
 
+
 class CustomerOverview(BaseSummaryView):
     """Overview of all customers/sponsors/communities"""
-    
+
     title = "EUDAT Customers"
 
     description = "All current and past EUDAT customers/sponsors/communities"
@@ -124,16 +136,17 @@ class CustomerOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider',  
+        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider',
                 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('topics',)
 
+
 class ProviderOverview(BaseSummaryView):
     """Overview of all providers of EUDAT services"""
-    
+
     title = "EUDAT Provider"
 
     description = "All current and past providers of EUDAT services"
@@ -149,16 +162,17 @@ class ProviderOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Website', 'Contact', 'Alarm email', 'Helpdesk email',  
+        return ('Title', 'Website', 'Contact', 'Alarm email', 'Helpdesk email',
                 'Modified')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('url', 'alarm_email', 'helpdesk_email',)
 
+
 class ServiceOverview(BaseSummaryView):
     """Overview of all EUDAT services"""
-    
+
     title = "EUDAT Catalog"
 
     description = "All current and past EUDAT services"
@@ -169,7 +183,7 @@ class ServiceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_type', 'service_owner', 'contact', 
+        return ('title', 'service_type', 'service_owner', 'contact',
                 'modified', 'state')
 
     def field_labels(self):
@@ -184,7 +198,7 @@ class ServiceOverview(BaseSummaryView):
 
 class ProjectOverview(BaseSummaryView):
     """Overview of all projects"""
-    # almost identical to base class as this is the driving use case 
+    # almost identical to base class as this is the driving use case
     # implemented in the base class
 
     title = "Project Overview"
@@ -194,6 +208,7 @@ class ProjectOverview(BaseSummaryView):
     def content_items(self):
         """All projects regardless of location"""
         return [element.getObject() for element in self.catalog(portal_type='Project')]
+
 
 class RegisteredServiceOverview(BaseSummaryView):
     """Overview of all registered services no matter where they are"""
@@ -208,21 +223,22 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'contact', 'managers', 'monitored', 'service_components', 
+        return ('title', 'contact', 'managers', 'monitored', 'service_components',
                 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',  
+        return ('Title', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
                 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('monitored',)
 
+
 class RegisteredServiceComponentOverview(BaseSummaryView):
     """Overview of all registered services components no matter where they are located"""
-    
+
     title = "Registered Service Components"
 
     description = "All registered service components across the entire site."
@@ -233,8 +249,8 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_url', 'parent_provider', 'contacts', 
-                'monitored', 'host_name', 
+        return ('title', 'service_url', 'parent_provider', 'contacts',
+                'monitored', 'host_name',
                 'state')
 
     def field_labels(self):
@@ -249,7 +265,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
 class RequestOverview(BaseSummaryView):
     """Overview of all requests no matter what type or state or where they are located"""
-    
+
     title = "All Requests"
 
     description = "All requests across the entire site."
@@ -261,13 +277,14 @@ class RequestOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a starts"""
-        return ('parent_project', 'portal_type', 'title', 'resources', 'startDate', 
+        return ('parent_project', 'portal_type', 'title', 'resources', 'startDate',
                 'preferred_providers', 'state')
 
     def field_labels(self):
         """Hardcoded label"""
-        return ('Requesting Project', 'Request Type', 'Request Title', 'Requested Resources', 
+        return ('Requesting Project', 'Request Type', 'Request Title', 'Requested Resources',
                 'Requested Start Date', 'Preferred Provider(s)', 'State')
+
 
 class ApprovedRequests(RequestOverview):
     """All approved but unfulfilled requests"""
@@ -279,13 +296,13 @@ class ApprovedRequests(RequestOverview):
     def content_items(self):
         """All approved requests regardless of location"""
         types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest']
-        return [element.getObject() for element in \
+        return [element.getObject() for element in
                 self.catalog(portal_type=types, review_state='approved')]
 
 
 class RegisteredResourceOverview(BaseSummaryView):
     """Overview of all registered resources no matter where they are located"""
-    
+
     title = "Registered Resources"
 
     description = "All registered resources across the entire site."
@@ -308,9 +325,10 @@ class RegisteredResourceOverview(BaseSummaryView):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('compute_resources', 'storage_resources')
 
+
 class ResourceOfferOverview(RegisteredResourceOverview):
     """Overview of all resource offers no matter which provider made them"""
-    
+
     title = "Resource Offers"
 
     description = "All resource offers from all providers."
@@ -318,7 +336,6 @@ class ResourceOfferOverview(RegisteredResourceOverview):
     def content_items(self):
         """All resource offers regardless of location"""
         return [element.getObject() for element in self.catalog(portal_type='ResourceOffer')]
-
 
 
 class CsvView(ProjectOverview):
@@ -332,10 +349,10 @@ class CsvView(ProjectOverview):
                    newline='\r\n',
                    ):
         """Main method to be called for the csv export"""
-        
+
         if fields is None:
             fields = self.fields()
-            
+
         out = StringIO()
         out.write(delimiter.join(fields) + newline)
 
@@ -348,15 +365,16 @@ class CsvView(ProjectOverview):
                 value = CSV_TEMPLATE % text
                 values.append(value)
             out.write(delimiter.join(values) + newline)
-            
+
         value = out.getvalue()
         out.close()
 
         timestamp = datetime.today().strftime("%Y%m%d%H%M")
         filename = filenamebase + timestamp + '.csv'
-        
-        self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
-        self.request.RESPONSE.setHeader("Content-Disposition", 
-                                        "inline;filename=%s"%filename)
+
+        self.request.RESPONSE.setHeader(
+            'Content-Type', 'application/x-msexcel')
+        self.request.RESPONSE.setHeader("Content-Disposition",
+                                        "inline;filename=%s" % filename)
 
         return value

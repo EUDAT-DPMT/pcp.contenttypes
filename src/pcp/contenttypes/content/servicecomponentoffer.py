@@ -14,7 +14,7 @@ from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
-ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((  
+ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('service_component',
                          relationship='service_component_offered',
                          allowed_types=('ServiceComponent',),
@@ -22,8 +22,8 @@ ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        description='Reference to the catalog entry of the service component being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
-                                                      ),
-                     ),
+                                                       ),
+                         ),
     atapi.ReferenceField('implementations',
                          relationship='service_component_implementations_offered',
                          allowed_types=('ServiceComponentImplementation',),
@@ -32,8 +32,8 @@ ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        description='Reference to the catalog entry of the implementations(s) of the service component being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
-                                                      ),
-                   ),
+                                                       ),
+                         ),
 )) + CommonFields.copy()
 
 

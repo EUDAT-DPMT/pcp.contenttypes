@@ -21,11 +21,11 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          relationship='contact_for',
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Contact',
-                                                       description='The person responsible for this '\
+                                                       description='The person responsible for this '
                                                        'registered service.',
                                                        allow_browse=1,
                                                        startup_directory='/people',
-                                                      ),
+                                                       ),
                          ),
     atapi.ReferenceField('managers',
                          read_permission='View internals',
@@ -34,37 +34,39 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          allowed_types=('Person',),
                          multiValued=True,
                          widget=ReferenceBrowserWidget(label='Managers(s)',
-                                                       description='Other people who can change access '\
+                                                       description='Other people who can change access '
                                                        'rights and similar critical controls.',
                                                        allow_browse=1,
                                                        startup_directory='/people',
-                                                      ),
+                                                       ),
                          ),
     atapi.BooleanField('monitored',
                        widget=atapi.BooleanWidget(label='Should this service be monitored?',
-                                              ),
-                   ),
+                                                  ),
+                       ),
     atapi.ReferenceField('service_components',
                          relationship='service_components',
                          multiValued=True,
                          allowed_types=('RegisteredServiceComponent',),
                          widget=ReferenceBrowserWidget(label='Service components',
-                                                       description='The service components '\
+                                                       description='The service components '
                                                        'providing the service.',
-                                                       base_query={'portal_type':'RegisteredServiceComponent'},
+                                                       base_query={
+                                                           'portal_type': 'RegisteredServiceComponent'},
                                                        allow_search=1,
                                                        allow_browse=0,
                                                        show_results_without_query=1,
                                                        ),
-                        ),
+                         ),
     atapi.ReferenceField('original_request',
                          relationship='original_request',
                          allowed_types=('ServiceRequest',),
                          widget=ReferenceBrowserWidget(label='Request',
-                                                       description='The original request '\
-                                                       'that triggered the establishment '\
+                                                       description='The original request '
+                                                       'that triggered the establishment '
                                                        'of this service.',
-                                                       base_query={'portal_type':'ServiceRequest'},
+                                                       base_query={
+                                                           'portal_type': 'ServiceRequest'},
                                                        allow_search=1,
                                                        allow_browse=0,
                                                        show_results_without_query=1,
@@ -74,7 +76,7 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     atapi.ComputedField('registry_link',
                         expression='here.getCregURL()',
                         widget=atapi.ComputedWidget(label='Central Registry'),
-                    ),
+                        ),
 )) + CommonFields.copy()
 
 

@@ -15,17 +15,17 @@ from pcp.contenttypes.content.common import ResourceFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 RegisteredResourceSchema = schemata.ATContentTypeSchema.copy() + ResourceFields.copy() \
-                           + atapi.Schema((
+    + atapi.Schema((
 
-    # -*- Your Archetypes field definitions here ... -*-
+        # -*- Your Archetypes field definitions here ... -*-
 
-))
+    ))
 
 
 schemata.finalizeATCTSchema(RegisteredResourceSchema, moveDiscussion=False)
 
 
-class RegisteredResource(base.ATCTContent,CommonUtilities):
+class RegisteredResource(base.ATCTContent, CommonUtilities):
     """A CDI admin registers a new resource"""
     implements(IRegisteredResource)
 

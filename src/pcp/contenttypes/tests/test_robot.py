@@ -1,4 +1,4 @@
-from  pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
+from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 from plone.testing import layered
 import robotsuite
 import unittest

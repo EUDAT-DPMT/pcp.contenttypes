@@ -23,7 +23,7 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='service',
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Service',
-                                                       description='The service '\
+                                                       description='The service '
                                                        'being requested',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
@@ -35,16 +35,17 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          allowed_types=('Document',),
                          widget=ReferenceBrowserWidget(label='Service hours',
                                                        allow_search=1,
-                                                       base_query={'Subject':["Support hours"]},
+                                                       base_query={
+                                                           'Subject': ["Support hours"]},
                                                        show_results_without_query=1,
                                                        ),
                          ),
 )) + RequestFields.copy() + atapi.Schema((
     ateapi.CommentField('resource_comment',
-                        comment="If applicable and already known how much resources shall be provisioned "\
-                        "through this service then this should be specified here. Otherwise this "\
+                        comment="If applicable and already known how much resources shall be provisioned "
+                        "through this service then this should be specified here. Otherwise this "
                         "can be left empty (or added later).",
-                    ),
+                        ),
 )) + ResourceFields.copy() + CommonFields.copy()
 
 

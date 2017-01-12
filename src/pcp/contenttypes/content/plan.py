@@ -26,7 +26,6 @@ PlanSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 )) + CommonFields.copy()
 
 
-
 schemata.finalizeATCTSchema(PlanSchema, moveDiscussion=False)
 
 

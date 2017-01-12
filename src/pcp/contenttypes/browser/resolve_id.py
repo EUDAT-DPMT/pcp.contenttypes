@@ -1,6 +1,7 @@
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 
+
 class ResolveID(BrowserView):
     """Resolve any id we may know about"""
 
@@ -11,11 +12,11 @@ class ResolveID(BrowserView):
     def resolve_id(self, id=None, verbose=False):
         """Lookup the id passed in and redirect to content if 
         exactly one match is found.
-        
+
         If no match is found and 'verbose' is False (default) 
         it returns None or if 'verbose' is true it tells which
         id is not found.
-        
+
         A list of URLs is returned if the id resolves to more 
         than one object."""
 
