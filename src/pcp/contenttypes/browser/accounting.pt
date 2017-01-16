@@ -15,12 +15,21 @@
 	<table class="listing dt-table" id="accounting-table">
 	  <thead>
           <tr>
-            <th>foo</th>
+            <th>Date</th>
+            <th>Service</th>
+            <th>Type</th>
+            <th>Unit</th>
+            <th>Value</th>
 	    </tr>
 	  </thead>
       <tbody> 
         <tr tal:repeat="row rows">
-            <td tal:content="row"/>
+            <td tal:attributes="data-order row/meta/ts"
+                tal:content="row/meta/submission_time"/>
+            <td tal:content="row/meta/service"/>
+            <td tal:content="row/core/type"/>
+            <td tal:content="row/core/unit"/>
+            <td tal:content="row/core/value"/>
 	     </tr>
 	  </tbody>
 	</table>
