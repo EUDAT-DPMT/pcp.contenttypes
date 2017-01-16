@@ -1,64 +1,33 @@
 """Mixin class for content that is accountable (like resources)
 """
 
-SERVER_URL = "http://accounting.eudat.eu/"
-USERKEY = "ACCOUNTING_USER"
-PWKEY = "ACCOUNTING_PW"
-
 import os
+import furl
 import json
 import requests
 
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+
+from ..interfaces.settings import ISettings
 
 class Accountable(object):
     """Mixin class for things that are accountable"""
 
-    def addAccount(self, owner=None, test=False):
-        """
-        Create an account at the accounting server under the object's UID.
-        If no owner id is passed the provider hosting the resource will own 
-        the account. If 'test' is true the 'test' domain will be used.
-        """
-        id = self.UID()
-        if owner is None:
-            owner = self.aq_parent.Title()
-        data = "?id=%s&owner=%s" % (id, owner)
-        credentials = self.getCredentials()
-        if credentials is None:
-            return "No credentials found in the environment - doing nothing"
-        if test:
-            url = SERVER_URL + 'test/addAccount' + data
-        else:
-            url = SERVER_URL + 'eudat/addAccount' + data
-        r = requests.post(url, auth=credentials)
-        return r
+    def addAccount(self):
+        """ Create IAccount folder on the accounting server """
 
-    def getCredentials(self):
-        """
-        Look up username and password to be used at the accounting server
-        in the environment variables ACCOUNTING_USER and ACCOUNTING_PW
-        respectively.
-        """
-        user = os.getenv(USERKEY)
-        password = os.getenv(PWKEY)
-        if not user or not password:
-            return None
-        return (user, password)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISettings)
+        f = furl.furl(settings.accounting_url + '/addAccount')
 
-    def getRecords(self, n=20, test=False):
-        """
-        Retrieve the last n records in the account. If 'test' is True lookup is 
-        done in the 'test' domain
-        """
-        id = self.UID()
-        domain = test and 'test/' or 'eudat/'
-        credentials = self.getCredentials()
-        if credentials is None:
-            return "No credentials found in the environment - doing nothing"
-        url = SERVER_URL + domain + id + '/listRecords?n=' + str(n)
-        r = requests.get(url, auth=credentials)
-        try:
-            data = json.loads(r.content)
-        except ValueError:
-            return r.content
-        return data
+        owner_id = self.context.getProvider().provider_userid
+        if not owner_id:
+            raise ValueError('Provider object has no provider_userid set')
+
+        data = dict(
+            id=self.context.UID,
+            owner=owner_id)
+        result = requests.post(f, data=data)
+        if not result.ok:
+            raise RuntimeError('Unable to create account for {} on accounting server'.format(owner_id, result.text))
