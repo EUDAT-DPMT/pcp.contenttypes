@@ -32,6 +32,15 @@
             <td tal:content="row/core/value"/>
 	     </tr>
 	  </tbody>
+	  <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+	    </tr>
+	  </tfoot>
 	</table>
 
    <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    

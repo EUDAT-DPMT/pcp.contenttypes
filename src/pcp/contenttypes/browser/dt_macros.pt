@@ -19,26 +19,42 @@
             order = [0, "asc"];
         }
 
-        var table = $('.dt-table').DataTable({
 
-        "columnDefs": [ {
-                  "targets": 'no-sort',
-                            "orderable": false,
-                                } ],
-                pageLength: 50,
-                autoWidth: false,
-                initComplete: function(settings, json) {
-                    $('.dt-table').show();
-                },
-                order: order,
-                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
-                // dom: 'TC<"clear">lfrtip',
-                dom: '<"clear">lfrtip',
-                //    tableTools: {
-                //"sSwfPath": "++resource++pcp.contenttypes/DataTables-1.10.13/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
-                //}
-            });
-});
+        $('.dt-table tfoot th').each( function (i) {
+            var title = $('#example thead th').eq( $(this).index() ).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+        } );
+
+        var table = $('.dt-table').DataTable({
+		   columnDefs: [ {
+			  "targets": 'no-sort',
+						"orderable": false,
+			}],
+			pageLength: 50,
+			autoWidth: false,
+			initComplete: function(settings, json) {
+				$('.dt-table').show();
+			},
+			order: order,
+			aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+			// dom: 'TC<"clear">lfrtip',
+			dom: '<"clear">lfrtip',
+			//    tableTools: {
+			//"sSwfPath": "++resource++pcp.contenttypes/DataTables-1.10.13/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+			//}
+        });
+
+		table.columns().every( function () {
+			var that = this;
+			$( 'input', this.footer() ).on( 'keyup change', function () {
+				if ( that.search() !== this.value ) {
+					that
+						.search( this.value )
+						.draw();
+				}
+			} );
+		});
+	});
 
     </script>
 </metal:macro>
