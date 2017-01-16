@@ -109,7 +109,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                         ),
     ateapi.UrlField('call_for_collaboration',
                     widget=ateapi.UrlWidget(label='Call for collaboration',
-                                            description='URL to the call that '\
+                                            description='URL to the call that '
                                             'triggered this project',
                                             ),
                     ),
@@ -117,21 +117,21 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     read_permission='View internals',
                     write_permission='Modify internals',
                     widget=ateapi.UrlWidget(label='Uptake plan',
-                                            description='URL to the project '\
-                                            'uptake plan (if not available on this site). '\
-                                            'Otherwise, often found on the '\
+                                            description='URL to the project '
+                                            'uptake plan (if not available on this site). '
+                                            'Otherwise, often found on the '
                                             'confluence site.',
                                             ),
                     ),
     atapi.StringField('repository',
-                      widget=atapi.StringWidget(description="If the data to be "\
-                                                "dealt with here are in a web-accessible "\
-                                                "repository already you should specify "\
+                      widget=atapi.StringWidget(description="If the data to be "
+                                                "dealt with here are in a web-accessible "
+                                                "repository already you should specify "
                                                 "its URL here.",),
                       ),
     atapi.StringField('topics',
-                      widget=atapi.StringWidget(description='Please mention the '\
-                                                'scientific field(s) the data '\
+                      widget=atapi.StringWidget(description='Please mention the '
+                                                'scientific field(s) the data '
                                                 'originate from.'),
                       ),
 )) + CommonFields.copy()

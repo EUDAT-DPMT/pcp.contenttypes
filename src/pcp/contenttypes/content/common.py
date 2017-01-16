@@ -115,7 +115,7 @@ ResourceContextFields = atapi.Schema((
                          multiValued=False,
                          allowed_types=('Project',),
                          widget=ReferenceBrowserWidget(label="Project",
-                                                       description="The project for which this "\
+                                                       description="The project for which this "
                                                        "resource has been established.",
                                                        allow_browse=1,
                                                        startup_directory='/projects',
@@ -126,7 +126,7 @@ ResourceContextFields = atapi.Schema((
                          multiValued=False,
                          allowed_types=('Community',),
                          widget=ReferenceBrowserWidget(label="Customer",
-                                                       description="The customer for which this "\
+                                                       description="The customer for which this "
                                                        "resource has been established.",
                                                        allow_browse=1,
                                                        startup_directory='/customers',
@@ -137,7 +137,7 @@ ResourceContextFields = atapi.Schema((
                          multiValued=False,
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label="Contact",
-                                                       description="The primary contact for this "\
+                                                       description="The primary contact for this "
                                                        "resource.",
                                                        allow_browse=1,
                                                        startup_directory='/people',
@@ -148,7 +148,7 @@ ResourceContextFields = atapi.Schema((
                          multiValued=False,
                          allowed_types=('ResourceRequest', 'ServiceRequest'),
                          widget=ReferenceBrowserWidget(label="Request",
-                                                       description="The request that triggered the "\
+                                                       description="The request that triggered the "
                                                        "establishment of this resource.",
                                                        allow_browse=1,
                                                        startup_directory='/projects',
@@ -160,7 +160,7 @@ ResourceContextFields = atapi.Schema((
                          allowed_types=('RegisteredService',
                                         'RegisteredServiceComponent'),
                          widget=ReferenceBrowserWidget(label="Components",
-                                                       description="The service components using "\
+                                                       description="The service components using "
                                                        "this resource.",
                                                        allow_browse=1,
                                                        startup_directory='/providers',
@@ -172,7 +172,7 @@ ResourceContextFields = atapi.Schema((
                          allowed_types=('RegisteredComputeResource',
                                         'RegisteredStorageResource'),
                          widget=ReferenceBrowserWidget(label="Linked resources",
-                                                       description="Other resources linked to this "\
+                                                       description="Other resources linked to this "
                                                        "resource.",
                                                        allow_browse=1,
                                                        startup_directory='/providers',

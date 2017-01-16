@@ -36,6 +36,14 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                       widget=atapi.SelectionWidget(label='Provider type',
                                                    ),
                       ),
+    atapi.StringField('provider_userid',
+                    required=True,
+                      searchable=0,
+                      default='',
+                      widget=atapi.StringWidget(label='Provider User ID',
+                                                   description='User ID in Plone and accounting server',
+                                                   ),
+                      ),
     atapi.StringField('provider_status',
                       searchable=1,
                       vocabulary='provider_stati',
@@ -58,12 +66,12 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.AddressField('address'),
     atapi.StringField('timezone'),  # from a controlled vocab maybe?
     atapi.StringField('latitude',
-                      widget=atapi.StringWidget(description='If known; GOCDB can use this. '\
+                      widget=atapi.StringWidget(description='If known; GOCDB can use this. '
                                                 '(-90 <= number <= 90)',
                                                 ),
                       ),
     atapi.StringField('longitude',
-                      widget=atapi.StringWidget(description='If known; GOCDB can use this. '\
+                      widget=atapi.StringWidget(description='If known; GOCDB can use this. '
                                                 '(-180 <= number <= 180)',
                                                 ),
                       ),
@@ -90,7 +98,7 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='security_contact',
                          allowed_types=('Person',),
                          widget=ReferenceBrowserWidget(label='Security contact',
-                                                       description='Person specifically to be contacted '\
+                                                       description='Person specifically to be contacted '
                                                        'for security-related matters',
                                                        allow_browse=1,
                                                        startup_directory='/people',
@@ -108,7 +116,7 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.StringField('emergency_phone',
                       searchable=1,
                       widget=atapi.StringWidget(label='Emergency telephone number',
-                                                description='Include '\
+                                                description='Include '
                                                 'international prefix and area code',
                                                 ),
                       ),
@@ -121,7 +129,7 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     ateapi.EmailField('helpdesk_email',
                       searchable=1,
                       widget=ateapi.EmailWidget(label='Helpdesk E-mail',
-                                                description='Generic helpdesk email address of this '\
+                                                description='Generic helpdesk email address of this '
                                                 'provider; not specific to any service.',
                                                 ),
                       ),
@@ -247,5 +255,9 @@ class Provider(folder.ATFolder, CommonUtilities):
             return True
         except KeyError:
             return False
+
+    def getProvider(self):
+        """ Return provider in aquisition chain """
+        return self
 
 atapi.registerType(Provider, PROJECTNAME)
