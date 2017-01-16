@@ -1,10 +1,11 @@
 <metal:macro define-macro="datatable_css_headers">
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/Buttons-1.2.4/css/buttons.dataTables.css" />
 </metal:macro>
 
 <metal:macro define-macro="datatable_js_headers">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/Buttons-1.2.4/js/buttons.html5.min.js"></script>
 </metal:macro>
 
 
@@ -19,7 +20,6 @@
             order = [0, "asc"];
         }
 
-
         $('.dt-table tfoot th').each( function (i) {
             var title = $('#example thead th').eq( $(this).index() ).text();
             $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
@@ -30,6 +30,8 @@
 			  "targets": 'no-sort',
 						"orderable": false,
 			}],
+			buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            dom: '<"clear">Blfrtip',
 			pageLength: 50,
 			autoWidth: false,
 			initComplete: function(settings, json) {
@@ -37,11 +39,6 @@
 			},
 			order: order,
 			aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
-			// dom: 'TC<"clear">lfrtip',
-			dom: '<"clear">lfrtip',
-			//    tableTools: {
-			//"sSwfPath": "++resource++pcp.contenttypes/DataTables-1.10.13/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
-			//}
         });
 
 		table.columns().every( function () {
