@@ -188,6 +188,14 @@
 	/>
 
   <browser:page
+	for="pcp.contenttypes.interfaces.registeredstorageresource.IRegisteredStorageResource"
+	name="create-account"
+	class=".accounting.Accounting"
+    attribute="create_account"
+	permission="cmf.ModifyPortalContent"
+	/>
+
+  <browser:page
 	for="*"
 	name="dt_macros"
 	template="dt_macros.pt"

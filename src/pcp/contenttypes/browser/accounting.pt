@@ -9,6 +9,13 @@
 
     <metal:main fill-slot="content-core" tal:define="rows view/records">
 
+    <tal:def define="has_account view/has_account">
+        <a tal:condition="not: has_account"
+           tal:attributes="href string:${context/absolute_url}/create-account">
+            Create account
+        </a>
+    </tal:def>
+
     <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
     <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
 
