@@ -1,5 +1,5 @@
-from zope.interface import Interface
+from accountable import IAccountable
 
 
-class IRegisteredStorageResource(Interface):
+class IRegisteredStorageResource(IAccountable):
     """Marker interface for the RegisteredStorageResource"""

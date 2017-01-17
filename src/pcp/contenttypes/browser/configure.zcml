@@ -180,7 +180,7 @@
 	/>
 
   <browser:page
-	for="pcp.contenttypes.interfaces.registeredstorageresource.IRegisteredStorageResource"
+	for="pcp.contenttypes.interfaces.IAccountable"
 	name="list-account-records"
 	class=".accounting.Accounting"
     template="accounting.pt"
@@ -188,7 +188,7 @@
 	/>
 
   <browser:page
-	for="pcp.contenttypes.interfaces.registeredstorageresource.IRegisteredStorageResource"
+	for="pcp.contenttypes.interfaces.IAccountable"
 	name="create-account"
 	class=".accounting.Accounting"
     attribute="create_account"

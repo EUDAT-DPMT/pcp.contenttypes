@@ -14,43 +14,49 @@
            tal:attributes="href string:${context/absolute_url}/create-account">
             Create account
         </a>
+
+        <tal:if condition="has_account">
+
+            <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+            <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+
+            <table class="listing dt-table" id="accounting-table">
+              <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                </tr>
+              </thead>
+              <tbody> 
+                <tr tal:repeat="row rows">
+                    <td tal:attributes="data-order row/meta/ts"
+                        tal:content="row/meta/submission_time"/>
+                    <td tal:content="row/meta/service"/>
+                    <td tal:content="row/core/type"/>
+                    <td tal:content="row/core/value"/>
+                    <td tal:content="row/core/unit"/>
+                 </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+              </tfoot>
+            </table>
+
+            <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+
+       </tal:if>
+
     </tal:def>
 
-    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
-    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
-
-	<table class="listing dt-table" id="accounting-table">
-	  <thead>
-          <tr>
-            <th>Date</th>
-            <th>Service</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Unit</th>
-	    </tr>
-	  </thead>
-      <tbody> 
-        <tr tal:repeat="row rows">
-            <td tal:attributes="data-order row/meta/ts"
-                tal:content="row/meta/submission_time"/>
-            <td tal:content="row/meta/service"/>
-            <td tal:content="row/core/type"/>
-            <td tal:content="row/core/value"/>
-            <td tal:content="row/core/unit"/>
-	     </tr>
-	  </tbody>
-	  <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-	    </tr>
-	  </tfoot>
-	</table>
-
-   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
 </metal:main>
 
 </body>

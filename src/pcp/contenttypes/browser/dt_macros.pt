@@ -17,7 +17,7 @@
         try {
             order = DT_ORDER_BY;
         } catch(e) {
-            order = [0, "asc"];
+            order = [0, "desc"];
         }
 
         $('.dt-table tfoot th').each( function (i) {
