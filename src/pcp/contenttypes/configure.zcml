@@ -9,8 +9,8 @@
     
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Include support for monkey patching. -->
   <include package="collective.monkeypatcher" />
+  <include package=".subscribers" />
 
   <!-- jbot support-->
   <include package="z3c.jbot" file="meta.zcml" />
