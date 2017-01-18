@@ -5,12 +5,7 @@
 import os
 import base64
 
-try:
-    import json
-except ImportError:
-    # Python 2.54 / Plone 3.3 use simplejson
-    # version > 2.3 < 3.0
-    import simplejson as json
+import json
 
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
