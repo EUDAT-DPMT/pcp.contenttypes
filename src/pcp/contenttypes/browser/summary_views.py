@@ -1,6 +1,6 @@
-from types import UnicodeType
+import plone.api
 from datetime import datetime
-from StringIO import StringIO
+from cStringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import ReferenceField
@@ -360,7 +360,7 @@ class CsvView(ProjectOverview):
             values = []
             for field in project:
                 text = field['text']
-                if type(text) is UnicodeType:
+                if isinstance(text, unicode):
                     text = text.encode('utf8')
                 value = CSV_TEMPLATE % text
                 values.append(value)
