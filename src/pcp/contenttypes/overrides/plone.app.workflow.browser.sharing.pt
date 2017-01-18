@@ -64,7 +64,7 @@
             </div>
 
             <div id="user-group-sharing-container">
-                xxx
+
         <table metal:define-macro="user-group-sharing" id="user-group-sharing"
                class="listing"
                summary="Current sharing permissions"
@@ -86,11 +86,13 @@
             <tbody metal:define-macro="user-group-sharing-settings" id="user-group-sharing-settings">
                 <tal:entries repeat="entry role_settings">
                     <tr tal:define="is_group python:entry['type'] == 'group';
+                                    user_obj python: context.acl_users.getUser(entry['id']);
                                     disabled entry/disabled | python:False;
                                     oddrow repeat/entry/odd;
                                     sticky python:entry['id'] in view.STICKY"
                         tal:attributes="class python:oddrow and 'odd' or 'even'">
                         <td tal:attributes="title entry/id">
+
                             <img tal:condition="is_group" tal:replace="structure context/group.png" />
                             <img tal:condition="not:is_group" tal:replace="structure context/user.png" />
 
@@ -100,7 +102,9 @@
                             <tal:nonsticky condition="not:sticky">
                               <span tal:replace="entry/title" />
                               <tal:title condition="entry/login|nothing">
-                                (<span tal:replace="entry/login" />)
+                                  (<span tal:replace="entry/login" />,
+                                   <span tal:content="python: user_obj.getProperty('email')"/>
+                                  )
                               </tal:title>
                             </tal:nonsticky>
 

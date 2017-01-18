@@ -14,7 +14,7 @@
 
   <!-- jbot support-->
   <include package="z3c.jbot" file="meta.zcml" />
-    <browser:jbot directory="jbot" />
+  <browser:jbot directory="overrides" />
 
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
