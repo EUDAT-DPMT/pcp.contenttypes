@@ -42,17 +42,22 @@
 	  </thead>
 	  <tbody>
 	    <tr tal:repeat="content view/content_items">
-		<td tal:repeat="field view/fields">
-                  <div tal:condition="python:field in view.simple_fields()">
-                    <metal:field use-macro="python:content.widget(field, mode='view')">
-                      Field value
-                    </metal:field>	
-	          </div>
-                  <div tal:condition="python:field not in view.simple_fields()"
-                       tal:content="structure python:view.render(content, field)">
-                    field value
-                  </div>
-                </td>
+            <td tal:repeat="field view/fields">
+                <tal:def define="field_visible python: view.field_visible(content, field)">
+                    <tal:if condition="field_visible">
+                      <div tal:condition="python:field in view.simple_fields()">
+                        <metal:field use-macro="python:content.widget(field, mode='view')">
+                          Field value
+                        </metal:field>	
+                      </div>
+                      <div tal:condition="python:field not in view.simple_fields()"
+                           tal:content="structure python:view.render(content, field)">
+                        field value
+                      </div>
+                   </tal:if>
+                   <span tal:condition="not: field_visible">hidden</span>
+               </tal:def>
+            </td>
 	    </tr>
 	  </tbody>
 	</table>

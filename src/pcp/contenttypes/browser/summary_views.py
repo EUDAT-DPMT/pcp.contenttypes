@@ -82,6 +82,25 @@ class BaseSummaryView(BrowserView):
                       # included here
                       }
 
+    def field_visible(self, obj, field_name):
+
+        field = obj.getField(field_name)
+        if field:
+            permission = field.read_permission
+            print '-'*80
+            print plone.api.user.get_current(),
+            print plone.api.user.get_roles(user=plone.api.user.get_current())
+            print field_name, permission
+            print plone.api.user.has_permission(
+                    permission='View internals',
+                    user=plone.api.user.get_current(),
+                    obj=obj)
+            return plone.api.user.has_permission(
+                    permission='View internals',
+                    user=plone.api.user.get_current(),
+                    obj=obj)
+        return True
+
     @property
     def catalog(self):
         return getToolByName(self.context, 'portal_catalog')
