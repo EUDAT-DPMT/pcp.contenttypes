@@ -87,16 +87,8 @@ class BaseSummaryView(BrowserView):
         field = obj.getField(field_name)
         if field:
             permission = field.read_permission
-            print '-'*80
-            print plone.api.user.get_current(),
-            print plone.api.user.get_roles(user=plone.api.user.get_current())
-            print field_name, permission
-            print plone.api.user.has_permission(
-                    permission='View internals',
-                    user=plone.api.user.get_current(),
-                    obj=obj)
             return plone.api.user.has_permission(
-                    permission='View internals',
+                    permission=permission,
                     user=plone.api.user.get_current(),
                     obj=obj)
         return True
