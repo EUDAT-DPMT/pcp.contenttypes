@@ -7,10 +7,20 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="pcp.contenttypes">
 
-
     <subscriber
         for="plone.app.workflow.events.LocalrolesModifiedEvent"
         handler=".sharing.SharingHandler"
     />
-
+<!--
+    <subscriber
+        for="..interfaces.IAccountable
+             zope.lifecycleevent.IObjectCreatedEvent"
+        handler=".accountable.create_accounting_account"
+    />
+    -->
+    <subscriber
+        for="..interfaces.IAccountable
+             zope.lifecycleevent.IObjectModifiedEvent"
+        handler=".accountable.create_accounting_account"
+    />
 </configure>
