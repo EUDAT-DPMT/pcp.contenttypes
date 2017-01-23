@@ -80,7 +80,6 @@ def sharing_handle_form(self):
         else:
             reindex = False
 
-        # Update settings for users and groups
         entries = form.get('entries', [])
         roles = [r['id'] for r in self.roles()]
         settings = []
@@ -93,8 +92,8 @@ def sharing_handle_form(self):
         if settings:
 
             old_settings = self.context.get_local_roles()
-            old_userids = set([tp[0] for tp in old_settings])
-            new_userids = set([d['id'] for d in settings])
+            old_userids = set([tp[0] for tp in old_settings if list(tp[1]) != ['Owner']])
+            new_userids = set([d['id'] for d in settings if d['roles']])
             all_userids = old_userids | new_userids
             removed_userids = old_userids - new_userids
             added_userids = new_userids - old_userids
@@ -103,7 +102,7 @@ def sharing_handle_form(self):
 #            print new_userids
 #            print removed_userids
 #            print added_userids
-
+#
 #            import pprint
 #            pprint.pprint(settings)
             reindex = self.update_role_settings(settings, reindex=False) \
