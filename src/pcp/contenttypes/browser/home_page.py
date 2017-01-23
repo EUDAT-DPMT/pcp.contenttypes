@@ -16,6 +16,7 @@ class HomePage(BrowserView):
 
     def newbie(self):
         """True if 'Member' role not assigned"""
+        if api.user.is_anonymous:
+            return True
         roles = api.user.get_roles(obj=self.context)
-        # print roles
         return 'Member' not in roles
