@@ -9,9 +9,6 @@
 
 <metal:main fill-slot="main">
 
-    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
-    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
-
     <tal:main-macro metal:define-macro="main"
            tal:define="kssClassesView context/@@kss_field_decorator_view;
                        getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
@@ -33,14 +30,17 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
+
+    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+
 	<table class="listing dt-table" id="overview-table">
 	  <thead>
 	    <tr>
-		<th tal:repeat="label view/field_labels"
-		    tal:content="label">Header</th>
+            <th tal:repeat="label view/field_labels" tal:content="label">Header</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+      <tbody>
 	    <tr tal:repeat="content view/content_items">
             <td tal:repeat="field view/fields">
                 <tal:def define="field_visible python: view.field_visible(content, field)">
@@ -58,12 +58,11 @@
                    <span tal:condition="not: field_visible">hidden</span>
                </tal:def>
             </td>
-	    </tr>
+        </tr>
 	  </tbody>
 	</table>
 
-
-       <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>

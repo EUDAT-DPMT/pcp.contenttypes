@@ -111,7 +111,8 @@ class BaseSummaryView(BrowserView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Service',
+        return ('Title',
+#                'Service',
                 'Allocated storage', 'Used storage',
                 'Customer', 'Topics',
                 'Start date', 'End date', 'State')
