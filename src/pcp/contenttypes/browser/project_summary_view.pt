@@ -32,26 +32,26 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
-    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+        <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+        <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
 
-	<table class="listing dt-table" id="project_overview-table">
-	  <thead>
-	    <tr>
-		<th tal:repeat="label view/field_labels"
-		    tal:content="label">Header</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr tal:repeat="project view/data">
-		<td tal:repeat="field project">
-		    <a href="."
-		       tal:attributes="href field/url"
-		       tal:content="structure field/text">value</a></td>
-	    </tr>
-	  </tbody>
-	</table>
-    <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+        <table class="listing dt-table" id="project_overview-table">
+          <thead>
+            <tr>
+                <th tal:repeat="label view/field_labels"
+                    tal:content="label">Header</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="project view/data">
+                <td tal:repeat="field project">
+                    <a href="."
+                       tal:attributes="href field/url"
+                       tal:content="structure field/text">value</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
     
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
