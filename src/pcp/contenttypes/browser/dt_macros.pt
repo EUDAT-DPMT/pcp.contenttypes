@@ -20,8 +20,19 @@
             order = [0, "desc"];
         }
 
+        $('.dt-table').each(function() {
+
+            var thead = $(this).find('thead');
+            var tfoot = $(this).find('tfoot');
+            if (!tfoot.length && thead.length) {
+                var html = thead.wrap('<p/>').parent().html();
+                html = html.replace('thead', 'tfoot');
+                $(html).appendTo($(this));
+            }
+        });
+
         $('.dt-table tfoot th').each( function (i) {
-            var title = $('#example thead th').eq( $(this).index() ).text();
+            var title = $(this).text();
             $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
         } );
 
