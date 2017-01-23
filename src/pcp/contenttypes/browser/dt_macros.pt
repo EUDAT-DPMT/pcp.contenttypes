@@ -1,11 +1,11 @@
 <metal:macro define-macro="datatable_css_headers">
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/css/jquery.dataTables.css" />
-    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/Buttons-1.2.4/css/buttons.dataTables.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/css/buttons.dataTables.css" />
 </metal:macro>
 
 <metal:macro define-macro="datatable_js_headers">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/Buttons-1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/dataTables.buttons.js"></script>
 </metal:macro>
 
 
@@ -14,55 +14,54 @@
     <script type="text/javascript">
         $(document).ready( function () {
 
-        try {
-            order = DT_ORDER_BY;
-        } catch(e) {
-            order = [0, "desc"];
-        }
-
-        $('.dt-table').each(function() {
-
-            var thead = $(this).find('thead');
-            var tfoot = $(this).find('tfoot');
-            if (!tfoot.length && thead.length) {
-                var html = thead.wrap('<p/>').parent().html();
-                html = html.replace('thead', 'tfoot');
-                $(html).appendTo($(this));
+            try {
+                order = DT_ORDER_BY;
+            } catch(e) {
+                order = [0, "desc"];
             }
+
+            $('.dt-table').each(function() {
+
+                var thead = $(this).find('thead');
+                var tfoot = $(this).find('tfoot');
+                if (!tfoot.length && thead.length) {
+                    var html = thead.wrap('<p/>').parent().html();
+                    html = html.replace('thead', 'tfoot');
+                    $(html).appendTo($(this));
+                }
+            });
+
+            $('.dt-table tfoot th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+            } );
+
+            var table = $('.dt-table').DataTable({
+               columnDefs: [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                }],
+                buttons: ['copy'],
+                dom: '<"clear">Blfrtip',
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('.dt-table').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+            });
+
+            table.columns().every( function () {
+                var that = this;
+                $( 'input', this.footer() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            });
         });
-
-        $('.dt-table tfoot th').each( function (i) {
-            var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
-        } );
-
-        var table = $('.dt-table').DataTable({
-		   columnDefs: [ {
-			  "targets": 'no-sort',
-						"orderable": false,
-			}],
-			buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-            dom: '<"clear">Blfrtip',
-			pageLength: 50,
-			autoWidth: false,
-			initComplete: function(settings, json) {
-				$('.dt-table').show();
-			},
-			order: order,
-			aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
-        });
-
-		table.columns().every( function () {
-			var that = this;
-			$( 'input', this.footer() ).on( 'keyup change', function () {
-				if ( that.search() !== this.value ) {
-					that
-						.search( this.value )
-						.draw();
-				}
-			} );
-		});
-	});
-
     </script>
 </metal:macro>
