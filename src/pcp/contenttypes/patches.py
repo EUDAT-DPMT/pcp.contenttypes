@@ -44,6 +44,7 @@ def apply_patched_mapping(scope, original, replacement):
 # $HOME/.buildout/eggs/plone.app.workflow-2.1.9-py2.7.egg/plone/app/workflow/browser/sharing.py
 #################################################################################################
 
+import plone.api
 from plone.app.workflow.events import LocalrolesModifiedEvent
 from plone.app.workflow import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
@@ -115,7 +116,11 @@ def sharing_handle_form(self):
 
                 roles_added = roles - old_roles
                 roles_removed = old_roles - roles
-                diff_context['role_changes'][userid] = dict(added=roles_added, removed=roles_removed)
+                user = plone.api.user.get(userid)
+                fullname = None
+                if user:
+                    fullname = user.getProperty('fullname')
+                diff_context['role_changes'][userid] = dict(fullname=fullname, added=roles_added, removed=roles_removed)
 
         if reindex:
             self.context.reindexObjectSecurity()
