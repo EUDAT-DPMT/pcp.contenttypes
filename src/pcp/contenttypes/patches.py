@@ -110,7 +110,7 @@ def sharing_handle_form(self):
             diff_context['block_localroles'] = bool(new_ac_local_roles_block)
             diff_context['role_changes'] = dict()
             for userid, roles in settings_dict.items():
-                old_roles = old_settings_dict.get(userid, ())
+                old_roles = old_settings_dict.get(userid, set())
                 if roles == old_roles:
                     continue
 
