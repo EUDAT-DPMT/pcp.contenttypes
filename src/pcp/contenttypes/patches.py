@@ -117,10 +117,11 @@ def sharing_handle_form(self):
                 roles_added = roles - old_roles
                 roles_removed = old_roles - roles
                 user = plone.api.user.get(userid)
-                fullname = None
+                fullname = email = None
                 if user:
                     fullname = user.getProperty('fullname')
-                diff_context['role_changes'][userid] = dict(fullname=fullname, added=roles_added, removed=roles_removed)
+                    email = user.getProperty('email')
+                diff_context['role_changes'][userid] = dict(fullname=fullname, email=email, added=roles_added, removed=roles_removed)
 
         if reindex:
             self.context.reindexObjectSecurity()
