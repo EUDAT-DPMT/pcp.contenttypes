@@ -92,31 +92,36 @@ def sharing_handle_form(self):
         if settings:
 
             old_settings = self.context.get_local_roles()
+            old_settings_dict = dict([(userid, set(roles)) for userid, roles in old_settings])
+            settings_dict = dict([(d['id'], set(d['roles'])) for d in settings])
+
             old_userids = set([tp[0] for tp in old_settings if list(tp[1]) != ['Owner']])
             new_userids = set([d['id'] for d in settings if d['roles']])
             all_userids = old_userids | new_userids
-            removed_userids = old_userids - new_userids
-            added_userids = new_userids - old_userids
 
-#            print old_userids
-#            print new_userids
-#            print removed_userids
-#            print added_userids
-#
-#            import pprint
-#            pprint.pprint(settings)
             reindex = self.update_role_settings(settings, reindex=False) \
                         or reindex
+            new_ac_local_roles_block = getattr(self.context, '__ac_local_roles_block__', None)
+
+            diff_context = dict()
+            diff_context['removed_userids'] = old_userids - new_userids
+            diff_context['added_userids'] = new_userids - old_userids
+            diff_context['block_localroles'] = bool(new_ac_local_roles_block)
+            diff_context['role_changes'] = dict()
+            for userid, roles in settings_dict.items():
+                old_roles = old_settings_dict.get(userid, ())
+                if roles == old_roles:
+                    continue
+
+                roles_added = roles - old_roles
+                roles_removed = old_roles - roles
+                diff_context['role_changes'][userid] = dict(added=roles_added, removed=roles_removed)
+
         if reindex:
             self.context.reindexObjectSecurity()
-            notify(LocalrolesModifiedEvent(self.context, self.request))
-
-
-        new_ac_local_roles_block = getattr(self.context, '__ac_local_roles_block__', None)
-
-        print old_ac_local_roles_block
-        print new_ac_local_roles_block
-
+            event = LocalrolesModifiedEvent(self.context, self.request)
+            event.diff_context = diff_context
+            notify(event)
 
         IStatusMessage(self.request).addStatusMessage(
             _(u"Changes saved."), type='info')
