@@ -7,7 +7,17 @@ class ISettings(Interface):
 
     accounting_url = schema.TextLine(
         title=u'Connection accounting server',
-        description=u'Use http://username:password@host:port/path/to/domain where username+password represent a Manager account on the accounting server',
+        description=u'Use http://host:port/path/to/domain',
         default=u'http://accounting.eudat.eu',
         required=True
+    )
+
+    accounting_username = schema.TextLine(
+        title=u'Username of the manager account on the accounting server',
+        default=None
+    )
+
+    accounting_password = schema.TextLine(
+        title=u'Password of the manager account on the accounting server',
+        default=None
     )
