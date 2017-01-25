@@ -15,8 +15,12 @@ class Accounting(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings)
         f = furl.furl(settings.accounting_url)
-        f.path = str(f.path) + '/hasAccount' 
-        f.args['id'] = self.context.UID() 
+        if settings.accounting_username:
+            f.username = settings.accounting_username
+        if settings.accounting_password:
+            f.password = settings.accounting_password
+        f.path = str(f.path) + '/hasAccount'
+        f.args['id'] = self.context.UID()
         url = str(f)
         result = requests.get(url)
         if result.ok:
@@ -34,6 +38,10 @@ class Accounting(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings)
         f = furl.furl(settings.accounting_url)
+        if settings.accounting_username:
+            f.username = settings.accounting_username
+        if settings.accounting_password:
+            f.password = settings.accounting_password
         f.path = str(f.path) + '/' + self.context.UID() + '/listRecords'
         url = str(f)
         result = requests.get(url)
