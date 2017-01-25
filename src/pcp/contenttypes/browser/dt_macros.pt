@@ -6,6 +6,12 @@
 <metal:macro define-macro="datatable_js_headers">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/dataTables.buttons.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/buttons.html5.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/buttons.print.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
 </metal:macro>
 
 
@@ -41,7 +47,7 @@
                   "targets": 'no-sort',
                             "orderable": false,
                 }],
-                buttons: ['copy'],
+                buttons: ['copy', 'excel', 'pdf', 'print'],
                 dom: '<"clear">Blfrtip',
                 pageLength: 50,
                 autoWidth: false,
