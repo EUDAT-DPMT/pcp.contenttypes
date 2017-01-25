@@ -22,6 +22,14 @@
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
+	name="table-view"
+	class=".table_view.TableView"
+	template="table_view.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
 	name="project_summary_view"
 	class="pcp.contenttypes.browser.project_summary_view.ProjectOverview"
 	template="project_summary_view.pt"
