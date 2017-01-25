@@ -48,7 +48,7 @@
                   "targets": 'no-sort',
                             "orderable": false,
                 }],
-                buttons: ['copy', 'excel', 'pdf', 'print', 'colvis', {
+                buttons: ['colvis', 'copy', 'excel', 'pdf', 'print', {
                         text: 'JSON',
                         action: function( e, dt, button, config ) {
                             var data = dt.buttons.exportData();
