@@ -17,10 +17,10 @@
     <element value="ServiceComponentImplementation"/>
   </property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">table_view</property>
+  <property name="default_view">table-view</property>
   <property name="view_methods">
-    <element value="table_view" />
-    <element value="base_view" />
+    <element value="table-view" />
+    <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
   <alias from="edit" to="atct_edit" />
