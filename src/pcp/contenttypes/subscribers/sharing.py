@@ -13,9 +13,11 @@ def SharingHandler(event):
     email = user.getProperty('email')
     fullname = user.getProperty('fullname')
     username = '{} ({}, {})'.format(username, fullname, email)
+    info_url = 'http://www.heise.de'
 
     logger.log('Sharing updated',
             level='info',
             username=username,
+            info_url=info_url,
             details=event.diff_context)
 
