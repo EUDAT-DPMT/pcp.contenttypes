@@ -26,6 +26,21 @@ else:
     EXPORT_BINARY = False
 
 
+hidden_fields = (
+    'constrainTypesMode',
+    'locallyAllowedTypes',
+    'immediatelyAddableTypes',
+    'location',
+    'language',
+    'effectiveDate',
+    'creation_date',
+    'modification_date',
+    'creators',
+    'excludeFromNav',
+    'nextPreviousEnabled'
+)
+
+
 class JSONView(BrowserView):
     """Present Archetypes-based content as JSON"""
 
@@ -64,7 +79,18 @@ class JSONView(BrowserView):
     def fieldData(self, context):
         data = {}
         for field in context.Schema().viewableFields(context):
+
             name = field.getName()
+
+            # content class specific hidding of AT Fields
+            hidden_json_fields = getattr(context, 'hidden_json_fields', ())
+            if name in hidden_json_fields:
+                continue
+
+            # global blacklist
+            if name in hidden_fields:
+                continue
+
             if isinstance(field, ReferenceField):
                 value = []
                 objs = field.get(context, aslist=True)
