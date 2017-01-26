@@ -7,6 +7,7 @@ import base64
 
 import json
 
+import plone.api
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.utils import getToolByName
@@ -45,11 +46,15 @@ class JSONView(BrowserView):
     """Present Archetypes-based content as JSON"""
 
     @property
+    def include_all(self):
+        return 'include_all' in self.request.form
+
+    @property
     def url_tool(self):
-        return getToolByName(self.context, 'portal_url')
+        return plone.api.portal.get_tool('portal_url')
 
     def handle_client(self):
-        return getToolByName(self.context, 'handle_client', None)
+        return plone.api.portal.get_tool('handle_client')
 
     def convert(self, value):
         """
@@ -82,14 +87,15 @@ class JSONView(BrowserView):
 
             name = field.getName()
 
-            # content class specific hidding of AT Fields
-            hidden_json_fields = getattr(context, 'hidden_json_fields', ())
-            if name in hidden_json_fields:
-                continue
+            if not self.include_all:
+                # content class specific hidding of AT Fields
+                hidden_json_fields = getattr(context, 'hidden_json_fields', ())
+                if name in hidden_json_fields:
+                    continue
 
-            # global blacklist
-            if name in hidden_fields:
-                continue
+                # global blacklist
+                if name in hidden_fields:
+                    continue
 
             if isinstance(field, ReferenceField):
                 value = []
