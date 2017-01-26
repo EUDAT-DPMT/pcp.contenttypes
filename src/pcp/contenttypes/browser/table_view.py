@@ -23,7 +23,7 @@ hidden_fields = dict([(f, 0) for f in hidden_fields])
 
 
 class TableView(BrowserView):
-    """ Custom view (replaces base_view of Archetypes """
+    """ Custom view (replaces base_view of Archetypes) ignoring most empty values """
 
     def data(self):
         result = list()

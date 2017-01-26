@@ -18,16 +18,16 @@
             <table class="listing">
                 <thead>
                     <tr>
-                        <th class="nosort">Key</th>
-                        <th class="nosort">Value</th>
+                        <th class="key nosort" style="min-width: 150px">Key</th>
+                        <th class="value nosort">Value</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr tal:repeat="row rows">
-                        <td>
+                    <tr tal:repeat="row rows" tal:attributes="id string:field-${row/field}">
+                        <td class="key">
                             <b tal:content="row/title"/>
                         </td>
-                        <td>
+                        <td class="value">
                             <span metal:use-macro="python: context.widget(row['field'], 'view')" />
                         </td>
                     </tr>
