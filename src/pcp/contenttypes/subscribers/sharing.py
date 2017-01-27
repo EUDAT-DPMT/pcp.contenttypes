@@ -13,7 +13,8 @@ def SharingHandler(event):
     info_url = '/@@user-information?userid={}'.format(username)
     email = user.getProperty('email')
     fullname = user.getProperty('fullname')
-    username = '{} ({}, {})'.format(username, fullname, email)
+    if fullname and email:
+        username = '{} ({}, {})'.format(username, fullname, email)
 
     logger.log('Sharing updated',
             level='info',
