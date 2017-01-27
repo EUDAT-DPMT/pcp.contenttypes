@@ -10,7 +10,7 @@ def SharingHandler(event):
 
     user = plone.api.user.get_current()
     username = user.getUserName()
-    info_url = '/@@view-member-details?id={}'.format(username)
+    info_url = '/@@user-information?userid={}'.format(username)
     email = user.getProperty('email')
     fullname = user.getProperty('fullname')
     username = '{} ({}, {})'.format(username, fullname, email)
