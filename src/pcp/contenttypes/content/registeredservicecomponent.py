@@ -20,6 +20,19 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+    atapi.ReferenceField('service_component_implementation_Details',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
+                         relationship='provided_by',
+                         allowed_types=('ServiceComponentImplementationDetails',),
+                         multiValued=False,
+                         widget=ReferenceBrowserWidget(label='Service Component Implementation Details',
+                                                       description='Reference to specific implementation Details',
+                                                       searchable=True,
+                                                       allow_browse=1,
+                                                       startup_directory='/catalog',
+                                                       ),
+                         ),
     atapi.ReferenceField('service_providers',
                          read_permission='View internals',
                          write_permission='Modify internals',
