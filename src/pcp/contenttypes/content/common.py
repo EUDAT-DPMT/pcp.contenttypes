@@ -269,7 +269,7 @@ class CommonUtilities(object):
 
     def country(self):
         """
-        Look for the country in the address field including the aq_parent 
+        Look for the country in the address field including the aq_parent
         for indexing. Returns 'not set' if nothing found. Should not fail.
         """
         try:
@@ -336,7 +336,7 @@ class CommonUtilities(object):
 
     def getCregId(self, id_key='creg_id'):
         """
-        Looks up the 'id_key' in the list of 'additional' KV pairs 
+        Looks up the 'id_key' in the list of 'additional' KV pairs
         and returns its value if found. Otherwise returns None.
         """
         for entry in self.getAdditional():
@@ -346,8 +346,8 @@ class CommonUtilities(object):
 
     def getCregURL(self, url_only=False):
         """
-        Returns an anchor tag with the annotated URL to the 
-        corresponding entry in EUDAT's central registry if 
+        Returns an anchor tag with the annotated URL to the
+        corresponding entry in EUDAT's central registry if
         it can be constructed.
         Returns an explanatory message otherwise.
         If 'url_only' is True it just returns the URL.
@@ -405,7 +405,7 @@ class CommonUtilities(object):
 
     def informationUnits(self, instance=None):
         """
-        Controlled vocabulary (DisplayList) of information units 
+        Controlled vocabulary (DisplayList) of information units
         supported
         """
         units = unit_map.keys()
