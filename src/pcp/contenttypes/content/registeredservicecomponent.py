@@ -126,7 +126,6 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                         read_permission='View internals',
                         write_permission='Modify internals',
                         searchable=1,
-                        index_method='additional_content',
                         subfields=('key', 'value'),
                         minimalSize=3,
                         subfield_sizes={'key': 15,
@@ -159,7 +158,7 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
         scid = self.getField('service_component_implementation_details').get(self)
         if scid:
             # obtain its configuration parameters configuration
-            configuration_parameters = scid.getField('configuration_parameters').get(scid)
+            configuration_parameters = sorted(scid.getField('configuration_parameters').get(scid))
 
             # get hold of the related records field from the current object
             implementation_configuration = self.getImplementationConfiguration()
