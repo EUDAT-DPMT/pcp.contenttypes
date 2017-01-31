@@ -19,9 +19,8 @@
    <element value="ServiceComponentRequest"/>
   </property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">Table_view</property>
+  <property name="default_view">table-view</property>
   <property name="view_methods">
-    <element value="table-view" />
     <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
