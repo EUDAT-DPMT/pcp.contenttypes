@@ -15,7 +15,7 @@
             <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
             <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
 
-            <div tal:condition="exists: context/table_view_macros">
+            <div tal:condition="exists: context/table_view_macros/macros/before">
                 <div metal:use-macro="context/table_view_macros/macros/before" />
             </div>
 
@@ -38,7 +38,7 @@
                 </tbody>
             </table>
 
-            <div tal:condition="exists: context/table_view_macros">
+            <div tal:condition="exists: context/table_view_macros/macros/after">
                 <div metal:use-macro="context/table_view_macros/macros/after" />
             </div>
 
