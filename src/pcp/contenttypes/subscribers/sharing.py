@@ -10,12 +10,15 @@ def SharingHandler(event):
 
     user = plone.api.user.get_current()
     username = user.getUserName()
+    info_url = '/@@user-information?userid={}'.format(username)
     email = user.getProperty('email')
     fullname = user.getProperty('fullname')
-    username = '{} ({}, {})'.format(username, fullname, email)
+    if fullname and email:
+        username = '{} ({}, {})'.format(username, fullname, email)
 
     logger.log('Sharing updated',
             level='info',
             username=username,
+            info_url=info_url,
             details=event.diff_context)
 

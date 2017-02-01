@@ -20,6 +20,21 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+    atapi.ReferenceField('service_component_implementation_details',
+                         read_permission='View internals',
+                         write_permission='Modify internals',
+                         relationship='implemented_by',
+                         allowed_types=('ServiceComponentImplementationDetails',),
+                         multiValued=False,
+                         widget=ReferenceBrowserWidget(label='Service Component Implementation Details',
+                                                       description='Reference to specific implementation Details',
+                                                       searchable=True,
+                                                       allow_browse=1,
+                                                       startup_directory='/catalog',
+                                                       show_review_state=True,
+                                                       show_path=True,
+                                                       ),
+                         ),
     atapi.ReferenceField('service_providers',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -104,6 +119,25 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                         expression='here.getCregURL()',
                         widget=atapi.ComputedWidget(label='Central Registry'),
                         ),
+    ateapi.RecordsField('implementation_configuration',
+                        accessor='getImplementationConfiguration',
+                        mutator='setImplementationConfiguration',
+                        schemata='details',
+                        read_permission='View internals',
+                        write_permission='Modify internals',
+                        searchable=1,
+                        subfields=('key', 'value'),
+                        minimalSize=3,
+                        subfield_sizes={'key': 15,
+                                        },
+                        innerJoin=': ',
+                        outerJoin='<br />',
+                        widget=ateapi.RecordsWidget(
+                            label='Implementation configuration',
+                            description='Implementation specific configuration according to the referenced component details implementation',
+                            condition="python:here.stateNotIn(['considered'])",
+                        ),
+                        ),
 )) + CommonFields.copy()
 
 
@@ -118,5 +152,27 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
     meta_type = "RegisteredServiceComponent"
     schema = RegisteredServiceComponentSchema
 
+    def at_post_edit_script(self):
+
+        # check for a reference to a ServiceComponentImplementDetails object
+        scid = self.getField('service_component_implementation_details').get(self)
+        if scid:
+            # obtain its configuration parameters configuration
+            configuration_parameters = sorted(scid.getField('configuration_parameters').get(scid))
+
+            # get hold of the related records field from the current object
+            implementation_configuration = self.getImplementationConfiguration()
+            # dictify its records
+            existing_records = dict([(d['key'], d.get('value', '')) for d in implementation_configuration])
+
+            # build a new record structure based on the master configuration parameters
+            # and the existing values
+
+            result = list()
+            for key in configuration_parameters:
+                result.append(dict(
+                    key=key,
+                    value=existing_records.get(key, '')))
+            self.setImplementationConfiguration(result)
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)
