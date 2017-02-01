@@ -17,7 +17,7 @@ class ISettings(Interface):
         default=None
     )
 
-    accounting_password = schema.TextLine(
+    accounting_password = schema.Password(
         title=u'Password of the manager account on the accounting server',
         default=None
     )
