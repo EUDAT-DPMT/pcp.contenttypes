@@ -12,7 +12,7 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from ..mail import send_mail
 
 
-NOTIFICATION_KEY = 'pcp.contenttypes.provider.notification'
+NOTIFICATION_KEY = 'pcp.contenttypes.provider.outdated-components'
 RESEND_AFTER_DAYS = 7
 
 
