@@ -1,6 +1,8 @@
 """Definition of the RegisteredServiceComponent content type
 """
 
+import semantic_version
+
 from zope.interface import implements
 
 from Products.Archetypes import atapi
@@ -21,6 +23,7 @@ from pcp.contenttypes.content.common import CommonUtilities
 
 RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     atapi.ReferenceField('service_component_implementation_details',
+                         accessor='getServiceComponentImplementationDetails',
                          read_permission='View internals',
                          write_permission='Modify internals',
                          relationship='implemented_by',
@@ -125,7 +128,7 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                         schemata='details',
                         read_permission='View internals',
                         write_permission='Modify internals',
-                        searchable=1,
+                        searchable=0,
                         subfields=('key', 'value'),
                         minimalSize=3,
                         subfield_sizes={'key': 15,
@@ -155,7 +158,7 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
     def at_post_edit_script(self):
 
         # check for a reference to a ServiceComponentImplementDetails object
-        scid = self.getField('service_component_implementation_details').get(self)
+        scid = self.getServiceComponentImplementationDetails()
         if scid:
             # obtain its configuration parameters configuration
             configuration_parameters = sorted(scid.getField('configuration_parameters').get(scid))
@@ -174,5 +177,33 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
                     key=key,
                     value=existing_records.get(key, '')))
             self.setImplementationConfiguration(result)
+
+    def check_versions(self):
+        """ Check if references service_component_implement_details reference
+            is up-to-date.
+        """
+
+        scid = self.getServiceComponentImplementationDetails()
+        if not scid:
+            return
+
+        # get parent ServiceComponentImplementation
+        sci = scid.aq_parent
+        available_implementations = sci.contentValues()
+        available_implementations = sorted(available_implementations, key=lambda item: semantic_version.Version(item.getVersion()))
+        latest_version = None
+        latest_version_url = None
+        if available_implementations:
+            latest_version = available_implementations[-1].getVersion()
+            latest_version_url = available_implementations[-1].absolute_url()
+
+        return dict(
+                is_current=latest_version==scid.getVersion(),
+                current_version=scid.getVersion(),
+                current_version_url=scid.absolute_url(),
+                latest_version=latest_version,
+                latest_version_url=latest_version_url,
+                available_implementations=available_implementations)
+
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)

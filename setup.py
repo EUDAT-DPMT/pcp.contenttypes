@@ -63,6 +63,7 @@ setup(name='pcp.contenttypes',
                         'collective.handleclient',
                         'collective.monkeypatcher',
                         'incf.countryutils',
+                        'semantic_version',
                         'furl'
                         ],
       tests_require=tests_require,

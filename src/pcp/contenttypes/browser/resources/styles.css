@@ -1,0 +1,33 @@
+#version-check {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #aaa;
+    background:#eee;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+.version-uptodate {
+    color: green;
+}
+
+.version-outdated {
+    color: orange;
+}
+
+table.table-view {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.dataTables_wrapper {
+    margin-top: 2em;
+}
+
+.dt-table caption {
+    text-align: left;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

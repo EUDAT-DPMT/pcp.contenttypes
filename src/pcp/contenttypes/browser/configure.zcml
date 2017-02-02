@@ -29,6 +29,13 @@
 	/>
 
   <browser:page
+	for="..interfaces.IRegisteredServiceComponent"
+	name="table_view_macros"
+	template="registeredservicecomponent_table_view_macros.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="project_summary_view"
 	class="pcp.contenttypes.browser.project_summary_view.ProjectOverview"
@@ -116,11 +123,27 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="Products.ATContentTypes.interfaces.IATFolder"
 	name="provider_overview"
 	class="pcp.contenttypes.browser.summary_views.ProviderOverview"
 	template="summary_views.pt"
 	permission="zope2.View"
+  />
+
+  <browser:page
+	for="Products.ATContentTypes.interfaces.IATFolder"
+	name="provider_registered_service_components"
+	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
+	template="provider_registered_service_components.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.ATContentTypes.interfaces.IATFolder"
+	name="notify-outdated-implementation-details"
+	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
+    attribute="notify_outdated"
+	permission="cmf.ManagePortal"
 	/>
 
   <browser:page

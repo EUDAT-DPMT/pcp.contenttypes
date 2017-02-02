@@ -1,0 +1,14 @@
+<div metal:define-macro="before" tal:define="result context/check_versions">
+    <div id="version-check" tal:condition="result">
+        <div class="version-uptodate" tal:condition="result/is_current">
+            <span>Current implementation in version <span tal:content="result/current_version"/> is up-to-date</span>
+        </div>
+        <div class="version-outdated" tal:condition="not: result/is_current">
+            <span>The current implementation in version <span tal:content="result/current_version"/> is outdated.</span>
+            <br/>
+            The most current version is 
+            <a tal:attributes="href string:${result/latest_version_url}" tal:content="result/latest_version"/>.
+        </div>
+    </div>
+</div>
+

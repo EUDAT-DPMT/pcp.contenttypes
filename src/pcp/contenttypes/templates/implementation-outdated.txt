@@ -1,0 +1,12 @@
+Hello,
+
+your component "{component_name}"
+
+   {component_url}
+
+is outdated.
+
+Current version: {current_version}
+Newest version:  {latest_version}
+ 
+{footer}
