@@ -4,6 +4,11 @@
     <role name="Site Manager"/>
     <role name="CDI Member"/>
     <role name="CDI Manager"/>
+    <role name="Administrator"/>
+    <role name="Enabler"/>
+    <role name="Principal"/>
+    <role name="Project Manager"/>
+    <role name="Customer Relationship Manager"/>
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->

@@ -18,4 +18,34 @@
       permission="Modify internals"
       i18n:attributes="title"
       />
+  <role
+      id="Administrator"
+      title="Administrator"
+      permission="Manage portal"
+      i18n:attributes="title"
+      />
+  <role
+      id="Enabler"
+      title="Enabler"
+      permission="Modify internals"
+      i18n:attributes="title"
+      />
+  <role
+      id="Principal"
+      title="Principal"
+      permission="Modify internals"
+      i18n:attributes="title"
+      />
+  <role
+      id="Project Manager"
+      title="Project Manager"
+      permission="Manage portal"
+      i18n:attributes="title"
+      />
+  <role
+      id="Customer Relationship Manager"
+      title="Customer Relationship Manager"
+      permission="Manage portal"
+      i18n:attributes="title"
+      />
 </sharing>
