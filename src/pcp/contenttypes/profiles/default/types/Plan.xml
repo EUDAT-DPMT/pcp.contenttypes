@@ -4,7 +4,7 @@
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
   <property name="title" i18n:translate="">Plan</property>
   <property name="description"
-    i18n:translate="">The Master Plan for a community</property>
+    i18n:translate="">The Master Plan for a customer</property>
   <property name="content_meta_type">Plan</property>
   <property name="content_icon">document_icon.png</property>
   <property name="product">pcp.contenttypes</property>

@@ -2,9 +2,9 @@
 <object name="Person"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Person</property>
+  <property name="title" i18n:translate="">Contact</property>
   <property name="description"
-    i18n:translate="">A person involved in a project.</property>
+    i18n:translate="">Specific contact information - typically of a person</property>
   <property name="content_meta_type">Person</property>
   <property name="content_icon">user.png</property>
   <property name="product">pcp.contenttypes</property>
@@ -15,7 +15,6 @@
   <property name="allow_discussion">False</property>
   <property name="default_view">table-view</property>
   <property name="view_methods">
-    <element value="table-view" />
     <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />

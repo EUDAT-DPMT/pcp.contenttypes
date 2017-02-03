@@ -4,7 +4,7 @@
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
   <property name="title" i18n:translate="">Project</property>
   <property name="description"
-    i18n:translate="">A project managed by this site.</property>
+    i18n:translate="">A project managed on this site.</property>
   <property name="content_meta_type">Project</property>
   <property name="content_icon">workflow_icon.png</property>
   <property name="product">pcp.contenttypes</property>
@@ -25,7 +25,6 @@
   <property name="allow_discussion">False</property>
   <property name="default_view">table-view</property>
   <property name="view_methods">
-    <element value="table-view" />
     <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />

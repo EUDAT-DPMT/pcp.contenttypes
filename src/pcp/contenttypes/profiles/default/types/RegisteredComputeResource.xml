@@ -2,7 +2,7 @@
 <object name="RegisteredComputeResource"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">RegisteredComputeResource</property>
+  <property name="title" i18n:translate="">Registered Compute Resource</property>
   <property name="description"
     i18n:translate="">A provisioned physical or virtual server</property>
   <property name="content_meta_type">RegisteredComputeResource</property>

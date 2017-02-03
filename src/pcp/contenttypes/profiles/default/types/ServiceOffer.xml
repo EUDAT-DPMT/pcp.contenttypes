@@ -2,7 +2,7 @@
 <object name="ServiceOffer"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">ServiceOffer</property>
+  <property name="title" i18n:translate="">Service Offer</property>
   <property name="description"
     i18n:translate="">Providers signal their service offerings</property>
   <property name="content_meta_type">ServiceOffer</property>
@@ -15,7 +15,6 @@
   <property name="allow_discussion">False</property>
   <property name="default_view">table-view</property>
   <property name="view_methods">
-    <element value="table-view" />
     <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
