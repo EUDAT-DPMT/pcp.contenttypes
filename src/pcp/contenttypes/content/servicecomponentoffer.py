@@ -11,6 +11,7 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IServiceComponentOffer
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
@@ -34,7 +35,7 @@ ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/catalog',
                                                        ),
                          ),
-)) + CommonFields.copy()
+)) + ConditionsFields.copy() + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(

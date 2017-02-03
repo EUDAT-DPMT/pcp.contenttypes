@@ -215,6 +215,40 @@ RequestFields = atapi.Schema((
 ))
 
 
+ConditionsFields = atapi.Schema((
+    ateapi.CommentField('conditions',
+                        comment='Any constraints that need to be satisfied by the '\
+                        'customer:',
+                    ),
+    atapi.StringField('regional_constraints',
+                      searchable=True,
+                      widget=atapi.StringWidget(label='Regional constraints'),
+                  ),
+    atapi.StringField('thematic_constraints',
+                      searchable=True,
+                      widget=atapi.StringWidget(label='Thematic constraints'),
+                  ),
+    atapi.StringField('organizational_constraints',
+                      searchable=True,
+                      widget=atapi.StringWidget(label='Organizational constraints'),
+                  ),
+    atapi.TextField('constraints',
+                    required=False,
+                    searchable=True,
+                    storage=atapi.AnnotationStorage(migrate=True),
+                    validators=('isTidyHtmlWithCleanup',),
+                    default_output_type='text/x-html-safe',
+                    widget=atapi.RichWidget(
+                        description=u'Any other constraints under which this service '
+                        'can only be made available should be described here. '
+                        'Other comments '
+                        'should go into the "text" field below.',
+                        label=u'Constraints',
+                        rows=15,
+                    ),
+                    ),
+))
+
 class RequestUtilities(object):
     """Mixin class to provide shared functionality across request types"""
 

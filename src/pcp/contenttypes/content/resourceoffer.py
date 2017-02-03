@@ -14,11 +14,13 @@ from Products.ATContentTypes.content import schemata
 from pcp.contenttypes.interfaces import IResourceOffer
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import ResourceFields
+from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 ResourceOfferSchema = schemata.ATContentTypeSchema.copy() \
     + ResourceFields.copy() \
+    + ConditionsFields.copy() \
     + CommonFields.copy()
 
 

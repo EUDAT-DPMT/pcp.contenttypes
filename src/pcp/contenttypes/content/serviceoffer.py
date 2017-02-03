@@ -11,6 +11,7 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 from pcp.contenttypes.interfaces import IServiceOffer
 from pcp.contenttypes.config import PROJECTNAME
+from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
@@ -44,22 +45,7 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        startup_directory='/people',
                                                        ),
                          ),
-    atapi.TextField('constraints',
-                    required=False,
-                    searchable=True,
-                    storage=atapi.AnnotationStorage(migrate=True),
-                    validators=('isTidyHtmlWithCleanup',),
-                    default_output_type='text/x-html-safe',
-                    widget=atapi.RichWidget(
-                        description=u'Any constraints under which this service '
-                        'can only be made available should be described here. '
-                        'If there are none leave this field empty. Other comments '
-                        'should go into the "text" field below.',
-                        label=u'Constraints',
-                        rows=15,
-                    ),
-                    ),
-)) + CommonFields.copy()
+)) + ConditionsFields.copy() + CommonFields.copy()
 
 
 schemata.finalizeATCTSchema(ServiceOfferSchema, moveDiscussion=False)
