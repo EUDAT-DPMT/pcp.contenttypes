@@ -11,6 +11,12 @@
     <role name="Customer Relationship Manager"/>
   </roles>
   <permissions>
+    <permission name="Sharing page: Delegate Contributor role" acquire="False">
+    </permission>
+    <permission name="Sharing page: Delegate Editor role" acquire="False">
+    </permission>
+    <permission name="Sharing page: Delegate Reader role" acquire="False">
+    </permission>
     <!-- -*- extra stuff goes here -*- -->
     <permission name="pcp.contenttypes: Add RegisteredStorageResource" acquire="False">
       <role name="Manager" />
