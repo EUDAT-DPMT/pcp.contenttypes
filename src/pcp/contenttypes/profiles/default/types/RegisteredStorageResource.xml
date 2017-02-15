@@ -28,5 +28,8 @@
   <action title="Edit" action_id="edit" category="object" condition_expr=""
     url_expr="string:${object_url}/edit" visible="True">
     <permission value="Modify portal content" />
+  </action>  <action title="Accounting" action_id="accounting" category="object" condition_expr=""
+    url_expr="string:${object_url}/list-account-records" visible="True">
+    <permission value="View internals" />
   </action>
 </object>
