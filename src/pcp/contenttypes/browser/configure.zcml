@@ -22,6 +22,14 @@
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
+	name="resetUID"
+	class="pcp.contenttypes.browser.manage_uids.UpdateUID"
+	attribute="reset_uid"
+	permission="cmf.ManagePortal"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
 	name="table-view"
 	class=".table_view.TableView"
 	template="table_view.pt"
