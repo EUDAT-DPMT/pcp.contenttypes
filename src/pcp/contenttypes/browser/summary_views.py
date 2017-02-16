@@ -104,15 +104,12 @@ class BaseSummaryView(BrowserView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
-
-#                'services_used',
                 'allocated', 'used', 'community',
                 'topics', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
-        """hardcoded for a start - to be overwritten in hte specific classes"""
+        """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
-#                'Service',
                 'Allocated storage', 'Used storage',
                 'Customer', 'Topics',
                 'Start date', 'End date', 'State')
@@ -338,6 +335,32 @@ class RegisteredResourceOverview(BaseSummaryView):
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('compute_resources', 'storage_resources')
+
+class RegisteredStorageResourceOverview(BaseSummaryView):
+    """Overview of all registered storage resources no matter where they are located"""
+
+    title = "Registered Storage Resources"
+
+    description = "All registered storage resources across the entire site."
+
+    def content_items(self):
+        """All registered storage resources regardless of location"""
+        return [element.getObject() for element in \
+                self.catalog(portal_type='RegisteredStorageResource')]
+
+    def fields(self):
+        """Not yet complete - expand once we have accounting information"""
+        return ('title', 'customer', 'project', 'parent_provider', 'services', \
+                'size', 'state')
+
+    def field_labels(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
+                'Size and type', 'State')
+
+    def simple_fields(self):
+        """Manually maintained subset of fields where it is safe to just render the widget."""
+        return ('size')
 
 
 class ResourceOfferOverview(RegisteredResourceOverview):

@@ -116,6 +116,14 @@
 
   <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="registered_storage_resource_overview"
+	class="pcp.contenttypes.browser.summary_views.RegisteredStorageResourceOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="resource_offer_overview"
 	class="pcp.contenttypes.browser.summary_views.ResourceOfferOverview"
 	template="summary_views.pt"
