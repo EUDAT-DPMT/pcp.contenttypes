@@ -34,8 +34,10 @@
                 <tr tal:repeat="row rows">
                     <td tal:attributes="data-order row/meta/ts"
                         tal:content="row/meta/submission_time"/>
-                    <td tal:content="row/meta/service"/>
-                    <td tal:content="row/core/type"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/meta/service"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/core/type"/>
                     <td tal:content="row/core/value"/>
                     <td tal:content="row/core/unit"/>
                  </tr>
