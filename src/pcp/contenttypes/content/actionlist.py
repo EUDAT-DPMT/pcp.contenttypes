@@ -4,16 +4,16 @@
 from zope.interface import implements
 
 from Products.Archetypes import atapi
-from Products.Archetypes.atapi import BaseContent
 from Products.ATContentTypes.content import schemata
-
+from Products.ATContentTypes.content.schemata import ATContentTypeSchema
+from Products.ATContentTypes.content.schemata import relatedItemsField
 # -*- Message Factory Imported Here -*-
 
 from pcp.contenttypes.interfaces import IActionList
 from pcp.contenttypes.config import PROJECTNAME
 
 
-ActionListSchema = BaseContent.schema.copy() + atapi.Schema((
+ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
@@ -27,7 +27,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class ActionList(BaseContent):
+class ActionList(atapi.BaseContent):
     """Component of an EUDAT service"""
     implements(IActionList)
 
