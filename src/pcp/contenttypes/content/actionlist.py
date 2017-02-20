@@ -1,6 +1,7 @@
 """Definition of the ServiceComponent content type
 """
 
+import plone.api
 from zope.interface import implements
 
 from Products.Archetypes import atapi
@@ -54,5 +55,29 @@ class ActionList(atapi.BaseContent):
     meta_type = "ActionList"
     schema = ActionListSchema
 
+    def createPOI(self, target_path):
+        """ ActionList to Poi """
+
+        target_folder = plone.api.portal.get().restrictedTraverse(target_path, None)
+        if target_folder is None:
+            raise ValueError('No target object found for {0}'.format(target_path))
+
+        tracker = plone.api.content.create(
+                container=target_folder,
+                type='PoiTracker',
+                id='tracker-actions',
+                title='Actions ()'.format(self.getId()))
+
+        for action in self.getActionItems():
+            tracker.invokeFactory('PoiIssue', action.getId())
+            issue = tracker[action.getId()]
+            issue.setTitle(action.Title() or action.getId())
+            issue.setArea('functionality')
+            issue.setIssueType('bug')
+            issue.setDetails('Foo')
+            issue.reindexObject()
+            plone.api.content.transition(obj=issue, transition='post')
+
+        return self.REQUEST.RESPONSE.redirect(tracker.absolute_url())
 
 atapi.registerType(ActionList, PROJECTNAME)
