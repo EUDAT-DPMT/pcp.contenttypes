@@ -66,4 +66,6 @@
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="FormSaveData2ContentAdapter"
     meta_type="Factory-based Type Information with dynamic views" />
+  <object name="FormSaveData2ContentEntry"
+    meta_type="Factory-based Type Information with dynamic views" />
 </object>
