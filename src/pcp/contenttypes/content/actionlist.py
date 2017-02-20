@@ -30,6 +30,7 @@ ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
                 allow_browse = True,
                 show_indexes = False,
                 allow_sorting=1,
+                show_path=1,
                 force_close_on_insert = True,
                 base_query={'portal_type': 'ActionItem'},
                 label = _(u'label_action_items', default=u'Action Items'),

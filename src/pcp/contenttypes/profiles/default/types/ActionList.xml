@@ -15,14 +15,14 @@
   <property name="allow_discussion">False</property>
   <property name="default_view">base_view</property>
   <property name="view_methods">
-    <element value="base_view" />
+    <element value="table-view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
   <alias from="edit" to="atct_edit" />
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
   <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/base_view" visible="True">
+    url_expr="string:${object_url}/table-view" visible="True">
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
