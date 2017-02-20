@@ -35,5 +35,7 @@ class ActionItem(atapi.BaseContent):
     meta_type = "ActionItem"
     schema = ActionItemSchema
 
+    _at_rename_after_creation = True
+
 
 atapi.registerType(ActionItem, PROJECTNAME)

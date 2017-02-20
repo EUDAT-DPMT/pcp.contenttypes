@@ -32,7 +32,7 @@ ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
                 allow_sorting=1,
                 force_close_on_insert = True,
                 base_query={'portal_type': 'ActionItem'},
-                label = _(u'label_action_items', default=u'Action items'),
+                label = _(u'label_action_items', default=u'Action Items'),
                 description = '',
                 visible = {'edit' : 'visible', 'view' : 'invisible' }
                 )
@@ -54,6 +54,8 @@ class ActionList(atapi.BaseContent):
 
     meta_type = "ActionList"
     schema = ActionListSchema
+
+    _at_rename_after_creation = True
 
     def createPOI(self, target_path):
         """ ActionList to Poi """
@@ -78,6 +80,7 @@ class ActionList(atapi.BaseContent):
             issue.reindexObject()
             plone.api.content.transition(obj=issue, transition='post')
 
+        tracker.reindexObject()
         return self.REQUEST.RESPONSE.redirect(tracker.absolute_url())
 
 atapi.registerType(ActionList, PROJECTNAME)
