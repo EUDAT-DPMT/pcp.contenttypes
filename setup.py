@@ -64,6 +64,7 @@ setup(name='pcp.contenttypes',
                         'collective.monkeypatcher',
                         'incf.countryutils',
                         'semantic_version',
+                        'uwosh.pfg.d2c',
                         'furl'
                         ],
       tests_require=tests_require,
