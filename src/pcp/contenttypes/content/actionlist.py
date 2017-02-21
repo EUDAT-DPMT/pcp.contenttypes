@@ -29,7 +29,7 @@ ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
                        show_indexes=False,
                        show_path=1,
                        force_close_on_insert=True,
-                       startup_directory'/services',
+                       startup_directory='/services',
                        base_query={'portal_type': 'Service'},
                        label=_(u'label_service',
                                default=u'Related service'),
@@ -81,22 +81,39 @@ class ActionList(atapi.BaseContent):
     def createPOI(self, target_path):
         """ ActionList to Poi """
 
+        tracker_id = 'tracker-actions'
+
         target_folder = plone.api.portal.get().restrictedTraverse(target_path, None)
         if target_folder is None:
             raise ValueError(
                 'No target object found for {0}'.format(target_path))
 
-        tracker = plone.api.content.create(
-            container=target_folder,
-            type='PoiTracker',
-            id='tracker-actions',
-            title='Actions ()'.format(self.getId()))
+        if not tracker_id in target_folder.objectIds():
+            tracker = plone.api.content.create(
+                container=target_folder,
+                type='PoiTracker',
+                id=tracker_id,
+                title='ActionTracker')
+            tracker.setAvailableAreas([])
+        else:
+            tracker = target_folder[tracker_id]
 
-        for action in self.getActionItems():
-            tracker.invokeFactory('PoiIssue', action.getId())
-            issue = tracker[action.getId()]
-            issue.setTitle(action.Title() or action.getId())
-            issue.setArea('functionality')
+        available_areas = list(tracker.getAvailableAreas())
+        available_areas.append({
+            'id': self.getId(),
+            'title': self.Title(),
+            'description': self.Description()
+            })
+        tracker.setAvailableAreas(available_areas)
+
+        for num, action in enumerate(self.getActionItems()):
+            id_ = '{:03d}-{}'.format(num+1, action.getId())
+            if id_ in tracker.objectIds():
+                continue
+            tracker.invokeFactory('PoiIssue', id_)
+            issue = tracker[id_]
+            issue.setTitle(action.Title() or id_)
+            issue.setArea(self.getId())
             issue.setIssueType('bug')
             issue.setDetails('Foo')
             issue.reindexObject()
