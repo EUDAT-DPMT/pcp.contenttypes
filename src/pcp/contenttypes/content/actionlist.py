@@ -18,8 +18,8 @@ from pcp.contenttypes.config import PROJECTNAME
 
 ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
 
-    ReferenceField('project',
-                   relationship='forProject',
+    ReferenceField('service',
+                   relationship='forService',
                    multiValued=False,
                    languageIndependent=True,
                    write_permission=ModifyPortalContent,
@@ -29,10 +29,10 @@ ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
                        show_indexes=False,
                        show_path=1,
                        force_close_on_insert=True,
-                       startup_directory='/projects',
-                       base_query={'portal_type': 'Project'},
-                       label=_(u'label_action_items',
-                               default=u'Related project'),
+                       startup_directory'/services',
+                       base_query={'portal_type': 'Service'},
+                       label=_(u'label_service',
+                               default=u'Related service'),
                        description='',
                        visible={'edit': 'visible', 'view': 'invisible'}
                    )
