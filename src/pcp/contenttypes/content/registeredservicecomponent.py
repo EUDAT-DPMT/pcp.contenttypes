@@ -27,7 +27,8 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                          read_permission='View internals',
                          write_permission='Modify internals',
                          relationship='implemented_by',
-                         allowed_types=('ServiceComponentImplementationDetails',),
+                         allowed_types=(
+                             'ServiceComponentImplementationDetails',),
                          multiValued=False,
                          widget=ReferenceBrowserWidget(label='Service Component Implementation Details',
                                                        description='Reference to specific implementation Details',
@@ -161,12 +162,14 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
         scid = self.getServiceComponentImplementationDetails()
         if scid:
             # obtain its configuration parameters configuration
-            configuration_parameters = sorted(scid.getField('configuration_parameters').get(scid))
+            configuration_parameters = sorted(
+                scid.getField('configuration_parameters').get(scid))
 
             # get hold of the related records field from the current object
             implementation_configuration = self.getImplementationConfiguration()
             # dictify its records
-            existing_records = dict([(d['key'], d.get('value', '')) for d in implementation_configuration])
+            existing_records = dict([(d['key'], d.get('value', ''))
+                                     for d in implementation_configuration])
 
             # build a new record structure based on the master configuration parameters
             # and the existing values
@@ -190,7 +193,8 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
         # get parent ServiceComponentImplementation
         sci = scid.aq_parent
         available_implementations = sci.contentValues()
-        available_implementations = sorted(available_implementations, key=lambda item: semantic_version.Version(item.getVersion()))
+        available_implementations = sorted(
+            available_implementations, key=lambda item: semantic_version.Version(item.getVersion()))
         latest_version = None
         latest_version_url = None
         if available_implementations:
@@ -198,12 +202,12 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
             latest_version_url = available_implementations[-1].absolute_url()
 
         return dict(
-                is_current=latest_version==scid.getVersion(),
-                current_version=scid.getVersion(),
-                current_version_url=scid.absolute_url(),
-                latest_version=latest_version,
-                latest_version_url=latest_version_url,
-                available_implementations=available_implementations)
+            is_current=latest_version == scid.getVersion(),
+            current_version=scid.getVersion(),
+            current_version_url=scid.absolute_url(),
+            latest_version=latest_version,
+            latest_version_url=latest_version_url,
+            available_implementations=available_implementations)
 
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)

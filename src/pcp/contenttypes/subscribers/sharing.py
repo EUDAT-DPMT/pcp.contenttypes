@@ -2,6 +2,7 @@
 import plone.api
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
+
 def SharingHandler(event):
     """ Log/intercept @@sharing changes """
 
@@ -17,8 +18,7 @@ def SharingHandler(event):
         username = '{} ({}, {})'.format(username, fullname, email)
 
     logger.log('Sharing updated',
-            level='info',
-            username=username,
-            info_url=info_url,
-            details=event.diff_context)
-
+               level='info',
+               username=username,
+               info_url=info_url,
+               details=event.diff_context)

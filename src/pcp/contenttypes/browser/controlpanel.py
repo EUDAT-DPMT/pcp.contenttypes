@@ -18,4 +18,3 @@ class SettingsEditForm(controlpanel.RegistryEditForm):
 
 class SettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     form = SettingsEditForm
-

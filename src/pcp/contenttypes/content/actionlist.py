@@ -19,44 +19,45 @@ from pcp.contenttypes.config import PROJECTNAME
 ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
 
     ReferenceField('project',
-            relationship = 'forProject',
-            multiValued = False,
-            languageIndependent = True,
-            write_permission = ModifyPortalContent,
-            widget = ReferenceBrowserWidget(
-                allow_search = True,
-                allow_browse = True,
-                show_indexes = False,
-                show_path=1,
-                force_close_on_insert = True,
-                startup_directory='/projects',
-                base_query={'portal_type': 'Project'},
-                label = _(u'label_action_items', default=u'Related project'),
-                description = '',
-                visible = {'edit' : 'visible', 'view' : 'invisible' }
-                )
-            ),
+                   relationship='forProject',
+                   multiValued=False,
+                   languageIndependent=True,
+                   write_permission=ModifyPortalContent,
+                   widget=ReferenceBrowserWidget(
+                       allow_search=True,
+                       allow_browse=True,
+                       show_indexes=False,
+                       show_path=1,
+                       force_close_on_insert=True,
+                       startup_directory='/projects',
+                       base_query={'portal_type': 'Project'},
+                       label=_(u'label_action_items',
+                               default=u'Related project'),
+                       description='',
+                       visible={'edit': 'visible', 'view': 'invisible'}
+                   )
+                   ),
 
     ReferenceField('actionItems',
-            relationship = 'hasActionItem',
-            multiValued = True,
-            isMetadata = True,
-            languageIndependent = False,
-            index = 'KeywordIndex',
-            write_permission = ModifyPortalContent,
-            widget = ReferenceBrowserWidget(
-                allow_search = True,
-                allow_browse = True,
-                show_indexes = False,
-                allow_sorting=1,
-                show_path=1,
-                force_close_on_insert = True,
-                base_query={'portal_type': 'ActionItem'},
-                label = _(u'label_action_items', default=u'Action Items'),
-                description = '',
-                visible = {'edit' : 'visible', 'view' : 'invisible' }
-                )
-            )
+                   relationship='hasActionItem',
+                   multiValued=True,
+                   isMetadata=True,
+                   languageIndependent=False,
+                   index='KeywordIndex',
+                   write_permission=ModifyPortalContent,
+                   widget=ReferenceBrowserWidget(
+                       allow_search=True,
+                       allow_browse=True,
+                       show_indexes=False,
+                       allow_sorting=1,
+                       show_path=1,
+                       force_close_on_insert=True,
+                       base_query={'portal_type': 'ActionItem'},
+                       label=_(u'label_action_items', default=u'Action Items'),
+                       description='',
+                       visible={'edit': 'visible', 'view': 'invisible'}
+                   )
+                   )
 
 ))
 
@@ -82,13 +83,14 @@ class ActionList(atapi.BaseContent):
 
         target_folder = plone.api.portal.get().restrictedTraverse(target_path, None)
         if target_folder is None:
-            raise ValueError('No target object found for {0}'.format(target_path))
+            raise ValueError(
+                'No target object found for {0}'.format(target_path))
 
         tracker = plone.api.content.create(
-                container=target_folder,
-                type='PoiTracker',
-                id='tracker-actions',
-                title='Actions ()'.format(self.getId()))
+            container=target_folder,
+            type='PoiTracker',
+            id='tracker-actions',
+            title='Actions ()'.format(self.getId()))
 
         for action in self.getActionItems():
             tracker.invokeFactory('PoiIssue', action.getId())
