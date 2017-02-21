@@ -18,6 +18,25 @@ from pcp.contenttypes.config import PROJECTNAME
 
 ActionListSchema = ATContentTypeSchema.copy() + atapi.Schema((
 
+    ReferenceField('project',
+            relationship = 'forProject',
+            multiValued = False,
+            languageIndependent = True,
+            write_permission = ModifyPortalContent,
+            widget = ReferenceBrowserWidget(
+                allow_search = True,
+                allow_browse = True,
+                show_indexes = False,
+                show_path=1,
+                force_close_on_insert = True,
+                startup_directory='/projects',
+                base_query={'portal_type': 'Project'},
+                label = _(u'label_action_items', default=u'Related project'),
+                description = '',
+                visible = {'edit' : 'visible', 'view' : 'invisible' }
+                )
+            ),
+
     ReferenceField('actionItems',
             relationship = 'hasActionItem',
             multiValued = True,
