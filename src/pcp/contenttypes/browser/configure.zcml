@@ -13,6 +13,23 @@
   />
 
   <browser:page
+    name="enabling-start"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".misc.Misc"
+    template="enabling_start.pt"
+    permission="zope2.View"
+  />
+
+  <browser:page
+    name="getServices"
+    for="*"
+    class=".misc.Misc"
+    attribute="getServices"
+    permission="zope2.View"
+  />
+
+
+  <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="json"
 	class="pcp.contenttypes.browser.jsonview.JSONView"
