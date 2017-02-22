@@ -19,6 +19,9 @@
                 <span tal:condition="not: row/has_service">
                     (no service configured)
                 </span>
+                <span tal:condition="not: row/has_save_adapter">
+                    (no save adapter configured)
+                </span>
             </li>
         </ul>
     </tal:main-macro>

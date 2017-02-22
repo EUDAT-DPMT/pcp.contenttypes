@@ -22,8 +22,10 @@ class Misc(BrowserView):
         for brain in catalog(**query):
             form = brain.getObject()
             has_service = 'service' in form.objectIds()
+            has_save_adapter = len(form.objectValues('FormSaveData2ContentAdapter')) > 0
             result.append(dict(
                 has_service=has_service,
+                has_save_adapter=has_save_adapter,
                 url=brain.getURL(),
                 title=brain.Title))
         return result
