@@ -106,6 +106,15 @@ class ActionList(atapi.BaseContent):
             })
         tracker.setAvailableAreas(available_areas)
 
+        issues_types = [
+           {'id': 'todo', 'title': 'To Do', 'description': 'To Do'},
+           {'id': 'bug', 'title': 'Bug', 'description': 'Bug'},
+           {'id': 'discussion', 'title': 'Discussion', 'description': 'Discussion'},
+        ]
+        tracker.setAvailableIssueTypes(issues_types)
+
+        tracker.setAvailableSeverities(['Low', 'Medium', 'High'])
+
         for num, action in enumerate(self.getActionItems()):
             id_ = '{:03d}-{}'.format(num+1, action.getId())
             if id_ in tracker.objectIds():
