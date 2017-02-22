@@ -16,6 +16,13 @@
                 <a tal:attributes="href row/url">
                     <span tal:replace="row/title"/>
                 </a>
+                &nbsp;
+                <a tal:condition="row/saved_forms" 
+                   tal:attributes="href row/save_adapter_url">
+                    Forms
+                    (<span tal:replace="row/saved_forms"/>)
+                </a>
+
                 <span tal:condition="not: row/has_service">
                     (no service configured)
                 </span>
