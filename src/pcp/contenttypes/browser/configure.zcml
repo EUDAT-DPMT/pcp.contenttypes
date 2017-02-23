@@ -21,6 +21,22 @@
   />
 
   <browser:page
+    name="table_view_macros"
+    for="uwosh.pfg.d2c.interfaces.IFormSaveData2ContentEntry"
+    template="save_adapter_macros.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    name="process-enabling-form-data"
+    for="uwosh.pfg.d2c.interfaces.IFormSaveData2ContentEntry"
+    class=".enabling.Enabling"
+    attribute="process_enabling_form_data"
+    permission="cmf.ModifyPortalContent"
+    />
+
+
+  <browser:page
     name="getServices"
     for="*"
     class=".enabling.Enabling"
@@ -28,6 +44,13 @@
     permission="zope2.View"
   />
 
+  <browser:page
+    name="getProjects"
+    for="*"
+    class=".enabling.Enabling"
+    attribute="getProjects"
+    permission="zope2.View"
+  />
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"

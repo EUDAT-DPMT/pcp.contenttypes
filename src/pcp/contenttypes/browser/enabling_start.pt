@@ -23,6 +23,9 @@
                     (<span tal:replace="row/saved_forms"/>)
                 </a>
 
+                <span tal:condition="not: row/has_project">
+                    (no project configured)
+                </span>
                 <span tal:condition="not: row/has_service">
                     (no service configured)
                 </span>

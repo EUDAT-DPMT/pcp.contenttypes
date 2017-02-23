@@ -17,6 +17,7 @@
    <element value="File"/>
    <element value="Folder"/>
    <element value="Project"/>
+   <element value="PoiTracker"/>
    <element value="ServiceRequest"/>
    <element value="ServiceComponentRequest"/>
    <element value="ResourceRequest"/>
