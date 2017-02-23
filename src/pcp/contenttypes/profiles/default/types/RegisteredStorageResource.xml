@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A provisioned storage space of a certain type</property>
   <property name="content_meta_type">RegisteredStorageResource</property>
-  <property name="content_icon">document_icon.gif</property>
+  <property name="content_icon">product_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addRegisteredStorageResource</property>
   <property name="immediate_view">atct_edit</property>
@@ -28,5 +28,8 @@
   <action title="Edit" action_id="edit" category="object" condition_expr=""
     url_expr="string:${object_url}/edit" visible="True">
     <permission value="Modify portal content" />
+  </action>  <action title="Accounting" action_id="accounting" category="object" condition_expr=""
+    url_expr="string:${object_url}/list-account-records" visible="True">
+    <permission value="View internals" />
   </action>
 </object>

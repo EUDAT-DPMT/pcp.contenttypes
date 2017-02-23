@@ -25,8 +25,9 @@ class Accountable(object):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings)
         f = furl.furl(settings.accounting_url + '/addAccount')
+        credentials = (settings.accounting_username, settings.accounting_password)
         data = dict(id=self.UID(), owner=owner_id)
-        result = requests.post(f, data=data)
+        result = requests.post(f, data=data, auth=credentials)
         if not result.ok:
             raise RuntimeError('Unable to create account for {} on accounting server (reason: {})'.format(
                 owner_id, result.text))

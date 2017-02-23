@@ -274,7 +274,7 @@ class RequestUtilities(object):
         return template.format(**comp)
 
     def storage2string(self, storage):
-        storage['class'] = storage['storage class']
+        storage['class'] = storage.get('storage class','(not specified)')
         template = "{value} {unit} {class}"
         return template.format(**storage)
 

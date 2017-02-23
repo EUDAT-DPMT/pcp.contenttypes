@@ -62,6 +62,14 @@
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
+	name="resetUID"
+	class="pcp.contenttypes.browser.manage_uids.UpdateUID"
+	attribute="reset_uid"
+	permission="cmf.ManagePortal"
+	/>
+
+  <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
 	name="table-view"
 	class=".table_view.TableView"
 	template="table_view.pt"
@@ -142,6 +150,14 @@
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="registered_resource_overview"
 	class="pcp.contenttypes.browser.summary_views.RegisteredResourceOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="registered_storage_resource_overview"
+	class="pcp.contenttypes.browser.summary_views.RegisteredStorageResourceOverview"
 	template="summary_views.pt"
 	permission="zope2.View"
 	/>
@@ -254,7 +270,7 @@
 	for="pcp.contenttypes.interfaces.IAccountable"
 	name="list-account-records"
 	class=".accounting.Accounting"
-    template="accounting.pt"
+        template="accounting.pt"
 	permission="zope2.View"
 	/>
 
@@ -262,7 +278,7 @@
 	for="pcp.contenttypes.interfaces.IAccountable"
 	name="create-account"
 	class=".accounting.Accounting"
-    attribute="create_account"
+        attribute="create_account"
 	permission="cmf.ModifyPortalContent"
 	/>
 
