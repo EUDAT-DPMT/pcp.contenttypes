@@ -4,9 +4,10 @@ import plone.api
 from Products.Five.browser import BrowserView
 
 
-class Misc(BrowserView):
+class Enabling(BrowserView):
 
     def getServices(self):
+        """ For PFG enabling forms ('service' field) """
         catalog = plone.api.portal.get_tool('portal_catalog')
         query = dict(portal_type='Service', sort_on='sortable_title')
         result = list()
@@ -15,7 +16,7 @@ class Misc(BrowserView):
         return result
 
     def enabling_forms(self):
-
+        """ Initial enabling form """
         catalog = plone.api.portal.get_tool('portal_catalog')
         query = dict(portal_type='FormFolder')
         result = list()
@@ -29,7 +30,6 @@ class Misc(BrowserView):
                 save_adapter = form.objectValues('FormSaveData2ContentAdapter')[0]
                 saved_forms = len(save_adapter.objectIds())
                 save_adapter_url = save_adapter.absolute_url() + '/folder_contents'
-
             result.append(dict(
                 saved_forms=saved_forms,
                 save_adapter_url=save_adapter_url,

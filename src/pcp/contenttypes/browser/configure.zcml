@@ -15,7 +15,7 @@
   <browser:page
     name="enabling-start"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".misc.Misc"
+    class=".enabling.Enabling"
     template="enabling_start.pt"
     permission="zope2.View"
   />
@@ -23,7 +23,7 @@
   <browser:page
     name="getServices"
     for="*"
-    class=".misc.Misc"
+    class=".enabling.Enabling"
     attribute="getServices"
     permission="zope2.View"
   />
