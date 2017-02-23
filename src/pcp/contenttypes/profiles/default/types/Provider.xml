@@ -20,8 +20,11 @@
    <element value="ResourceOffer"/>
    <element value="ServiceOffer"/>
    <element value="ServiceComponentOffer"/>
+   <element value="RegisteredService"/>
    <element value="RegisteredServiceComponent"/>
    <element value="RegisteredResource"/>
+   <element value="RegisteredComputeResource"/>
+   <element value="RegisteredStorageResource"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table-view</property>
