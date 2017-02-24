@@ -46,5 +46,10 @@ class Accounting(BrowserView):
         url = str(f)
         result = requests.get(url)
         if result.ok:
-            return result.json()
+            results = result.json()
+            for r in results:
+                # XXX TODO figure out target unit from value 
+                r['core'] = self.context.convert(r['core'], 'TiB')
+            return results
         return ()
+

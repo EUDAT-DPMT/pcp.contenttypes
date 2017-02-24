@@ -401,7 +401,7 @@ class CommonUtilities(object):
             url, title, url)
         return anchor
 
-    def convert(self, raw):
+    def convert(self, raw, target_unit=None):
         """Checking REQUEST for a target unit and converting
         if necessary"""
 
@@ -413,7 +413,8 @@ class CommonUtilities(object):
 
         request = self.REQUEST
         try:
-            target_unit = request['unit']
+            if target_unit is None:
+                target_unit = request['unit']
             if target_unit != u:
                 result = self.pint_convert(v, u, target_unit)
         except KeyError:
