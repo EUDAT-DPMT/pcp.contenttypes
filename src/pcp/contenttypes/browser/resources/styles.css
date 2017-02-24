@@ -41,6 +41,8 @@ h5,
 #content #description,
 body {
     font-family: Raleway, sans-serif !important;
+    position: relative;
+    background: #FFFFFF url(++resource++pcp.contenttypes/bg_page.png) no-repeat left top;
 }
 
 #portal-globalnav {
