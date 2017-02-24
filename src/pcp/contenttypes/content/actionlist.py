@@ -93,7 +93,7 @@ class ActionList(atapi.BaseContent):
                 container=target_folder,
                 type='PoiTracker',
                 id=tracker_id,
-                title='ActionTracker')
+                title='Action Tracker')
             tracker.setAvailableAreas([])
         else:
             tracker = target_folder[tracker_id]
