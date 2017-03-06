@@ -10,6 +10,4 @@ $(document).ready(function() {
     $('#archetypes-fieldname-implementation_configuration input[name="form.button.more"]').hide(); 
     $('#archetypes-fieldname-implementation_configuration input[type="checkbox"]').hide(); 
     $('#archetypes-fieldname-implementation_configuration input[name="implementation_configuration.key:records:ignore_empty"]').attr('readonly', 'readonly');
-
-    $('head').append('<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">');
 });
