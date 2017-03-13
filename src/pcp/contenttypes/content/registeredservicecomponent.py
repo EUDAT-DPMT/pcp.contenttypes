@@ -141,6 +141,14 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                             condition="python:here.stateNotIn(['considered'])",
                         ),
                         ),
+    BackReferenceField('resources',
+                       relationship='services',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Registered service component\'s resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 

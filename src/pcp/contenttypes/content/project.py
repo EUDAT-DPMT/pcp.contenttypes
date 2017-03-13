@@ -134,6 +134,14 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                 'scientific field(s) the data '
                                                 'originate from.'),
                       ),
+    BackReferenceField('resources',
+                       relationship='project',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Project\'s Resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 
