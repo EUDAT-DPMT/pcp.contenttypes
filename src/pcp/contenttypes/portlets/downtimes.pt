@@ -1,0 +1,32 @@
+
+
+
+<dl class="portlet">
+    <dt class="portletHeader">
+        Upcoming Downtimes
+        <span tal:condition="view/showSingleProviderOnly">
+            (<span tal:content="view/getProvider">Provider</span>)
+        </span>
+    </dt>
+    <tal:items tal:repeat="downtime view/getDowntimes">
+        <dd class="portletItem">
+            <a href="" tal:attributes="href python:downtime.absolute_url()">
+                <tal:title content="downtime/title">Title</tal:title>
+            </a>
+
+            <div class="portletItemDetails">
+                <p>
+                    <span tal:replace="python:here.local_time(downtime.start())">Start</span> -
+                           <span tal:replace="python:here.local_time(downtime.end())">Ende</span>
+                </p>
+                <p>
+                    <span tal:replace="downtime/Description">Description</span>
+                </p>
+            </div>
+        </dd>
+    </tal:items>
+    <dd class="portletFooter">
+        <a class="internal-link" href="/pcp/downtime_overview" target="_self" title="">All Downtimes...</a>
+    </dd>
+</dl>
+

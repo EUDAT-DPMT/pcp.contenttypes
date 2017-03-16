@@ -70,4 +70,10 @@
     handler=".patches.apply_patched_mapping"
     />
 
+  <subscriber
+    for=".interfaces.IDowntime
+         Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+         handler=".content.downtime.handleDowntimeTransition"
+    />
+
 </configure>

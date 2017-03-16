@@ -6,5 +6,10 @@
 <portlets
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-  <!-- -*- extra stuff goes here -*- -->
+
+  <portlet
+    addview="pcp.contenttypes.Downtimes"
+    title="Downtimes"
+    description="Portlet showing upcoming Downtimes"/>
+
 </portlets>

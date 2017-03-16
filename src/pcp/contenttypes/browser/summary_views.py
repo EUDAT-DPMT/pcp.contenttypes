@@ -59,6 +59,15 @@ def render_date(content, field_id):
         return 'not set'
 
 
+def render_datetime(content, field_id):
+    field = content.schema[field_id]
+    value = field.get(content)
+    try:
+        return content.toLocalizedTime(value, long_format=True)
+    except AttributeError:
+        return 'not set'
+
+
 def render_resources(content, field_id):
     """Specific for requests"""
     try:
@@ -80,6 +89,8 @@ class BaseSummaryView(BrowserView):
                       'resources': render_resources,
                       # add more as needed; reference fields don't need to be
                       # included here
+                      'startDateTime': render_datetime,
+                      'endDateTime': render_datetime,
                       }
 
     def field_visible(self, obj, field_name):
@@ -373,6 +384,25 @@ class ResourceOfferOverview(RegisteredResourceOverview):
     def content_items(self):
         """All resource offers regardless of location"""
         return [element.getObject() for element in self.catalog(portal_type='ResourceOffer')]
+
+
+class DowntimeOverview(BaseSummaryView):
+
+    title = "Downtimes"
+
+    description = ""
+
+    def content_items(self):
+        return [element.getObject() for element in self.catalog(portal_type='Downtime')]
+
+    def fields(self):
+        return ('title', 'startDateTime', 'endDateTime', 'affected_registered_serivces', 'state',)
+
+    def field_labels(self):
+        return ('Title', 'Start Date', 'End Date', 'Affected Services', 'State')
+
+    def simple_fields(self):
+        return ()
 
 
 class CsvView(ProjectOverview):
