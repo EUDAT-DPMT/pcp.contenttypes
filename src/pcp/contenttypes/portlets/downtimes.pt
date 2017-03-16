@@ -15,10 +15,18 @@
             </a>
 
             <div class="portletItemDetails">
-                <p>
-                    <span tal:replace="python:here.local_time(downtime.start())">Start</span> -
-                           <span tal:replace="python:here.local_time(downtime.end())">Ende</span>
-                </p>
+                <table>
+                    <tr>
+                        <td tal:content="python:downtime.getStartDateTimeLocal()">Start</td>
+                        <td>-</td>
+                       <td tal:content="python:downtime.getEndDateTimeLocal()">Ende</td>
+                    </tr>
+                    <tr>
+                        <td tal:content="python:downtime.getStartDateTimeUtc()">Start</td>
+                        <td>-</td>
+                       <td tal:content="python:downtime.getEndDateTimeUtc()">Ende</td>
+                    </tr>
+                </table>
                 <p>
                     <span tal:replace="downtime/Description">Description</span>
                 </p>

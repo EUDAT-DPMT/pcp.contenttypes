@@ -21,6 +21,15 @@ from pcp.contenttypes.config import PROJECTNAME
 
 from DateTime import DateTime
 
+
+class DateComputedField(atapi.ComputedField):
+
+    def get(self, instance, **kwargs):
+        """Return the computed value."""
+        instance = eval(self.expression, {'context': instance, 'here': instance})
+        return instance.asdatetime().strftime("%Y-%m-%d %H:%M %Z")
+
+
 DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     atapi.DateTimeField('startDateTime',
@@ -34,13 +43,13 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                               description='When does the downtime start? In your local time!'),
                         ),
 
-    atapi.ComputedField('startDateTimeLocal',
-                        expression='here.start()',
+    DateComputedField('startDateTimeLocal',
+                      expression="here.start()",
                         widget=ComputedWidget(label='Start date (local TZ)'),
                         ),
 
-    atapi.ComputedField('startDateTimeUtc',
-                        expression='here.start().toZone("UTC")',
+    DateComputedField('startDateTimeUtc',
+                      expression="here.start().toZone('UTC')",
                         widget=ComputedWidget(label='Start date (UTC)'),
                         ),
 
@@ -55,13 +64,13 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                               description='When does the downtime end? In your local time!'),
                         ),
 
-    atapi.ComputedField('endDateTimeLocal',
-                        expression='here.end()',
+    DateComputedField('endDateTimeLocal',
+                      expression="here.end()",
                         widget=ComputedWidget(label='End date (local TZ)'),
                         ),
 
-    atapi.ComputedField('endDateTimeUtc',
-                        expression='here.end().toZone("UTC")',
+    DateComputedField('endDateTimeUtc',
+                      expression="here.end().toZone('UTC')",
                         widget=ComputedWidget(label='End date (UTC)'),
                         ),
 
