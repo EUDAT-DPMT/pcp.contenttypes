@@ -1,12 +1,12 @@
 """Definition of the Downtime content type
 """
-import Products
+
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
 from pcp.contenttypes.mail import send_mail
 from zope.interface import implements
 
-from Products.Archetypes.Widget import CalendarWidget
+from Products.Archetypes.Widget import CalendarWidget, ComputedWidget
 
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
@@ -21,9 +21,6 @@ from pcp.contenttypes.config import PROJECTNAME
 
 from DateTime import DateTime
 
-from datetime import datetime
-from pytz import utc as UTC
-
 DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     atapi.DateTimeField('startDateTime',
@@ -32,8 +29,19 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='start',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
+                        hidden=True,
                         widget=CalendarWidget(label='Start date',
                                               description='When does the downtime start? In your local time!'),
+                        ),
+
+    atapi.ComputedField('startDateTimeLocal',
+                        expression='here.start()',
+                        widget=ComputedWidget(label='Start date (local TZ)'),
+                        ),
+
+    atapi.ComputedField('startDateTimeUtc',
+                        expression='here.start().toZone("UTC")',
+                        widget=ComputedWidget(label='Start date (UTC)'),
                         ),
 
     atapi.DateTimeField('endDateTime',
@@ -42,8 +50,19 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='end',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
+                        hidden=True,
                         widget=CalendarWidget(label='End date',
                                               description='When does the downtime end? In your local time!'),
+                        ),
+
+    atapi.ComputedField('endDateTimeLocal',
+                        expression='here.end()',
+                        widget=ComputedWidget(label='End date (local TZ)'),
+                        ),
+
+    atapi.ComputedField('endDateTimeUtc',
+                        expression='here.end().toZone("UTC")',
+                        widget=ComputedWidget(label='End date (UTC)'),
                         ),
 
     atapi.ReferenceField('affected_registered_serivces',
@@ -90,10 +109,15 @@ def findDowntimeRecipients(downtime):
     affected_services = set.union(directly_affected_services, indirectly_affected_services)
     affected_projects = [project for service in affected_services
                          for project in service.getUsed_by_projects()]
-    affected_communities = [project.getCommunity() for project in affected_projects]
+    affected_communities = [project.getCommunity() for project in affected_projects if project.getCommunity()]
 
-    project_contacts = set([project.getCommunity_contact().getEmail() for project in affected_projects])
-    community_admins = set([admin.getEmail() for community in affected_communities for admin in community.getAdmins()])
+    project_contacts = set([project.getCommunity_contact().getEmail()
+                            for project in affected_projects
+                            if project.getCommunity_contact() and project.getCommunity_contact().getEmail()])
+    community_admins = set([admin.getEmail()
+                            for community in affected_communities
+                            for admin in community.getAdmins()
+                            if admin.getEmail()])
 
     recipients = set.union(project_contacts, community_admins)
     return recipients
@@ -108,21 +132,21 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
     for brain in provider_brains:
         provider = brain.getObject()
 
-    for recipient in recipients:
-        params = {
-            'description': downtime.Description(),
-            # UTC because we have no clue in which timezone the recipient is (using Plone 4)
-            'start_date': str(downtime.start().toZone('UTC')),
-            'end_date': str(downtime.end().toZone('UTC')),
-            'provider_name': provider.title,
-            'provider_url': provider.url,
-            'contact_mail_alarm': provider.getAlarm_email(),
-            'contact_mail_helpdesk': provider.getHelpdesk_email(),
-            'contact_phone_emergency': provider.getEmergency_phone(),
-            'services': '\n'.join(['* ' + service.title for service in affected_services]),
-            'downtime_link': downtime.absolute_url(),
-        }
+    params = {
+        'description': downtime.Description(),
+        # UTC because we have no clue in which timezone the recipient is (using Plone 4)
+        'start_date': str(downtime.start().toZone('UTC')),
+        'end_date': str(downtime.end().toZone('UTC')),
+        'provider_name': provider.title,
+        'provider_url': provider.url,
+        'contact_mail_alarm': provider.getAlarm_email(),
+        'contact_mail_helpdesk': provider.getHelpdesk_email(),
+        'contact_phone_emergency': provider.getEmergency_phone(),
+        'services': '\n'.join(['* ' + service.title for service in affected_services]),
+        'downtime_link': downtime.absolute_url(),
+    }
 
+    for recipient in recipients:
         send_mail(
                 sender=None,
                 recipients=[recipient],
@@ -147,7 +171,7 @@ def retractDowntime(downtime):
 
 def handleDowntimeTransition(context, event):
     assert event.workflow.id == 'downtime_workflow', \
-        'expecting Simple Publication Workflow being assigned to Downtime'
+        'expecting Downtime Workflow being assigned to Downtime'
 
     new_state = getattr(event.new_state, 'id', None)
     old_state = getattr(event.old_state, 'id', None)
