@@ -16,16 +16,14 @@
 
             <div class="portletItemDetails">
                 <table>
-                    <tr>
-                        <td tal:content="python:downtime.getStartDateTimeLocal()">Start</td>
-                        <td>-</td>
-                       <td tal:content="python:downtime.getEndDateTimeLocal()">Ende</td>
-                    </tr>
-                    <tr>
-                        <td tal:content="python:downtime.getStartDateTimeUtc()">Start</td>
-                        <td>-</td>
-                       <td tal:content="python:downtime.getEndDateTimeUtc()">Ende</td>
-                    </tr>
+                    <tr><td>
+                        <span tal:replace="python:downtime.getStartDateTimeCet()">Start</span> -
+                       <span tal:replace="python:downtime.getEndDateTimeCet()">Ende</span>
+                    </td></tr>
+                    <tr><td>
+                        <span tal:replace="python:downtime.getStartDateTimeUtc()">Start</span> -
+                       <span tal:replace="python:downtime.getEndDateTimeUtc()">Ende</span>
+                    </td></tr>
                 </table>
                 <p>
                     <span tal:replace="downtime/Description">Description</span>

@@ -27,6 +27,7 @@ class DateComputedField(atapi.ComputedField):
     def get(self, instance, **kwargs):
         """Return the computed value."""
         instance = eval(self.expression, {'context': instance, 'here': instance})
+        # Plone DateTime does not show timezone via %Z
         return instance.asdatetime().strftime("%Y-%m-%d %H:%M %Z")
 
 
@@ -39,19 +40,19 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         default_method=DateTime,
                         languageIndependent=True,
                         hidden=True,
-                        widget=CalendarWidget(label='Start date',
-                                              description='When does the downtime start? In your local time!'),
-                        ),
-
-    DateComputedField('startDateTimeLocal',
-                      expression="here.start()",
-                        widget=ComputedWidget(label='Start date (local TZ)'),
+                        widget=CalendarWidget(label='Start date (CET)',
+                                              description='When does the downtime start? In CET!'),
                         ),
 
     DateComputedField('startDateTimeUtc',
                       expression="here.start().toZone('UTC')",
-                        widget=ComputedWidget(label='Start date (UTC)'),
-                        ),
+                      widget=ComputedWidget(label='Start date (UTC)'),
+                      ),
+
+    DateComputedField('startDateTimeCet',
+                      expression="here.start().toZone('CET')",
+                      widget=ComputedWidget(label='Start date (CET)'),
+                      ),
 
     atapi.DateTimeField('endDateTime',
                         required=True,
@@ -60,19 +61,19 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         default_method=DateTime,
                         languageIndependent=True,
                         hidden=True,
-                        widget=CalendarWidget(label='End date',
-                                              description='When does the downtime end? In your local time!'),
-                        ),
-
-    DateComputedField('endDateTimeLocal',
-                      expression="here.end()",
-                        widget=ComputedWidget(label='End date (local TZ)'),
+                        widget=CalendarWidget(label='End date (CET)',
+                                              description='When does the downtime end? In CET!'),
                         ),
 
     DateComputedField('endDateTimeUtc',
                       expression="here.end().toZone('UTC')",
-                        widget=ComputedWidget(label='End date (UTC)'),
-                        ),
+                      widget=ComputedWidget(label='End date (UTC)'),
+                      ),
+
+    DateComputedField('endDateTimeCet',
+                      expression="here.end().toZone('CET')",
+                      widget=ComputedWidget(label='End date (CET)'),
+                      ),
 
     atapi.ReferenceField('affected_registered_serivces',
                          relationship='affected_registered_services',

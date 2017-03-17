@@ -59,11 +59,11 @@ def render_date(content, field_id):
         return 'not set'
 
 
-def render_datetime(content, field_id):
+def render_computed_datetime(content, field_id):
     field = content.schema[field_id]
     value = field.get(content)
     try:
-        return content.toLocalizedTime(value, long_format=True)
+        return value
     except AttributeError:
         return 'not set'
 
@@ -89,8 +89,10 @@ class BaseSummaryView(BrowserView):
                       'resources': render_resources,
                       # add more as needed; reference fields don't need to be
                       # included here
-                      'startDateTime': render_datetime,
-                      'endDateTime': render_datetime,
+                      'startDateTimeUtc': render_computed_datetime,
+                      'endDateTimeUtc': render_computed_datetime,
+                      'startDateTimeCet': render_computed_datetime,
+                      'endDateTimeCet': render_computed_datetime,
                       }
 
     def field_visible(self, obj, field_name):
@@ -396,10 +398,10 @@ class DowntimeOverview(BaseSummaryView):
         return [element.getObject() for element in self.catalog(portal_type='Downtime')]
 
     def fields(self):
-        return ('title', 'startDateTime', 'endDateTime', 'affected_registered_serivces', 'state',)
+        return ('title', 'startDateTimeUtc', 'endDateTimeUtc', 'startDateTimeCet', 'endDateTimeCet', 'affected_registered_serivces', 'state',)
 
     def field_labels(self):
-        return ('Title', 'Start Date', 'End Date', 'Affected Services', 'State')
+        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Start Date (CET)', 'End Date (CET)', 'Affected Services', 'State',)
 
     def simple_fields(self):
         return ()
