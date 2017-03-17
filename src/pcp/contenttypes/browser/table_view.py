@@ -16,7 +16,9 @@ hidden_fields = (
     'modification_date',
     'creators',
     'excludeFromNav',
-    'nextPreviousEnabled'
+    'nextPreviousEnabled',
+    'startDateTime',
+    'endDateTime',
 )
 
 hidden_fields = dict([(f, 0) for f in hidden_fields])
@@ -29,8 +31,6 @@ class TableView(BrowserView):
         result = list()
         for field in self.context.Schema().fields():
             if field.getName() in hidden_fields:
-                continue
-            if getattr(field, 'hidden', False):
                 continue
             value = field.get(self.context)
             if value in (None, '', [], ()):

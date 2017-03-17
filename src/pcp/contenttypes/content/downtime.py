@@ -39,7 +39,6 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='start',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        hidden=True,
                         widget=CalendarWidget(label='Start date (CET)',
                                               description='When does the downtime start? In CET!'),
                         ),
@@ -60,7 +59,6 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='end',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        hidden=True,
                         widget=CalendarWidget(label='End date (CET)',
                                               description='When does the downtime end? In CET!'),
                         ),
