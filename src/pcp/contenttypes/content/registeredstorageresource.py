@@ -57,5 +57,19 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
     meta_type = "RegisteredStorageResource"
     schema = RegisteredStorageResourceSchema
 
+    def getCachedRecords(self):
+        # trivially store last state fetched by Accounting.records
+        return getattr(self, 'cached_records', None)
+
+    def getUsedMemory(self):
+        return getattr(self, 'cached_newest_record', None)
+
+    def getAllocatedMemory(self):
+        raw = self.schema['size'].get(self)
+        if 'value' in raw and 'unit' in raw:
+            return raw
+        else:
+            return None
+
 
 atapi.registerType(RegisteredStorageResource, PROJECTNAME)

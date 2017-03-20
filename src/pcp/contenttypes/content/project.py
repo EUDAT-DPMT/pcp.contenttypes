@@ -1,6 +1,8 @@
 """Definition of the Project content type
 """
 
+from pcp.contenttypes.interfaces import IRegisteredComputeResource
+from pcp.contenttypes.interfaces import IRegisteredStorageResource
 from zope.interface import implements
 
 from Products.Archetypes import atapi
@@ -84,6 +86,14 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                        widget=ateapi.RecordWidget(
                            condition='python:here.stateIn(["pre_production","production","terminated"])'),
                        ),
+    atapi.ComputedField('allocated_new',
+                        expression='here.sizeToString(here.convert(here.getSizeSummary()))',
+                        widget=atapi.ComputedWidget(label='Allocated'),
+                       ),
+    atapi.ComputedField('used_new',
+                        expression='here.sizeToString(here.convert(here.getUsedSummary()))',
+                        widget=atapi.ComputedWidget(label='Used'),
+                        ),
     atapi.ReferenceField('project_enabler',
                          read_permission='View internals',
                          write_permission='Modify internals',
@@ -134,6 +144,18 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                 'scientific field(s) the data '
                                                 'originate from.'),
                       ),
+    BackReferenceField('resources',
+                       relationship='project',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
+    atapi.ComputedField('resource_usage',
+                  expression='here.getResourceUsage()',
+                  widget=atapi.ComputedWidget(label='Resource Usage'),
+                  ),
 )) + CommonFields.copy()
 
 
@@ -153,7 +175,6 @@ class Project(folder.ATFolder, CommonUtilities):
 
     def getAllocated(self):
         """Specialized accessor that can handle unit conversions."""
-
         raw = self.schema['allocated'].get(self)
         return self.convert(raw)
 
@@ -161,6 +182,77 @@ class Project(folder.ATFolder, CommonUtilities):
         """Specialized accessor supporting unit conversion"""
         raw = self.schema['used'].get(self)
         return self.convert(raw)
+
+    def getResourceUsage(self):
+        usages = []
+        for resource in self.getResources():
+            if IRegisteredStorageResource.providedBy(resource):
+                used = resource.getUsedMemory()
+                size = resource.getSize()
+
+                if size:
+                    size = self.convert(size)
+                    size_value = float(size['value'])
+                    size_unit = size['unit']
+                    size_str = '%0.2f %s' % (size_value, size_unit)
+                else:
+                    size_str = '??'
+                    size_value = None
+
+                if used:
+                    core = self.convert_pure(used['core'], size_unit)
+                    core_value = float(core['value'])
+                    used_str = '%0.2f %s' % (core_value, size_unit)
+                    meta = used['meta']
+                    submission_time = meta['submission_time']
+                else:
+                    core_value = None
+                    used_str = '??'
+                    submission_time = '??'
+
+                if core_value and size_value:
+                    rel_usage_str = '%0.2f' % (core_value / size_value * 100.0)
+                else:
+                    rel_usage_str = '??'
+
+                usages.append('%s: %s / %s (%s%%) (%s UTC)' %
+                              (resource.title, used_str, size_str, rel_usage_str, submission_time))
+
+            if IRegisteredComputeResource.providedBy(resource):
+                pass
+
+        return '<br>'.join(usages)
+
+    def getUsedSummary(self):
+        value = 0
+        unit = 'B'
+
+        for resource in self.getResources():
+            if IRegisteredStorageResource.providedBy(resource):
+                used = resource.getUsedMemory()
+                if used:
+                    used_bytes = self.convert_pure(used['core'], unit)
+                    value += float(used_bytes['value'])
+                else:
+                    return None
+
+        return {'value': value, 'unit': unit}
+
+    def getSizeSummary(self):
+        value = 0
+        unit = 'B'
+
+        for resource in self.getResources():
+            if IRegisteredStorageResource.providedBy(resource):
+                size = resource.getAllocatedMemory()
+                if size:
+                    size_bytes = self.convert_pure(size, unit)
+                    value += float(size_bytes['value'])
+                else:
+                    return None
+
+        return {'value': value, 'unit': unit}
+
 
 
 atapi.registerType(Project, PROJECTNAME)

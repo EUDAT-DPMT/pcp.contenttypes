@@ -1,5 +1,6 @@
 """Common components shared by content types
 """
+import math
 
 END_OF_EUDAT2020 = "2018-02-28"
 
@@ -401,9 +402,19 @@ class CommonUtilities(object):
             url, title, url)
         return anchor
 
-    def convert(self, raw, target_unit=None):
+    def convert(self, raw, target_unit='auto'):
         """Checking REQUEST for a target unit and converting
-        if necessary"""
+        if necessary
+        """
+        request = self.REQUEST
+        target_unit = request.get('unit', target_unit)
+        return self.convert_pure(raw, target_unit)
+
+    def convert_pure(self, raw, target_unit='auto'):
+        """Convert value.
+        """
+        if raw is None:
+            return raw
 
         v = raw.get('value', '')
         u = raw.get('unit', '')
@@ -411,10 +422,38 @@ class CommonUtilities(object):
                   'unit': u,
                   }
 
-        request = self.REQUEST
         try:
-            if target_unit is None:
-                target_unit = request['unit']
+            # ensure valid target unit
+            if target_unit in unit_map:
+                pass
+            elif target_unit in (None, 'auto'):
+                pass
+            else:
+                # invalid value: fall back to human readable
+                target_unit = 'auto'
+
+            # determine target unit if necessary
+            if target_unit == 'auto':
+                value = self.pint_convert(float(v or '1') or 1.0, u, 'B')['value']
+
+                units_2 = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB',)
+                units_10 = ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB',)
+
+                if u in units_2 or u in ('byte', 'bit'):
+                    unit_magnitude = int(math.log(value, 1024))
+                    units = units_2
+                else:
+                    unit_magnitude = int(math.log(value, 1000))
+                    units = units_10
+
+                unit_index = max(0, min(len(units) - 1, unit_magnitude))
+                target_unit = units[unit_index]
+            elif target_unit is None:
+                target_unit = u
+            else:  # in unit_map
+                pass
+
+            # convert value to target unit
             if target_unit != u:
                 result = self.pint_convert(v, u, target_unit)
         except KeyError:
@@ -458,6 +497,16 @@ class CommonUtilities(object):
     def yesno(self, instance):
         """Seems like RecordsFields do not support checkboxes"""
         return atapi.DisplayList([['', 'Select'], ['yes', 'yes'], ['no', 'no']])
+
+    def sizeToString(self, size):
+        if size:
+            try:
+                value = "%0.2f" % float(size['value'])
+            except ValueError:
+                value = ''
+            return '%s %s' % (value, size.get('unit'))
+        else:
+            return 'unknown'
 
 # we don't want to use eval so we define an explicit mapping of supported units
 
