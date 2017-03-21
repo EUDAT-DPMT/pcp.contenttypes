@@ -1,5 +1,8 @@
 """Definition of the RegisteredService content type
 """
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
+
 from zope.interface import implements
 
 from Products.Archetypes import atapi

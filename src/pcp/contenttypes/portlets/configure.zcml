@@ -7,6 +7,12 @@
        without this, we may get a permission lookup error -->
   <include package="plone.app.portlets" />
 
-	<!-- -*- extra stuff goes here -*- -->
+    <plone:portlet
+        name="pcp.contenttypes.Downtimes"
+        interface=".downtimes.IDowntimePortlet"
+        assignment=".downtimes.Assignment"
+        addview=".downtimes.AddForm"
+        renderer=".downtimes.Renderer"
+        />
 
 </configure>

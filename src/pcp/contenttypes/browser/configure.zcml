@@ -147,6 +147,14 @@
   />
 
   <browser:page
+    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    name="downtime_overview"
+    class="pcp.contenttypes.browser.summary_views.DowntimeOverview"
+    template="summary_views.pt"
+    permission="zope2.View"
+  />
+
+  <browser:page
 	for="Products.ATContentTypes.interfaces.IATFolder"
 	name="provider_registered_service_components"
 	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"

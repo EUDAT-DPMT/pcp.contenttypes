@@ -1,0 +1,23 @@
+Hello,
+
+a previously announced downtime has been retracted.
+
+The original announcement was:
+----
+
+
+Affected services or components:
+{services}
+
+Description:     {description}
+Start date:      {start_date}
+End date:        {end_date}
+
+Helpdesk Mail:   {contact_mail_helpdesk}
+Alarm Mail:      {contact_mail_alarm}
+Emergency Phone: {contact_phone_emergency}
+
+For more information, please see:
+{downtime_link}
+
+{footer}
