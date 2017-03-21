@@ -1,11 +1,13 @@
 """Definition of the RegisteredService content type
 """
-
 from zope.interface import implements
 
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
+
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
 
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
@@ -77,6 +79,22 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         expression='here.getCregURL()',
                         widget=atapi.ComputedWidget(label='Central Registry'),
                         ),
+    BackReferenceField('used_by_projects',
+                       relationship='using',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Used by project',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('resources',
+                       relationship='services',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Registered service\'s resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 
