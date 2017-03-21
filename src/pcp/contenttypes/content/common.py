@@ -419,6 +419,8 @@ class CommonUtilities(object):
         if raw is None:
             return raw
 
+        raw = raw.copy()
+
         v = raw.get('value', '')
         u = raw.get('unit', '')
         result = {'value': v,
