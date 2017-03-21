@@ -58,7 +58,6 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
     schema = RegisteredStorageResourceSchema
 
     def getCachedRecords(self):
-        # trivially store last state fetched by Accounting.records
         return getattr(self, 'cached_records', None)
 
     def getUsedMemory(self):
@@ -67,6 +66,11 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
     def getAllocatedMemory(self):
         raw = self.schema['size'].get(self)
         if 'value' in raw and 'unit' in raw:
+            # unit should be enforced by field's vocabulary
+            try:
+                float(raw['value'])
+            except ValueError:
+                return None
             return raw
         else:
             return None

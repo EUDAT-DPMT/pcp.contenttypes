@@ -411,7 +411,10 @@ class CommonUtilities(object):
         return self.convert_pure(raw, target_unit)
 
     def convert_pure(self, raw, target_unit='auto'):
-        """Convert value.
+        """Convert value to target_unit.
+           If a particular target_unit (i.e. in unit_map) is stated then convert to that.
+           If target_unit == 'auto' then determine a unit that is 'human readable'.
+           If target_unit is None then keep current unit.
         """
         if raw is None:
             return raw
@@ -501,12 +504,11 @@ class CommonUtilities(object):
     def sizeToString(self, size):
         if size:
             try:
-                value = "%0.2f" % float(size['value'])
-            except ValueError:
-                value = ''
-            return '%s %s' % (value, size.get('unit'))
+                return '%0.2f %s' % (float(size['value']), size['unit'])
+            except (ValueError, KeyError):
+                return 'invalid size'
         else:
-            return 'unknown'
+            return 'unknown size'
 
 # we don't want to use eval so we define an explicit mapping of supported units
 

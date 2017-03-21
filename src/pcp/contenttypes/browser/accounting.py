@@ -73,6 +73,7 @@ class Accounting(BrowserView):
             resource = brain.getObject()
             records = self.fetch_records(resource.UID())
             if records:
+                # the cache update could be moved to fetch_records to also use explicit requests
                 newest_record = max(records, key=lambda x: x['meta']['submission_time'])
                 resource.cached_records = records
                 resource.cached_newest_record = newest_record
