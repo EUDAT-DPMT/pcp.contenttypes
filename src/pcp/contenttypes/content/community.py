@@ -79,6 +79,14 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                 'scientific field(s) this customer '
                                                 'is focussing on.'),
                       ),
+    BackReferenceField('resources',
+                       relationship='customer',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Customer\'s Resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 

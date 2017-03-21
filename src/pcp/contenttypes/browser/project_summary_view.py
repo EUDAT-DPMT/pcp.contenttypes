@@ -3,6 +3,7 @@ from cStringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import ReferenceField
+from pcp.contenttypes.content.common import CommonUtilities
 
 CSV_TEMPLATE = '"%s"'
 
@@ -21,13 +22,14 @@ class ProjectOverview(BrowserView):
     def fields(self):
         """hardcoded for a start"""
         return ('title', 'registered_services_used',
-                'allocated', 'used', 'community',
+                'allocated', 'used', 'allocated_new', 'used_new', 'community',
                 'topics', 'start_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start"""
         return ('Title', 'Service',
                 'Allocated storage', 'Used storage',
+                'Allocated storage', 'Used storage', # <- *_new
                 'Customer', 'Topics',
                 'Start date', 'State')
 
@@ -81,8 +83,11 @@ class ProjectOverview(BrowserView):
                     value['url'] = None
                 elif field in ['allocated', 'used']:
                     raw = f.getRaw(project)
-                    value['text'] = "%s %s" % (raw.get('value', ''),
-                                               raw.get('unit', ''))
+                    value['text'] = project.sizeToString(project.convert(raw))
+                    value['url'] = None
+                elif field in ['allocated_new', 'used_new']:
+                    raw = f.get(project)
+                    value['text'] = raw
                     value['url'] = None
                 else:
                     value['text'] = f.get(project)

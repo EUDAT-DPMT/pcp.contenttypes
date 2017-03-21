@@ -262,4 +262,12 @@
     directory="resources"
     />
 
+  <browser:page
+    for="*"
+    name="update_record_caches"
+    class=".accounting.Accounting"
+    attribute="update_record_caches"
+    permission="zope2.View"
+    />
+
 </configure>
