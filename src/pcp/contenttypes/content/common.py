@@ -8,6 +8,9 @@ from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
 
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
+
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
 CommonFields = atapi.Schema((
@@ -178,6 +181,14 @@ ResourceContextFields = atapi.Schema((
                                                        startup_directory='/providers',
                                                        ),
                          ),
+    BackReferenceField('linked_to_resources',
+                       relationship='linked_resources',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Linked to resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 ))
 
 RequestFields = atapi.Schema((

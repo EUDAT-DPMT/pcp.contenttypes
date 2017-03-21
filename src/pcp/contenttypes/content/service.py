@@ -105,6 +105,22 @@ ServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                       'edit': 'invisible'},
                                                   ),
                        ),
+    BackReferenceField('offered_by',
+                       relationship='service_offered',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Offered by',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('service_requests',
+                       relationship='service',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Service requests',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 
