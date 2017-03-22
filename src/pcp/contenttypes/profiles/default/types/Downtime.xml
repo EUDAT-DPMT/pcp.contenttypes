@@ -4,9 +4,9 @@
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
   <property name="title" i18n:translate="">Downtime</property>
   <property name="description"
-    i18n:translate="">Scheduled downtime</property>
+    i18n:translate="">Schedule a downtime of a service or component</property>
   <property name="content_meta_type">Downtime</property>
-  <property name="content_icon">document_icon.gif</property>
+  <property name="content_icon">event_icon.png</property>
   <property name="product">pcp.contenttypes</property>
   <property name="factory">addDowntime</property>
   <property name="immediate_view">atct_edit</property>
