@@ -1,5 +1,6 @@
 """Common components shared by content types
 """
+import math
 
 END_OF_EUDAT2020 = "2018-02-28"
 
@@ -7,6 +8,9 @@ from DateTime.DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
+
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
 
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
@@ -178,6 +182,14 @@ ResourceContextFields = atapi.Schema((
                                                        startup_directory='/providers',
                                                        ),
                          ),
+    BackReferenceField('linked_to_resources',
+                       relationship='linked_resources',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Linked to resources',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 ))
 
 RequestFields = atapi.Schema((
@@ -401,9 +413,24 @@ class CommonUtilities(object):
             url, title, url)
         return anchor
 
-    def convert(self, raw, target_unit=None):
+    def convert(self, raw, target_unit='auto'):
         """Checking REQUEST for a target unit and converting
-        if necessary"""
+        if necessary
+        """
+        request = self.REQUEST
+        target_unit = request.get('unit', target_unit)
+        return self.convert_pure(raw, target_unit)
+
+    def convert_pure(self, raw, target_unit='auto'):
+        """Convert value to target_unit.
+           If a particular target_unit (i.e. in unit_map) is stated then convert to that.
+           If target_unit == 'auto' then determine a unit that is 'human readable'.
+           If target_unit is None then keep current unit.
+        """
+        if raw is None:
+            return raw
+
+        raw = raw.copy()
 
         v = raw.get('value', '')
         u = raw.get('unit', '')
@@ -411,10 +438,38 @@ class CommonUtilities(object):
                   'unit': u,
                   }
 
-        request = self.REQUEST
         try:
-            if target_unit is None:
-                target_unit = request['unit']
+            # ensure valid target unit
+            if target_unit in unit_map:
+                pass
+            elif target_unit in (None, 'auto'):
+                pass
+            else:
+                # invalid value: fall back to human readable
+                target_unit = 'auto'
+
+            # determine target unit if necessary
+            if target_unit == 'auto':
+                value = self.pint_convert(float(v or '1') or 1.0, u, 'B')['value']
+
+                units_2 = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB',)
+                units_10 = ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB',)
+
+                if u in units_2 or u in ('byte', 'bit'):
+                    unit_magnitude = int(math.log(value, 1024))
+                    units = units_2
+                else:
+                    unit_magnitude = int(math.log(value, 1000))
+                    units = units_10
+
+                unit_index = max(0, min(len(units) - 1, unit_magnitude))
+                target_unit = units[unit_index]
+            elif target_unit is None:
+                target_unit = u
+            else:  # in unit_map
+                pass
+
+            # convert value to target unit
             if target_unit != u:
                 result = self.pint_convert(v, u, target_unit)
         except KeyError:
@@ -458,6 +513,15 @@ class CommonUtilities(object):
     def yesno(self, instance):
         """Seems like RecordsFields do not support checkboxes"""
         return atapi.DisplayList([['', 'Select'], ['yes', 'yes'], ['no', 'no']])
+
+    def sizeToString(self, size):
+        if size:
+            try:
+                return '%0.2f %s' % (float(size['value']), size['unit'])
+            except (ValueError, KeyError):
+                return 'invalid size'
+        else:
+            return 'unknown size'
 
 # we don't want to use eval so we define an explicit mapping of supported units
 

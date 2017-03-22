@@ -104,6 +104,30 @@ PersonSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                       'edit': 'invisible'},
                                                   ),
                        ),
+    BackReferenceField('service_owner_of',
+                       relationship='owned_by',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Service owner of',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('principle_investigator_of',
+                       relationship='principal_investigator',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Principle investigator of',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
+    BackReferenceField('manager_of_registered_service',
+                       relationship='managers_for',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Manager of registered services',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + CommonFields.copy()
 
 

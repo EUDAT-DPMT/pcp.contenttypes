@@ -1,12 +1,14 @@
 """Definition of the ServiceRequest content type
 """
-
 from zope.interface import implements
 
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
+
+from Products.ATBackRef import BackReferenceField
+from Products.ATBackRef import BackReferenceWidget
 
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 
@@ -40,6 +42,14 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        show_results_without_query=1,
                                                        ),
                          ),
+    BackReferenceField('registered_service',
+                       relationship='original_request',
+                       multiValued=True,
+                       widget=BackReferenceWidget(label='Registered service',
+                                                  visible={
+                                                      'edit': 'invisible'},
+                                                  ),
+                       ),
 )) + RequestFields.copy() + atapi.Schema((
     ateapi.CommentField('resource_comment',
                         comment="If applicable and already known how much resources shall be provisioned "

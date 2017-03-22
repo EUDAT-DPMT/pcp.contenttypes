@@ -33,9 +33,7 @@
                 <tr tal:repeat="row rows">
                     <td tal:attributes="data-order row/meta/ts"
                         tal:content="row/meta/submission_time"/>
-                    <td> <span tal:content="row/core/value"/>
-                         <span tal:content="row/core/unit"/>
-                    </td>
+                    <td tal:content="python: context.sizeToString(context.convert(row['core']))"/>
                     <td tal:on-error="string: (not set)"
                         tal:content="row/meta/number"/>
                     <td tal:on-error="string: (not set)"
