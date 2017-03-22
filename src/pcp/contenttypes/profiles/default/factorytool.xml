@@ -36,5 +36,6 @@
     <type portal_type="Community" />
     <type portal_type="Project" />
     <type portal_type="Service" />
+    <type portal_type="RoleRequest" />
   </factorytypes>
 </object>

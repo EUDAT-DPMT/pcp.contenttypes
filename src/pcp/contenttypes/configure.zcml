@@ -70,4 +70,10 @@
     handler=".patches.apply_patched_mapping"
     />
 
+  <subscriber
+    for=".interfaces.IRoleRequest
+         Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+         handler=".content.rolerequest.handleRoleRequestTransition"
+    />
+
 </configure>

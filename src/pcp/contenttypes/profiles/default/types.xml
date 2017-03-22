@@ -60,4 +60,7 @@
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="Service"
     meta_type="Factory-based Type Information with dynamic views" />
+  <object name="RoleRequest"
+    meta_type="Factory-based Type Information with dynamic views" />
+
 </object>
