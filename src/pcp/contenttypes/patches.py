@@ -40,9 +40,9 @@ def apply_patched_mapping(scope, original, replacement):
     return
 
 
-#################################################################################################
+##########################################################################
 # $HOME/.buildout/eggs/plone.app.workflow-2.1.9-py2.7.egg/plone/app/workflow/browser/sharing.py
-#################################################################################################
+##########################################################################
 
 import plone.api
 from plone.app.workflow.events import LocalrolesModifiedEvent
@@ -67,7 +67,8 @@ def sharing_handle_form(self):
         if not self.request.get('REQUEST_METHOD', 'GET') == 'POST':
             raise Forbidden
 
-        old_ac_local_roles_block = getattr(self.context, '__ac_local_roles_block__', None)
+        old_ac_local_roles_block = getattr(
+            self.context, '__ac_local_roles_block__', None)
 
         authenticator = self.context.restrictedTraverse('@@authenticator',
                                                         None)
@@ -89,20 +90,24 @@ def sharing_handle_form(self):
                 dict(id=entry['id'],
                      type=entry['type'],
                      roles=[r for r in roles
-                        if entry.get('role_%s' % r, False)]))
+                            if entry.get('role_%s' % r, False)]))
         if settings:
 
             old_settings = self.context.get_local_roles()
-            old_settings_dict = dict([(userid, set(roles)) for userid, roles in old_settings])
-            settings_dict = dict([(d['id'], set(d['roles'])) for d in settings])
+            old_settings_dict = dict([(userid, set(roles))
+                                      for userid, roles in old_settings])
+            settings_dict = dict([(d['id'], set(d['roles']))
+                                  for d in settings])
 
-            old_userids = set([tp[0] for tp in old_settings if list(tp[1]) != ['Owner']])
+            old_userids = set(
+                [tp[0] for tp in old_settings if list(tp[1]) != ['Owner']])
             new_userids = set([d['id'] for d in settings if d['roles']])
             all_userids = old_userids | new_userids
 
             reindex = self.update_role_settings(settings, reindex=False) \
-                        or reindex
-            new_ac_local_roles_block = getattr(self.context, '__ac_local_roles_block__', None)
+                or reindex
+            new_ac_local_roles_block = getattr(
+                self.context, '__ac_local_roles_block__', None)
 
             diff_context = dict()
             diff_context['removed_userids'] = old_userids - new_userids
@@ -121,7 +126,8 @@ def sharing_handle_form(self):
                 if user:
                     fullname = user.getProperty('fullname')
                     email = user.getProperty('email')
-                diff_context['role_changes'][userid] = dict(fullname=fullname, email=email, added=roles_added, removed=roles_removed)
+                diff_context['role_changes'][userid] = dict(
+                    fullname=fullname, email=email, added=roles_added, removed=roles_removed)
 
         if reindex:
             self.context.reindexObjectSecurity()
@@ -140,4 +146,3 @@ def sharing_handle_form(self):
 
 from plone.app.workflow.browser.sharing import SharingView
 SharingView.handle_form = sharing_handle_form
-

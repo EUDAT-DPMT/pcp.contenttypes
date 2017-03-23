@@ -31,3 +31,23 @@ table.table-view {
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
+h1,
+h2,
+h3,
+h4, 
+h5,
+#content .documentDescription,
+#content #description,
+body {
+    font-family: Raleway, sans-serif !important;
+    position: relative;
+    background: #FFFFFF url(++resource++pcp.contenttypes/bg_page.png) no-repeat left top;
+}
+
+#portal-globalnav {
+    font-size: 14pt;
+    font-weight: 800;
+    text-align: center;
+}
+

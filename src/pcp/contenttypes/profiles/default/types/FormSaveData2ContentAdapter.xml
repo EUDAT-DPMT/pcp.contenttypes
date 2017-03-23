@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<object name="FormSaveData2ContentAdapter"
+   meta_type="Factory-based Type Information with dynamic views"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+   i18n:domain="uwosh.pfg.d2c">
+ <property name="immediate_view">table-view</property>
+ <property name="default_view">table-view</property>
+ <property name="view_methods">
+  <element value="table-view"/>
+ </property>
+</object>

@@ -2,6 +2,7 @@ from ZODB.POSException import ConflictError
 
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
+
 def create_accounting_account(obj, event):
     """ Create an IAccount for a registered resource during object creation """
 

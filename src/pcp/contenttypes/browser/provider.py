@@ -29,13 +29,13 @@ class RegisteredServiceComponents(BrowserView):
 
             for brain2 in catalog(portal_type='RegisteredServiceComponent', path='/'.join(provider.getPhysicalPath())):
                 rsc = brain2.getObject()
-                version_info=rsc.check_versions()
+                version_info = rsc.check_versions()
 
             result.append(dict(
                 provider=provider,
                 component=rsc,
                 version_info=version_info
-                ))
+            ))
 
         return result
 
@@ -61,7 +61,8 @@ class RegisteredServiceComponents(BrowserView):
                 continue
 
             # preserve notification dates
-            notification_key = (item['component'].getId(), version_info['current_version'], version_info['latest_version'])
+            notification_key = (item['component'].getId(), version_info[
+                                'current_version'], version_info['latest_version'])
             dt = annotations[NOTIFICATION_KEY].get(notification_key)
             if dt and (datetime.utcnow() - dt).days < RESEND_AFTER_DAYS:
                 continue
@@ -70,20 +71,22 @@ class RegisteredServiceComponents(BrowserView):
             annotations._p_changed = True
 
             # build and send notification email
-            dest_email = item['provider'].getAlarm_email() or item['provider'].getHelpdesk_email()
-            subject = '[DPMT] New version for "{}" available'.format(item['component'].Title())
+            dest_email = item['provider'].getAlarm_email(
+            ) or item['provider'].getHelpdesk_email()
+            subject = '[DPMT] New version for "{}" available'.format(
+                item['component'].Title())
 
             params = dict(
-                    component_name=item['component'].Title(),
-                    component_url=item['component'].absolute_url(),
-                    current_version=version_info['current_version'],
-                    latest_version=version_info['latest_version'],
-                    )
+                component_name=item['component'].Title(),
+                component_url=item['component'].absolute_url(),
+                current_version=version_info['current_version'],
+                latest_version=version_info['latest_version'],
+            )
             send_mail(
-                    sender=None,
-                    recipients=[dest_email],
-                    subject=subject,
-                    template='implementation-outdated.txt',
-                    params=params,
-                    context=item['provider'])
+                sender=None,
+                recipients=[dest_email],
+                subject=subject,
+                template='implementation-outdated.txt',
+                params=params,
+                context=item['provider'])
         return 'DONE'

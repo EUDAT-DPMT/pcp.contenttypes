@@ -1,0 +1,6 @@
+<metal:macro define-macro="after">
+    <form method="post" tal:attributes="action string:${context/absolute_url}/@@process-enabling-form-data">
+        <input type="submit" value="Process"/>
+    </form>
+</metal:macro>
+

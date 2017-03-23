@@ -101,9 +101,9 @@ class BaseSummaryView(BrowserView):
         if field:
             permission = field.read_permission
             return plone.api.user.has_permission(
-                    permission=permission,
-                    user=plone.api.user.get_current(),
-                    obj=obj)
+                permission=permission,
+                user=plone.api.user.get_current(),
+                obj=obj)
         return True
 
     @property
@@ -117,12 +117,14 @@ class BaseSummaryView(BrowserView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
+
                 'allocated', 'used', 'community',
                 'topics', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
+
                 'Allocated storage', 'Used storage',
                 'Customer', 'Topics',
                 'Start date', 'End date', 'State')
