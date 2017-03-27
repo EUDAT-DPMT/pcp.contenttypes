@@ -80,7 +80,6 @@ class RoleRequest(base.ATCTContent):
 
     def getSelectableUsersDefault(self):
         current_user = plone.api.user.get_current()
-        print current_user.getId()
         return str(current_user.getId())
 
     def getSelectableRoles(self):
