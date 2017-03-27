@@ -167,7 +167,7 @@ def handleRoleRequestTransition(context, event):
     send_mail(
         sender=None,
         recipients={receiver.getProperty('email'), requester.getProperty('email')},
-        subject='[DPMT] Accepted Role Request',
+        subject='[DPMT] Role request {}ed'.format(transition),
         template='role-request.txt',
         params=params,
         context=request)
