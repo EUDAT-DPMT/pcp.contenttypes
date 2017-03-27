@@ -147,11 +147,11 @@ def handleRoleRequestTransition(context, event):
     role = request.getRole()
     request_context = request.getContext()
 
-    plone.api.user.grant_roles(user=receiver,
-                               obj=request_context,
-                               roles=[role])
-
-    logRoleGrant(request_context, receiver, role)
+    if transition == 'accept':
+        plone.api.user.grant_roles(user=receiver,
+                                   obj=request_context,
+                                   roles=[role])
+        logRoleGrant(request_context, receiver, role)
 
     params = {
         'role': role,
