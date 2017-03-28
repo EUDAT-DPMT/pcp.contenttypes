@@ -35,12 +35,12 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     atapi.DateTimeField('startDateTime',
                         required=True,
-                        searchable=False,
+                        searchable=True,
                         accessor='start',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        widget=CalendarWidget(label='Start date (CET)',
-                                              description='When does the downtime start? In CET!'),
+                        widget=CalendarWidget(label='Start date (UTC)',
+                                              description='When does the downtime start? In UTC!'),
                         ),
 
     DateComputedField('startDateTimeUtc',
@@ -48,19 +48,19 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                       widget=ComputedWidget(label='Start date (UTC)'),
                       ),
 
-    DateComputedField('startDateTimeCet',
-                      expression="here.start().toZone('CET')",
-                      widget=ComputedWidget(label='Start date (CET)'),
-                      ),
+    # DateComputedField('startDateTimeCet',
+    #                   expression="here.start().toZone('CET')",
+    #                   widget=ComputedWidget(label='Start date (CET)'),
+    #                   ),
 
     atapi.DateTimeField('endDateTime',
                         required=True,
-                        searchable=False,
+                        searchable=True,
                         accessor='end',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        widget=CalendarWidget(label='End date (CET)',
-                                              description='When does the downtime end? In CET!'),
+                        widget=CalendarWidget(label='End date (UTC)',
+                                              description='When does the downtime end? In UTC!'),
                         ),
 
     DateComputedField('endDateTimeUtc',
@@ -68,10 +68,10 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                       widget=ComputedWidget(label='End date (UTC)'),
                       ),
 
-    DateComputedField('endDateTimeCet',
-                      expression="here.end().toZone('CET')",
-                      widget=ComputedWidget(label='End date (CET)'),
-                      ),
+    # DateComputedField('endDateTimeCet',
+    #                   expression="here.end().toZone('CET')",
+    #                   widget=ComputedWidget(label='End date (CET)'),
+    #                   ),
 
     atapi.ReferenceField('affected_registered_serivces',
                          relationship='affected_registered_services',
@@ -96,6 +96,18 @@ class Downtime(base.ATCTContent):
 
     meta_type = "Downtime"
     schema = DowntimeSchema
+
+    def setStartDateTime(self, value):
+        if isinstance(value, str):
+            value = DateTime(value)
+        self.startDateTime = DateTime(value.year(), value.month(), value.day(),
+                                      value.hour(), value.minute(), 0, 'UTC')
+
+    def setEndDateTime(self, value):
+        if isinstance(value, str):
+            value = DateTime(value)
+        self.endDateTime = DateTime(value.year(), value.month(), value.day(),
+                                    value.hour(), value.minute(), 0, 'UTC')
 
 
 atapi.registerType(Downtime, PROJECTNAME)

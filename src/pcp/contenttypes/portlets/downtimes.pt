@@ -15,16 +15,10 @@
             </a>
 
             <div class="portletItemDetails">
-                <table>
-                    <tr><td>
-                        <span tal:replace="python:downtime.getStartDateTimeCet()">Start</span> -
-                       <span tal:replace="python:downtime.getEndDateTimeCet()">Ende</span>
-                    </td></tr>
-                    <tr><td>
-                        <span tal:replace="python:downtime.getStartDateTimeUtc()">Start</span> -
-                       <span tal:replace="python:downtime.getEndDateTimeUtc()">Ende</span>
-                    </td></tr>
-                </table>
+                <p>
+                    <span tal:replace="python:downtime.getStartDateTimeUtc()">Start</span> -
+                    <span tal:replace="python:downtime.getEndDateTimeUtc()">Ende</span>
+                </p>
                 <p>
                     <span tal:replace="downtime/Description">Description</span>
                 </p>

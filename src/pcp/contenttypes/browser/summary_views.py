@@ -91,8 +91,6 @@ class BaseSummaryView(BrowserView):
                       # included here
                       'startDateTimeUtc': render_computed_datetime,
                       'endDateTimeUtc': render_computed_datetime,
-                      'startDateTimeCet': render_computed_datetime,
-                      'endDateTimeCet': render_computed_datetime,
                       }
 
     def field_visible(self, obj, field_name):
@@ -400,10 +398,10 @@ class DowntimeOverview(BaseSummaryView):
         return [element.getObject() for element in self.catalog(portal_type='Downtime')]
 
     def fields(self):
-        return ('title', 'startDateTimeUtc', 'endDateTimeUtc', 'startDateTimeCet', 'endDateTimeCet', 'affected_registered_serivces', 'state',)
+        return ('title', 'startDateTimeUtc', 'endDateTimeUtc', 'affected_registered_serivces', 'state',)
 
     def field_labels(self):
-        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Start Date (CET)', 'End Date (CET)', 'Affected Services', 'State',)
+        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Affected Services', 'State',)
 
     def simple_fields(self):
         return ()
