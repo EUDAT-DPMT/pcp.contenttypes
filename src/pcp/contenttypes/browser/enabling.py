@@ -96,3 +96,26 @@ class Enabling(BrowserView):
 
         return action_lists
 
+    def filter_B2FIND(self, project, service, action_lists):
+        """ Do some filtering...."""
+
+        return action_lists
+
+    def filter_B2SHARE(self, project, service, action_lists):
+        """ Do some filtering...."""
+
+        return action_lists
+
+    def filter_B2DROP(self, project, service, action_lists):
+        """ Do some filtering...."""
+
+        return action_lists
+
+    def filter_B2STAGE(self, project, service, action_lists):
+        """ Do some filtering...."""
+
+        return action_lists
+
+
+
+
