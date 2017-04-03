@@ -328,7 +328,6 @@ class DowntimeView(BrowserView):
                 if IRegisteredServiceComponent.providedBy(affected):
                     # get service of affected endpoint
                     service = affected.getParent_services()
-                    print affected, service
                     assert len(service) <= 1
                     service = service[0] if len(service) == 1 else None
                     endpoints = (affected,)
