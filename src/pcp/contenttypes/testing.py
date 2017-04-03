@@ -14,6 +14,13 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        import collective.handleclient
+        xmlconfig.file(
+            'configure.zcml',
+            collective.handleclient,
+            context=configurationContext
+        )
+
         # Load ZCML
         import pcp.contenttypes
         xmlconfig.file(
@@ -24,12 +31,15 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
 
         # Install products that use an old-style initialize() function
         #z2.installProduct(app, 'Products.PloneFormGen')
+        z2.installProduct(app, 'collective.handleclient')
+        z2.installProduct(app, 'pcp.contenttypes')
 
 #    def tearDownZope(self, app):
 #        # Uninstall products installed above
 #        z2.uninstallProduct(app, 'Products.PloneFormGen')
 
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'collective.handleclient:default')
         applyProfile(portal, 'pcp.contenttypes:default')
 
 PCP_CONTENTTYPES_FIXTURE = PcpcontenttypesLayer()
