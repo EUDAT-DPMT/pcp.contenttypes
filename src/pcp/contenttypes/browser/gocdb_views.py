@@ -1,5 +1,9 @@
+from DateTime import DateTime
+from Products.ATVocabularyManager import NamedVocabulary
 from Products.Five.browser import BrowserView
 from incf.countryutils.datatypes import Country
+from pcp.contenttypes.interfaces import IRegisteredService
+from pcp.contenttypes.interfaces import IRegisteredServiceComponent
 
 header =  """<?xml version="1.0" encoding="UTF-8"?>
 <results>"""
@@ -234,3 +238,102 @@ class TermView(BrowserView):
         full = full.replace('&', '&amp;')
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
+
+
+class DowntimeView(BrowserView):
+
+    def secsSinceEpoch(self, datetime):
+        return datetime.millis() / 1000
+
+    def effectiveDate(self, downtime):
+        return downtime.getEffectiveDate() or downtime.created()
+
+    def getHosters(self, registeredComponent):
+        return ','.join(map(lambda x: x.Title() if x else '?', registeredComponent.getService_providers()))
+
+    def getServiceType(self, component):
+        serviceType = component.getService_type()
+        vocabulary = NamedVocabulary('service_types')
+        vocabulary = vocabulary.getVocabularyDict(component)
+        return vocabulary[serviceType]
+
+    def buildDateRangeQuery(self, min, max):
+        if min or max:
+            if max:
+                max += 1
+            if min and max:
+                return dict(query=(min, max), range='min:max')
+            else:
+                return dict(query=min or max, range=(min and 'min') or (max and 'max'))
+        return None
+
+    def getDowntimes(self):
+        self.request.response.setHeader('Content-type', 'text/xml')
+
+        query = dict()
+
+        query['portal_type'] = 'Downtime'
+        query['review_state'] = 'published'
+
+        # TODO: use AdvancedQuery or merge date and window manually
+        start_min, start_max = None, None
+        end_min, end_max = None, None
+
+        startdate = self.request.form.get('startdate', None)
+        startdate = DateTime(startdate) if startdate else None
+        if startdate:
+            start_min = startdate  # query['start'] = dict(query=startdate, range='min')
+
+        enddate = self.request.form.get('enddate', None)
+        enddate = DateTime(enddate) if enddate else None
+        if enddate:
+            end_max = enddate  # query['end'] = dict(query=enddate+1, range='max')
+
+        windowstart = self.request.form.get('windowstart', None)
+        windowstart = DateTime(windowstart) if windowstart else None
+        if windowstart:
+            end_min = windowstart  # query['end'] = dict(query=windowstart, range='min')
+
+        windowend = self.request.form.get('windowend', None)
+        windowend = DateTime(windowend) if windowend else None
+        if windowstart:
+            start_max = windowend  # query['start'] = dict(query=windowend+1, range='max')
+
+        ongoing_only = self.request.form.get('ongoing_only', 'no')
+        if ongoing_only == 'yes':
+            now = DateTime()
+            start_max = min(now, start_max) if start_max else now
+            end_min = min(now, end_min) if end_min else now
+
+        if start_min or start_max:
+            query['start'] = self.buildDateRangeQuery(start_min, start_max)
+        if end_min or end_max:
+            query['end'] = self.buildDateRangeQuery(end_min, end_max)
+
+        catalog = self.context.portal_catalog
+        downtime_brains = catalog(query)
+
+        downtimes = [brain.getObject() for brain in downtime_brains]
+
+        # for each combination of downtime and service store the set of all affected endpoints
+        result = dict()
+
+        for downtime in downtimes:
+            for affected in downtime.getAffected_registered_serivces():
+                if IRegisteredService.providedBy(affected):
+                    # all endpoints of the affected service are therefore affected, too
+                    service = affected
+                    endpoints = service.getService_components()
+
+                if IRegisteredServiceComponent.providedBy(affected):
+                    # get service of affected endpoint
+                    service = affected.getParent_services()
+                    print affected, service
+                    assert len(service) <= 1
+                    service = service[0] if len(service) == 1 else None
+                    endpoints = (affected,)
+
+                # join all endpoints of a service
+                result.setdefault((downtime, service), set()).update(endpoints)
+
+        return result

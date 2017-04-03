@@ -1,0 +1,28 @@
+<results>
+    <DOWNTIME tal:define="downtimes view/getDowntimes"
+              tal:omit-tag="">
+        <DOWNTIME tal:repeat="downtimeAndService downtimes"
+                  tal:omit-tag="">
+            <DOWNTIME tal:define="downtime python:downtimeAndService[0]; service python:downtimeAndService[1]"
+                      tal:repeat="endpoint python:downtimes[downtimeAndService]"
+                      tal:omit-tag="">
+                <DOWNTIME tal:attributes="ID python:service.getUid() if service else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICTION string:undefined">
+                    <PRIMARY_KEY>undefined</PRIMARY_KEY>
+                    <HOSTNAME tal:content="endpoint/getHost_name"></HOSTNAME>
+                    <SERVICE_TYPE tal:content="python:view.getServiceType(endpoint)"></SERVICE_TYPE>
+                    <ENDPOINT tal:content="endpoint/Title"></ENDPOINT>
+                    <HOSTED_BY tal:content="python:view.getHosters(endpoint)"></HOSTED_BY>
+                    <GOCDB_PORTAL_URL tal:content="downtime/absolute_url"></GOCDB_PORTAL_URL>
+                    <AFFECTED_ENDPOINTS>undefined</AFFECTED_ENDPOINTS>
+                    <SEVERITY>undefined</SEVERITY>
+                    <DESCRIPTION tal:content="downtime/Description"></DESCRIPTION>
+                    <INSERT_DATE tal:content="python:view.secsSinceEpoch(view.effectiveDate(downtime))"></INSERT_DATE>
+                    <START_DATE tal:content="python:view.secsSinceEpoch(downtime.start())"></START_DATE>
+                    <END_DATE tal:content="python:view.secsSinceEpoch(downtime.end())"></END_DATE>
+                    <FORMATTED_START_DATE tal:content="downtime/getStartDateTimeUtc"></FORMATTED_START_DATE>
+                    <FORMATTED_END_DATE tal:content="downtime/getEndDateTimeUtc"></FORMATTED_END_DATE>
+                </DOWNTIME>
+            </DOWNTIME>
+        </DOWNTIME>
+    </DOWNTIME>
+</results>
