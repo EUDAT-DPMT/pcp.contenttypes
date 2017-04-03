@@ -1,4 +1,5 @@
-<results>
+<?xml version="1.0"?>
+<results xmlns:tal="http://xml.zope.org/namespaces/tal">
     <DOWNTIME tal:define="downtimes view/getDowntimes"
               tal:omit-tag="">
         <DOWNTIME tal:repeat="downtimeAndService downtimes"
