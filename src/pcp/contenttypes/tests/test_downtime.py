@@ -1,4 +1,5 @@
 import transaction
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
@@ -28,6 +29,22 @@ class TestDowntime(FunctionalTestCase):
     TEST_DOWNTIME_START_STRING = '2017-07-13 05:15 UTC'
     TEST_DOWNTIME_END = ('2017', 'July', '14', '06', '30', 'PM')
     TEST_DOWNTIME_END_STRING = '2017-07-14 18:30 UTC'
+
+    def fillInDateWidget(self, browser, field, date):
+        browser.getControl(name=field+'_year').displayValue = [date[0]]
+        browser.getControl(name=field+'_month').displayValue = [date[1]]
+        browser.getControl(name=field+'_day').displayValue = [date[2]]
+        browser.getControl(name=field+'_hour').displayValue = [date[3]]
+        browser.getControl(name=field+'_minute').displayValue = [date[4]]
+        browser.getControl(name=field+'_ampm').displayValue = [date[5]]
+
+    def assertDateWidget(self, browser, field, date):
+        self.assertEquals(browser.getControl(name=field+'_year').displayValue[0], date[0])
+        self.assertEquals(browser.getControl(name=field+'_month').displayValue[0], date[1])
+        self.assertEquals(browser.getControl(name=field+'_day').displayValue[0], date[2])
+        self.assertEquals(browser.getControl(name=field+'_hour').displayValue[0], date[3])
+        self.assertEquals(browser.getControl(name=field+'_minute').displayValue[0], date[4])
+        self.assertEquals(browser.getControl(name=field+'_ampm').displayValue[0], date[5])
 
     def test(self):
         # Create a provider and within the provider a downtime for it.
@@ -86,24 +103,14 @@ class TestDowntime(FunctionalTestCase):
         self.assertTrue('Add Downtime' in browser.contents)
         browser.getControl(name='title').value = self.TEST_DOWNTIME_TITLE
         browser.getControl(name='description').value = self.TEST_DOWNTIME_DESCRIPTION
-        browser.getControl(name='startDateTime_year').displayValue = [self.TEST_DOWNTIME_START[0]]
-        browser.getControl(name='startDateTime_month').displayValue = [self.TEST_DOWNTIME_START[1]]
-        browser.getControl(name='startDateTime_day').displayValue = [self.TEST_DOWNTIME_START[2]]
-        browser.getControl(name='startDateTime_hour').displayValue = [self.TEST_DOWNTIME_START[3]]
-        browser.getControl(name='startDateTime_minute').displayValue = [self.TEST_DOWNTIME_START[4]]
-        browser.getControl(name='startDateTime_ampm').displayValue = [self.TEST_DOWNTIME_START[5]]
-        browser.getControl(name='endDateTime_year').displayValue = [self.TEST_DOWNTIME_END[0]]
-        browser.getControl(name='endDateTime_month').displayValue = [self.TEST_DOWNTIME_END[1]]
-        browser.getControl(name='endDateTime_day').displayValue = [self.TEST_DOWNTIME_END[2]]
-        browser.getControl(name='endDateTime_hour').displayValue = [self.TEST_DOWNTIME_END[3]]
-        browser.getControl(name='endDateTime_minute').displayValue = [self.TEST_DOWNTIME_END[4]]
-        browser.getControl(name='endDateTime_ampm').displayValue = [self.TEST_DOWNTIME_END[5]]
+        self.fillInDateWidget(browser, 'startDateTime', self.TEST_DOWNTIME_START)
+        self.fillInDateWidget(browser, 'endDateTime', self.TEST_DOWNTIME_END)
         browser.getControl(name='form.button.save').click()
 
         browser.follow('Publish')
         browser.getControl(name='form.button.confirm').click()
 
-        # TODO: Make portlet find downtimes independently of hardcoded
+        # TODO: Make portlet find downtimes independently of hardcoded path
         # TODO: Then check for existence of downtime in portlet (provider specific portlet view and common view)
 
         self.assertTrue(self.TEST_DOWNTIME_TITLE in browser.contents)
@@ -120,10 +127,5 @@ class TestDowntime(FunctionalTestCase):
         browser.follow('Das ganze Schei')
         browser.follow('Edit')
 
-        self.assertEquals(browser.getControl(name='startDateTime_year').displayValue[0], self.TEST_DOWNTIME_START[0])
-        self.assertEquals(browser.getControl(name='startDateTime_month').displayValue[0], self.TEST_DOWNTIME_START[1])
-        self.assertEquals(browser.getControl(name='startDateTime_day').displayValue[0], self.TEST_DOWNTIME_START[2])
-        self.assertEquals(browser.getControl(name='startDateTime_hour').displayValue[0], self.TEST_DOWNTIME_START[3])
-        self.assertEquals(browser.getControl(name='startDateTime_minute').displayValue[0], self.TEST_DOWNTIME_START[4])
-        self.assertEquals(browser.getControl(name='startDateTime_ampm').displayValue[0], self.TEST_DOWNTIME_START[5])
-
+        self.assertDateWidget(browser, 'startDateTime', self.TEST_DOWNTIME_START)
+        self.assertDateWidget(browser, 'endDateTime', self.TEST_DOWNTIME_END)
