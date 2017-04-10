@@ -1,5 +1,7 @@
+import plone
 from DateTime import DateTime
 from Products.ATVocabularyManager import NamedVocabulary
+from Products.CMFCore.MemberDataTool import MemberData
 from Products.Five.browser import BrowserView
 from incf.countryutils.datatypes import Country
 from pcp.contenttypes.interfaces import IRegisteredService
@@ -268,8 +270,6 @@ class DowntimeView(BrowserView):
         return None
 
     def getDowntimes(self):
-        self.request.response.setHeader('Content-type', 'text/xml')
-
         query = dict()
 
         query['portal_type'] = 'Downtime'
@@ -336,3 +336,33 @@ class DowntimeView(BrowserView):
                 result.setdefault((downtime, service), set()).update(endpoints)
 
         return result
+
+
+class SiteContactsView(BrowserView):
+
+    def getSites(self):
+        query = dict(
+            portal_type='Provider',
+        )
+
+        sitename = self.request.form.get('sitename', None)
+        if sitename:
+            query['Title'] = sitename
+
+        catalog = self.context.portal_catalog
+        return [brain.getObject() for brain in catalog(query)]
+
+    def getSiteContacts(self, site):
+        roletype = self.request.get('roletype', None)
+
+        if roletype:
+            allowed_roles = (roletype,)
+        else:
+            allowed_roles = ('Administrator', 'Can review', 'CDI Manager', 'CDI Member', 'Customer Relationship Manager',
+                             'Enabler', 'Principal', 'Project Manager', 'Site Manager',)
+
+        def filter_roles(rs):
+            return filter(lambda r: r in allowed_roles, rs)
+
+        return [(plone.api.user.get(userid=userid), filter_roles(roles)) for userid, roles in site.get_local_roles()]
+

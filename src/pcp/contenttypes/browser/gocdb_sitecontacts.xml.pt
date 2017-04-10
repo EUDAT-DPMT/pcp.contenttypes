@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<results xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <SITE tal:repeat="site view/getSites"
+          tal:omit-tag="">
+        <SITE tal:attributes="ID site/getUid; NAME site/Title" PRIMARY_KEY="undefined">
+            <PRIMARY_KEY>undefined</PRIMARY_KEY>
+            <SHORT_NAME tal:content="site/Title"></SHORT_NAME>
+            <CONTACT tal:repeat="userAndRoles python:view.getSiteContacts(site)"
+                     tal:omit-tag="">
+                <CONTACT tal:define="user python:userAndRoles[0]; roles python:userAndRoles[1]"
+                         tal:repeat="role roles"
+                         tal:attributes="USER_ID string:undefined; PRIMARY_KEY string:undefined">
+                    <FORENAME>undefined</FORENAME>
+                    <SURNAME tal:content="python:user.getProperty('fullname')"></SURNAME>
+                    <TITLE>undefined</TITLE>
+                    <DESCRIPTION>undefined</DESCRIPTION>
+                    <EMAIL tal:content="python:user.getProperty('email')"></EMAIL>
+                    <TEL>undefined</TEL>
+                    <WORKING_HOURS_START>undefined</WORKING_HOURS_START>
+                    <WORKING_HOURS_END>undefined</WORKING_HOURS_END>
+                    <CERTDN>undefined</CERTDN>
+                    <ROLE_NAME tal:content="role"></ROLE_NAME>
+                </CONTACT>
+            </CONTACT>
+        </SITE>
+    </SITE>
+</results>
