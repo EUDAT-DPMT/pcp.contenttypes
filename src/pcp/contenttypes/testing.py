@@ -14,6 +14,20 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        import Products.ATExtensions
+        xmlconfig.file(
+            'configure.zcml',
+            Products.ATExtensions,
+            context=configurationContext
+        )
+
+        import Products.ATBackRef
+        xmlconfig.file(
+            'configure.zcml',
+            Products.ATBackRef,
+            context=configurationContext
+        )
+
         import collective.handleclient
         xmlconfig.file(
             'configure.zcml',
@@ -31,6 +45,7 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
 
         # Install products that use an old-style initialize() function
         #z2.installProduct(app, 'Products.PloneFormGen')
+        z2.installProduct(app, 'Products.ATExtensions')
         z2.installProduct(app, 'collective.handleclient')
         z2.installProduct(app, 'pcp.contenttypes')
 
@@ -39,6 +54,8 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
 #        z2.uninstallProduct(app, 'Products.PloneFormGen')
 
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'Products.ATBackRef:default')
+        applyProfile(portal, 'Products.ATExtensions:default')
         applyProfile(portal, 'collective.handleclient:default')
         applyProfile(portal, 'pcp.contenttypes:default')
 

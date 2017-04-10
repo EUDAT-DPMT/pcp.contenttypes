@@ -100,7 +100,11 @@ class TestDowntime(FunctionalTestCase):
         browser.getControl(name='endDateTime_ampm').displayValue = [self.TEST_DOWNTIME_END[5]]
         browser.getControl(name='form.button.save').click()
 
-        open('/home/bernhard/crap.html', 'w').write(browser.contents)
+        browser.follow('Publish')
+        browser.getControl(name='form.button.confirm').click()
+
+        # TODO: Make portlet find downtimes independently of hardcoded
+        # TODO: Then check for existence of downtime in portlet (provider specific portlet view and common view)
 
         self.assertTrue(self.TEST_DOWNTIME_TITLE in browser.contents)
         self.assertTrue(self.TEST_DOWNTIME_END_STRING in browser.contents)
