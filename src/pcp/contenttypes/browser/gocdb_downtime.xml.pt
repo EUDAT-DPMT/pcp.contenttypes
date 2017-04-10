@@ -2,12 +2,11 @@
 <results xmlns:tal="http://xml.zope.org/namespaces/tal">
     <DOWNTIME tal:define="downtimes view/getDowntimes"
               tal:omit-tag="">
-        <DOWNTIME tal:repeat="downtimeAndService downtimes"
+        <DOWNTIME tal:repeat="downtime downtimes"
                   tal:omit-tag="">
-            <DOWNTIME tal:define="downtime python:downtimeAndService[0]; service python:downtimeAndService[1]"
-                      tal:repeat="endpoint python:downtimes[downtimeAndService]"
+            <DOWNTIME tal:repeat="endpoint python:view.getEndpoints(downtime)"
                       tal:omit-tag="">
-                <DOWNTIME tal:attributes="ID python:service.getUid() if service else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICTION string:undefined">
+                <DOWNTIME tal:attributes="ID python:endpoint.getUid() if endpoint else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICTION string:undefined">
                     <PRIMARY_KEY>undefined</PRIMARY_KEY>
                     <HOSTNAME tal:content="endpoint/getHost_name"></HOSTNAME>
                     <SERVICE_TYPE tal:content="python:view.getServiceType(endpoint)"></SERVICE_TYPE>

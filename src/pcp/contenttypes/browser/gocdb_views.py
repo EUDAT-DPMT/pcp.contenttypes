@@ -313,29 +313,22 @@ class DowntimeView(BrowserView):
         catalog = self.context.portal_catalog
         downtime_brains = catalog(query)
 
-        downtimes = [brain.getObject() for brain in downtime_brains]
+        return [brain.getObject() for brain in downtime_brains]
 
-        # for each combination of downtime and service store the set of all affected endpoints
-        result = dict()
+    def getEndpoints(self, downtime):
+        endpoints = set()
+        for affected in downtime.getAffected_registered_serivces():
+            if IRegisteredService.providedBy(affected):
+                # all endpoints of the affected service are therefore affected, too
+                service = affected
+                endpoints.update(service.getService_components())
 
-        for downtime in downtimes:
-            for affected in downtime.getAffected_registered_serivces():
-                if IRegisteredService.providedBy(affected):
-                    # all endpoints of the affected service are therefore affected, too
-                    service = affected
-                    endpoints = service.getService_components()
+            if IRegisteredServiceComponent.providedBy(affected):
+                # get service of affected endpoint
+                # services = affected.getParent_services()
+                endpoints.update((affected,))
 
-                if IRegisteredServiceComponent.providedBy(affected):
-                    # get service of affected endpoint
-                    service = affected.getParent_services()
-                    assert len(service) <= 1
-                    service = service[0] if len(service) == 1 else None
-                    endpoints = (affected,)
-
-                # join all endpoints of a service
-                result.setdefault((downtime, service), set()).update(endpoints)
-
-        return result
+        return endpoints
 
 
 class SiteContactsView(BrowserView):
