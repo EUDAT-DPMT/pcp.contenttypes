@@ -9,16 +9,16 @@
                      tal:omit-tag="">
                 <CONTACT tal:define="user python:userAndRoles[0]; roles python:userAndRoles[1]"
                          tal:repeat="role roles"
-                         tal:attributes="USER_ID string:undefined; PRIMARY_KEY string:undefined">
+                         tal:attributes="USER_ID user/getId; PRIMARY_KEY string:undefined">
                     <FORENAME>undefined</FORENAME>
                     <SURNAME tal:content="python:user.getProperty('fullname')"></SURNAME>
                     <TITLE>undefined</TITLE>
-                    <DESCRIPTION>undefined</DESCRIPTION>
+                    <DESCRIPTION tal:content="role"></DESCRIPTION>
                     <EMAIL tal:content="python:user.getProperty('email')"></EMAIL>
                     <TEL>undefined</TEL>
                     <WORKING_HOURS_START>undefined</WORKING_HOURS_START>
                     <WORKING_HOURS_END>undefined</WORKING_HOURS_END>
-                    <CERTDN>undefined</CERTDN>
+                    <CERTDN tal:content="python:user.getProperty('description')"></CERTDN>
                     <ROLE_NAME tal:content="role"></ROLE_NAME>
                 </CONTACT>
             </CONTACT>
