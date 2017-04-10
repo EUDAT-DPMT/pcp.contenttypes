@@ -354,12 +354,11 @@ class SiteContactsView(BrowserView):
 
     def getSiteContacts(self, site):
         roletype = self.request.get('roletype', None)
+        allowed_roles = ('Administrator', 'Can review', 'CDI Manager', 'CDI Member', 'Customer Relationship Manager',
+                         'Enabler', 'Principal', 'Project Manager', 'Site Manager',)
 
         if roletype:
-            allowed_roles = (roletype,)
-        else:
-            allowed_roles = ('Administrator', 'Can review', 'CDI Manager', 'CDI Member', 'Customer Relationship Manager',
-                             'Enabler', 'Principal', 'Project Manager', 'Site Manager',)
+            allowed_roles = (roletype,) if roletype in allowed_roles else ()
 
         def filter_roles(rs):
             return filter(lambda r: r in allowed_roles, rs)
