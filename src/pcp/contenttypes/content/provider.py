@@ -208,12 +208,12 @@ schemata.finalizeATCTSchema(
     moveDiscussion=False
 )
 
-ProviderSchema['committed_cores'].widget.condition = 'object/show_all'
-ProviderSchema['supported_os'].widget.condition = 'object/show_all'
-ProviderSchema['committed_disk'].widget.condition = 'object/show_all'
-ProviderSchema['committed_tape'].widget.condition = 'object/show_all'
-ProviderSchema['used_disk'].widget.condition = 'object/show_all'
-ProviderSchema['used_tape'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_cores'].widget.condition = 'object/show_all'
+#ProviderSchema['supported_os'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_disk'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_tape'].widget.condition = 'object/show_all'
+#ProviderSchema['used_disk'].widget.condition = 'object/show_all'
+#ProviderSchema['used_tape'].widget.condition = 'object/show_all'
 
 
 class Provider(folder.ATFolder, CommonUtilities):
