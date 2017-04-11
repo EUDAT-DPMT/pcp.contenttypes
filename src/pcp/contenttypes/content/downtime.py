@@ -1,6 +1,6 @@
 """Definition of the Downtime content type
 """
-
+from pcp.contenttypes.interfaces import IProvider
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
 from pcp.contenttypes.mail import send_mail
@@ -50,7 +50,7 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          widget=ReferenceBrowserWidget(label='Affected registered services',
                                                        description='All registered services and components unavailable during downtime',
                                                        allow_browse=1,
-                                                       startup_directory='/pcp/'
+                                                       startup_directory_method='getStartupDirectory',
                                                        ),
                          ),
 
@@ -84,6 +84,13 @@ class Downtime(base.ATCTContent):
 
     def setEndDateTime(self, value):
         self._setDateTimeField('endDateTime', value)
+
+    def getStartupDirectory(self):
+        parent = self.aq_parent
+        if IProvider.providedBy(parent):
+            return '/'.join(parent.getPhysicalPath())
+        else:
+            return self.portal_url.getPortalPath()
 
 
 atapi.registerType(Downtime, PROJECTNAME)
