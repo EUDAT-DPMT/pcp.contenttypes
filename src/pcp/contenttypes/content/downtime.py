@@ -30,6 +30,7 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         default_method=DateTime,
                         languageIndependent=True,
                         widget=DatetimeWidget(label='Start date (UTC)',
+                                              pattern='yyyy/MM/dd HH:mm:ss UTC',
                                               description='When does the downtime start? In UTC!'),
                         ),
 
@@ -40,6 +41,7 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         default_method=DateTime,
                         languageIndependent=True,
                         widget=DatetimeWidget(label='End date (UTC)',
+                                              pattern='yyyy/MM/dd HH:mm:ss UTC',
                                               description='When does the downtime end? In UTC!'),
                         ),
 
