@@ -1,0 +1,86 @@
+[
+    {
+        "additional": [
+            {
+                "key": "contact", 
+                "value": "38"
+            }, 
+            {
+                "key": "community", 
+                "value": "15"
+            }, 
+            {
+                "key": "rct_pk", 
+                "value": "16"
+            }
+        ], 
+        "allocated": {
+            "unit": "TiB", 
+            "value": "12"
+        }, 
+        "allocated_new": "12.00 TiB", 
+        "allowDiscussion": false, 
+        "call_for_collaboration": "", 
+        "community": [{"uid": "925e54b2364e4e04b2b690f33a214822"}], 
+        "community_contact": [
+            {
+                "path": "people/Gregor--Hagedorn", 
+                "title": "Gregor Hagedorn", 
+                "uid": "2ec8675ce32e4768b6000ccc4eeb8f1e"
+            }
+        ], 
+        "contributors": [], 
+        "description": "", 
+        "end_date": "2014-02-15T00:00:00+01:00", 
+        "expirationDate": null, 
+        "id": "B2SAFEforMfN", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "11feb18e9fd34d4d9c7fbeebec881916"
+            }
+        ], 
+        "pid": "843/1b76ace9faeb47458db305a04003d8fc", 
+        "portal_type": "Project", 
+        "project_enabler": [
+            {
+                "path": "people/Elena--Erastova", 
+                "title": "Elena Erastova", 
+                "uid": "09236fc33adb4a9d997f8960bdcf28e9"
+            }
+        ], 
+        "registered_services_used": [
+            {
+                "path": "operations/B2SAFE_MfN", 
+                "title": "B2SAFE MfN", 
+                "uid": "b12e60adfc384c1494352986e8fe0d7a"
+            }
+        ], 
+        "relatedItems": [], 
+        "repository": "", 
+        "resource_usage": "MFN-B2SAFE: 4.78 TiB / 12.00 TiB (39.81%) (2017-03-27 15:00:02 UTC)", 
+        "resources": [
+            {
+                "path": "providers/MPCDF/mfn-b2safe", 
+                "title": "MFN-B2SAFE", 
+                "uid": "b2578561823a4350ae0627b76fd8360c"
+            }
+        ], 
+        "rights": "", 
+        "start_date": "2014-01-01T00:00:00+01:00", 
+        "subject": [
+            "B2Safe"
+        ], 
+        "text": "", 
+        "title": "B2SAFE for MfN", 
+        "topics": "Biodiversity", 
+        "uid": "1b76ace9faeb47458db305a04003d8fc", 
+        "uptake_plan": "", 
+        "used": {
+            "unit": "TiB", 
+            "value": "4.72"
+        }, 
+        "used_new": "4.78 TiB", 
+        "website": "http://www.naturkundemuseum.berlin/en"
+    }
+]

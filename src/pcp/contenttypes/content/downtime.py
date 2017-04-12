@@ -131,11 +131,13 @@ def findDowntimeRecipients(downtime):
 def notifyDowntimeRecipients(downtime, subject, template, recipients):
     affected_services = downtime.getAffected_registered_serivces()
 
-    provider_brains = downtime.portal_catalog(portal_type='Provider', path='/'.join(downtime.getPhysicalPath()[0:4]))
-
-    assert len(provider_brains) == 1
-    for brain in provider_brains:
-        provider = brain.getObject()
+    chain = downtime.aq_chain
+    provider = None
+    for element in chain:
+        if IProvider.providedBy(element):
+            provider = element
+            break
+    assert provider
 
     params = {
         'description': downtime.Description(),

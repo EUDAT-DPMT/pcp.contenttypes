@@ -1,0 +1,79 @@
+[
+    {
+        "additional": [
+            {
+                "key": "rct_user_pk", 
+                "value": "11"
+            }, 
+            {
+                "key": "rct_username", 
+                "value": "bsanchez"
+            }
+        ], 
+        "affiliation": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "", 
+        "email": "beatriz.sanchez@mpcdf.mpg.de", 
+        "enables": [
+            {
+                "path": "operations/B2SAFE_MfN", 
+                "title": "B2SAFE MfN", 
+                "uid": "28579c90e81a46ef925a81777416bd29"
+            }
+        ], 
+        "expirationDate": null, 
+        "id": "Beatriz--Sanchez", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "Beatriz", 
+            "firstnames": "Beatriz", 
+            "lastname": "Sanchez", 
+            "middlename": ""
+        }, 
+        "phone": [], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "provider_contact_for": [
+            {
+                "path": "operations/B2SAFE_MfN", 
+                "title": "B2SAFE MfN", 
+                "uid": "28579c90e81a46ef925a81777416bd29"
+            }
+	],
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [
+            {
+                "path": "operations/B2SAFE_MfN", 
+                "title": "B2SAFE MfN", 
+                "uid": "28579c90e81a46ef925a81777416bd29"
+            }
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "Beatriz Sanchez", 
+        "uid": "037e07ecbb344ece9177c5cc8b4dec87"
+    }
+]

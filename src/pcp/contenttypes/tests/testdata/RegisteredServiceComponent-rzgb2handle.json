@@ -1,0 +1,74 @@
+[
+    {
+        "additional": [
+            {
+                "key": "creg_id", 
+                "value": "5"
+            }, 
+            {
+                "key": "email", 
+                "value": "Beatriz.Sanchez@rzg.mpg.de"
+            }, 
+            {
+                "key": "servicetype_id", 
+                "value": "51"
+            }, 
+            {
+                "key": "handle_version", 
+                "value": "8.1.0"
+            }, 
+            {
+                "key": "epic_version", 
+                "value": "2.5.1"
+            }
+        ], 
+        "allowDiscussion": false, 
+        "contacts": [
+            {
+                "path": "people/MPCDF-20Support-20Contact", 
+                "title": "MPCDF Support Contact", 
+                "uid": "620ec1c2045d4c6480695b989d91b507"
+            }
+        ], 
+        "contributors": [], 
+        "description": "B2HANDLE PID / EPIC registration service", 
+        "expirationDate": null, 
+        "host_architecture": "", 
+        "host_dn": "", 
+        "host_ip4": "130.183.206.85", 
+        "host_ip6": "", 
+        "host_name": "epic.rzg.mpg.de", 
+        "host_os": "", 
+        "id": "epic.rzg.mpg.de_5", 
+        "identifiers": [], 
+        "implementation_configuration": [], 
+        "monitored": true, 
+        "parent_services": [
+            {
+                "path": "operations/B2SAFE_MfN", 
+                "title": "B2SAFE MfN", 
+                "uid": "28579c90e81a46ef925a81777416bd29"
+            }
+        ], 
+        "pid": null, 
+        "portal_type": "RegisteredServiceComponent", 
+        "registry_link": "<a href='https://creg.eudat.eu/view_portal/index.php?Page_Type=Service&id=5' title='Link to the corresponding entry in the central registry' target='_blank'>https://creg.eudat.eu/view_portal/index.php?Page_Type=Service&id=5</a>", 
+        "relatedItems": [], 
+        "resources": [], 
+        "rights": "", 
+        "service_component_implementation_details": [], 
+        "service_providers": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "service_type": "51", 
+        "service_url": "https://epic.rzg.mpg.de/epic_v2/", 
+        "subject": [], 
+        "text": "", 
+        "title": "epic.rzg.mpg.de - b2handle.handle.api", 
+        "uid": "7b58df46c8d94527be1b31a571adbc1f"
+    }
+]

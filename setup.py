@@ -32,7 +32,8 @@ long_description = (
     'Download\n'
     '********\n')
 
-tests_require = ['zope.testing', 'plone.testing', 'plone.app.testing', 'robotsuite', 'Products.PloneTestCase']
+tests_require = ['zope.testing', 'plone.testing', 'plone.app.testing', 'robotsuite',
+                 'robotframework-selenium2library', 'Products.PloneTestCase', 'mock']
 
 setup(name='pcp.contenttypes',
       version=version,

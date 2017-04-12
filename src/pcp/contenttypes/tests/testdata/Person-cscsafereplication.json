@@ -1,0 +1,47 @@
+[
+    {
+        "additional": [], 
+        "affiliation": [
+        ], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "Generic contact for the safe replication service at CSC", 
+        "email": "eudat-safereplication@postit.csc.fi", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "csc-safe-replication", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "CSC", 
+            "firstnames": "CSC", 
+            "lastname": "Safe Replication", 
+            "middlename": ""
+        }, 
+        "phone": [], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [], 
+        "provider_contact_for": [
+            {
+                "path": "catalog/B2SAFE", 
+                "title": "B2SAFE", 
+                "uid": "e47b065509f0450880d61f490f9b8b86"
+            }
+        ], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [], 
+        "subject": [], 
+        "text": "", 
+        "title": "CSC Safe Replication", 
+        "uid": "4ff51f3820e646cb9d426279d87c8ba9"
+    }
+]

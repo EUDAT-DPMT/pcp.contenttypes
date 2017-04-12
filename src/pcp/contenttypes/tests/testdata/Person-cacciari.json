@@ -1,0 +1,82 @@
+[
+    {
+        "additional": [
+            {
+                "key": "rct_user_pk", 
+                "value": 52
+            }, 
+            {
+                "key": "website", 
+                "value": ""
+            }, 
+            {
+                "key": "address", 
+                "value": ""
+            }, 
+            {
+                "key": "organization", 
+                "value": "EPOS"
+            }, 
+            {
+                "key": "rct_contact_pk", 
+                "value": "22"
+            }, 
+            {
+                "key": "rct_username", 
+                "value": "ccacciari"
+            }
+        ], 
+        "affiliation": [], 
+        "allowDiscussion": false, 
+        "community_admin": [
+        ], 
+        "community_contact_for": [
+        ], 
+        "community_representative": [
+        ], 
+        "contributors": [], 
+        "description": "", 
+        "email": "c.cacciari@cineca.it", 
+        "enables": [
+        ], 
+        "expirationDate": null, 
+        "id": "Claudio--Cacciari", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "28d62781d95d4cc488d78dd4b7f7a02a"
+            }
+        ], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "Claudio", 
+            "firstnames": "Claudio", 
+            "lastname": "Cacciari", 
+            "middlename": ""
+        }, 
+        "phone": [], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [
+        ], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [
+            {
+                "path": "catalog/B2SAFE", 
+                "title": "B2SAFE", 
+                "uid": "e47b065509f0450880d61f490f9b8b86"
+            }
+        ], 
+        "she_contact": [
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "Claudio Cacciari", 
+        "uid": "ab7f85dd96f14fdf929d743f64e05ac8"
+    }
+]

@@ -1,0 +1,55 @@
+[
+    {
+        "additional": [], 
+        "allowDiscussion": false, 
+        "competitors": null, 
+        "contact": [
+            {
+                "path": "people/csc-safe-replication", 
+                "title": "CSC Safe Replication", 
+                "uid": "4ff51f3820e646cb9d426279d87c8ba9"
+            }
+        ], 
+        "contributors": [], 
+        "description": "B2SAFE is a robust, safe and highly available service which allows community and departmental repositories to implement data management policies on their research data across multiple administrative domains in a trustworthy manner.  \r\nabstraction layer of large scale, heterogeneous data storages\r\nguards against data loss in long-term archiving\r\nallows to optimize access for users (e.g. from different regions)\r\nbrings data closer to facilities for compute-intensive analysis", 
+        "description_internal": null, 
+        "expirationDate": null, 
+        "funders_for_service": null, 
+        "helpdesk": null, 
+        "id": "B2SAFE", 
+        "identifiers": [
+            {
+                "type": "spmt_uid", 
+                "value": "88b35b0d-adc2-4a2e-b5fc-cae2d6f5456a"
+            }
+        ], 
+        "managed_by": [], 
+        "offered_by": [], 
+        "pid": null, 
+        "portal_type": "Service", 
+        "relatedItems": [], 
+        "request_procedures": "Joining the EUDAT CDI http://eudat.eu/EUDAT%20Primer.html#Join", 
+        "resources_used": [], 
+        "rights": "", 
+        "risks": null, 
+        "service_area": "Data Hosting, Registration & Management & Sharing", 
+        "service_complete_link": "http://sp.eudat.eu/api/v1/portfolio/services/B2SAFE?view=complete", 
+        "service_owner": [
+            {
+                "path": "people/Claudio--Cacciari", 
+                "title": "Claudio Cacciari", 
+                "uid": "ab7f85dd96f14fdf929d743f64e05ac8"
+            }
+        ], 
+        "service_requests": [
+        ], 
+        "service_type": "Customer-facing Service", 
+        "subject": [], 
+        "text": "", 
+        "title": "B2SAFE", 
+        "uid": "e47b065509f0450880d61f490f9b8b86", 
+        "url": null, 
+        "used_by_project": [], 
+        "value_to_customer": "For the communities who need to guard against data loss, B2SAFE is a customer facing service that allow data replication  and safe storage between geographically distributed centres  in the EUDAT CDI."
+    }
+]

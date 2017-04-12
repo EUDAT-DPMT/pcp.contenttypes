@@ -1,0 +1,99 @@
+[
+    {
+        "additional": [
+            {
+                "key": "rct_user_pk", 
+                "value": "18"
+            }, 
+            {
+                "key": "website"
+            }, 
+            {
+                "key": "address"
+            }, 
+            {
+                "key": "organization", 
+                "value": "RZG"
+            }, 
+            {
+                "key": "rct_contact_pk", 
+                "value": "13"
+            }, 
+            {
+                "key": "rct_username", 
+                "value": "jreetz"
+            }
+        ], 
+        "affiliation": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [
+        ], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "Leader of work package 6", 
+        "email": "johannes.reetz@mpcdf.mpg.de", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "Johannes--Reetz", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "63c78a1907fc446aa79862fd3d7e2cbe"
+            }
+        ], 
+        "manager_of_registered_service": [
+            {
+                "path": "operations/EUDAT_OPERATIONAL_SERVICES", 
+                "title": "EUDAT OPERATIONAL SERVICES", 
+                "uid": "84079b92e8384bd2a212402caf8a7246"
+            }
+        ], 
+        "manages": [], 
+        "name": {
+            "firstname": "Johannes", 
+            "firstnames": "Johannes", 
+            "lastname": "Reetz", 
+            "middlename": ""
+        }, 
+        "phone": [
+            {
+                "number": "+49-89-3299-2199", 
+                "type": "Office"
+            }
+        ], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "provider_contact_for": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "Johannes Reetz", 
+        "uid": "e941e1b642714de39de737b981699e9b"
+    }
+]

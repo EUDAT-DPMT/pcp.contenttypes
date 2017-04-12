@@ -1,0 +1,60 @@
+[
+    {
+        "additional": [
+            {
+                "key": "creg_id", 
+                "value": "61"
+            }, 
+            {
+                "key": "email", 
+                "value": "beatriz.sanchez@mpcdf.mpg.de"
+            }
+        ], 
+        "allowDiscussion": false, 
+        "contact": [
+            {
+                "path": "people/Beatriz--Sanchez", 
+                "title": "Beatriz Sanchez", 
+                "uid": "037e07ecbb344ece9177c5cc8b4dec87"
+            }
+        ], 
+        "contributors": [], 
+        "description": "Components of Service: B2SAFE for Berlin Museum of Natural Science - repository", 
+        "expirationDate": null, 
+        "id": "B2SAFE_MfN", 
+        "identifiers": [], 
+        "managers": [], 
+        "monitored": true, 
+        "original_request": [], 
+        "pid": null, 
+        "portal_type": "RegisteredService", 
+        "registry_link": "<a href='https://creg.eudat.eu/view_portal/index.php?Page_Type=Service_Group&id=61' title='Link to the corresponding entry in the central registry' target='_blank'>https://creg.eudat.eu/view_portal/index.php?Page_Type=Service_Group&id=61</a>", 
+        "relatedItems": [], 
+        "resources": [], 
+        "rights": "", 
+        "service_components": [
+            {
+                "path": "providers/MPCDF/epic.rzg.mpg.de_5", 
+                "title": "epic.rzg.mpg.de - b2handle.handle.api", 
+                "uid": "7b58df46c8d94527be1b31a571adbc1f"
+            }, 
+            {
+                "path": "providers/MPCDF/irods0--eudat.esc.rzg.mpg.de_24", 
+                "title": "irods0-eudat.esc.rzg.mpg.de - b2safe.irods", 
+                "uid": "b194ba9d9ed84618a664807a10de5196"
+            }
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "B2SAFE MfN", 
+        "uid": "b12e60adfc384c1494352986e8fe0d7a", 
+        "used_by_projects": [
+            {
+                "handle": "843/1b76ace9faeb47458db305a04003d8fc", 
+                "path": "projects/B2SAFEforMfN", 
+                "title": "B2SAFE for MfN", 
+                "uid": "1b76ace9faeb47458db305a04003d8fc"
+            }
+        ]
+    }
+]

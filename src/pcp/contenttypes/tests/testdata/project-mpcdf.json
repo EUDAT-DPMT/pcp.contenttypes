@@ -1,0 +1,122 @@
+[
+    {
+        "additional": [
+            {
+                "key": "contact", 
+                "value": "2"
+            }, 
+            {
+                "key": " admins", 
+                "value": "[3, 7, 18, 549]"
+            }, 
+            {
+                "key": "communities_primary", 
+                "value": "[4]"
+            }, 
+            {
+                "key": "rct_pk", 
+                "value": "1"
+            }, 
+            {
+                "key": "creg_id", 
+                "value": "11"
+            }, 
+            {
+                "key": "creg_pk", 
+                "value": "148G0"
+            }
+        ], 
+        "address": {
+            "city": "Garching", 
+            "country": "Germany", 
+            "street1": "Giessenbachstr. 2", 
+            "zip": "85748"
+        }, 
+        "admins": [
+            {
+                "path": "people/Johannes--Reetz", 
+                "title": "Johannes Reetz", 
+                "uid": "037e07ecbb344ece9177c5cc8b4dec87"
+            }
+        ], 
+        "affiliated": [
+            {
+                "path": "people/Johannes--Reetz", 
+                "title": "Johannes Reetz", 
+                "uid": "d5255e93ab7c48d099faa7cb8e8cece7"
+            }
+        ], 
+        "alarm_email": "eudat-csirt@rzg.mpg.de", 
+        "allowDiscussion": false, 
+        "committed_cores": 32, 
+        "committed_disk": 230897441832960, 
+        "committed_tape": 2251799813685248, 
+        "communities_primary": [
+            {
+                "path": "customers/MfN", 
+                "title": "MfN", 
+                "uid": "925e54b2364e4e04b2b690f33a214822"
+            }
+        ], 
+        "communities_secondary": [], 
+        "contact": [
+            {
+                "path": "people/Johannes--Reetz", 
+                "title": "Johannes Reetz", 
+                "uid": "e941e1b642714de39de737b981699e9b"
+            }
+        ], 
+        "contributors": [], 
+        "description": "Max Planck Computing and Data Facility", 
+        "domain": "mpcdf.mpg.de", 
+        "emergency_phone": "+49 89 3299 2199", 
+        "expirationDate": null, 
+        "getAccount": "https://www.mpcdf.mpg.de/secure/registrieren/antrag.php?deisa=0&inst=RZG&projekt=EUDAT&lang=en", 
+        "helpdesk_email": "eudat-support@rzg.mpg.de", 
+        "hosts": [
+        ], 
+        "id": "MPCDF", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "3816e47ee86411e1abcf0050563e2045"
+            }
+        ], 
+        "infrastructure": "Production", 
+        "ip4range": "130.183.0.0/130.183.255.255", 
+        "ip6range": "", 
+        "latitude": "48.26726", 
+        "link2offers": "<a href='http://localhost:9080/pcp/providers/MPCDF/offers?unit=TiB' title='Resources offered by MPCDF'>Resources offered by MPCDF</a>", 
+        "longitude": "11.6734599", 
+        "pid": null, 
+        "portal_type": "Provider", 
+        "projects_invloved": [
+        ], 
+        "provider_status": "candidate", 
+        "provider_type": "generic", 
+        "provider_userid": "mpcdf", 
+        "registry_link": "<a href='https://creg.eudat.eu/view_portal/index.php?Page_Type=Site&id=11' title='Link to the corresponding entry in the central registry' target='_blank'>https://creg.eudat.eu/view_portal/index.php?Page_Type=Site&id=11</a>", 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact": [
+            {
+                "path": "people/MPCDF-20Security-20Contact", 
+                "title": "MPCDF Security Contact", 
+                "uid": "42d0ed1504ae4bc1b6ee9bda3131531c"
+            }
+        ], 
+        "status_details": "", 
+        "subject": [], 
+        "supported_os": [
+            "SLES - SuSE Linux Enterprise Server from Novell", 
+            "SL - Scientific Linux"
+        ], 
+        "text": "Supercomputer and Data Facility of the Max Planck Society", 
+        "timezone": "Europe/Berlin", 
+        "title": "MPCDF", 
+        "uid": "29602f7691484308a1dbcb7572e4a0cb", 
+        "url": "http://www.mpcdf.mpg.de", 
+        "used_disk": 1099511627776, 
+        "used_tape": 3518437208883
+    }
+]

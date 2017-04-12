@@ -1,5 +1,4 @@
 import transaction
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
@@ -8,7 +7,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import setRoles
-from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping
 from zope.component import getMultiAdapter
 from zope.component import getUtility
