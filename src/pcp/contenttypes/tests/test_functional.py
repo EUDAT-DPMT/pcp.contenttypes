@@ -3,11 +3,13 @@ import json
 import os
 
 import plone
+import transaction
 from Products.ATBackRef import BackReferenceField
 from Products.ATVocabularyManager import NamedVocabulary
 from Products.Archetypes.Field import ReferenceField
 from Products.CMFCore.utils import getToolByName
-from mock import patch, call
+from mock import patch, call, MagicMock
+from pcp.contenttypes.browser.accounting import Accounting
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 from pcp.contenttypes.tests.base import FunctionalTestCase
 from plone.app.testing import TEST_USER_ID
@@ -20,8 +22,27 @@ class TestFunctional(FunctionalTestCase):
 
     layer = PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 
-    def setUp(self):
-        self.portal = self.layer['portal']
+    def browseSite(self):
+        transaction.commit()
+
+        from plone.testing.z2 import Browser
+        browser = Browser(self.app)
+        browser.handleErrors = False
+
+        portal_url = self.portal.absolute_url()
+        self.portal.error_log._ignored_exceptions = ()
+
+        browser.open(portal_url + '/login_form')
+        browser.getControl(name='__ac_name').value = TEST_USER_NAME
+        browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
+        browser.getControl(name='submit').click()
+
+        self.assertIn('You are now logged in', browser.contents)
+        return browser
+
+    def afterSetUp(self):
+        self.request = self.layer['request']
+
         setRoles(self.portal, TEST_USER_ID, ('Manager',))
 
         test_directory = os.path.dirname(__file__)
@@ -135,9 +156,65 @@ class TestFunctional(FunctionalTestCase):
 
         self.assertEquals(plone.api.content.get_state(downtime), 'private')
 
+    # Keep order!
+    ACCOUNTING_DATA = [
+            {
+                "core": {"value": "123", "unit": "B", "type": "storage"},
+                "meta": {"submission_time": "2017-11-23 17:23:29", "ts": 17},
+            },
+            {
+                "core": {"value": "124", "unit": "B", "type": "storage"},
+                "meta": {"submission_time": "2017-11-23 16:23:29", "ts": 13},
+            },
+        ]
 
+    @patch('pcp.contenttypes.browser.accounting.requests.get')
+    def test_accountingCache(self, get):
+        resource = self.portal['mfn-b2safe']
 
+        result = MagicMock()
+        result.ok = True
+        result.json = MagicMock(return_value=self.ACCOUNTING_DATA)
+        get.return_value = result
 
+        response_text = Accounting(self.portal, self.request).update_record_caches()
 
+        self.assertEquals(1, get.call_count)
+        self.assertTrue(resource.UID() in get.call_args[0][0])
+        self.assertTrue('/listRecords' in get.call_args[0][0])
 
+        self.assertTrue(resource.title in response_text)
 
+        self.assertEquals(resource.cached_records, self.ACCOUNTING_DATA)
+        self.assertEquals(resource.cached_newest_record, self.ACCOUNTING_DATA[0])
+
+    @patch('pcp.contenttypes.browser.accounting.requests.get')
+    def test_accountingTab(self, get):
+        resource = self.portal['mfn-b2safe']
+
+        def get_impl(path):
+            result = MagicMock()
+            result.ok = True
+            if 'listRecords' in path:
+                result.json = MagicMock(return_value=self.ACCOUNTING_DATA)
+            elif 'hasAccount' in path:
+                result.json = MagicMock(return_value=dict(exists=True))
+            return result
+
+        get.side_effect = get_impl
+
+        browser = self.browseSite()
+
+        browser.open(resource.absolute_url())
+        browser.follow('Accounting')
+
+        self.assertTrue(get.call_count, 1)
+        for record in self.ACCOUNTING_DATA:
+            self.assertTrue(record['core']['value'] in browser.contents)
+            self.assertTrue(record['meta']['submission_time'] in browser.contents)
+
+    def test_accountingProjectView(self):
+        self.fail('to be implemented')
+
+    def test_rolerequest(self):
+        self.fail('to be implemented')

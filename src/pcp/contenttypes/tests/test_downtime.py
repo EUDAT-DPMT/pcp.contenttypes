@@ -65,7 +65,7 @@ class TestDowntime(FunctionalTestCase):
         self.assertTrue(self.TEST_DOWNTIME_START_STRING in browser.contents)
         self.assertTrue(self.TEST_DOWNTIME_END_STRING in browser.contents)
 
-    def test(self):
+    def test_downtimeTimezoneCrap(self):
         # Execute a browser test for downtime to ensure correct time formats and
         # timezone handling.
 
@@ -74,8 +74,8 @@ class TestDowntime(FunctionalTestCase):
         # * downtime default view
         # * portlet
         # * overview
-
         setRoles(self.portal, TEST_USER_ID, ['Manager',])
+
         self.portal.invokeFactory('Folder', 'Providers')
         self.portal.Providers.invokeFactory('Provider', 'provider')
         self.portal.Providers.provider.invokeFactory('Downtime', 'downtime')
@@ -84,6 +84,7 @@ class TestDowntime(FunctionalTestCase):
         manager = getMultiAdapter((self.portal, column), IPortletAssignmentMapping)
         assignment = Assignment()
         chooser = INameChooser(manager)
+        setRoles(self.portal, TEST_USER_ID, ['Manager',])
         manager[chooser.chooseName(None, assignment)] = assignment
 
         self.portal.Providers.invokeFactory('Provider', self.TEST_OTHER_PROVIDER)
@@ -104,6 +105,7 @@ class TestDowntime(FunctionalTestCase):
 
         otherDowntime.reindexObject()
         plone.api.content.transition(obj=otherDowntime, transition='publish')
+        plone.api.content.transition(obj=pastDowntime, transition='publish')
 
         transaction.commit()
 
