@@ -76,6 +76,18 @@ class TestFunctional(FunctionalTestCase):
 
     @patch('pcp.contenttypes.content.downtime.send_mail')
     def test_downtimeNotification(self, send_mail):
+        def assertMailsSent(subject, template):
+            self.assertEquals(3, send_mail.call_count)
+            self.assertEquals({'mfn-admin-1@example.com', 'mfn-admin-2@example.com', 'g.m.hagedorn@gmail.com'},
+                              {args[1]['recipients'][0] for args in send_mail.call_args_list})
+            for args in send_mail.call_args_list:
+                self.assertEquals(1, len(args[1]['recipients']))
+                self.assertIsNone(args[1]['sender'])
+                self.assertEquals(subject, args[1]['subject'])
+                self.assertEquals(template, args[1]['template'])
+
+            send_mail.reset_mock()
+
         affectedRegisteredServiceComponent = self.portal['irods0--eudat.esc.rzg.mpg.de_24']
         provider = self.portal['MPCDF']
         provider.invokeFactory('Downtime', 'downtime')
@@ -86,10 +98,46 @@ class TestFunctional(FunctionalTestCase):
                         endDateTime='2018-06-17 09:45 UTC',
                         affected_registered_serivces=(affectedRegisteredServiceComponent,))
 
+        # Take a tour through the workflow graph and check for mails being sent
+        # if and only if they shall be sent.
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+
         plone.api.content.transition(obj=downtime, transition='publish')
+        assertMailsSent('[DPMT] Upcoming Downtime', 'announce-downtime.txt')
 
-        self.assertEquals(3, send_mail.call_count)
+        self.assertEquals(plone.api.content.get_state(downtime), 'published')
 
-        #self.assertTrue(len(self.portal.MailHost.messages) == 3)
+        plone.api.content.transition(obj=downtime, transition='retract')
+        assertMailsSent('[DPMT] Retracted Downtime', 'retract-downtime.txt')
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+
+        plone.api.content.transition(obj=downtime, transition='submit')
+        self.assertEquals(plone.api.content.get_state(downtime), 'pending')
+        self.assertEquals(0, send_mail.call_count)
+
+        plone.api.content.transition(obj=downtime, transition='reject')
+        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+        self.assertEquals(0, send_mail.call_count)
+
+        plone.api.content.transition(obj=downtime, transition='submit')
+        self.assertEquals(plone.api.content.get_state(downtime), 'pending')
+        self.assertEquals(0, send_mail.call_count)
+
+        plone.api.content.transition(obj=downtime, transition='publish')
+        assertMailsSent('[DPMT] Upcoming Downtime', 'announce-downtime.txt')
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'published')
+
+        plone.api.content.transition(obj=downtime, transition='reject')
+        assertMailsSent('[DPMT] Retracted Downtime', 'retract-downtime.txt')
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+
+
+
+
+
 
 
