@@ -189,7 +189,7 @@ class TestFunctional(FunctionalTestCase):
         self.assertEquals(resource.cached_newest_record, self.ACCOUNTING_DATA[0])
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
-    def test_accountingTab(self, get):
+    def test_accountingTabLiveData(self, get):
         resource = self.portal['mfn-b2safe']
 
         def get_impl(path):
@@ -213,8 +213,58 @@ class TestFunctional(FunctionalTestCase):
             self.assertTrue(record['core']['value'] in browser.contents)
             self.assertTrue(record['meta']['submission_time'] in browser.contents)
 
-    def test_accountingProjectView(self):
-        self.fail('to be implemented')
+    @patch('pcp.contenttypes.browser.accounting.requests.get')
+    def test_accountingTabCachedData(self, get):
+        resource = self.portal['mfn-b2safe']
+
+        get.return_value = MagicMock(ok=False)
+
+        browser = self.browseSite()
+
+        browser.open(resource.absolute_url())
+        browser.follow('Accounting')
+
+        self.assertTrue(get.call_count, 1)
+        for record in self.ACCOUNTING_DATA:
+            self.assertFalse(record['core']['value'] in browser.contents)
+            self.assertFalse(record['meta']['submission_time'] in browser.contents)
+
+        result = MagicMock()
+        result.ok = True
+        result.json = MagicMock(return_value=self.ACCOUNTING_DATA)
+        get.return_value = result
+        Accounting(self.portal, self.request).update_record_caches()
+
+        get.return_value = MagicMock(ok=False)
+
+        browser.open(resource.absolute_url())
+        browser.follow('Accounting')
+
+        self.assertTrue(get.call_count, 1)
+        for record in self.ACCOUNTING_DATA:
+            self.assertTrue(record['core']['value'] in browser.contents)
+            self.assertTrue(record['meta']['submission_time'] in browser.contents)
+
+    @patch('pcp.contenttypes.browser.accounting.requests.get')
+    def test_accountingProjectView(self, get):
+        project = self.portal['B2SAFEforMfN']
+
+        browser = self.browseSite()
+        browser.open(project.absolute_url())
+        self.assertTrue('??' in browser.contents)
+
+        result = MagicMock()
+        result.ok = True
+        result.json = MagicMock(return_value=self.ACCOUNTING_DATA)
+        get.return_value = result
+        Accounting(self.portal, self.request).update_record_caches()
+
+        browser = self.browseSite()
+        browser.open(project.absolute_url())
+
+        record = self.ACCOUNTING_DATA[0]
+        self.assertTrue(record['core']['value'] in browser.contents)
+        self.assertTrue(record['meta']['submission_time'] in browser.contents)
 
     def test_rolerequest(self):
         self.fail('to be implemented')
