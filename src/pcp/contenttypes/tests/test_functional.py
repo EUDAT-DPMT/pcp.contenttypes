@@ -15,7 +15,10 @@ from pcp.contenttypes.tests.base import FunctionalTestCase
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import login
+from plone.app.testing import logout
 from plone.app.testing import setRoles
+from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 
 class TestFunctional(FunctionalTestCase):
@@ -266,5 +269,77 @@ class TestFunctional(FunctionalTestCase):
         self.assertTrue(record['core']['value'] in browser.contents)
         self.assertTrue(record['meta']['submission_time'] in browser.contents)
 
-    def test_rolerequest(self):
-        self.fail('to be implemented')
+    @patch('pcp.contenttypes.content.rolerequest.send_mail')
+    def test_rolerequest(self, send_mail):
+        def assertMailsSent(subject):
+            self.assertEquals(1, send_mail.call_count)
+            self.assertEquals({'mfn-admin-1@example.com', 'mfn-admin-2@example.com'},
+                              send_mail.call_args[1]['recipients'])
+            for args in send_mail.call_args_list:
+                self.assertEquals(2, len(args[1]['recipients']))
+                self.assertIsNone(args[1]['sender'])
+                self.assertEquals(subject, args[1]['subject'])
+                self.assertEquals('role-request.txt', args[1]['template'])
+
+            send_mail.reset_mock()
+
+        username_requester = 'mfn-admin-2'
+        username_receiver = 'mfn-admin-1'
+        email_requester = 'mfn-admin-2@example.com'
+        email_receiver = 'mfn-admin-1@example.com'
+        location = self.portal['B2SAFE']
+        role = 'Enabler'
+
+        # Create users
+        plone.api.user.create(email_receiver, username_receiver)
+        plone.api.user.create(email_requester, username_requester, roles=('Manager',))
+
+        # Use requester to create rolerequest
+        logout()
+        login(self.portal, username_requester)
+
+        self.portal.invokeFactory('RoleRequest', 'rolerequest')
+        rolerequest = self.portal.rolerequest
+
+        rolerequest.update(Title='Role Request for Peter Lustig',
+                           userid=username_receiver,
+                           role=role,
+                           context=location,
+                           motivation='Motivation')
+
+        # Switch back to TEST_USER
+        logout()
+        login(self.portal, TEST_USER_NAME)
+
+        # Take a tour through the transition graph checking mails being sent, permissions set and logged
+
+        logger = IPersistentLogger(location)
+
+        self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
+        self.assertEquals(0, send_mail.call_count)
+        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertEquals(0, len(logger.entries))
+
+        plone.api.content.transition(obj=rolerequest, transition='reject')
+
+        self.assertEquals('rejected', plone.api.content.get_state(rolerequest))
+        assertMailsSent('[DPMT] Role request rejected')
+        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertEquals(0, len(logger.entries))
+
+        plone.api.content.transition(obj=rolerequest, transition='submit')
+
+        self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
+        self.assertEquals(0, send_mail.call_count)
+        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertEquals(0, len(logger.entries))
+
+        plone.api.content.transition(obj=rolerequest, transition='accept')
+
+        self.assertEquals('accepted', plone.api.content.get_state(rolerequest))
+        assertMailsSent('[DPMT] Role request accepted')
+        self.assertTrue(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertEquals(1, len(logger.entries))
+
+
+

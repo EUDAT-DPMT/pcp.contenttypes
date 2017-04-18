@@ -17,12 +17,14 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
         import collective.handleclient
         import plone.formwidget.datetime
         import pcp.contenttypes
+        import zopyx
 
         xmlconfig.file('configure.zcml', Products.ATExtensions, context=configurationContext)
         xmlconfig.file('configure.zcml', Products.ATBackRef,  context=configurationContext)
         xmlconfig.file('configure.zcml', collective.handleclient, context=configurationContext)
         xmlconfig.file('configure.zcml', plone.formwidget.datetime, context=configurationContext)
         xmlconfig.file('configure.zcml', pcp.contenttypes, context=configurationContext)
+        xmlconfig.file('configure.zcml', zopyx.plone.persistentlogger, context=configurationContext)
 
         # Install products that use an old-style initialize() function
         #z2.installProduct(app, 'Products.PloneFormGen')
@@ -41,6 +43,7 @@ class PcpcontenttypesLayer(PloneSandboxLayer):
         applyProfile(portal, 'collective.handleclient:default')
         applyProfile(portal, 'pcp.contenttypes:default')
         applyProfile(portal, 'plone.formwidget.datetime:default')
+        applyProfile(portal, 'zopyx.plone.persistentlogger:default')
 
 PCP_CONTENTTYPES_FIXTURE = PcpcontenttypesLayer()
 PCP_CONTENTTYPES_INTEGRATION_TESTING = IntegrationTesting(
