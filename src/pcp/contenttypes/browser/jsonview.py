@@ -10,7 +10,7 @@ import json
 import plone.api
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
-from Products.CMFCore.utils import getToolByName
+from plone.app.blob.interfaces import IBlobWrapper
 from DateTime import DateTime
 
 from Products.Archetypes.atapi import ReferenceField
@@ -66,6 +66,9 @@ class JSONView(BrowserView):
             return value.ISO8601()
         elif isinstance(value, FormattableName):
             return dict(value.items())
+        elif IBlobWrapper.providedBy(value):
+            # TODO: equivalent handling of binary data as in isBinary special case
+            return None
         elif hasattr(value, "isBinary") and value.isBinary():
 
             if not EXPORT_BINARY:
