@@ -2,10 +2,10 @@
 
 
 <dl class="portlet">
-    <dt class="portletHeader">
+    <dt class="portletHeader" tal:define="provider python:view.getProvider()">
         Upcoming Downtimes
-        <span tal:condition="view/showSingleProviderOnly">
-            (<span tal:content="view/getProvider">Provider</span>)
+        <span tal:condition="python:provider" tal:omit-tag="">
+            (<span tal:replace="python:provider.Title()">Provider</span>)
         </span>
     </dt>
     <tal:items tal:repeat="downtime view/getDowntimes">
@@ -16,8 +16,8 @@
 
             <div class="portletItemDetails">
                 <p>
-                    <span tal:replace="python:downtime.getStartDateTimeUtc()">Start</span> -
-                    <span tal:replace="python:downtime.getEndDateTimeUtc()">Ende</span>
+                    <span tal:replace="python:downtime.start()">Start</span> -
+                    <span tal:replace="python:downtime.end()">Ende</span>
                 </p>
                 <p>
                     <span tal:replace="downtime/Description">Description</span>

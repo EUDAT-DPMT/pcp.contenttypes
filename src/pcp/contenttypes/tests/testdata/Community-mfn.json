@@ -1,0 +1,69 @@
+[
+    {
+        "additional": [
+            {
+                "key": "representative", 
+                "value": "38"
+            }, 
+            {
+                "key": "admins", 
+                "value": "[]"
+            }, 
+            {
+                "key": "rct_pk", 
+                "value": "15"
+            }
+        ], 
+        "address": {
+            "city": "Berlin", 
+            "country": "Germany"
+        }, 
+        "admins": [{"uid": "97390818bad5400caaf99c2f0cb8ca73"}, {"uid": "7a1bb0d543d84d95ade71859bc2f20f1"}], 
+        "affiliated": [], 
+        "allowDiscussion": false, 
+        "contributors": [], 
+        "description": "", 
+        "expirationDate": null, 
+        "id": "MfN", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "395aab0be24d44969fbd3cbe5ecb27e5"
+            }
+        ], 
+        "pid": null, 
+        "portal_type": "Community", 
+        "primary_provider": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "projects_involved": [
+            {
+                "handle": "843/1b76ace9faeb47458db305a04003d8fc", 
+                "path": "projects/B2SAFEforMfN", 
+                "title": "B2SAFE for MfN", 
+                "uid": "1b76ace9faeb47458db305a04003d8fc"
+            }
+        ], 
+        "relatedItems": [], 
+        "representative": [], 
+        "resources": [
+            {
+                "path": "providers/MPCDF/mfn-b2safe", 
+                "title": "MFN-B2SAFE", 
+                "uid": "b2578561823a4350ae0627b76fd8360c"
+            }
+        ], 
+        "rights": "", 
+        "secondary_provider": [], 
+        "subject": [], 
+        "text": "", 
+        "title": "MfN", 
+        "topics": "Biological and Geo-Scientific Evolution Research and Biodiversity", 
+        "uid": "925e54b2364e4e04b2b690f33a214822", 
+        "url": "http://www.naturkundemuseum-berlin.de/en/institution/ueber-uns/"
+    }
+]

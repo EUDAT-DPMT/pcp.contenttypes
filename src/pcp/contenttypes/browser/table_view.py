@@ -17,8 +17,6 @@ hidden_fields = (
     'creators',
     'excludeFromNav',
     'nextPreviousEnabled',
-    'startDateTime',
-    'endDateTime',
 )
 
 hidden_fields = dict([(f, 0) for f in hidden_fields])

@@ -1,0 +1,48 @@
+[
+    {
+        "additional": [], 
+        "allowDiscussion": false, 
+        "compute_resources": [
+            {
+                "diskspace": "", 
+                "nCores": 32, 
+                "ram": "", 
+                "system": [
+                    "SLES - SuSE Linux Enterprise Server from Novell", 
+                    "SL - Scientific Linux"
+                ], 
+                "virtualization": ""
+            }
+        ], 
+        "conditions": "<p>Any constraints that need to be satisfied by the customer:</p>\n", 
+        "constraints": "", 
+        "contributors": [], 
+        "description": "Resources offered by MPCDF", 
+        "expirationDate": null, 
+        "id": "offers", 
+        "identifiers": [], 
+        "organizational_constraints": "", 
+        "pid": null, 
+        "portal_type": "ResourceOffer", 
+        "regional_constraints": "", 
+        "relatedItems": [], 
+        "rights": "", 
+        "storage_resources": [
+            {
+                "storage class": "online", 
+                "unit": "TiB", 
+                "value": 210.0
+            }, 
+            {
+                "storage class": "offline", 
+                "unit": "PiB", 
+                "value": 2.0
+            }
+        ], 
+        "subject": [], 
+        "text": "", 
+        "thematic_constraints": "", 
+        "title": "Resources offered", 
+        "uid": "298aa5f53f544d75b7859443866fdf7e"
+    }
+]

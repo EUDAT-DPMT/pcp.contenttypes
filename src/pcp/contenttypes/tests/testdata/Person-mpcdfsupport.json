@@ -1,0 +1,47 @@
+[
+    {
+        "additional": [], 
+        "affiliation": [], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "Generic support contact details for MPCDF", 
+        "email": "florian.kaiser@mpcdf.mpg.de", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "MPCDF-20Support-20Contact", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "MPCDF", 
+            "lastname": "Support Contact"
+        }, 
+        "phone": [
+            {}
+        ], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [
+        ], 
+        "provider_admin": [], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [
+            {
+                "path": "providers/MPCDF/epic.rzg.mpg.de_5", 
+                "title": "epic.rzg.mpg.de - b2handle.handle.api", 
+                "uid": "b194ba9d9ed84618a664807a10de5196"
+            }
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "MPCDF Support Contact", 
+        "uid": "620ec1c2045d4c6480695b989d91b507"
+    }
+]

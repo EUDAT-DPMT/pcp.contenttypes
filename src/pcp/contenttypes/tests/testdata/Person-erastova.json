@@ -1,0 +1,69 @@
+[
+    {
+        "additional": [
+            {
+                "key": "rct_user_pk", 
+                "value": "7"
+            }, 
+            {
+                "key": "rct_username", 
+                "value": "eerastova"
+            }
+        ], 
+        "affiliation": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "", 
+        "email": "elena.erastova@rzg.mpg.de", 
+        "enables": [
+            {
+                "handle": "843/1b76ace9faeb47458db305a04003d8fc", 
+                "path": "projects/B2SAFEforMfN", 
+                "title": "B2SAFE for MfN", 
+                "uid": "1b76ace9faeb47458db305a04003d8fc"
+            }
+        ], 
+        "expirationDate": null, 
+        "id": "Elena--Erastova", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [
+        ], 
+        "name": {
+            "firstname": "Elena", 
+            "firstnames": "Elena", 
+            "lastname": "Erastova", 
+            "middlename": ""
+        }, 
+        "phone": [
+            {
+                "number": "+49-89-3299-1037", 
+                "type": "Office"
+            }
+        ], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [
+        ], 
+        "subject": [], 
+        "text": "", 
+        "title": "Elena Erastova", 
+        "uid": "09236fc33adb4a9d997f8960bdcf28e9"
+    }
+]

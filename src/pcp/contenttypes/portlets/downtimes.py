@@ -1,6 +1,7 @@
 import datetime
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from pcp.contenttypes.interfaces import IProvider
 from plone.app.portlets.portlets import base
 from zope.formlib import form
 from zope.interface import Interface
@@ -38,29 +39,32 @@ class Renderer(base.Renderer):
     def local_time(self, dt):
         return self.toLocalizedTime(dt, long_format=1)
 
-    def showSingleProviderOnly(self):
-        path = self.context.getPhysicalPath()
-        return len(path) >= 4 and path[0] == '' and path[1] == 'pcp' and path[2] == 'providers'
-
     def getProvider(self):
-        path = self.context.getPhysicalPath()
-        return path[3] if self.showSingleProviderOnly() else ''
+        chain = self.context.aq_chain
+        for element in chain:
+            if IProvider.providedBy(element):
+                return element
+        return None
+
+    def _getCurrentTimeInUtc(self):
+        # Factor out this call from getDowntimes to enable patching utcnow.
+        return datetime.datetime.utcnow()
 
     def getDowntimes(self):
         catalog = self.context.portal_catalog
-        path = self.context.getPhysicalPath()
 
-        if self.showSingleProviderOnly():
-            query = '/'.join(path[0:4])
+        provider = self.getProvider()
+        if provider:
+            query = '/'.join(provider.getPhysicalPath())
         else:
-            query = '/pcp/providers/'
+            query = '/'
 
         query_path = {
             'query': query,
             'depth': 9,
         }
 
-        now = datetime.datetime.utcnow()
+        now = self._getCurrentTimeInUtc()
         start = now + datetime.timedelta(-1)
         end = now + datetime.timedelta(365000)
         date_query = {

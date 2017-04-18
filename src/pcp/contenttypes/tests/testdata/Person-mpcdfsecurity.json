@@ -1,0 +1,49 @@
+[
+    {
+        "additional": [], 
+        "affiliation": [], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "Generic security contact details for MPCDF", 
+        "email": "eudat-csirt@rzg.mpg.de", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "MPCDF-20Security-20Contact", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "MPCDF", 
+            "lastname": "Security Contact"
+        }, 
+        "phone": [
+            {
+                "number": "+49 89 3299 2199", 
+                "type": "Office"
+            }
+        ], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [
+            {
+                "path": "providers/MPCDF", 
+                "title": "MPCDF", 
+                "uid": "29602f7691484308a1dbcb7572e4a0cb"
+            }
+        ], 
+        "service_owner_of": [], 
+        "she_contact": [], 
+        "subject": [], 
+        "text": "", 
+        "title": "MPCDF Security Contact", 
+        "uid": "42d0ed1504ae4bc1b6ee9bda3131531c"
+    }
+]

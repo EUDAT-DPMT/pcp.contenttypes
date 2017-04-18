@@ -1,12 +1,11 @@
 """Definition of the Downtime content type
 """
-
+from pcp.contenttypes.interfaces import IProvider
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
 from pcp.contenttypes.mail import send_mail
+from plone.formwidget.datetime.at import DatetimeWidget
 from zope.interface import implements
-
-from Products.Archetypes.Widget import CalendarWidget, ComputedWidget
 
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
@@ -22,15 +21,6 @@ from pcp.contenttypes.config import PROJECTNAME
 from DateTime import DateTime
 
 
-class DateComputedField(atapi.ComputedField):
-
-    def get(self, instance, **kwargs):
-        """Return the computed value."""
-        instance = eval(self.expression, {'context': instance, 'here': instance})
-        # Plone DateTime does not show timezone via %Z
-        return instance.asdatetime().strftime("%Y-%m-%d %H:%M %Z")
-
-
 DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     atapi.DateTimeField('startDateTime',
@@ -39,19 +29,10 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='start',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        widget=CalendarWidget(label='Start date (UTC)',
+                        widget=DatetimeWidget(label='Start date (UTC)',
+                                              pattern='yyyy/MM/dd HH:mm:ss UTC',
                                               description='When does the downtime start? In UTC!'),
                         ),
-
-    DateComputedField('startDateTimeUtc',
-                      expression="here.start().toZone('UTC')",
-                      widget=ComputedWidget(label='Start date (UTC)'),
-                      ),
-
-    # DateComputedField('startDateTimeCet',
-    #                   expression="here.start().toZone('CET')",
-    #                   widget=ComputedWidget(label='Start date (CET)'),
-    #                   ),
 
     atapi.DateTimeField('endDateTime',
                         required=True,
@@ -59,19 +40,10 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                         accessor='end',  # compare ATContentTypes - Event
                         default_method=DateTime,
                         languageIndependent=True,
-                        widget=CalendarWidget(label='End date (UTC)',
+                        widget=DatetimeWidget(label='End date (UTC)',
+                                              pattern='yyyy/MM/dd HH:mm:ss UTC',
                                               description='When does the downtime end? In UTC!'),
                         ),
-
-    DateComputedField('endDateTimeUtc',
-                      expression="here.end().toZone('UTC')",
-                      widget=ComputedWidget(label='End date (UTC)'),
-                      ),
-
-    # DateComputedField('endDateTimeCet',
-    #                   expression="here.end().toZone('CET')",
-    #                   widget=ComputedWidget(label='End date (CET)'),
-    #                   ),
 
     atapi.ReferenceField('affected_registered_serivces',
                          relationship='affected_registered_services',
@@ -80,7 +52,7 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          widget=ReferenceBrowserWidget(label='Affected registered services',
                                                        description='All registered services and components unavailable during downtime',
                                                        allow_browse=1,
-                                                       startup_directory='/pcp/'
+                                                       startup_directory_method='getStartupDirectory',
                                                        ),
                          ),
 
@@ -97,17 +69,30 @@ class Downtime(base.ATCTContent):
     meta_type = "Downtime"
     schema = DowntimeSchema
 
-    def setStartDateTime(self, value):
-        if isinstance(value, str):
+    def _setDateTimeField(self, fieldName, value):
+        if not isinstance(value, DateTime):
             value = DateTime(value)
-        self.startDateTime = DateTime(value.year(), value.month(), value.day(),
-                                      value.hour(), value.minute(), 0, 'UTC')
+
+        if value.timezoneNaive():
+            parts = value.parts()
+            value = DateTime(*(parts[:-1] + ('UTC',)))
+        else:
+            value = value.toZone('UTC')
+
+        self.Schema()[fieldName].set(self, value)
+
+    def setStartDateTime(self, value):
+        self._setDateTimeField('startDateTime', value)
 
     def setEndDateTime(self, value):
-        if isinstance(value, str):
-            value = DateTime(value)
-        self.endDateTime = DateTime(value.year(), value.month(), value.day(),
-                                    value.hour(), value.minute(), 0, 'UTC')
+        self._setDateTimeField('endDateTime', value)
+
+    def getStartupDirectory(self):
+        parent = self.aq_parent
+        if IProvider.providedBy(parent):
+            return '/'.join(parent.getPhysicalPath())
+        else:
+            return self.portal_url.getPortalPath()
 
 
 atapi.registerType(Downtime, PROJECTNAME)
@@ -146,11 +131,13 @@ def findDowntimeRecipients(downtime):
 def notifyDowntimeRecipients(downtime, subject, template, recipients):
     affected_services = downtime.getAffected_registered_serivces()
 
-    provider_brains = downtime.portal_catalog(portal_type='Provider', path='/'.join(downtime.getPhysicalPath()[0:4]))
-
-    assert len(provider_brains) == 1
-    for brain in provider_brains:
-        provider = brain.getObject()
+    chain = downtime.aq_chain
+    provider = None
+    for element in chain:
+        if IProvider.providedBy(element):
+            provider = element
+            break
+    assert provider
 
     params = {
         'description': downtime.Description(),

@@ -200,18 +200,20 @@ class Project(folder.ATFolder, CommonUtilities):
                     size_value = None
 
                 if used:
-                    core = self.convert_pure(used['core'], size_unit)
+                    core = self.convert_pure(used['core'])
                     core_value = float(core['value'])
-                    used_str = '%0.2f %s' % (core_value, size_unit)
+                    used_str = '%0.2f %s' % (core_value, core['unit'])
                     meta = used['meta']
                     submission_time = meta['submission_time']
+                    core_in_size_unit = self.convert_pure(used['core'], size_unit)
+                    core_value_in_size_unit = float(core_in_size_unit['value'])
                 else:
                     core_value = None
                     used_str = '??'
                     submission_time = '??'
 
                 if core_value and size_value:
-                    rel_usage_str = '%0.2f' % (core_value / size_value * 100.0)
+                    rel_usage_str = '%0.2f' % (core_value_in_size_unit / size_value * 100.0)
                 else:
                     rel_usage_str = '??'
 

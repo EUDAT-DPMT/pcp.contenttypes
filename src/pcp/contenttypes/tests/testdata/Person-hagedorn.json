@@ -1,0 +1,77 @@
+[
+    {
+        "additional": [
+            {
+                "key": "rct_user_pk", 
+                "value": 391
+            }, 
+            {
+                "key": "website", 
+                "value": ""
+            }, 
+            {
+                "key": "address", 
+                "value": ""
+            }, 
+            {
+                "key": "organization", 
+                "value": "Museum f\u00fcr Naturkunde, Berlin"
+            }, 
+            {
+                "key": "rct_contact_pk", 
+                "value": "39"
+            }, 
+            {
+                "key": "rct_username", 
+                "value": "ghagedorn"
+            }
+        ], 
+        "affiliation": [], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [
+            {
+                "handle": "843/1b76ace9faeb47458db305a04003d8fc", 
+                "path": "projects/B2SAFEforMfN", 
+                "title": "B2SAFE for MfN", 
+                "uid": "1b76ace9faeb47458db305a04003d8fc"
+            }
+        ], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "", 
+        "email": "g.m.hagedorn@gmail.com", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "Gregor--Hagedorn", 
+        "identifiers": [
+            {
+                "type": "rct_uid", 
+                "value": "5b91e44b0b6d4eacafe69b4c8923f73f"
+            }
+        ], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "Gregor", 
+            "firstnames": "Gregor", 
+            "lastname": "Hagedorn", 
+            "middlename": ""
+        }, 
+        "phone": [], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [], 
+        "subject": [], 
+        "text": "", 
+        "title": "Gregor Hagedorn", 
+        "uid": "2ec8675ce32e4768b6000ccc4eeb8f1e"
+    }
+]

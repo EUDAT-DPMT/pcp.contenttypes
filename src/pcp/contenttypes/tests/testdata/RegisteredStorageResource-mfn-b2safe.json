@@ -1,0 +1,59 @@
+[
+    {
+        "additional": [], 
+        "allowDiscussion": false, 
+        "contact": [
+            {
+                "path": "people/Beatriz--Sanchez", 
+                "title": "Beatriz Sanchez", 
+                "uid": "037e07ecbb344ece9177c5cc8b4dec87"
+            }
+        ], 
+        "contributors": [], 
+        "cost_factor": 1.0, 
+        "customer": [
+            {
+                "path": "customers/MfN", 
+                "title": "MfN", 
+                "uid": "925e54b2364e4e04b2b690f33a214822"
+            }
+        ], 
+        "description": "Replication service for the \"Museum f\u00fcr Naturkunde\" in Berlin", 
+        "expirationDate": null, 
+        "id": "mfn-b2safe", 
+        "identifiers": [], 
+        "linked_resources": [], 
+        "linked_to_resources": [], 
+        "max_objects": null, 
+        "pid": null, 
+        "portal_type": "RegisteredStorageResource", 
+        "preserve_until": null, 
+        "project": [
+            {
+                "handle": "843/1b76ace9faeb47458db305a04003d8fc", 
+                "path": "projects/B2SAFEforMfN", 
+                "title": "B2SAFE for MfN", 
+                "uid": "1b76ace9faeb47458db305a04003d8fc"
+            }
+        ], 
+        "relatedItems": [], 
+        "request": [], 
+        "rights": "", 
+        "services": [
+            {
+                "path": "providers/MPCDF/irods0--eudat.esc.rzg.mpg.de_24", 
+                "title": "irods0-eudat.esc.rzg.mpg.de - b2safe.irods", 
+                "uid": "b194ba9d9ed84618a664807a10de5196"
+            }
+        ], 
+        "size": {
+            "storage class": "nearline(2)", 
+            "unit": "TiB", 
+            "value": "12"
+        }, 
+        "subject": [], 
+        "text": "", 
+        "title": "MFN-B2SAFE", 
+        "uid": "b2578561823a4350ae0627b76fd8360c"
+    }
+]

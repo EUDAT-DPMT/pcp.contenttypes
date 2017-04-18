@@ -1,0 +1,40 @@
+[
+    {
+        "additional": [], 
+        "affiliation": [], 
+        "allowDiscussion": false, 
+        "community_admin": [], 
+        "community_contact_for": [], 
+        "community_representative": [], 
+        "contributors": [], 
+        "description": "", 
+        "email": "mfn-admin-2@example.com", 
+        "enables": [], 
+        "expirationDate": null, 
+        "id": "mfn-admin-2", 
+        "identifiers": [], 
+        "manager_of_registered_service": [], 
+        "manages": [], 
+        "name": {
+            "firstname": "Peter", 
+            "firstnames": "Peter", 
+            "lastname": "Lustig", 
+            "middlename": ""
+        }, 
+        "phone": [], 
+        "pid": null, 
+        "portal_type": "Person", 
+        "principle_investigator_of": [], 
+        "provider_admin": [], 
+        "provider_contact_for": [], 
+        "relatedItems": [], 
+        "rights": "", 
+        "security_contact_for": [], 
+        "service_owner_of": [], 
+        "she_contact": [], 
+        "subject": [], 
+        "text": "", 
+        "title": "mfn-admin-2", 
+        "uid": "7a1bb0d543d84d95ade71859bc2f20f1"
+    }
+]

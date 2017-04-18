@@ -32,7 +32,8 @@ long_description = (
     'Download\n'
     '********\n')
 
-tests_require = ['zope.testing']
+tests_require = ['zope.testing', 'plone.testing', 'plone.app.testing', 'robotsuite',
+                 'robotframework-selenium2library', 'Products.PloneTestCase', 'mock']
 
 setup(name='pcp.contenttypes',
       version=version,
@@ -65,7 +66,9 @@ setup(name='pcp.contenttypes',
                         'incf.countryutils',
                         'semantic_version',
                         'uwosh.pfg.d2c',
-                        'furl'
+                        'furl',
+                        'zopyx.plone.persistentlogger',
+                        'plone.formwidget.datetime',
                         ],
       tests_require=tests_require,
       extras_require=dict(test=tests_require),
