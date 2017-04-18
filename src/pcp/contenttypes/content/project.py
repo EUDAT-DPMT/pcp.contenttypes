@@ -188,7 +188,7 @@ class Project(folder.ATFolder, CommonUtilities):
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
                 used = resource.getUsedMemory()
-                size = resource.getSize()
+                size = resource.getAllocatedMemory()
 
                 if size:
                     size = self.convert(size)

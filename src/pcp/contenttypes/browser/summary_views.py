@@ -91,8 +91,6 @@ class BaseSummaryView(BrowserView):
                       # included here
                       'startDateTimeUtc': render_computed_datetime,
                       'endDateTimeUtc': render_computed_datetime,
-                      'startDateTimeCet': render_computed_datetime,
-                      'endDateTimeCet': render_computed_datetime,
                       }
 
     def field_visible(self, obj, field_name):
@@ -101,9 +99,9 @@ class BaseSummaryView(BrowserView):
         if field:
             permission = field.read_permission
             return plone.api.user.has_permission(
-                    permission=permission,
-                    user=plone.api.user.get_current(),
-                    obj=obj)
+                permission=permission,
+                user=plone.api.user.get_current(),
+                obj=obj)
         return True
 
     @property
@@ -117,12 +115,14 @@ class BaseSummaryView(BrowserView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
+
                 'allocated', 'used', 'community',
                 'topics', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
+
                 'Allocated storage', 'Used storage',
                 'Customer', 'Topics',
                 'Start date', 'End date', 'State')
@@ -398,10 +398,10 @@ class DowntimeOverview(BaseSummaryView):
         return [element.getObject() for element in self.catalog(portal_type='Downtime')]
 
     def fields(self):
-        return ('title', 'startDateTimeUtc', 'endDateTimeUtc', 'startDateTimeCet', 'endDateTimeCet', 'affected_registered_serivces', 'state',)
+        return ('title', 'startDateTimeUtc', 'endDateTimeUtc', 'affected_registered_serivces', 'state',)
 
     def field_labels(self):
-        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Start Date (CET)', 'End Date (CET)', 'Affected Services', 'State',)
+        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Affected Services', 'State',)
 
     def simple_fields(self):
         return ()

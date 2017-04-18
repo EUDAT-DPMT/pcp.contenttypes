@@ -24,7 +24,7 @@
             try {
                 order = DT_ORDER_BY;
             } catch(e) {
-                order = [0, "desc"];
+                order = [0, "asc"];
             }
 
             $('.dt-table').each(function() {

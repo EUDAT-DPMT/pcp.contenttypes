@@ -33,8 +33,8 @@ class Accounting(BrowserView):
     def create_account(self):
 
         self.context.addAccount()
-        self.request.response.redirect(self.context.absolute_url() + '/list-account-records')
-
+        self.request.response.redirect(
+            self.context.absolute_url() + '/list-account-records')
 
     def records(self):
         resource = self.context

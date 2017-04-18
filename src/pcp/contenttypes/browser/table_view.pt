@@ -19,7 +19,9 @@
                 <div metal:use-macro="context/table_view_macros/macros/before" />
             </div>
 
-            <table class="listing table-view">
+            <span tal:condition="not: rows" i18n:translate="">No additional metadata present</span>
+
+            <table class="listing table-view" tal:condition="rows">
                 <thead>
                     <tr>
                         <th class="key nosort" style="min-width: 150px">Key</th>

@@ -62,5 +62,12 @@
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="RoleRequest"
     meta_type="Factory-based Type Information with dynamic views" />
-
+  <object name="ActionItem"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="ActionList"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="FormSaveData2ContentAdapter"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="FormSaveData2ContentEntry"
+    meta_type="Factory-based Type Information with dynamic views" />
 </object>

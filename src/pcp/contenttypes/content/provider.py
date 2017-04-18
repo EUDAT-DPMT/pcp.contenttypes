@@ -37,12 +37,12 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                    ),
                       ),
     atapi.StringField('provider_userid',
-                    required=True,
+                      required=True,
                       searchable=0,
                       default='',
                       widget=atapi.StringWidget(label='Provider User ID',
-                                                   description='User ID in Plone and accounting server',
-                                                   ),
+                                                description='User ID in Plone and accounting server',
+                                                ),
                       ),
     atapi.StringField('provider_status',
                       searchable=1,
@@ -142,29 +142,29 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                      vocabulary='getOSVocab',
                      widget=atapi.MultiSelectionWidget(format='checkbox'),
                      ),
-    atapi.IntegerField('committed_cores', schemata='resources'),
-    atapi.IntegerField('committed_disk', schemata='resources', size=20),
-    atapi.IntegerField('committed_tape', schemata='resources', size=20),
-    atapi.IntegerField('used_disk', schemata='resources', size=20),
-    atapi.IntegerField('used_tape', schemata='resources', size=20),
-    atapi.ReferenceField('communities_primary',
-                         relationship='primary_provider_for',
-                         multiValued=True,
-                         allowed_types=('Community',),
-                         widget=ReferenceBrowserWidget(label='Primary provider for',
-                                                       allow_browse=1,
-                                                       startup_directory='/communities',
-                                                       ),
-                         ),
-    atapi.ReferenceField('communities_secondary',
-                         relationship='secondary_provider_for',
-                         multiValued=True,
-                         allowed_types=('Community',),
-                         widget=ReferenceBrowserWidget(label='Secondary provider for',
-                                                       allow_browse=1,
-                                                       startup_directory='/communities',
-                                                       ),
-                         ),
+#    atapi.IntegerField('committed_cores', schemata='resources'),
+#    atapi.IntegerField('committed_disk', schemata='resources', size=20),
+#    atapi.IntegerField('committed_tape', schemata='resources', size=20),
+#    atapi.IntegerField('used_disk', schemata='resources', size=20),
+#    atapi.IntegerField('used_tape', schemata='resources', size=20),
+#    atapi.ReferenceField('communities_primary',
+#                         relationship='primary_provider_for',
+#                         multiValued=True,
+#                         allowed_types=('Community',),
+#                         widget=ReferenceBrowserWidget(label='Primary provider for',
+#                                                       allow_browse=1,
+#                                                       startup_directory='/communities',
+#                                                       ),
+#                         ),
+#    atapi.ReferenceField('communities_secondary',
+#                         relationship='secondary_provider_for',
+#                         multiValued=True,
+#                         allowed_types=('Community',),
+#                         widget=ReferenceBrowserWidget(label='Secondary provider for',
+#                                                       allow_browse=1,
+#                                                       startup_directory='/communities',
+#                                                       ),
+#                         ),
     BackReferenceField('affiliated',
                        relationship='affiliated',
                        multiValued=True,
@@ -208,12 +208,12 @@ schemata.finalizeATCTSchema(
     moveDiscussion=False
 )
 
-ProviderSchema['committed_cores'].widget.condition = 'object/show_all'
-ProviderSchema['supported_os'].widget.condition = 'object/show_all'
-ProviderSchema['committed_disk'].widget.condition = 'object/show_all'
-ProviderSchema['committed_tape'].widget.condition = 'object/show_all'
-ProviderSchema['used_disk'].widget.condition = 'object/show_all'
-ProviderSchema['used_tape'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_cores'].widget.condition = 'object/show_all'
+#ProviderSchema['supported_os'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_disk'].widget.condition = 'object/show_all'
+#ProviderSchema['committed_tape'].widget.condition = 'object/show_all'
+#ProviderSchema['used_disk'].widget.condition = 'object/show_all'
+#ProviderSchema['used_tape'].widget.condition = 'object/show_all'
 
 
 class Provider(folder.ATFolder, CommonUtilities):
