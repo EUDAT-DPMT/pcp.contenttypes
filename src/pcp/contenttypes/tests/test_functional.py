@@ -4,6 +4,7 @@ import os
 
 import plone
 import transaction
+from DateTime import DateTime
 from Products.ATBackRef import BackReferenceField
 from Products.ATVocabularyManager import NamedVocabulary
 from Products.Archetypes.Field import ReferenceField
@@ -98,8 +99,11 @@ class TestFunctional(FunctionalTestCase):
 
             obj.update(**table)
 
+    @patch('pcp.contenttypes.content.downtime._getCurrentTime')
     @patch('pcp.contenttypes.content.downtime.send_mail')
-    def test_downtimeNotification(self, send_mail):
+    def test_downtimeNotification(self, send_mail, _getCurrentTime):
+        _getCurrentTime.return_value = DateTime('2017-04-18 13:34 UTC')
+
         def assertMailsSent(subject, template):
             self.assertEquals(3, send_mail.call_count)
             self.assertEquals({'mfn-admin-1@example.com', 'mfn-admin-2@example.com', 'g.m.hagedorn@gmail.com'},
@@ -158,6 +162,19 @@ class TestFunctional(FunctionalTestCase):
         assertMailsSent('[DPMT] Retracted Downtime', 'retract-downtime.txt')
 
         self.assertEquals(plone.api.content.get_state(downtime), 'private')
+
+        # also test filtering of notifications for past downtimes
+        _getCurrentTime.return_value = DateTime('2020-03-04 18:34 UTC')
+
+        plone.api.content.transition(obj=downtime, transition='publish')
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'published')
+        self.assertEquals(0, send_mail.call_count)
+
+        plone.api.content.transition(obj=downtime, transition='retract')
+
+        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+        self.assertEquals(0, send_mail.call_count)
 
     # Keep order!
     ACCOUNTING_DATA = [

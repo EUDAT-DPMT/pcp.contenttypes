@@ -1,5 +1,7 @@
 """Definition of the Downtime content type
 """
+import datetime
+
 from pcp.contenttypes.interfaces import IProvider
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
@@ -128,7 +130,16 @@ def findDowntimeRecipients(downtime):
     return recipients
 
 
+def _getCurrentTime():
+    now = datetime.datetime.utcnow()
+    return DateTime(now)
+
+
 def notifyDowntimeRecipients(downtime, subject, template, recipients):
+    if downtime.end() + 1 < _getCurrentTime():
+        # do not send notifications for past downtimes
+        return
+
     affected_services = downtime.getAffected_registered_serivces()
 
     chain = downtime.aq_chain
