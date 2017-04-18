@@ -1,9 +1,11 @@
 import re
-
+import datetime
 import plone
+import pytz
 import transaction
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
+from mock import patch
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 from pcp.contenttypes.tests.base import FunctionalTestCase
@@ -65,21 +67,31 @@ class TestDowntime(FunctionalTestCase):
         self.assertTrue(self.TEST_DOWNTIME_START_STRING in browser.contents)
         self.assertTrue(self.TEST_DOWNTIME_END_STRING in browser.contents)
 
-    def test_downtimeTimezoneCrap(self):
+    @patch('pcp.contenttypes.portlets.downtimes.Renderer._getCurrentTimeInUtc')
+    def test_downtimeTimezones(self, _getUtcnow):
         # Execute a browser test for downtime to ensure correct time formats and
         # timezone handling.
 
-        # Create a provider and within the provider a downtime for it.
-        # Then check all occurrences of the downtime for correct values:
-        # * downtime default view
-        # * portlet
-        # * overview
+        # Hack to be able to mock utcnow as it can not be patched immediatelly as it is
+        # member of the builtin type datetime. Additionally datetime is required by Plone
+        # within the patching scope.
+        _getUtcnow.return_value = datetime.datetime(2017, 4, 13, 15, 37, 0, 0, pytz.utc)
+
+        # Allow user create content.
         setRoles(self.portal, TEST_USER_ID, ['Manager',])
 
+        # Create the provider folder and two providers.
         self.portal.invokeFactory('Folder', 'Providers')
         self.portal.Providers.invokeFactory('Provider', 'provider')
+        self.portal.Providers.invokeFactory('Provider', self.TEST_OTHER_PROVIDER)
+
+        # Create primary providers downtime to be filled out via browser.
         self.portal.Providers.provider.invokeFactory('Downtime', 'downtime')
+
+        # Setup default workflow.
         getToolByName(self.portal, 'portal_workflow').setDefaultChain('intranet_workflow')
+
+        # Setup downtime portlet.
         column = getUtility(IPortletManager, 'plone.leftcolumn')
         manager = getMultiAdapter((self.portal, column), IPortletAssignmentMapping)
         assignment = Assignment()
@@ -87,7 +99,9 @@ class TestDowntime(FunctionalTestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager',])
         manager[chooser.chooseName(None, assignment)] = assignment
 
-        self.portal.Providers.invokeFactory('Provider', self.TEST_OTHER_PROVIDER)
+        # Setup secondary provider and it's downtimes:
+        # * otherDowntime: not to be shown by portlet in primary provider's content subtree
+        # * pastDowntime: not to be shown by portlet at all
         otherProvider = self.portal.Providers[self.TEST_OTHER_PROVIDER]
         otherProvider.update(title=self.TEST_OTHER_PROVIDER)
 
@@ -103,11 +117,12 @@ class TestDowntime(FunctionalTestCase):
                             startDateTime=self.TEST_PAST_DOWNTIME_START,
                             endDateTime=self.TEST_PAST_DOWNTIME_END)
 
-        otherDowntime.reindexObject()
         plone.api.content.transition(obj=otherDowntime, transition='publish')
         plone.api.content.transition(obj=pastDowntime, transition='publish')
 
         transaction.commit()
+
+        # Start actual interaction via browser
 
         from plone.testing.z2 import Browser
         browser = Browser(self.app)
@@ -174,7 +189,6 @@ class TestDowntime(FunctionalTestCase):
 
         # Check portlet on portal site
         browser.open(portal_url)
-        open('/home/bernhard/crapp.html', 'w').write(browser.contents)
         self.assertTrue('All Downtimes...' in browser.contents)
         self.assertContainsDowntimeShort(browser)
         self.assertFalse(re.search('Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents))
@@ -190,7 +204,6 @@ class TestDowntime(FunctionalTestCase):
 
         # Check portlet on provider detail site
         browser.follow(self.TEST_PROVIDER_NAME)
-        open('/home/bernhard/crap.html', 'w').write(browser.contents)
         self.assertContainsDowntimeShort(browser)
         self.assertTrue(re.search('Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents))
         self.assertFalse(self.TEST_OTHER_DOWNTIME in browser.contents)
