@@ -275,6 +275,22 @@
 	/>
 
   <browser:page
+	for="*"
+	name="get_downtime"
+	class="pcp.contenttypes.browser.gocdb_views.DowntimeView"
+	template="gocdb_downtime.xml.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="*"
+	name="get_site_contacts"
+	class="pcp.contenttypes.browser.gocdb_views.SiteContactsView"
+	template="gocdb_sitecontacts.xml.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
 	for="pcp.contenttypes.interfaces.IAccountable"
 	name="list-account-records"
 	class=".accounting.Accounting"
