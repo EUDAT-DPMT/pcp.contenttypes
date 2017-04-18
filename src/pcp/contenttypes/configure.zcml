@@ -71,6 +71,12 @@
     />
 
   <subscriber
+    for=".interfaces.IRoleRequest
+         Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+         handler=".content.rolerequest.handleRoleRequestTransition"
+    />
+
+  <subscriber
     for=".interfaces.IDowntime
          Products.DCWorkflow.interfaces.IAfterTransitionEvent"
          handler=".content.downtime.handleDowntimeTransition"

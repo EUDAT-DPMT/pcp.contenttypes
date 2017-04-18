@@ -4,6 +4,7 @@
  <object name="project_workflow" meta_type="Workflow"/>
  <object name="offer_workflow" meta_type="Workflow"/>
  <object name="request_workflow" meta_type="Workflow"/>
+ <object name="rolerequest_workflow" meta_type="Workflow"/>
  <object name="downtime_workflow" meta_type="Workflow"/>
  <bindings>
   <type type_id="Community">
@@ -26,6 +27,9 @@
   </type>
   <type type_id="ServiceRequest">
    <bound-workflow workflow_id="request_workflow"/>
+  </type>
+  <type type_id="RoleRequest">
+   <bound-workflow workflow_id="rolerequest_workflow"/>
   </type>
   <type type_id="Downtime">
    <bound-workflow workflow_id="downtime_workflow"/>

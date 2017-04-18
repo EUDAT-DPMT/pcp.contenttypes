@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="rolerequest_workflow" title="Role Request Workflow" description="Request for a role in a certain context for a certain user." state_variable="review_state" initial_state="submitted" manager_bypass="False">
+ <permission>Access contents information</permission>
+ <permission>Change portal events</permission>
+ <permission>Modify portal content</permission>
+ <permission>View</permission>
+ <state state_id="accepted" title="Accepted">
+  <description>The role was granted to the concerned user.</description>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events" acquired="True">
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="rejected" title="Rejected">
+  <description>A reviewer rejected the role request.</description>
+  <exit-transition transition_id="submit"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="submitted" title="Submitted">
+  <description>The role request needs to be reviewed by managers or administrators.</description>
+  <exit-transition transition_id="accept"/>
+  <exit-transition transition_id="reject"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
+ <transition transition_id="accept" title="Accept request" new_state="accepted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=accept" category="workflow" icon="">Accept</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="reject" title="Reject" new_state="rejected" trigger="USER" before_script="" after_script="">
+  <description>Reject the role request.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=reject" category="workflow" icon="">Reject</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="submit" title="Submit" new_state="submitted" trigger="USER" before_script="" after_script="">
+  <description>(Re)submit a rejected request for review.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" icon="">Submit</action>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+  </guard>
+ </transition>
+ <worklist worklist_id="review_queue" title="">
+  <description>Role request to re be reviewed</description>
+  
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+  <match name="review_state" values="submitted"/>
+ </worklist>
+ <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
+  <description>Previous transition</description>
+  <default>
+   
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
+  <description>The ID of the user who performed the previous transition</description>
+  <default>
+   
+   <expression>user/getId</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
+  <description>Comment about the last transition</description>
+  <default>
+   
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+   
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
+  <description>When the previous transition was performed</description>
+  <default>
+   
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+</dc-workflow>

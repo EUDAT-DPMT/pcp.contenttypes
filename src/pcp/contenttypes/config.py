@@ -31,6 +31,7 @@ ADD_PERMISSIONS = {
     'Community': 'pcp.contenttypes: Add Community',
     'Project': 'pcp.contenttypes: Add Project',
     'Service': 'pcp.contenttypes: Add Service',
+    'RoleRequest': 'pcp.contenttypes: Add RoleRequest',
     'ActionItem': 'pcp.contenttypes: Add ActionItem',
     'ActionList': 'pcp.contenttypes: Add ActionIList',
 }

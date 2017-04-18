@@ -162,5 +162,12 @@
         interface="..interfaces.IService"
         />
   </class>
+  <class class=".rolerequest.RoleRequest">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IRoleRequest"
+        />
+  </class>
+
 
 </configure>

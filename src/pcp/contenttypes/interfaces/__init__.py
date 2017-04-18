@@ -26,5 +26,6 @@ from community import ICommunity
 from project import IProject
 from service import IService
 from accountable import IAccountable
+from rolerequest import IRoleRequest
 from actionitem import IActionItem
 from actionlist import IActionList

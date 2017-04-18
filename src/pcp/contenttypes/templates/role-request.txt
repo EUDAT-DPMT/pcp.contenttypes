@@ -1,0 +1,12 @@
+Hello,
+
+the following role request was {action}ed:
+
+Role:         {role}
+Context:      {context_url}
+Granted to:   {receiver_name}, {receiver_email}
+Requested by: {requester_name}, {requester_email}
+
+For more information, please see: {rolerequest_link}
+
+{footer}
