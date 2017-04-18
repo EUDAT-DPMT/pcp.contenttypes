@@ -46,6 +46,10 @@ class Renderer(base.Renderer):
                 return element
         return None
 
+    def _getCurrentTimeInUtc(self):
+        # Factor out this call from getDowntimes to enable patching utcnow.
+        return datetime.datetime.utcnow()
+
     def getDowntimes(self):
         catalog = self.context.portal_catalog
 
@@ -60,7 +64,7 @@ class Renderer(base.Renderer):
             'depth': 9,
         }
 
-        now = datetime.datetime.utcnow()
+        now = self._getCurrentTimeInUtc()
         start = now + datetime.timedelta(-1)
         end = now + datetime.timedelta(365000)
         date_query = {
