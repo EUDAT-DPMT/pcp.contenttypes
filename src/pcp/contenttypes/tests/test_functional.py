@@ -225,12 +225,8 @@ class TestFunctional(FunctionalTestCase):
         browser = self.browseSite()
 
         browser.open(resource.absolute_url())
-        browser.follow('Accounting')
-
-        self.assertTrue(get.call_count, 1)
-        for record in self.ACCOUNTING_DATA:
-            self.assertFalse(record['core']['value'] in browser.contents)
-            self.assertFalse(record['meta']['submission_time'] in browser.contents)
+        with self.assertRaises(RuntimeError):
+            browser.follow('Accounting')
 
         result = MagicMock()
         result.ok = True
@@ -240,6 +236,7 @@ class TestFunctional(FunctionalTestCase):
 
         get.return_value = MagicMock(ok=False)
 
+        browser = self.browseSite()
         browser.open(resource.absolute_url())
         browser.follow('Accounting')
 

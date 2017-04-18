@@ -28,7 +28,10 @@ class Accounting(BrowserView):
         if result.ok:
             return result.json()['exists']
         else:
-            raise RuntimeError('Unable to determine hasAccount status')
+            if hasattr(self.context, 'cached_records'):
+                return True
+            else:
+                raise RuntimeError('Unable to determine hasAccount status')
 
     def create_account(self):
 
