@@ -1,5 +1,7 @@
 import re
 import datetime
+import unittest
+
 import plone
 import pytz
 import transaction
@@ -8,7 +10,6 @@ from Products.CMFCore.utils import getToolByName
 from mock import patch
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
-from pcp.contenttypes.tests.base import FunctionalTestCase
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -19,7 +20,7 @@ from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 
 
-class TestDowntime(FunctionalTestCase):
+class TestDowntime(unittest.TestCase):
 
     layer = PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 
@@ -43,6 +44,11 @@ class TestDowntime(FunctionalTestCase):
     TEST_DOWNTIME_START_STRING = '2017/07/13 05:15:00 UTC'
     TEST_DOWNTIME_END = ('2017', 'July', '14', '18', '30')
     TEST_DOWNTIME_END_STRING = '2017/07/14 18:30:00 UTC'
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.app = self.layer['app']
+        self.request = self.layer['request']
 
     def fillInDateWidget(self, browser, field, date):
         browser.getControl(name=field+'-year').displayValue = [date[0]]
