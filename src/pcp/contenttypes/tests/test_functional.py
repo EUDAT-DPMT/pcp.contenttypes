@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+import unittest
 
 import plone
 import transaction
@@ -12,17 +13,17 @@ from Products.CMFCore.utils import getToolByName
 from mock import patch, call, MagicMock
 from pcp.contenttypes.browser.accounting import Accounting
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
-from pcp.contenttypes.tests.base import FunctionalTestCase
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
+from zope.component import getMultiAdapter
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 
-class TestFunctional(FunctionalTestCase):
+class TestFunctional(unittest.TestCase):
 
     layer = PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 
@@ -44,7 +45,9 @@ class TestFunctional(FunctionalTestCase):
         self.assertIn('You are now logged in', browser.contents)
         return browser
 
-    def afterSetUp(self):
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.app = self.layer['app']
         self.request = self.layer['request']
 
         setRoles(self.portal, TEST_USER_ID, ('Manager',))
@@ -57,6 +60,11 @@ class TestFunctional(FunctionalTestCase):
 
         tables_by_id = {table['id']: table for table in tables}
 
+        # Switch to separate folder to avoid object names and urls occurring in
+        # navigation to enable simple checking for them.
+        self.portal.invokeFactory('Folder', 'folder')
+        self.folder = self.portal.folder
+
         portal_types = getToolByName(self.portal, 'portal_types')
         # First pass of bootstrapping the content:
         # Create plain objects with attributes required for second pass only (UID).
@@ -65,15 +73,15 @@ class TestFunctional(FunctionalTestCase):
             portal_type = table['portal_type']
             # Create all objects in site root independently of scoping.
             portal_types.getTypeInfo(portal_type).global_allow = True
-            self.portal.invokeFactory(portal_type, obj_id)
-            obj = self.portal[obj_id]
+            self.folder.invokeFactory(portal_type, obj_id)
+            obj = self.folder[obj_id]
             obj._setUID(table['uid'])
 
         # Second and final pass of bootstrapping:
         # Actually assign all properties in table. References can be set in any order as
         # the all objects already exist.
         for obj_id, table in tables_by_id.items():
-            obj = self.portal[obj_id]
+            obj = self.folder[obj_id]
 
             # Treat table for application
             table.pop('id')
@@ -116,8 +124,8 @@ class TestFunctional(FunctionalTestCase):
 
             send_mail.reset_mock()
 
-        affectedRegisteredServiceComponent = self.portal['irods0--eudat.esc.rzg.mpg.de_24']
-        provider = self.portal['MPCDF']
+        affectedRegisteredServiceComponent = self.folder['irods0--eudat.esc.rzg.mpg.de_24']
+        provider = self.folder['MPCDF']
         provider.invokeFactory('Downtime', 'downtime')
         downtime = provider['downtime']
         downtime.update(title='Downtime Title',
@@ -190,7 +198,7 @@ class TestFunctional(FunctionalTestCase):
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingCache(self, get):
-        resource = self.portal['mfn-b2safe']
+        resource = self.folder['mfn-b2safe']
 
         result = MagicMock()
         result.ok = True
@@ -210,7 +218,7 @@ class TestFunctional(FunctionalTestCase):
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingTabLiveData(self, get):
-        resource = self.portal['mfn-b2safe']
+        resource = self.folder['mfn-b2safe']
 
         def get_impl(path):
             result = MagicMock()
@@ -235,7 +243,7 @@ class TestFunctional(FunctionalTestCase):
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingTabCachedData(self, get):
-        resource = self.portal['mfn-b2safe']
+        resource = self.folder['mfn-b2safe']
 
         get.return_value = MagicMock(ok=False)
 
@@ -264,7 +272,7 @@ class TestFunctional(FunctionalTestCase):
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingProjectView(self, get):
-        project = self.portal['B2SAFEforMfN']
+        project = self.folder['B2SAFEforMfN']
 
         browser = self.browseSite()
         browser.open(project.absolute_url())
@@ -301,7 +309,7 @@ class TestFunctional(FunctionalTestCase):
         username_receiver = 'mfn-admin-1'
         email_requester = 'mfn-admin-2@example.com'
         email_receiver = 'mfn-admin-1@example.com'
-        location = self.portal['B2SAFE']
+        location = self.folder['B2SAFE']
         role = 'Enabler'
 
         # Create users
@@ -355,5 +363,123 @@ class TestFunctional(FunctionalTestCase):
         self.assertTrue(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
         self.assertEquals(1, len(logger.entries))
 
+    def test_SummaryView_noCrashes(self):
+        # This test checks that the fields referenced by the summaries actually exist and
+        # that their rendering does not crash.
+        # This test does not check if the output is correct.
 
+        getToolByName(self.portal, 'portal_workflow').setDefaultChain('intranet_workflow')
 
+        view_types = ((self.folder, 'customer_overview', 'Community'),
+                      (self.folder, 'provider_overview', 'Provider'),
+                      (self.folder, 'service_overview', 'Service'),
+                      (self.portal, 'project_overview', 'Project'),
+                      (self.portal, 'registered_service_overview', 'RegisteredService'),
+                      (self.portal, 'registered_service_component_overview', 'RegisteredServiceComponent'),
+                      (self.portal, 'request_overview', 'ServiceRequest'),
+                      (self.portal, 'approved_requests', 'ServiceRequest'),
+                      (self.portal, 'registered_storage_resource_overview', 'RegisteredStorageResource'),
+                      (self.portal, 'resource_offer_overview', 'ResourceOffer'),
+                      (self.portal, 'downtime_overview', 'Downtime'),
+                      )
+
+        portal_types = getToolByName(self.portal, 'portal_types')
+        index = 0
+        for context, view_name, obj_type in view_types:
+            portal_types.getTypeInfo(obj_type).global_allow = True
+            obj_id = 'overview_test_object_%s_%s' % (obj_type, index)
+
+            self.portal.invokeFactory(obj_type, obj_id)
+            test_object = self.portal[obj_id]
+            test_object.update(title=obj_id)
+
+            view = getMultiAdapter((context, self.portal.REQUEST), name=view_name)
+            try:
+                text = view()
+            except KeyError as e:
+                # Here we get mismatches between overview's fields and schema
+                self.fail('Rendering %s failed: maybe a typo of the field name: %s' % (obj_type, e))
+            except Exception as e:
+                # We get here most probably if something went wrong
+                # when using a wrong renderer (i.e. if original is not available) for a field.
+                self.fail('Rendering %s failed: maybe a missing renderer: %s' % (obj_type, e))
+
+            self.assertTrue(obj_id in text)
+
+            # Explicitly check for a suitable renderer for each field because
+            # there could exist a field type with values compatible with the reference renderer.
+            for field in test_object.Schema().fields():
+                name = field.getName()
+                from Products.Archetypes.interfaces import IReferenceField
+                self.assertTrue(name not in view.fields() or
+                                name in view.simple_fields() or
+                                name in view.render_methods or
+                                IReferenceField.providedBy(field))
+
+            index += 1
+
+    def test_SummaryView_correctness(self):
+        # This test creates objects such that each renderer is invoked once
+        # and we can check the output for the expected text.
+        # ServiceRequest uses all renderers except modification_date.
+
+        portal_types = getToolByName(self.portal, 'portal_types')
+        portal_types.getTypeInfo('ResourceRequest').global_allow = True
+
+        # avoid the links being also part of navbar
+        self.folder.invokeFactory('Folder', 'theFolder')
+        theFolder = self.folder['theFolder']
+        theFolder.setTitle('ResourceRequestFolder')
+
+        theFolder.invokeFactory('ResourceRequest', 'resourceRequest')
+        resourceRequest = theFolder.resourceRequest
+
+        TEST_REQUEST_PARENT_PROJECT = (self.folder['B2SAFEforMfN'],)
+        TEST_REQUEST_PREFERRED_PROVIDERS = (self.folder['MPCDF'],)
+        TEST_REQUEST_TITLE = 'test-request-title'
+        TEST_REQUEST_START_DATE = '2013/11/29'
+        TEST_REQUEST_STORAGE_RESOURCES = ({'value': '17888', 'unit': 'EiB', 'storage class': 'nearline+'},)
+        TEST_REQUEST_COMPUTE_RESOURCES = ({'nCores': '134861', 'ram': '456634',
+                                           'diskspace': '7456314', 'system': 'Windows 3.1'},)
+
+        resourceRequest.update(parent_project=TEST_REQUEST_PARENT_PROJECT,
+                               title=TEST_REQUEST_TITLE,
+                               startDate=TEST_REQUEST_START_DATE,
+                               preferred_providers=TEST_REQUEST_PREFERRED_PROVIDERS,
+                               storage_resources=TEST_REQUEST_STORAGE_RESOURCES,
+                               compute_resources=TEST_REQUEST_COMPUTE_RESOURCES)
+
+        # get a unique string to check for
+        plone.api.content.transition(obj=resourceRequest, transition='submit')
+
+        # get view and run it
+        view = getMultiAdapter((self.portal, self.portal.REQUEST), name='request_overview')
+        text = view()
+
+        def assertNumOccurences(expectedCount, pattern):
+            import re
+            actualCount = len(re.findall(pattern, text))
+            self.assertEquals(actualCount, expectedCount)
+
+        # render_state
+        assertNumOccurences(1, 'submitted')
+        # render_type
+        assertNumOccurences(1, 'Resource Request')
+        # render_reference_field
+        assertNumOccurences(1, TEST_REQUEST_PREFERRED_PROVIDERS[0].absolute_url())
+        assertNumOccurences(2, TEST_REQUEST_PREFERRED_PROVIDERS[0].title)  # also in provider.absolute_url()
+        # render_with_link
+        assertNumOccurences(1, TEST_REQUEST_TITLE)
+        assertNumOccurences(1, resourceRequest.absolute_url())
+        # render_parent
+        assertNumOccurences(2, theFolder.absolute_url())  # also in serviceRequest.absolute_url()
+        assertNumOccurences(1, 'ResourceRequestFolder')
+        # render_date
+        assertNumOccurences(1, TEST_REQUEST_START_DATE)
+        # render_resources
+        for key in ('Cores', 'RAM', 'disk'):
+            assertNumOccurences(1, key)
+        for key, value in TEST_REQUEST_COMPUTE_RESOURCES[0].items():
+            assertNumOccurences(1, value)
+        for key, value in TEST_REQUEST_STORAGE_RESOURCES[0].items():
+            assertNumOccurences(1, value)
