@@ -59,15 +59,6 @@ def render_date(content, field_id):
         return 'not set'
 
 
-def render_datetime(content, field_id):
-    field = content.schema[field_id]
-    value = field.get(content)
-    try:
-        return value
-    except AttributeError:
-        return 'not set'
-
-
 def render_resources(content, field_id):
     """Specific for requests"""
     try:
@@ -89,8 +80,6 @@ class BaseSummaryView(BrowserView):
                       'resources': render_resources,
                       # add more as needed; reference fields don't need to be
                       # included here
-                      'startDateTime': render_datetime,
-                      'endDateTime': render_datetime,
                       }
 
     def field_visible(self, obj, field_name):
@@ -404,7 +393,7 @@ class DowntimeOverview(BaseSummaryView):
         return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Affected Services', 'State',)
 
     def simple_fields(self):
-        return ()
+        return ('startDateTime', 'endDateTime', )
 
 
 class CsvView(ProjectOverview):
