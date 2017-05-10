@@ -19,16 +19,25 @@ def render_type(content, field_id):
     return ti.Title()
 
 
-def render_reference_field(content, field_id):
+def render_reference_field(content, field_id, with_state=False):
     field = content.schema[field_id]
     objs = field.get(content, aslist=True)
     text = []
     if objs == []:
         return "no reference set"
     for item in objs:
-        text.append("<a href='%s'>%s</a>" %
-                    (item.absolute_url(), item.Title()))
+        if with_state:
+            state = content.portal_workflow.getInfoFor(item, 'review_state')
+            text.append("<a href='%s'>%s</a> (%s)" %
+                        (item.absolute_url(), item.Title(), state))
+
+        else:
+            text.append("<a href='%s'>%s</a>" %
+                        (item.absolute_url(), item.Title()))
     return "<br />".join(text)
+
+def render_service_components(content, field_id):
+    return render_reference_field(content, field_id, with_state=True)
 
 
 def render_with_link(content, field_id):
@@ -78,6 +87,7 @@ class BaseSummaryView(BrowserView):
                       'modified': modification_date,
                       'startDate': render_date,
                       'resources': render_resources,
+                      'service_components': render_service_components,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
