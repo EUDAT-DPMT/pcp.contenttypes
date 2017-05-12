@@ -103,8 +103,8 @@
                               <span tal:replace="entry/title" />
                               <tal:title condition="entry/login|nothing">
                                   (<span tal:replace="entry/login" />,
-                                   <span tal:content="python: user_obj.getProperty('email')"/>
-                                  )
+                                   <span tal:content="python: user_obj.getProperty('email')"/>,
+                                   <span tal:content="python: user_obj.getProperty('level_of_assurance') or 'UNKNOWN'"/>)
                               </tal:title>
                             </tal:nonsticky>
 
