@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="service_workflow" title="Servcie Workflow Definition" description="EUDAT's (registered) service (components) are subject to this workflow" state_variable="review_state" initial_state="forthcoming" manager_bypass="False">
+ <state state_id="decommissioned" title="Decommissioned">
+  <exit-transition transition_id="reconsider"/>
+ </state>
+ <state state_id="deprecated" title="Deprecated">
+  <exit-transition transition_id="decommission"/>
+ </state>
+ <state state_id="forthcoming" title="Forthcoming">
+  <description>Under development</description>
+  <exit-transition transition_id="deprecate"/>
+  <exit-transition transition_id="submit"/>
+ </state>
+ <state state_id="pending" title="Being evaluated">
+  <description>Being evaluated/tested</description>
+  <exit-transition transition_id="approve"/>
+  <exit-transition transition_id="deprecate"/>
+  <exit-transition transition_id="promote2production"/>
+ </state>
+ <state state_id="pre_production" title="pre-production">
+  <exit-transition transition_id="deprecate"/>
+  <exit-transition transition_id="promote2production"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify internals" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View internals" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="production" title="in production">
+  <description>The (registered) service (component) is in production</description>
+  <exit-transition transition_id="decommission"/>
+  <exit-transition transition_id="deprecate"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Member</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify internals" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Member</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View internals" acquired="False">
+   <permission-role>CDI Manager</permission-role>
+   <permission-role>CDI Member</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
+ <transition transition_id="approve" title="Approve" new_state="pre_production" trigger="USER" before_script="" after_script="">
+  <description>Promote to pre-production</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve" category="workflow" icon="">Approve</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="decommission" title="Decommission" new_state="decommissioned" trigger="USER" before_script="" after_script="">
+  <description>Signal that a service has been decommissioned</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=decommission" category="workflow" icon="">Decommission</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="deprecate" title="Deprecate" new_state="deprecated" trigger="USER" before_script="" after_script="">
+  <description>Deprecate a service </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=deprecate" category="workflow" icon="">Deprecate</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="promote2production" title="Promote to production" new_state="production" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=promote2production" category="workflow" icon="">Promote to production</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="reconsider" title="Reconsider" new_state="forthcoming" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reconsider" category="workflow" icon="">Reconsider</action>
+  <guard>
+  </guard>
+ </transition>
+ <transition transition_id="submit" title="Submit" new_state="pending" trigger="USER" before_script="" after_script="">
+  <description>Submit a service for evaluation</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" icon="">Submit</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+ <worklist worklist_id="reviewer_queue" title="">
+  <description>Reviewer tasks</description>
+  <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+  <match name="review_state" values="pending"/>
+ </worklist>
+ <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
+  <description>Previous transition</description>
+  <default>
+   
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
+  <description>The ID of the user who performed the previous transition</description>
+  <default>
+   
+   <expression>user/getId</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
+  <description>Comment about the last transition</description>
+  <default>
+   
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+   
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
+  <description>When the previous transition was performed</description>
+  <default>
+   
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+</dc-workflow>
