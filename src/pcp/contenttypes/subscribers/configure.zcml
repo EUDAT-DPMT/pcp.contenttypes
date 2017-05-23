@@ -23,4 +23,9 @@
              zope.lifecycleevent.IObjectModifiedEvent"
         handler=".accountable.create_accounting_account"
     />
+
+  <subscriber
+    for="Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
+    handler=".principal_created.principal_created"
+    />
 </configure>
