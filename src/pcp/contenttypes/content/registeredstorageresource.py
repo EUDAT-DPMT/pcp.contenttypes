@@ -37,6 +37,10 @@ RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Sc
                                                   ),
                        ),
     atapi.FloatField('cost_factor'),
+    atapi.ComputedField('usage',
+                        expression='here.getUsedMemory()',
+                        widget=atapi.ComputedWidget(label='Current usage'),
+                    ),
     atapi.DateTimeField('preserve_until',
                         widget=atapi.CalendarWidget(label='Preserve until',
                                                     description='Until when does this resource need '
