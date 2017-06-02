@@ -363,16 +363,16 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
         return ('title', 'customer', 'project', 'parent_provider', 'services', \
-                'size', 'state')
+                'size', 'usage', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
-                'Size and type', 'State')
+                'Size and type', 'Current usage', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('size')
+        return ('size', 'usage')
 
 
 class ResourceOfferOverview(RegisteredResourceOverview):
