@@ -38,7 +38,7 @@ RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Sc
                        ),
     atapi.FloatField('cost_factor'),
     atapi.ComputedField('usage',
-                        expression='here.getUsedMemory()',
+                        expression='here.getResourceUsage()',
                         widget=atapi.ComputedWidget(label='Current usage'),
                     ),
     atapi.DateTimeField('preserve_until',
@@ -78,6 +78,18 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
             return raw
         else:
             return None
+
+    def getResourceUsage(self):
+        used = self.getUsedMemory()
+        size = self.getAllocatedMemory()
+
+        if used:
+            meta = used['meta']
+            submission_time = meta['submission_time']
+        else:
+            submission_time = '??'
+
+        return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size), submission_time)
 
 
 atapi.registerType(RegisteredStorageResource, PROJECTNAME)

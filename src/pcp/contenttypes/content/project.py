@@ -87,12 +87,16 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                            condition='python:here.stateIn(["pre_production","production","terminated"])'),
                        ),
     atapi.ComputedField('allocated_new',
-                        expression='here.sizeToString(here.convert(here.getSizeSummary()))',
+                        expression='here.sizeToString(here.convert(here.getStorageResourcesSizeSummary(here.getResources())))',
                         widget=atapi.ComputedWidget(label='Allocated'),
                        ),
     atapi.ComputedField('used_new',
-                        expression='here.sizeToString(here.convert(here.getUsedSummary()))',
+                        expression='here.sizeToString(here.convert(here.getStorageResourcesUsedSummary(here.getResources())))',
                         widget=atapi.ComputedWidget(label='Used'),
+                        ),
+    atapi.ComputedField('usage_summary',
+                        expression='here.getResourceUsageSummary(here.getResources())',
+                        widget=atapi.ComputedWidget(label='Usage'),
                         ),
     atapi.ReferenceField('project_enabler',
                          read_permission='View internals',
@@ -153,7 +157,7 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                   ),
                        ),
     atapi.ComputedField('resource_usage',
-                  expression='here.getResourceUsage()',
+                  expression='here.listResourceUsage(here.getResources())',
                   widget=atapi.ComputedWidget(label='Resource Usage'),
                   ),
 )) + CommonFields.copy()
@@ -182,78 +186,6 @@ class Project(folder.ATFolder, CommonUtilities):
         """Specialized accessor supporting unit conversion"""
         raw = self.schema['used'].get(self)
         return self.convert(raw)
-
-    def getResourceUsage(self):
-        usages = []
-        for resource in self.getResources():
-            if IRegisteredStorageResource.providedBy(resource):
-                used = resource.getUsedMemory()
-                size = resource.getAllocatedMemory()
-
-                if size:
-                    size = self.convert(size)
-                    size_value = float(size['value'])
-                    size_unit = size['unit']
-                    size_str = '%0.2f %s' % (size_value, size_unit)
-                else:
-                    size_str = '??'
-                    size_value = None
-
-                if used:
-                    core = self.convert_pure(used['core'])
-                    core_value = float(core['value'])
-                    used_str = '%0.2f %s' % (core_value, core['unit'])
-                    meta = used['meta']
-                    submission_time = meta['submission_time']
-                    core_in_size_unit = self.convert_pure(used['core'], size_unit)
-                    core_value_in_size_unit = float(core_in_size_unit['value'])
-                else:
-                    core_value = None
-                    used_str = '??'
-                    submission_time = '??'
-
-                if core_value and size_value:
-                    rel_usage_str = '%0.2f' % (core_value_in_size_unit / size_value * 100.0)
-                else:
-                    rel_usage_str = '??'
-
-                usages.append('%s: %s / %s (%s%%) (%s UTC)' %
-                              (resource.title, used_str, size_str, rel_usage_str, submission_time))
-
-            if IRegisteredComputeResource.providedBy(resource):
-                pass
-
-        return '<br>'.join(usages)
-
-    def getUsedSummary(self):
-        value = 0
-        unit = 'B'
-
-        for resource in self.getResources():
-            if IRegisteredStorageResource.providedBy(resource):
-                used = resource.getUsedMemory()
-                if used:
-                    used_bytes = self.convert_pure(used['core'], unit)
-                    value += float(used_bytes['value'])
-                else:
-                    return None
-
-        return {'value': value, 'unit': unit}
-
-    def getSizeSummary(self):
-        value = 0
-        unit = 'B'
-
-        for resource in self.getResources():
-            if IRegisteredStorageResource.providedBy(resource):
-                size = resource.getAllocatedMemory()
-                if size:
-                    size_bytes = self.convert_pure(size, unit)
-                    value += float(size_bytes['value'])
-                else:
-                    return None
-
-        return {'value': value, 'unit': unit}
 
 
 

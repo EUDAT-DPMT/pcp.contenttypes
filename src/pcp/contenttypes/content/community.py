@@ -87,6 +87,14 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                       'edit': 'invisible'},
                                                   ),
                        ),
+    atapi.ComputedField('usage_summary',
+                        expression='here.getResourceUsageSummary(here.getResources())',
+                        widget=atapi.ComputedWidget(label='Usage'),
+                        ),
+    atapi.ComputedField('resource_usage',
+                        expression='here.listResourceUsage(here.getResources())',
+                        widget=atapi.ComputedWidget(label='Resource Usage'),
+                        ),
 )) + CommonFields.copy()
 
 

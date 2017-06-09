@@ -2,6 +2,8 @@
 """
 import math
 
+from pcp.contenttypes.interfaces import IRegisteredStorageResource
+
 END_OF_EUDAT2020 = "2018-02-28"
 
 from DateTime.DateTime import DateTime
@@ -480,6 +482,98 @@ class CommonUtilities(object):
         raw.update(result)
         return raw
 
+    def pint_from_dict(self, d):
+        """ Convert one of our memory quantity dicts to pint. """
+        return float(d['value']) * unit_map[d['unit']]
+
+    def pint_to_dict(self, p):
+        """ Convert a pint memory quantity to one of our dicts. """
+        return dict(value=str(p.magnitude), unit=unit_map_inverse[p.units])
+
+    def pint_add_dicts(self, values):
+        """ Sum all values in our memory quantity dict format using pint. """
+        return self.pint_to_dict(
+            sum(
+                map(lambda d: self.pint_from_dict(d), values),
+                0 * ur.byte))
+
+    def getStorageResourcesUsedSummary(self, resources):
+        """ Get sum of all resources' usage. If this value can not be determined
+            (i.e. some resource's values are not available) then None is returned.
+        """
+        usages = []
+
+        for resource in resources:
+            if IRegisteredStorageResource.providedBy(resource):
+                used = resource.getUsedMemory()
+                if used:
+                    usages.append(used['core'])
+                else:
+                    return None
+
+        return self.pint_add_dicts(usages)
+
+    def getStorageResourcesSizeSummary(self, resources):
+        """ Get sum of all resources' size. If this value can not be determined
+            (i.e. size of a resource is not available) then None is returned.
+        """
+        sizes = []
+
+        for resource in resources:
+            if IRegisteredStorageResource.providedBy(resource):
+                size = resource.getAllocatedMemory()
+                if size:
+                    sizes.append(size)
+                else:
+                    return None
+
+        return self.pint_add_dicts(sizes)
+
+    def renderResourceUsage(self, used, size):
+        """ Render resource usage string.
+        """
+        if size:
+            size = self.convert(size)
+            size_value = float(size['value'])
+            size_unit = size['unit']
+            size_str = '%0.2f %s' % (size_value, size_unit)
+        else:
+            size_str = '??'
+            size_value = None
+
+        if used:
+            used = self.convert_pure(used)
+            core_value = float(used['value'])
+            used_str = '%0.2f %s' % (core_value, used['unit'])
+            core_in_size_unit = self.convert_pure(used, size_unit)
+            core_value_in_size_unit = float(core_in_size_unit['value'])
+        else:
+            core_value = None
+            used_str = '??'
+
+        if core_value and size_value:
+            rel_usage_str = '%0.2f' % (core_value_in_size_unit / size_value * 100.0)
+        else:
+            rel_usage_str = '??'
+
+        return '%s / %s (%s%%)' % (used_str, size_str, rel_usage_str)
+
+    def getResourceUsageSummary(self, resources):
+        """ Create usage summary for resources. """
+        used = self.getStorageResourcesUsedSummary(resources)
+        size = self.getStorageResourcesSizeSummary(resources)
+
+        return self.renderResourceUsage(used, size)
+
+    def listResourceUsage(self, resources):
+        """ List usage of resources, i.e. all resource's usage. """
+        usages = []
+        for resource in self.getResources():
+            if IRegisteredStorageResource.providedBy(resource):
+                usages.append('%s: %s' % (resource.title, resource.getResourceUsage()))
+
+        return '<br>'.join(usages)
+
     def pint_convert(self, value, from_unit, to_unit):
         """Helper function doing unit conversions using Pint"""
 
@@ -546,3 +640,5 @@ unit_map = {'bit': ur.bit,
             'PiB': ur.pebibyte,
             'EiB': ur.exbibyte,
             }
+
+unit_map_inverse = {v: k for k, v in unit_map.items()}

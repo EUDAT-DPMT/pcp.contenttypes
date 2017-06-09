@@ -23,14 +23,16 @@ class ProjectOverview(BrowserView):
         """hardcoded for a start"""
         return ('title', 'registered_services_used',
                 #'allocated', 'used', 
-                'allocated_new', 'used_new', 'community',
+                #'allocated_new', 'used_new',
+                'usage_summary', 'community',
                 'topics', 'start_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start"""
         return ('Title', 'Service',
                 #'Allocated storage', 'Used storage',
-                'Allocated storage', 'Used storage', # <- *_new
+                #'Allocated storage', 'Used storage', # <- *_new
+                'Usage Summary',
                 'Customer', 'Topics',
                 'Start date', 'State')
 

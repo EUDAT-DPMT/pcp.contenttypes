@@ -114,21 +114,19 @@ class BaseSummaryView(BrowserView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
-
-                'allocated', 'used', 'community',
-                'topics', 'start_date', 'end_date', 'state')
+                'community',
+                'topics', 'usage_summary', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
-
-                'Allocated storage', 'Used storage',
                 'Customer', 'Topics',
+                'Usage Summary',
                 'Start date', 'End date', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('allocated', 'used', 'topics', 'start_date', 'end_date')
+        return ('usage_summary', 'topics', 'start_date', 'end_date')
 
     def content_items(self, portal_type):
         """The content items to show"""
@@ -154,17 +152,17 @@ class CustomerOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'topics', 'representative', 'projects_involved', 'primary_provider',
+        return ('title', 'topics', 'representative', 'projects_involved', 'primary_provider', 'usage_summary',
                 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider',
+        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider', 'Usage Summary',
                 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('topics',)
+        return ('topics', 'usage_summary',)
 
 
 class ProviderOverview(BaseSummaryView):
