@@ -7,7 +7,7 @@
 # patch the diff tool to support some of ATEXtensions' fields
 # (record(s) in particular) in diff view
 #
-
+import pcp
 from Products.CMFDiffTool.TextDiff import TextDiff
 from Products.CMFDiffTool.TextDiff import AsTextDiff
 from Products.CMFDiffTool.FieldDiff import FieldDiff
@@ -146,3 +146,59 @@ def sharing_handle_form(self):
 
 from plone.app.workflow.browser.sharing import SharingView
 SharingView.handle_form = sharing_handle_form
+
+
+from Products.PluggableAuthService.plugins.exportimport import getPackagePath
+try:
+    from Products.GenericSetup.utils import PageTemplateResource
+except ImportError: # BBB
+    from Products.PageTemplates.PageTemplateFile \
+        import PageTemplateFile as PageTemplateResource
+
+
+def export(self, export_context, subdir, root=False):
+    """ See IFilesystemExporter.
+    """
+    info = self._getExportInfo()
+
+    def update_user(user):
+        # extend user dict by email and fullname
+        memberdata = plone.api.user.get(userid=user['user_id'])
+        if memberdata:
+            email = memberdata.getProperty('email')
+            fullname = memberdata.getProperty('fullname')
+        else:
+            email = ''
+            fullname = ''
+        user.update(email=email, fullname=fullname)
+        return user
+
+    def update_role(role):
+        # wrap principal id in dict and extend user information
+        principals = map(lambda principal_id: dict(user_id=principal_id), role['principals'])
+        role['principals'] = map(update_user, principals)
+        return role
+
+    if self._FILENAME == 'zodbusers.xml':
+        # override source_users.xml with version containing fullname and email
+        template = PageTemplateResource('overrides/%s' % self._FILENAME,
+                                        pcp.contenttypes.__path__[0]).__of__(self.context)
+        info['users'] = map(update_user, info['users'])
+    elif self._FILENAME == 'zodbroles.xml':
+        # override portal_role_manager.xml with version containing fullname and email
+        template = PageTemplateResource('overrides/%s' % self._FILENAME,
+                                        pcp.contenttypes.__path__[0]).__of__(self.context)
+        info['roles'] = map(update_role, info['roles'])
+    else:
+        package_path = getPackagePath(self)
+        template = PageTemplateResource('xml/%s' % self._FILENAME,
+                                        package_path).__of__(self.context)
+
+    export_context.writeDataFile('%s.xml' % self.context.getId(),
+                                 template(info=info).encode('utf-8'),
+                                 'text/xml',
+                                 subdir,
+                                 )
+
+from Products.PluggableAuthService.plugins.exportimport import SimpleXMLExportImport
+SimpleXMLExportImport.export = export
