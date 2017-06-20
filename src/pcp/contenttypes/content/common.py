@@ -540,6 +540,7 @@ class CommonUtilities(object):
         else:
             size_str = '??'
             size_value = None
+            size_unit = None
 
         if used:
             used = self.convert_pure(used)
