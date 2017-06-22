@@ -21,14 +21,23 @@
     <permission name="pcp.contenttypes: Add RegisteredStorageResource" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add RegisteredComputeResource" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ServiceOffer" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add AccountingRecord" acquire="False">
       <role name="Manager" />
@@ -37,6 +46,9 @@
     <permission name="pcp.contenttypes: Add Downtime" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ServiceComponentImplementationDetails" acquire="False">
       <role name="Manager" />
@@ -66,36 +78,60 @@
     <permission name="pcp.contenttypes: Add RegisteredResource" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add RegisteredServiceComponent" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add RegisteredService" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ResourceRequest" acquire="False">
       <role name="Manager" />
       <role name="CDI Member" />
       <role name="CDI Manager" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ServiceComponentRequest" acquire="False">
       <role name="Manager" />
       <role name="CDI Manager" />
       <role name="CDI Member" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ServiceRequest" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ServiceComponentOffer" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add ResourceOffer" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add Plan" acquire="False">
       <role name="Manager" />
@@ -104,14 +140,23 @@
     <permission name="pcp.contenttypes: Add Environment" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add Provider" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add Person" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
+      <role name="Site Manager"/>
+      <role name="CDI Manager"/>
+      <role name="Administrator"/>
     </permission>
     <permission name="pcp.contenttypes: Add Resource" acquire="False">
       <role name="Manager" />
