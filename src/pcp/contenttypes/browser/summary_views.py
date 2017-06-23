@@ -115,18 +115,18 @@ class BaseSummaryView(BrowserView):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
                 'community',
-                'topics', 'usage_summary', 'start_date', 'end_date', 'state')
+                'topics', 'used_new', 'start_date', 'end_date', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
                 'Customer', 'Topics',
-                'Usage Summary',
+                'Used Memory',
                 'Start date', 'End date', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('usage_summary', 'topics', 'start_date', 'end_date')
+        return ('used_new', 'topics', 'start_date', 'end_date')
 
     def content_items(self, portal_type):
         """The content items to show"""
@@ -361,16 +361,16 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
         return ('title', 'customer', 'project', 'parent_provider', 'services', \
-                'size', 'usage', 'state')
+                'storage_class', 'usage', 'allocated', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
-                'Size and type', 'Current usage', 'State')
+                'Storage Class', 'Used Memory', 'Allocated Memory', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('size', 'usage')
+        return ('usage', 'allocated', 'storage_class')
 
 
 class ResourceOfferOverview(RegisteredResourceOverview):

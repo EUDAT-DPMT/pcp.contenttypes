@@ -529,6 +529,14 @@ class CommonUtilities(object):
 
         return self.pint_add_dicts(sizes)
 
+    def renderMemoryValue(self, d):
+        if not d:
+            return ""
+        d = self.convert(d)
+        value = float(d['value'])
+        unit = d['unit'] if self.REQUEST.get('unit') not in unit_map else ''
+        return '%0.2f %s' % (value, unit)
+
     def renderResourceUsage(self, used, size):
         """ Render resource usage string.
         """
@@ -543,11 +551,11 @@ class CommonUtilities(object):
             size_unit = None
 
         if used:
-            used = self.convert_pure(used)
+            core_in_size_unit = self.convert(used, size_unit)
+            core_value_in_size_unit = float(core_in_size_unit['value'])
+            used = self.convert(used)
             core_value = float(used['value'])
             used_str = '%0.2f %s' % (core_value, used['unit'])
-            core_in_size_unit = self.convert_pure(used, size_unit)
-            core_value_in_size_unit = float(core_in_size_unit['value'])
         else:
             core_value = None
             used_str = '??'

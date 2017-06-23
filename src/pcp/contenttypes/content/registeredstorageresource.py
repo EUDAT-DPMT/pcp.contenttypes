@@ -38,7 +38,15 @@ RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Sc
                        ),
     atapi.FloatField('cost_factor'),
     atapi.ComputedField('usage',
-                        expression='here.getResourceUsage()',
+                        expression='here.renderMemoryValue(here.getUsedMemory() and here.getUsedMemory()["core"])',
+                        widget=atapi.ComputedWidget(label='Current usage'),
+                    ),
+    atapi.ComputedField('allocated',
+                        expression='here.renderMemoryValue(here.getAllocatedMemory())',
+                        widget=atapi.ComputedWidget(label='Current usage'),
+                    ),
+    atapi.ComputedField('storage_class',
+                        expression='here.getStorageClass()',
                         widget=atapi.ComputedWidget(label='Current usage'),
                     ),
     atapi.DateTimeField('preserve_until',
@@ -60,6 +68,10 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
 
     meta_type = "RegisteredStorageResource"
     schema = RegisteredStorageResourceSchema
+
+    def getStorageClass(self):
+        size = self.schema['size'].get(self)
+        return size.get('storage class', '')
 
     def getCachedRecords(self):
         return getattr(self, 'cached_records', None)
