@@ -3,7 +3,10 @@ from pcp.contenttypes.mail import send_mail
 
 
 def principal_created(event):
-    portal = plone.api.portal.get()
+    try:
+        portal = plone.api.portal.get()
+    except plone.api.exc.CannotGetPortalError:
+        return
 
     principal = event.principal
     user = plone.api.portal.get_tool('portal_membership').getMemberById(principal.getId())
