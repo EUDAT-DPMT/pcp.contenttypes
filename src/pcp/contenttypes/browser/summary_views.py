@@ -75,6 +75,16 @@ def render_resources(content, field_id):
     except AttributeError:
         return 'none specified'
 
+def render_number_of_objects(content, field_id):
+    """
+    Return the number of registered objects.
+    Only available for 'Registered Storage Resources'
+    """
+    try:
+        return content.getNumberOfRegisteredObjects()
+    except AttributeError:
+        return "none"
+
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
@@ -88,6 +98,7 @@ class BaseSummaryView(BrowserView):
                       'startDate': render_date,
                       'resources': render_resources,
                       'service_components': render_service_components,
+                      'number': render_number_of_objects,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
@@ -361,12 +372,14 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
         return ('title', 'customer', 'project', 'parent_provider', 'services', \
-                'storage_class', 'usage', 'allocated', 'state')
+                'storage_class', 'number', 
+                'usage', 'allocated', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
-                'Storage Class', 'Used Storage', 'Allocated Storage', 'State')
+                'Storage Class', 'Registered Objects', 
+                'Used Storage', 'Allocated Storage', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""

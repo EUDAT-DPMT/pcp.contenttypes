@@ -101,7 +101,16 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
         else:
             submission_time = '??'
 
-        return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size), submission_time)
+        return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size), 
+                                submission_time)
+
+    def getNumberOfRegisteredObjects(self):
+        used = self.getUsedMemory()
+        if used:
+            meta = used['meta']
+            return meta.get('number', None)
+        else:
+            return None
 
 
 atapi.registerType(RegisteredStorageResource, PROJECTNAME)
