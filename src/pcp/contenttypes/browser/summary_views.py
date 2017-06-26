@@ -366,7 +366,7 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
-                'Storage Class', 'Used Memory', 'Allocated Memory', 'State')
+                'Storage Class', 'Used Storage', 'Allocated Storage', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
