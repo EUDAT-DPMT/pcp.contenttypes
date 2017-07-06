@@ -637,6 +637,7 @@ unit_map = {'bit': ur.bit,
             'byte': ur.byte,
             'B':   ur.byte,
             'kB':  ur.kilobyte,
+            'Kb':  ur.kilobyte,  # handle a nasty typo in an accounting record
             'MB':  ur.megabyte,
             'GB':  ur.gigabyte,
             'TB':  ur.terabyte,
