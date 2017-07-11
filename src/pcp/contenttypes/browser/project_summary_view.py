@@ -28,9 +28,7 @@ class ProjectOverview(BrowserView):
     def field_labels(self):
         """hardcoded for a start"""
         return ('Title', 'Service',
-                #'Allocated storage', 'Used storage',
-                #'Allocated storage', 'Used storage', # <- *_new
-                'Used Memory',
+                'Used storage',
                 'Customer', 'Topics',
                 'Start date', 'State')
 
