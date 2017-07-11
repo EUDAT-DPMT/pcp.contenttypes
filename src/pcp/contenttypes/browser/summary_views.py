@@ -132,7 +132,7 @@ class BaseSummaryView(BrowserView):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
                 'Customer', 'Topics',
-                'Used Memory',
+                'Used Storage',
                 'Start date', 'End date', 'State')
 
     def simple_fields(self):
