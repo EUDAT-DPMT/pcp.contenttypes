@@ -532,7 +532,10 @@ class CommonUtilities(object):
     def renderMemoryValue(self, d):
         if not d:
             return ""
-        d = self.convert(d)
+        try:
+            d = self.convert(d)
+        except ValueError:
+            return ""
         value = float(d['value'])
         unit = d['unit'] if self.REQUEST.get('unit') not in unit_map else ''
         return '%0.2f %s' % (value, unit)
