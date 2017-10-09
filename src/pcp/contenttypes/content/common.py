@@ -484,7 +484,11 @@ class CommonUtilities(object):
 
     def pint_from_dict(self, d):
         """ Convert one of our memory quantity dicts to pint. """
-        return float(d['value']) * unit_map[d['unit']]
+        try:
+            return float(d['value']) * unit_map[d['unit']]
+        except ValueError:
+            # Can happen if 'value' is a non-castable string 
+            return 0.0 * unit_map[d['unit']]
 
     def pint_to_dict(self, p):
         """ Convert a pint memory quantity to one of our dicts. """
