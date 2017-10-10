@@ -247,7 +247,7 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     title = "Registered Services"
 
-    description = "All registered services across the entire site."
+    description = "All registered services of the EUDAT CDI"
 
     def content_items(self):
         """All registered services regardless of location"""
@@ -273,7 +273,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     title = "Registered Service Components"
 
-    description = "All registered service components across the entire site."
+    description = "All registered service components of the EDUAT CDI"
 
     def content_items(self):
         """All registered service components regardless of location"""
