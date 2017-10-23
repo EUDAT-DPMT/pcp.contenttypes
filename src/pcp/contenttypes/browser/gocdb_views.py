@@ -86,6 +86,8 @@ def getExtensions(data):
         return ''
     result = ['    <EXTENSIONS>']
     for d in data:
+        if not 'value' in d:
+            d['value'] = ''
         ext = extension_template.format(**d)
         result.append(ext)
     result.append('    </EXTENSIONS>')
