@@ -30,6 +30,8 @@ class TableView(BrowserView):
         for field in self.context.Schema().fields():
             if field.getName() in hidden_fields:
                 continue
+            if field.widget.isVisible(self.context) in ['invisible','hidden']:
+                continue
             value = field.get(self.context)
             if value in (None, '', [], ()):
                 continue
