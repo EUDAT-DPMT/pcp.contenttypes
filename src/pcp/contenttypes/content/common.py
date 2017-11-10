@@ -641,6 +641,7 @@ from pint import UnitRegistry
 ur = UnitRegistry()
 
 unit_map = {'bit': ur.bit,
+            'kb':  ur.kilobit,
             'byte': ur.byte,
             'B':   ur.byte,
             'kB':  ur.kilobyte,
