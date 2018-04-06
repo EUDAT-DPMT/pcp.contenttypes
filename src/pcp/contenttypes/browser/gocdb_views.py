@@ -242,7 +242,6 @@ class ServiceGroupView(BrowserView):
         context = self.context
         result = []
         for rsc in context.getService_components():
-            print rsc
             result.append(rsc.restrictedTraverse('xml').xml(core=True))
         return '\n'.join(result)
 
@@ -258,7 +257,11 @@ class ServiceGroupView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['monitored'] = context.getMonitored()
-        result['email'] = context.getContact().getEmail()
+        contact = context.getContact()
+        if contact is not None:
+            result['email'] = contact.getEmail()
+        else:
+            result['email'] = '(no contact information available)'
         result['endpoints'] = self.getEndpoints()
         additional = context.getAdditional()
         if additional:
