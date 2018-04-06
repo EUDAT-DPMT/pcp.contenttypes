@@ -288,7 +288,7 @@ class TermView(BrowserView):
     """
 
     def collect_data(self):
-        """Helper to ccollect the values to be rendered as XML"""
+        """Helper to collect the values to be rendered as XML"""
         context = self.context
         result = {}
         result['id'] = context.getId()
