@@ -236,6 +236,15 @@ class ServiceView(BrowserView):
 class ServiceGroupView(BrowserView):
     """Render a registered service info like GOCDB does."""
 
+    def getEndpoints(self):
+        """Render related registered service components"""
+        context = self.context
+        result = []
+        for rsc in context.getService_components():
+            print rsc
+            result.append(rsc.restrictedTraverse('xml').xml(core=True))
+        return '\n'.join(result)
+
     def collect_data(self):
         """Helper to collect the values to be rendered as XML"""
         context = self.context
@@ -248,8 +257,8 @@ class ServiceGroupView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         result['monitored'] = context.getMonitored()
-        result['email'] = "(still to come)"
-        result['endpoints'] = "(still to come)"
+        result['email'] = context.getContact().getEmail()
+        result['endpoints'] = self.getEndpoints()
         additional = context.getAdditional()
         if additional:
             result['extensions'] = getExtensions(additional)
