@@ -200,7 +200,8 @@ class ServiceView(BrowserView):
         result['pk'] = context.UID()
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
-        result['service_type'] = context.getService_type()
+        # the following ought to be simpler but it seems to work anyway
+        result['service_type'] = context.Schema()['service_type'].vocabulary.getVocabularyDict(context)[context.getService_type()]
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
         result['url'] = context.getService_url()
