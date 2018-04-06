@@ -77,6 +77,22 @@ term_template = """
   </SERVICE_TYPE>
 """
 
+service_group_template = """
+  <SERVICE_GROUP PRIMARY_KEY="{pk}">
+    <NAME>{title}</NAME>
+    <DESCRIPTION>{description}</DESCRIPTION>
+    <MONITORED>{monitored}</MONITORED>
+    <CONTACT_EMAIL>{email}</CONTACT_EMAIL>
+    <DPMT_URL>{dpmt_url}</DPMT_URL>
+    <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
+    {endpoints}
+    <SCOPES>
+      <SCOPE>EUDAT</SCOPE>
+    </SCOPES>
+    <EXTENSIONS/>
+  </SERVICE_GROUP>
+"""
+
 # helper methods
 
 
@@ -175,7 +191,7 @@ class ServiceView(BrowserView):
     """Render a registered service component info like GOCDB does."""
 
     def collect_data(self):
-        """Helper to ccollect the values to be rendered as XML"""
+        """Helper to collect the values to be rendered as XML"""
         context = self.context
         result = {}
         result['id'] = context.Title()
@@ -210,6 +226,41 @@ class ServiceView(BrowserView):
         """Render as XML compatible with GOCDB"""
         data = self.collect_data()
         body = service_template.format(**data)
+        if core:
+            return body
+        full = header + body + footer
+        full = full.replace('&', '&amp;')
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        return full
+
+class ServiceGroupView(BrowserView):
+    """Render a registered service info like GOCDB does."""
+
+    def collect_data(self):
+        """Helper to collect the values to be rendered as XML"""
+        context = self.context
+        result = {}
+        result['id'] = context.getId()
+        result['title'] = context.Title()
+        result['description'] = context.Description()
+        result['creg_id'] = context.getCregId()
+        result['pk'] = context.UID()
+        result['dpmt_url'] = context.absolute_url()
+        result['creg_url'] = context.getCregURL(url_only=True)
+        result['monitored'] = context.getMonitored()
+        result['email'] = "(still to come)"
+        result['endpoints'] = "(still to come)"
+        additional = context.getAdditional()
+        if additional:
+            result['extensions'] = getExtensions(additional)
+        else:
+            result['extensions'] = '<EXTENSIONS/>'
+        return result
+
+    def xml(self, core=False, indent=2):
+        """Render as XML compatible with GOCDB"""
+        data = self.collect_data()
+        body = service_group_template.format(**data)
         if core:
             return body
         full = header + body + footer
