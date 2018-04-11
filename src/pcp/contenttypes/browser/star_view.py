@@ -7,16 +7,20 @@ from datetime import datetime, timedelta
 
 from pcp.contenttypes.browser.accounting import Accounting
 
-minimal_star_template = """
+single_star_template = """
 <sr:StorageUsageRecord
  xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">
+{}
+</sr:StorageUsageRecord>
+"""
+
+body_star_template = """
   <sr:RecordIdentity sr:createTime="{endtime}Z"
                      sr:recordId="accounting.eudat.eu/eudat/{rsr_id}/{record_id}"/>
   <sr:StorageSystem>{url}</sr:StorageSystem>
   <sr:StartTime>{starttime}Z</sr:StartTime>
   <sr:EndTime>{endtime}Z</sr:EndTime>
   <sr:ResourceCapacityUsed>{usage}</sr:ResourceCapacityUsed>
-</sr:StorageUsageRecord>
 """
 
 class StarView(Accounting):
@@ -29,8 +33,8 @@ class StarView(Accounting):
         if records:
             latest = records[0]
         else:
-            latest = {'core': {'value': 0, 'unit': 'byte'}, 
-                      'meta': {ts: time.time()}}
+            latest = {'core': {'value': '0', 'unit': 'byte'}, 
+                      'meta': {'ts': time.time()}}
 
         result = {}
         result['id'] = context.getId()
@@ -51,7 +55,8 @@ class StarView(Accounting):
     def star(self):
         """Render info using template"""
         data = self.collect_data()
-        body = minimal_star_template.format(**data)
-        full = body.replace('&', '&amp;')
+        body = body_star_template.format(**data)
+        body = body.replace('&', '&amp;')
+        full = single_star_template.format(body)
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
