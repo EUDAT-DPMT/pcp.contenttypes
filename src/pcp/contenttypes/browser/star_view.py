@@ -7,21 +7,24 @@ from datetime import datetime, timedelta
 
 from pcp.contenttypes.browser.accounting import Accounting
 
-single_star_template = """
-<sr:StorageUsageRecord
- xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">
-{}
+single_star_template = """<sr:StorageUsageRecord{}
 </sr:StorageUsageRecord>
 """
 
-body_star_template = """
+multiple_star_template = """
+<sr:StorageUsageRecords
+ xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">
+ {}</sr:StorageUsageRecords>
+"""
+
+body_star_template = \
+"""{ns}  
   <sr:RecordIdentity sr:createTime="{endtime}Z"
                      sr:recordId="accounting.eudat.eu/eudat/{rsr_id}/{record_id}"/>
   <sr:StorageSystem>{url}</sr:StorageSystem>
   <sr:StartTime>{starttime}Z</sr:StartTime>
   <sr:EndTime>{endtime}Z</sr:EndTime>
-  <sr:ResourceCapacityUsed>{usage}</sr:ResourceCapacityUsed>
-"""
+  <sr:ResourceCapacityUsed>{usage}</sr:ResourceCapacityUsed>"""
 
 class StarView(Accounting):
     """Render a StAR view for registered storage components"""
@@ -37,6 +40,7 @@ class StarView(Accounting):
                       'meta': {'ts': time.time()}}
 
         result = {}
+        result['ns'] = ''
         result['id'] = context.getId()
         result['title'] = context.Title()
         result['description'] = context.Description()
@@ -52,11 +56,42 @@ class StarView(Accounting):
                                     latest['core'].get('unit')])
         return result
 
-    def star(self):
+    def star(self, with_ns=True):
         """Render info using template"""
         data = self.collect_data()
+        if with_ns:
+            data['ns'] = '\n  xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">'
+        else:
+            data['ns'] = '>'
         body = body_star_template.format(**data)
         body = body.replace('&', '&amp;')
         full = single_star_template.format(body)
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
+
+class RecordsView(StarView):
+    """Render a StAR view for all registered storage components"""
+    
+    def all_rsr(self):
+        """All registered storage resources"""
+        catalog = self.context.portal_catalog
+        brains = catalog(portal_type=['RegisteredStorageResource'])
+        objects = [b.getObject() for b in brains]
+        return objects
+
+    def records(self):
+        """XML body of the records listing"""
+        objects = self.all_rsr()
+        result = []
+        for o in objects:
+            record = o.unrestrictedTraverse('@@star')(with_ns=False)
+            result.append(record)
+        return ''.join(result)
+    
+    def star(self):
+        body = self.records()
+        full = multiple_star_template.format(body)
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        return full
+        
+
