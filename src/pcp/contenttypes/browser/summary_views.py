@@ -207,7 +207,7 @@ class ProviderOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('url', 'status_detils', 'infrastructure', 'helpdesk_email', 
+        return ('url', 'status_details', 'infrastructure', 'helpdesk_email', 
                 'provider_status', 'provider_type')
 
 
