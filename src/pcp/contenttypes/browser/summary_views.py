@@ -408,10 +408,14 @@ class DowntimeOverview(BaseSummaryView):
         return [element.getObject() for element in self.catalog(portal_type='Downtime')]
 
     def fields(self):
-        return ('title', 'startDateTime', 'endDateTime', 'affected_registered_serivces', 'state',)
+        return ('title', 'startDateTime', 'endDateTime', 
+                'affected_registered_serivces', 
+                'parent_provider', 'state',)
 
     def field_labels(self):
-        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 'Affected Services', 'State',)
+        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 
+                'Affected Services and Components', 
+                'Provider', 'State',)
 
     def simple_fields(self):
         return ('startDateTime', 'endDateTime', )
