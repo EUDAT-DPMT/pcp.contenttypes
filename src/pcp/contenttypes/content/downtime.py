@@ -10,8 +10,10 @@ from plone.formwidget.datetime.at import DatetimeWidget
 from zope.interface import implements
 
 from Products.Archetypes import atapi
+from Products.ATExtensions import ateapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
+from Products.ATVocabularyManager import NamedVocabulary
 
 # -*- Message Factory Imported Here -*-
 
@@ -57,9 +59,26 @@ DowntimeSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        startup_directory_method='getStartupDirectory',
                                                        ),
                          ),
-
+    ateapi.UrlField('reason',
+                    widget=ateapi.UrlWidget(label='Reason',
+                                            description='Optional URL to the change management document providing the reason for this downtime.',
+                                        ),
+                ),
+    atapi.StringField('severity',
+                      searchable=1,
+                      default='warning',
+                      vocabulary=NamedVocabulary('severity_levels'),
+                      widget=atapi.SelectionWidget(label='Severity',
+                                                   ),
+                      ),
+    atapi.StringField('classification',
+                      searchable=1,
+                      default='scheduled',
+                      vocabulary=NamedVocabulary('downtime_classes'),
+                      widget=atapi.SelectionWidget(label='Classification',
+                                                   ),
+                      ),
 ))
-
 
 schemata.finalizeATCTSchema(DowntimeSchema, moveDiscussion=False)
 
