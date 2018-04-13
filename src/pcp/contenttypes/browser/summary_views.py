@@ -189,17 +189,26 @@ class ProviderOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'url', 'contact', 'provider_type', 'provider_status', 'alarm_email', 'helpdesk_email',
+        return ('title', 'url', 'contact', 
+                'provider_type', 'provider_status', 'status_details',
+                'infrastructure',
+                'helpdesk_email',
+                'security_contact',
                 'modified')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Website', 'Contact', 'Type', 'Status', 'Alarm email', 'Helpdesk email',
+        return ('Title', 'Website', 'Contact', 
+                'Type', 'Status', 'Status details',
+                'Infrastructure Status',
+                'Helpdesk email',
+                'Security contact',
                 'Modified')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('url', 'alarm_email', 'helpdesk_email', 'provider_status', 'provider_type')
+        return ('url', 'status_detils', 'infrastructure', 'helpdesk_email', 
+                'provider_status', 'provider_type')
 
 
 class ServiceOverview(BaseSummaryView):
