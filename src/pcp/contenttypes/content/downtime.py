@@ -115,6 +115,16 @@ class Downtime(base.ATCTContent):
         else:
             return self.portal_url.getPortalPath()
 
+    # for the GOCDB compatibility layer
+    def naive_start(self):
+        """'start' without explicit time zone"""
+        return self.start().strftime("%Y/%m/%d %H:%M:%S")
+
+    def naive_end(self):
+        """'end' without explicit time zone"""
+        return self.end().strftime("%Y/%m/%d %H:%M:%S")
+
+
 
 atapi.registerType(Downtime, PROJECTNAME)
 
