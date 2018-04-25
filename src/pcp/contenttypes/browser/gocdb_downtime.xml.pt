@@ -6,7 +6,7 @@
                   tal:omit-tag="">
             <DOWNTIME tal:repeat="endpoint python:view.getEndpoints(downtime)"
                       tal:omit-tag="">
-                <DOWNTIME tal:attributes="ID python:endpoint.getUid() if endpoint else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICTION string:undefined">
+                <DOWNTIME tal:attributes="ID python:endpoint.getUid() if endpoint else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICATION string:undefined">
                     <PRIMARY_KEY>undefined</PRIMARY_KEY>
                     <HOSTNAME tal:content="endpoint/getHost_name"></HOSTNAME>
                     <SERVICE_TYPE tal:content="python:view.getServiceType(endpoint)"></SERVICE_TYPE>
