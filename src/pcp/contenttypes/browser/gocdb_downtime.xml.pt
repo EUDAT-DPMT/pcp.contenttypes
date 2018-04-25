@@ -19,8 +19,8 @@
                     <INSERT_DATE tal:content="python:view.secsSinceEpoch(view.effectiveDate(downtime))"></INSERT_DATE>
                     <START_DATE tal:content="python:view.secsSinceEpoch(downtime.start())"></START_DATE>
                     <END_DATE tal:content="python:view.secsSinceEpoch(downtime.end())"></END_DATE>
-                    <FORMATTED_START_DATE tal:content="downtime/start"></FORMATTED_START_DATE>
-                    <FORMATTED_END_DATE tal:content="downtime/end"></FORMATTED_END_DATE>
+                    <FORMATED_START_DATE tal:content="downtime/start"></FORMATED_START_DATE>
+                    <FORMATED_END_DATE tal:content="downtime/end"></FORMATED_END_DATE>
                 </DOWNTIME>
             </DOWNTIME>
         </DOWNTIME>
