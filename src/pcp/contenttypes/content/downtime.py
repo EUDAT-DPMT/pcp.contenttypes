@@ -118,11 +118,11 @@ class Downtime(base.ATCTContent):
     # for the GOCDB compatibility layer
     def naive_start(self):
         """'start' without explicit time zone"""
-        return self.start().strftime("%Y/%m/%d %H:%M:%S")
+        return self.start().strftime("%Y-%m-%d %H:%M")
 
     def naive_end(self):
         """'end' without explicit time zone"""
-        return self.end().strftime("%Y/%m/%d %H:%M:%S")
+        return self.end().strftime("%Y-%m-%d %H:%M")
 
 
 
