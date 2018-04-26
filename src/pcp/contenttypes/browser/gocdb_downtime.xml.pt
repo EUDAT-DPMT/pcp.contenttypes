@@ -6,7 +6,7 @@
                   tal:omit-tag="">
             <DOWNTIME tal:repeat="endpoint python:view.getEndpoints(downtime)"
                       tal:omit-tag="">
-                <DOWNTIME tal:attributes="ID python:endpoint.getUid() if endpoint else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICATION string:undefined">
+                <DOWNTIME tal:attributes="ID python:endpoint.getUid() if endpoint else 'undefined'; PRIMARY_KEY string:undefined; CLASSIFICATION  python:downtime.getClassification().upper()">
                     <PRIMARY_KEY>undefined</PRIMARY_KEY>
                     <HOSTNAME tal:content="endpoint/getHost_name"></HOSTNAME>
                     <SERVICE_TYPE tal:content="python:view.getServiceType(endpoint)"></SERVICE_TYPE>
@@ -14,7 +14,7 @@
                     <HOSTED_BY tal:content="python:view.getHosters(endpoint)"></HOSTED_BY>
                     <GOCDB_PORTAL_URL tal:content="downtime/absolute_url"></GOCDB_PORTAL_URL>
                     <AFFECTED_ENDPOINTS>undefined</AFFECTED_ENDPOINTS>
-                    <SEVERITY>undefined</SEVERITY>
+                    <SEVERITY tal:content="python:downtime.getSeverity().upper()"></SEVERITY>
                     <DESCRIPTION tal:content="downtime/Description"></DESCRIPTION>
                     <INSERT_DATE tal:content="python:view.secsSinceEpoch(view.effectiveDate(downtime))"></INSERT_DATE>
                     <START_DATE tal:content="python:view.secsSinceEpoch(downtime.start())"></START_DATE>
