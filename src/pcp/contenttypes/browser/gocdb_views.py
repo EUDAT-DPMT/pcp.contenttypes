@@ -13,7 +13,7 @@ header =  """<?xml version="1.0" encoding="UTF-8"?>
 footer = """</results>"""
 
 provider_list_template = """
-  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}" COUNTRY="{country}" COUNTRY_CODE="{country_code}" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
+  <SITE ID="{id}" PRIMARY_KEY="{pk}" NAME="{id_upper}" COUNTRY="{country}" COUNTRY_CODE="{country_code}" ROC="EUDAT_REGISTRY" SUBGRID="" GIIS_URL=""/>"""
 
 extension_template = """
       <EXTENSION>
@@ -23,9 +23,9 @@ extension_template = """
       </EXTENSION>"""
 
 provider_template = """
-  <SITE ID="{creg_id}" PRIMARY_KEY="{pk}" NAME="{id}">
+  <SITE ID="{id}" PRIMARY_KEY="{pk}" NAME="{id_upper}">
     <PRIMARY_KEY>{pk}</PRIMARY_KEY>
-    <SHORT_NAME>{id}</SHORT_NAME>
+    <SHORT_NAME>{id_upper}</SHORT_NAME>
     <OFFICIAL_NAME>{description}</OFFICIAL_NAME>
     <DPMT_URL>{dpmt_url}</DPMT_URL>
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
@@ -118,7 +118,8 @@ class ProviderView(BrowserView):
         if context is None:
             context = self.context
         result = {}
-        result['id'] = context.Title()
+        result['id'] = context.getId()
+        result['id_upper'] = context.getId().upper()
         result['description'] = context.Description()
         result['creg_id'] = context.getCregId()
         result['pk'] = context.UID()
