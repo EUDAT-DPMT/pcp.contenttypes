@@ -110,6 +110,13 @@ def getExtensions(data):
     return "\n".join(result)
 
 
+def addState(context, data):
+    """Add review state to list of additional key/value pairs"""
+    state = context.portal_workflow.getInfoFor(context, 'review_state')
+    data.append({'key':'state', 'value':state})
+    return data
+
+
 class ProviderView(BrowserView):
     """Render a provider info like GOCDB does."""
 
@@ -154,6 +161,7 @@ class ProviderView(BrowserView):
         except AttributeError:
             result['csirt_email'] = 'not set'
         additional = context.getAdditional()
+        addState(context, additional)
         if additional:
             result['extensions'] = getExtensions(additional)
         else:
@@ -202,7 +210,7 @@ class ServiceView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         # the following ought to be simpler but it seems to work anyway
-        result['service_type'] = context.Schema()['service_type'].vocabulary.getVocabularyDict(context)[context.getService_type()]
+        result['service_type'] = context.Schema()['service_type'].vocabulary.getVocabularyDict(context).get(context.getService_type(),'')
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
         result['url'] = context.getService_url()
@@ -218,6 +226,7 @@ class ServiceView(BrowserView):
             result['country_code'] = Country(country).alpha2
         result['country'] = country
         additional = context.getAdditional()
+        addState(context, additional)
         if additional:
             result['extensions'] = getExtensions(additional)
         else:
@@ -265,6 +274,7 @@ class ServiceGroupView(BrowserView):
             result['email'] = '(no contact information available)'
         result['endpoints'] = self.getEndpoints()
         additional = context.getAdditional()
+        addState(context, additional)
         if additional:
             result['extensions'] = getExtensions(additional)
         else:
