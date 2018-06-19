@@ -35,6 +35,10 @@ class StarView(Accounting):
         records = self.records()
         if records:
             latest = records[0]
+            if latest['core'].get('unit') not in ['B', 'byte', 'Byte']:
+                raw = latest['core'].copy()
+                normalized = context.convert_pure(raw, 'byte')
+                latest['core'].update(normalized)
         else:
             latest = {'core': {'value': '0', 'unit': 'byte'}, 
                       'meta': {'ts': time.time()}}
@@ -51,9 +55,7 @@ class StarView(Accounting):
         endtime = datetime.utcfromtimestamp(ts)
         result['endtime'] = endtime.isoformat()
         result['starttime'] = (endtime - timedelta(days=1)).isoformat()
-        # this should be in byte without unit
-        result['usage'] = ' '.join([latest['core'].get('value'), 
-                                    latest['core'].get('unit')])
+        result['usage'] = latest['core'].get('value')  # has to be in byte
         return result
 
     def star(self, with_ns=True):
