@@ -21,6 +21,7 @@ body_star_template = \
 """{ns}  
   <sr:RecordIdentity sr:createTime="{endtime}Z"
                      sr:recordId="accounting.eudat.eu/eudat/{rsr_id}/{record_id}"/>
+  <sr:Site>EUDAT-{site}</sr:Site>
   <sr:StorageSystem>{url}</sr:StorageSystem>
   <sr:StartTime>{starttime}Z</sr:StartTime>
   <sr:EndTime>{endtime}Z</sr:EndTime>
@@ -46,6 +47,7 @@ class StarView(Accounting):
         result = {}
         result['ns'] = ''
         result['id'] = context.getId()
+        result['id_upper'] = context.getId().upper()
         result['title'] = context.Title()
         result['description'] = context.Description()
         result['url'] = context.absolute_url()
@@ -56,6 +58,8 @@ class StarView(Accounting):
         result['endtime'] = endtime.isoformat()
         result['starttime'] = (endtime - timedelta(days=1)).isoformat()
         result['usage'] = latest['core'].get('value')  # has to be in byte
+        # the below assumes that our acquisition parent is a provider
+        result['site'] = context.aq_parent.getId().upper()
         return result
 
     def star(self, with_ns=True):
