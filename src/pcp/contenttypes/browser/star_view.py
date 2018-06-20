@@ -39,6 +39,8 @@ class StarView(Accounting):
             if latest['core'].get('unit') not in ['B', 'byte', 'Byte']:
                 raw = latest['core'].copy()
                 normalized = context.convert_pure(raw, 'byte')
+                # turning stuff like '6.92e+14' into '692000000000000'
+                normalized['value'] = str(int(float(normalized['value'])))
                 latest['core'].update(normalized)
         else:
             latest = {'core': {'value': '0', 'unit': 'byte'}, 
