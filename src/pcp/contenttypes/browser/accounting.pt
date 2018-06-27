@@ -7,6 +7,9 @@
       i18n:domain="plone">
 <body>
 
+    <metal:override fill-slot="top_slot"
+        tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
+
     <metal:main fill-slot="content-core" tal:define="rows view/records">
 
     <tal:def define="has_account view/has_account">
