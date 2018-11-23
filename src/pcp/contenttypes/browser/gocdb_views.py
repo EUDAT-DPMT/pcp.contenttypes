@@ -128,7 +128,10 @@ class ProviderView(BrowserView):
         result['id'] = context.getId()
         result['id_upper'] = context.getId().upper()
         result['description'] = context.Description()
-        result['creg_id'] = context.getCregId()
+        try:
+            result['creg_id'] = context.getCregId()
+        except KeyError:
+            result['creg_id'] = None
         result['pk'] = context.UID()
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
