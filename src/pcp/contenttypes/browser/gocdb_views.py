@@ -134,7 +134,10 @@ class ProviderView(BrowserView):
             result['creg_id'] = None
         result['pk'] = context.UID()
         result['dpmt_url'] = context.absolute_url()
-        result['creg_url'] = context.getCregURL(url_only=True)
+        try:
+            result['creg_url'] = context.getCregURL(url_only=True)
+        except KeyError:
+            result['creg_url'] = ""
         result['url'] = context.getUrl()
         country = context.getAddress().get('country', 'not set')
         if country == 'not set':
