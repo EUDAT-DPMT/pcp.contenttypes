@@ -102,6 +102,8 @@ def getExtensions(data):
         return ''
     result = ['    <EXTENSIONS>']
     for d in data:
+        if not 'key' in d:
+            continue
         if not 'value' in d:
             d['value'] = ''
         ext = extension_template.format(**d)
