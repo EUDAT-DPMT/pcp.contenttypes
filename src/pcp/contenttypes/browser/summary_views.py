@@ -54,6 +54,10 @@ def render_parent(content, field_id):
     return "<a href='%s'>%s</a>" % (url, title)
 
 
+def creation_date(content, field_id):
+    value = content.created()
+    return value.Date()
+
 def modification_date(content, field_id):
     value = content.modified()
     return value.Date()
@@ -102,6 +106,7 @@ class BaseSummaryView(BrowserView):
                       'title': render_with_link,
                       'parent_provider': render_parent,
                       'parent_project': render_parent,
+                      'created': creation_date,
                       'modified': modification_date,
                       'startDate': render_date,
                       'resources': render_resources,
@@ -135,14 +140,14 @@ class BaseSummaryView(BrowserView):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
                 'community',
-                'topics', 'used_new', 'start_date', 'end_date', 'state')
+                'topics', 'used_new', 'start_date', 'end_date', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
                 'Customer', 'Topics',
                 'Used Storage',
-                'Start date', 'End date', 'State')
+                'Start date', 'End date', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -173,12 +178,12 @@ class CustomerOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'topics', 'representative', 'projects_involved', 'primary_provider', 'usage_summary',
-                'modified', 'state')
+                'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
         return ('Title', 'Topics', 'Representative', 'Projects', 'Provider', 'Usage Summary',
-                'Modified', 'State')
+                'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -203,6 +208,7 @@ class ProviderOverview(BaseSummaryView):
                 'infrastructure',
                 'helpdesk_email',
                 'security_contact',
+                'created',
                 'modified')
 
     def field_labels(self):
@@ -212,6 +218,7 @@ class ProviderOverview(BaseSummaryView):
                 'Infrastructure Status',
                 'Helpdesk email',
                 'Security contact',
+                'Created',
                 'Modified')
 
     def simple_fields(self):
@@ -234,12 +241,12 @@ class ServiceOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'service_type', 'service_owner', 'contact',
-                'modified', 'state')
+                'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
         return ('Title', 'Type', 'Owner', 'Contact',
-                'Modified', 'State')
+                'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -274,12 +281,12 @@ class RegisteredServiceOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'contact', 'managers', 'monitored', 'service_components',
-                'state')
+                'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
         return ('Title', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
-                'State')
+                'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -301,12 +308,12 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'service_url', 'parent_provider', 'contacts',
                 'monitored', 'host_name',
-                'state')
+                'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'URL', 'Provider', 'Contact(s)', 'Monitored', 'Host name',
-                'State')
+                'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -328,12 +335,12 @@ class RequestOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a starts"""
         return ('parent_project', 'portal_type', 'title', 'resources', 'startDate',
-                'preferred_providers', 'state')
+                'preferred_providers', 'created', 'modified', 'state')
 
     def field_labels(self):
         """Hardcoded label"""
         return ('Requesting Project', 'Request Type', 'Request Title', 'Requested Resources',
-                'Requested Start Date', 'Preferred Provider(s)', 'State')
+                'Requested Start Date', 'Preferred Provider(s)', 'Created', 'Modified', 'State')
 
 
 class ApprovedRequests(RequestOverview):
@@ -364,12 +371,12 @@ class RegisteredResourceOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'parent_provider', 'compute_resources', 'storage_resources',
-                'state')
+                'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Provider', 'Compute resources', 'Storage resources',
-                'State')
+                'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -391,13 +398,13 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
         """Not yet complete - expand once we have accounting information"""
         return ('title', 'customer', 'project', 'parent_provider', 'services', \
                 'storage_class', 'number', 
-                'usage', 'allocated', 'state')
+                'usage', 'allocated', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
                 'Storage Class', 'Registered Objects', 
-                'Used Storage', 'Allocated Storage', 'State')
+                'Used Storage', 'Allocated Storage', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -428,12 +435,12 @@ class DowntimeOverview(BaseSummaryView):
     def fields(self):
         return ('title', 'startDateTime', 'endDateTime', 
                 'affected_registered_serivces', 
-                'parent_provider', 'state',)
+                'parent_provider', 'created', 'modified', 'state',)
 
     def field_labels(self):
         return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 
                 'Affected Services and Components', 
-                'Provider', 'State',)
+                'Provider', 'Created', 'Modified', 'State',)
 
     def simple_fields(self):
         return ('startDateTime', 'endDateTime', )
