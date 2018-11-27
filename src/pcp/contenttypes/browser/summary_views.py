@@ -85,6 +85,14 @@ def render_number_of_objects(content, field_id):
     except AttributeError:
         return "none"
 
+def render_contact_email(content, field_id):
+    """
+    Return the email address from the referenced contact object
+    """
+    email = content.getContact().getEmail()
+    email_link = '<a href="mailto:%s">%s</a>'
+    return email_link % (email, email)
+
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
@@ -99,6 +107,7 @@ class BaseSummaryView(BrowserView):
                       'resources': render_resources,
                       'service_components': render_service_components,
                       'number': render_number_of_objects,
+                      'contact_email': render_contact_email,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
@@ -181,7 +190,7 @@ class ProviderOverview(BaseSummaryView):
 
     title = "EUDAT Provider"
 
-    description = "All current and past providers of EUDAT services"
+    description = "All current and past providers of EUDAT CDI services"
 
     def content_items(self):
         """All providers regardless of location"""
@@ -189,7 +198,7 @@ class ProviderOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'url', 'contact', 
+        return ('title', 'url', 'contact', 'contact_email', 
                 'provider_type', 'provider_status', 'status_details',
                 'infrastructure',
                 'helpdesk_email',
@@ -198,7 +207,7 @@ class ProviderOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Website', 'Contact', 
+        return ('Title', 'Website', 'Contact', 'Email',
                 'Type', 'Status', 'Status details',
                 'Infrastructure Status',
                 'Helpdesk email',
