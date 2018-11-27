@@ -93,7 +93,21 @@ def render_contact_email(content, field_id):
     """
     Return the email address from the referenced contact object
     """
-    email = content.getContact().getEmail()
+    try:
+        email = content.getContact().getEmail()
+    except AttributeError:
+        email = ''
+    email_link = '<a href="mailto:%s">%s</a>'
+    return email_link % (email, email)
+
+def render_business_email(content, field_id):
+    """
+    Return the email address from the referenced business contact object
+    """
+    try:
+        email = content.getBusiness_contact().getEmail()
+    except AttributeError:
+        email = ''
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
@@ -113,6 +127,7 @@ class BaseSummaryView(BrowserView):
                       'service_components': render_service_components,
                       'number': render_number_of_objects,
                       'contact_email': render_contact_email,
+                      'business_email': render_business_email,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
@@ -204,6 +219,7 @@ class ProviderOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'url', 'contact', 'contact_email', 
+                'business_contact', 'business_email',
                 'provider_type', 'provider_status', 'status_details',
                 'infrastructure',
                 'helpdesk_email',
@@ -214,6 +230,7 @@ class ProviderOverview(BaseSummaryView):
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
         return ('Title', 'Website', 'Operational Contact', 'Email',
+                'Business contact', 'Business email',
                 'Type', 'Status', 'Status details',
                 'Infrastructure Status',
                 'Helpdesk email',
