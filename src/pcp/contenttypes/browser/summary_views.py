@@ -207,7 +207,7 @@ class ProviderOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Website', 'Contact', 'Email',
+        return ('Title', 'Website', 'Operational Contact', 'Email',
                 'Type', 'Status', 'Status details',
                 'Infrastructure Status',
                 'Helpdesk email',

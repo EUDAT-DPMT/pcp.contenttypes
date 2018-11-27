@@ -88,8 +88,9 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('contact',
                          relationship='contact',
                          allowed_types=('Person',),
-                         widget=ReferenceBrowserWidget(label='Contact',
-                                                       description='Main contact person for this provider',
+                         widget=ReferenceBrowserWidget(label='Operational contact',
+                                                       description='Main contact person for '
+                                                       'the operations of this provider',
                                                        allow_browse=1,
                                                        startup_directory='/people',
                                                        ),
