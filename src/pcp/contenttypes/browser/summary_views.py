@@ -111,6 +111,20 @@ def render_business_email(content, field_id):
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
+def provider_contact_email(content, field_id):
+    """
+    Look up the parent provider and get to its contact email
+    """
+    parent = content.aq_inner.aq_parent
+    return render_contact_email(parent, '')
+
+def provider_business_email(content, field_id):
+    """
+    Look up the parent provider and get to its business contact email
+    """
+    parent = content.aq_inner.aq_parent
+    return render_business_email(parent, '')
+
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
@@ -128,6 +142,8 @@ class BaseSummaryView(BrowserView):
                       'number': render_number_of_objects,
                       'contact_email': render_contact_email,
                       'business_email': render_business_email,
+                      'provider_contact_email': provider_contact_email,
+                      'provider_business_email': provider_business_email,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
@@ -387,12 +403,14 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'parent_provider', 'compute_resources', 'storage_resources',
+        return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
+                'compute_resources', 'storage_resources',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title', 'Provider', 'Compute resources', 'Storage resources',
+        return ('Title', 'Provider', 'Operational contact (email)', 'Business contact (email)',
+                'Compute resources', 'Storage resources',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
