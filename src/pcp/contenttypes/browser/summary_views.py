@@ -170,14 +170,14 @@ class BaseSummaryView(BrowserView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
-                'community',
+                'community', 'registered_services_used', 'general_provider',
                 'topics', 'used_new', 'start_date', 'end_date', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
-                'Customer', 'Topics',
-                'Used Storage',
+                'Customer', 'Service(s)', 'General provider',
+                'Topics', 'Used Storage',
                 'Start date', 'End date', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -293,7 +293,7 @@ class ProjectOverview(BaseSummaryView):
 
     title = "Project Overview"
 
-    description = "All current and past projects"
+    description = "All current and past projects within the EUDAT CDI"
 
     def content_items(self):
         """All projects regardless of location"""
