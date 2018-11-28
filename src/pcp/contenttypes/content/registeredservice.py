@@ -20,6 +20,15 @@ from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
 RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+    atapi.ReferenceField('general_provider',
+                         relationship='general_provider',
+                         allowed_types=('Provider',),
+                         widget=ReferenceBrowserWidget(label='General provider',
+                                                       description='General provider for this project (chose EUDAT Ltd if in doubt)',
+                                                       allow_browse=1,
+                                                       startup_directory='/providers',
+                                                       ),
+                         ),
     atapi.ReferenceField('contact',
                          read_permission='View internals',
                          write_permission='Modify internals',

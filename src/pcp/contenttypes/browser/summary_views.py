@@ -313,12 +313,12 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'contact', 'managers', 'monitored', 'service_components',
+        return ('title', 'general_provider', 'contact', 'managers', 'monitored', 'service_components',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
+        return ('Title', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
