@@ -446,6 +446,29 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
         return ('usage', 'allocated', 'storage_class')
 
 
+class ServiceOfferOverview(BaseSummaryView):
+    """Overview of all service offers no matter which provider makes them"""
+
+    title = "Service Offers"
+
+    description = "All service offers from all providers."
+
+    def content_items(self):
+        """All service offers regardless of location"""
+        return [element.getObject() for element in self.catalog(portal_type='ServiceOffer')]
+
+    def fields(self):
+        """Fields to show in the overview"""
+        return ('service', 'parent_provider', 'slas', 'contact',
+                'state', 'created', 'modified')
+#'conditions' XXX TODO provide custom aggregator
+
+    def field_labels(self):
+        """Explicit labels fo rthe fields"""
+        return ('Service', 'Provider', 'SLAs', 'Contact',
+                'State', 'Created', 'Modified')
+
+
 class ResourceOfferOverview(RegisteredResourceOverview):
     """Overview of all resource offers no matter which provider made them"""
 
