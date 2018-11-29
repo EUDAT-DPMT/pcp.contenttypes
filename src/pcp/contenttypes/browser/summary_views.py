@@ -459,13 +459,13 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def fields(self):
         """Fields to show in the overview"""
-        return ('service', 'parent_provider', 'slas', 'contact',
+        return ('title', 'service', 'parent_provider', 'slas', 'contact',
                 'state', 'created', 'modified')
 #'conditions' XXX TODO provide custom aggregator
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service', 'Provider', 'SLAs', 'Contact',
+        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs', 'Contact',
                 'State', 'Created', 'Modified')
 
 
