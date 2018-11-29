@@ -265,6 +265,35 @@ ConditionsFields = atapi.Schema((
 ))
 
 
+class OfferUtilities(object):
+    """
+    Mixin class to provide shared functionality across offer types
+    such as aggregated constraints
+    """
+
+    def aggregated_constraints(self):
+        """Formated string summarizing all constraints"""
+
+        regional = self.getRegional_constraints()
+        thematic = self.getThematic_constraints()
+        organizational = self.getOrganizational_constraints()
+#        general = self.getConstraints()
+        general = self.getField('constraints').get(self, mimetype='text/plain')
+
+        result = ''
+
+        if regional: 
+            result += "<em>Regional:</em> %s <br />" % regional
+        if thematic:
+            result += "<em>Thematic:</em> %s <br />" % thematic
+        if organizational:
+            result += "<em>Organizational:</em> %s <br />" % organizational
+        if general:
+            result += general[:60]
+
+        return result
+
+
 class RequestUtilities(object):
     """Mixin class to provide shared functionality across request types"""
 

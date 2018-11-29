@@ -16,6 +16,7 @@ from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import ResourceFields
 from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import OfferUtilities
 from pcp.contenttypes.content.common import CommonUtilities
 
 ResourceOfferSchema = schemata.ATContentTypeSchema.copy() \
@@ -27,7 +28,7 @@ ResourceOfferSchema = schemata.ATContentTypeSchema.copy() \
 schemata.finalizeATCTSchema(ResourceOfferSchema, moveDiscussion=False)
 
 
-class ResourceOffer(base.ATCTContent, CommonUtilities):
+class ResourceOffer(base.ATCTContent, CommonUtilities, OfferUtilities):
     """Provider offers compute or storage resources"""
     implements(IResourceOffer)
 

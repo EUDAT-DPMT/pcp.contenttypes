@@ -13,6 +13,7 @@ from pcp.contenttypes.interfaces import IServiceOffer
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import OfferUtilities
 from pcp.contenttypes.content.common import CommonUtilities
 
 ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
@@ -51,7 +52,7 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 schemata.finalizeATCTSchema(ServiceOfferSchema, moveDiscussion=False)
 
 
-class ServiceOffer(base.ATCTContent, CommonUtilities):
+class ServiceOffer(base.ATCTContent, CommonUtilities, OfferUtilities):
     """Providers signal their service offerings"""
     implements(IServiceOffer)
 

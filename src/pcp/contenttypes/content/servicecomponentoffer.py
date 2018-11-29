@@ -13,6 +13,7 @@ from pcp.contenttypes.interfaces import IServiceComponentOffer
 from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import ConditionsFields
 from pcp.contenttypes.content.common import CommonFields
+from pcp.contenttypes.content.common import OfferUtilities
 from pcp.contenttypes.content.common import CommonUtilities
 
 ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
@@ -45,7 +46,7 @@ schemata.finalizeATCTSchema(
 )
 
 
-class ServiceComponentOffer(folder.ATFolder, CommonUtilities):
+class ServiceComponentOffer(folder.ATFolder, CommonUtilities, OfferUtilities):
     """Provider offers service components"""
     implements(IServiceComponentOffer)
 

@@ -125,6 +125,12 @@ def provider_business_email(content, field_id):
     parent = content.aq_inner.aq_parent
     return render_business_email(parent, '')
 
+def render_constraints(content, field_id):
+    """
+    Return the aggregated constraints
+    """
+    return content.aggregated_constraints()
+
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
@@ -144,6 +150,7 @@ class BaseSummaryView(BrowserView):
                       'business_email': render_business_email,
                       'provider_contact_email': provider_contact_email,
                       'provider_business_email': provider_business_email,
+                      'constraints': render_constraints,
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
@@ -459,13 +466,13 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def fields(self):
         """Fields to show in the overview"""
-        return ('title', 'service', 'parent_provider', 'slas', 'contact',
+        return ('title', 'service', 'parent_provider', 'slas', 'constraints', 'contact',
                 'state', 'created', 'modified')
 #'conditions' XXX TODO provide custom aggregator
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs', 'Contact',
+        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs', 'Constraints', 'Contact',
                 'State', 'Created', 'Modified')
 
 
