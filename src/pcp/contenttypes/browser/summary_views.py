@@ -220,7 +220,7 @@ class CustomerOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Topics', 'Representative', 'Projects', 'Provider', 'Usage Summary',
+        return ('Customer', 'Topics', 'Representative', 'Projects', 'Provider', 'Usage Summary',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -252,7 +252,7 @@ class ProviderOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Website', 'Operational Contact', 'Email',
+        return ('Provider', 'Website', 'Operational Contact', 'Email',
                 'Business contact', 'Business email',
                 'Type', 'Status', 'Status details',
                 'Infrastructure Status',
