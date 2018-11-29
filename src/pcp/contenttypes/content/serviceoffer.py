@@ -21,7 +21,8 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          relationship='service_offered',
                          allowed_types=('Service',),
                          widget=ReferenceBrowserWidget(label='Service offered',
-                                                       description='Reference to the catalog entry of the service being offered.',
+                                                       description='Reference to the catalog entry of '\
+                                                       'the service being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
                                                        ),
@@ -31,7 +32,8 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                          allowed_types=('Document',),
                          multiValued=True,
                          widget=ReferenceBrowserWidget(label='SLAs offered',
-                                                       description='Potential Service Level Agreements under which the service is being offered.',
+                                                       description='Potential Service Level Agreements under '\
+                                                       'which the service is being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/services/hours',
                                                        ),

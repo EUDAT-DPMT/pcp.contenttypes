@@ -36,6 +36,18 @@ ServiceComponentOfferSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        startup_directory='/catalog',
                                                        ),
                          ),
+    atapi.ReferenceField('slas',
+                         relationship='slas_offered',
+                         allowed_types=('Document',),
+                         multiValued=True,
+                         widget=ReferenceBrowserWidget(label='SLAs/OLAs offered',
+                                                       description='Potential Service/Operational Level Agreements under '\
+                                                       'which the service component is being offered.',
+                                                       allow_browse=1,
+                                                       startup_directory='/services/hours',
+                                                       ),
+
+                         ),
 )) + ConditionsFields.copy() + CommonFields.copy()
 
 

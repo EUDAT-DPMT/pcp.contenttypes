@@ -471,7 +471,7 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs', 'Constraints', 'Contact',
+        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs/OLAs', 'Constraints', 'Contact',
                 'State', 'Created', 'Modified')
 
 
@@ -489,13 +489,13 @@ class ServiceComponentOfferOverview(BaseSummaryView):
     def fields(self):
         """Fields to show in the overview"""
         return ('title', 'service_component', 'implementations', 
-                'parent_provider', 'constraints',
+                'parent_provider', 'slas', 'constraints',
                 'state', 'created', 'modified')
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
         return ('Service Component (offer)', 'Service Component (in catalog)', 'Implementations supported', 
-                'Provider', 'Constraints',
+                'Provider', 'SLAs/OLAs', 'Constraints',
                 'State', 'Created', 'Modified')
 
 
