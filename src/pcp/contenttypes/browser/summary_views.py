@@ -325,7 +325,7 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
+        return ('Service name', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -352,7 +352,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title', 'URL', 'Provider', 'Contact(s)', 'Monitored', 'Host name',
+        return ('Service component', 'URL', 'Provider', 'Contact(s)', 'Monitored', 'Host name',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -416,7 +416,7 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title', 'Provider', 'Operational contact (email)', 'Business contact (email)',
+        return ('Resource name', 'Provider', 'Operational contact (email)', 'Business contact (email)',
                 'Compute resources', 'Storage resources',
                 'Created', 'Modified', 'State')
 
@@ -444,7 +444,7 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title', 'Customer', 'Project', 'Provider', 'Deployed on', \
+        return ('Storage Name', 'Customer', 'Project', 'Provider', 'Deployed on', \
                 'Storage Class', 'Registered Objects', 
                 'Used Storage', 'Allocated Storage', 'Created', 'Modified', 'State')
 
