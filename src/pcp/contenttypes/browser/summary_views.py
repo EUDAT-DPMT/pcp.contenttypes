@@ -468,11 +468,34 @@ class ServiceOfferOverview(BaseSummaryView):
         """Fields to show in the overview"""
         return ('title', 'service', 'parent_provider', 'slas', 'constraints', 'contact',
                 'state', 'created', 'modified')
-#'conditions' XXX TODO provide custom aggregator
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
         return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs', 'Constraints', 'Contact',
+                'State', 'Created', 'Modified')
+
+
+class ServiceComponentOfferOverview(BaseSummaryView):
+    """Overview of all service component offers no matter which provider makes them"""
+
+    title = "Service Component Offers"
+
+    description = "All service component offers from all providers."
+
+    def content_items(self):
+        """All service component offers regardless of location"""
+        return [element.getObject() for element in self.catalog(portal_type='ServiceComponentOffer')]
+
+    def fields(self):
+        """Fields to show in the overview"""
+        return ('title', 'service_component', 'implementations', 
+                'parent_provider', 'constraints',
+                'state', 'created', 'modified')
+
+    def field_labels(self):
+        """Explicit labels fo rthe fields"""
+        return ('Service Component (offer)', 'Service Component (in catalog)', 'Implementations supported', 
+                'Provider', 'Constraints',
                 'State', 'Created', 'Modified')
 
 
