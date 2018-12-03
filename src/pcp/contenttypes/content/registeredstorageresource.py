@@ -36,6 +36,10 @@ RegisteredStorageResourceSchema = schemata.ATContentTypeSchema.copy() + atapi.Sc
                         expression='here.renderMemoryValue(here.getUsedMemory() and here.getUsedMemory()["core"])',
                         widget=atapi.ComputedWidget(label='Current usage'),
                     ),
+    atapi.ComputedField('number',
+                        expression='here.getNumberOfRegisteredObjects()',
+                        widget=atapi.ComputedWidget(label='Registered objects'),
+                    ),
     atapi.ComputedField('allocated',
                         expression='here.renderMemoryValue(here.getAllocatedMemory())',
                         widget=atapi.ComputedWidget(label='Allocated storage'),
@@ -105,13 +109,18 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
         return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size), 
                                 submission_time)
 
-    def getNumberOfRegisteredObjects(self):
+    def getNumberOfRegisteredObjects(self, as_int=False):
         used = self.getUsedMemory()
+        number = None
         if used:
-            meta = used['meta']
-            return meta.get('number', None)
-        else:
-            return None
+            number = used['meta'].get('number', None)
+        if as_int:
+            if number in [None, '']:
+                return 0
+            else:
+                return int(number)
+                
+        return number
 
 
 atapi.registerType(RegisteredStorageResource, PROJECTNAME)

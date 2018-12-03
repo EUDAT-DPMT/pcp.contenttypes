@@ -619,6 +619,15 @@ class CommonUtilities(object):
 
         return '<br>'.join(usages)
 
+    def registeredObjectsTotal(self):
+        """ Sum of all registered objects across related registered storage resources """
+        total = 0
+        for resource in self.getResources():
+            if IRegisteredStorageResource.providedBy(resource):
+                total += resource.getNumberOfRegisteredObjects(as_int=True)
+
+        return total
+
     def pint_convert(self, value, from_unit, to_unit):
         """Helper function doing unit conversions using Pint"""
 

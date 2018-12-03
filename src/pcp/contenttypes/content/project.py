@@ -137,6 +137,10 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                   expression='here.listResourceUsage(here.getResources())',
                   widget=atapi.ComputedWidget(label='Resource Usage'),
                   ),
+    atapi.ComputedField('registered_objects',
+                  expression='here.registeredObjectsTotal()',
+                  widget=atapi.ComputedWidget(label='Registered objects'),
+                  ),
 )) + CommonFields.copy()
 
 
