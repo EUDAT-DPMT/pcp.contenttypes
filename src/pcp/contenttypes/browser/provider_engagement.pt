@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+    <metal:override fill-slot="top_slot"
+        tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
+
+    <metal:main fill-slot="content-core" tal:define="data view/project_data">
+
+
+
+            <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
+            <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
+            
+            <br/>
+
+            <h3>Projects that <span tal:content="here/Title">provider</span> is general provider for</h3>
+
+            <table class="listing dt-table" id="projects-table">
+              <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Created</th>
+                    <th>Modified</th>
+                    <th>State</th>
+                </tr>
+              </thead>
+              <tbody> 
+                <tr tal:repeat="row view/project_data">
+                    <td tal:attributes="data-order row/title"
+                        tal:content="structure row/title_with_link"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/created"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/modified"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/state"/>
+                 </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+              </tfoot>
+            </table>
+
+             <br/>
+
+            <h3>Registered services that <span tal:content="here/Title">provider</span> is general provider for</h3>
+
+            <table class="listing dt-table" id="service-table">
+              <thead>
+                  <tr>
+                    <th>Registered service</th>
+                    <th>Created</th>
+                    <th>Modified</th>
+                    <th>State</th>
+                </tr>
+              </thead>
+              <tbody> 
+                <tr tal:repeat="row view/service_data">
+                    <td tal:attributes="data-order row/title"
+                        tal:content="structure row/title_with_link"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/created"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/modified"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/state"/>
+                 </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+              </tfoot>
+            </table>
+
+            <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+
+
+</metal:main>
+
+</body>
+</html>
