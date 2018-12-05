@@ -25,6 +25,9 @@ class ProviderEngagement(BrowserView):
     def components(self):
         return self.context.listFolderContents(contentFilter={"portal_type" : "RegisteredServiceComponent"})
 
+    def storage(self):
+        return self.context.listFolderContents(contentFilter={"portal_type" : "RegisteredStorageResource"})
+
     def project_data(self):
         result = []
         for p in self.projects():
@@ -62,6 +65,19 @@ class ProviderEngagement(BrowserView):
             data['created'] = c.created().Date()
             data['modified'] = c.modified().Date()
             data['state'] = self.context.portal_workflow.getInfoFor(c, 'review_state')
+            result.append(data.copy())
+        return result
+        
+    def storage_data(self):
+        result = []
+        for r in self.components():
+            data = {}
+            data['title'] = r.Title()
+            data['url'] = r.absolute_url()
+            data['title_with_link'] = '<a href="%s">%s</a>' % (r.absolute_url(), r.Title())
+            data['created'] = r.created().Date()
+            data['modified'] = r.modified().Date()
+            data['state'] = self.context.portal_workflow.getInfoFor(r, 'review_state')
             result.append(data.copy())
         return result
         

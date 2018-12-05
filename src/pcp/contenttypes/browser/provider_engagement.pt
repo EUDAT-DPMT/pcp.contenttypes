@@ -122,6 +122,41 @@
               </tfoot>
             </table>
 
+             <br/>
+
+            <h3>Registered storage resources that <span tal:content="here/Title">provider</span> operates</h3>
+
+            <table class="listing dt-table" id="storage-table">
+              <thead>
+                  <tr>
+                    <th>Registered storage resources</th>
+                    <th>Created</th>
+                    <th>Modified</th>
+                    <th>State</th>
+                </tr>
+              </thead>
+              <tbody> 
+                <tr tal:repeat="row view/storage_data">
+                    <td tal:attributes="data-order row/title"
+                        tal:content="structure row/title_with_link"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/created"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/modified"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/state"/>
+                 </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+              </tfoot>
+            </table>
+
             <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
 
 
