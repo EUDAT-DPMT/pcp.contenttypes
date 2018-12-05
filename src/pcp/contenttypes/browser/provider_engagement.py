@@ -70,11 +70,15 @@ class ProviderEngagement(BrowserView):
         
     def storage_data(self):
         result = []
-        for r in self.components():
+        for r in self.storage():
             data = {}
             data['title'] = r.Title()
             data['url'] = r.absolute_url()
             data['title_with_link'] = '<a href="%s">%s</a>' % (r.absolute_url(), r.Title())
+            data['usage'] = r.getResourceUsage()
+            data['number'] = r.getNumberOfRegisteredObjects(as_int=True)
+            data['allocated'] = r.getAllocated() 
+            data['storage_class'] = r.getStorageClass()
             data['created'] = r.created().Date()
             data['modified'] = r.modified().Date()
             data['state'] = self.context.portal_workflow.getInfoFor(r, 'review_state')

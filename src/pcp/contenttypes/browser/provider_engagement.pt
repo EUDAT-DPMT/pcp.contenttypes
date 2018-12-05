@@ -129,7 +129,11 @@
             <table class="listing dt-table" id="storage-table">
               <thead>
                   <tr>
-                    <th>Registered storage resources</th>
+                    <th>Registered Storage Resource</th>
+                    <th>Allocated</th>
+                    <th>Used</th>
+                    <th>Storage Class</th>
+                    <th>Registered Objects</th>
                     <th>Created</th>
                     <th>Modified</th>
                     <th>State</th>
@@ -140,6 +144,14 @@
                     <td tal:attributes="data-order row/title"
                         tal:content="structure row/title_with_link"/>
                     <td tal:on-error="string: (not set)"
+                        tal:content="row/allocated"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/usage"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/storage_class"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/number"/>
+                    <td tal:on-error="string: (not set)"
                         tal:content="row/created"/>
                     <td tal:on-error="string: (not set)"
                         tal:content="row/modified"/>
@@ -149,6 +161,10 @@
               </tbody>
               <tfoot>
                   <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
