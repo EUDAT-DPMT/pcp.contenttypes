@@ -328,6 +328,21 @@ class RequestUtilities(object):
             return "not specified"
         return ", ".join([p.Title() for p in providers])
 
+    def users_to_notify(self):
+        """Email addresses to be notified infered from the preferred providers"""
+        providers = self.getPreferred_providers()
+        if not providers:
+            return ''
+        contacts = []
+        for provider in providers:
+            operations_contact = provider.getContact()
+            business_contact = provider.getBusiness_contact()
+            if operations_contact:
+                contacts.append(operations_contact.getEmail())
+            if business_contact:
+                contacts.append(business_contact.getEmail())
+        return contacts
+
 
 class CommonUtilities(object):
     """Mixin class to provide shared functionality across content types"""
@@ -419,6 +434,8 @@ class CommonUtilities(object):
         and returns its value if found. Otherwise returns None.
         """
         for entry in self.getAdditional():
+            if not entry.has_key('key'):
+                return None
             if entry['key'] == id_key:
                 return entry['value']
         return None
@@ -432,7 +449,7 @@ class CommonUtilities(object):
         If 'url_only' is True it just returns the URL.
         """
         creg_id = self.getCregId()
-        if creg_id is None:
+        if creg_id in [None, '']:
             return "No 'creg_id' found"
         try:
             ctype = self.dptype2cregtype[self.portal_type]
