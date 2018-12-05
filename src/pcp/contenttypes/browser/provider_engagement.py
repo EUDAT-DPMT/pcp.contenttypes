@@ -22,6 +22,9 @@ class ProviderEngagement(BrowserView):
     def services(self):
         return [s for s in self.backlinks() if s.portal_type == "RegisteredService"]
 
+    def components(self):
+        return self.context.listFolderContents(contentFilter={"portal_type" : "RegisteredServiceComponent"})
+
     def project_data(self):
         result = []
         for p in self.projects():
@@ -49,4 +52,18 @@ class ProviderEngagement(BrowserView):
             result.append(data.copy())
         return result
         
+    def component_data(self):
+        result = []
+        for c in self.components():
+            data = {}
+            data['title'] = c.Title()
+            data['url'] = c.absolute_url()
+            data['title_with_link'] = '<a href="%s">%s</a>' % (c.absolute_url(), c.Title())
+            data['created'] = c.created().Date()
+            data['modified'] = c.modified().Date()
+            data['state'] = self.context.portal_workflow.getInfoFor(c, 'review_state')
+            result.append(data.copy())
+        return result
+        
+
 
