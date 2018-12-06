@@ -123,6 +123,8 @@
               <thead>
                   <tr>
                     <th>Registered service component</th>
+                    <th>URL</th>
+                    <th>Contacts</th>
                     <th>Created</th>
                     <th>Modified</th>
                     <th>State</th>
@@ -133,6 +135,10 @@
                     <td tal:attributes="data-order row/title"
                         tal:content="structure row/title_with_link"/>
                     <td tal:on-error="string: (not set)"
+                        tal:content="structure row/service_url"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="structure row/contacts"/>
+                    <td tal:on-error="string: (not set)"
                         tal:content="row/created"/>
                     <td tal:on-error="string: (not set)"
                         tal:content="row/modified"/>
@@ -142,6 +148,8 @@
               </tbody>
               <tfoot>
                   <tr>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

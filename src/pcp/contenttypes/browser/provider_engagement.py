@@ -90,6 +90,9 @@ class ProviderEngagement(BrowserView):
             data['title'] = c.Title()
             data['url'] = c.absolute_url()
             data['title_with_link'] = '<a href="%s">%s</a>' % (c.absolute_url(), c.Title())
+            data['service_url'] = '<a href="%s">%s</a>' % (c.getService_url(), 
+                                                           c.getService_url())
+            data['contacts'] = render_reference_field(c, 'contacts')
             data['created'] = c.created().Date()
             data['modified'] = c.modified().Date()
             data['state'] = self.context.portal_workflow.getInfoFor(c, 'review_state')
