@@ -10,6 +10,24 @@ from zope.interface import alsoProvides
 
 from ..interfaces.settings import ISettings
 
+# helper method for rendering reference fields
+def render_reference_field(content, field_id, with_state=False):
+    field = content.schema[field_id]
+    objs = field.get(content, aslist=True)
+    text = []
+    if objs == []:
+        return "no reference set"
+    for item in objs:
+        if with_state:
+            state = content.portal_workflow.getInfoFor(item, 'review_state')
+            text.append("<a href='%s'>%s</a> (%s)" %
+                        (item.absolute_url(), item.Title(), state))
+
+        else:
+            text.append("<a href='%s'>%s</a>" %
+                        (item.absolute_url(), item.Title()))
+    return "<br />".join(text)
+
 
 class ProviderEngagement(BrowserView):
 
@@ -55,6 +73,10 @@ class ProviderEngagement(BrowserView):
             data['title'] = s.Title()
             data['url'] = s.absolute_url()
             data['title_with_link'] = '<a href="%s">%s</a>' % (s.absolute_url(), s.Title())
+            contact = s.getContact()
+            data['contact'] = render_reference_field(s, 'contact')
+            data['managers'] = render_reference_field(s, 'managers')
+            data['components'] = render_reference_field(s, 'service_components', with_state=True)
             data['created'] = s.created().Date()
             data['modified'] = s.modified().Date()
             data['state'] = self.context.portal_workflow.getInfoFor(s, 'review_state')
