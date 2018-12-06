@@ -6,6 +6,7 @@ from pcp.contenttypes.interfaces import IRegisteredStorageResource
 
 END_OF_EUDAT2020 = "2018-02-28"
 
+from zope.component.hooks import getSite
 from DateTime.DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
@@ -330,7 +331,11 @@ class RequestUtilities(object):
 
     def users_to_notify(self):
         """Email addresses to be notified infered from the preferred providers"""
-        providers = self.getPreferred_providers()
+        try:
+            providers = self.getPreferred_providers()
+        except AttributeError:
+            portal = getSite()
+            providers = self.__of__(portal).getPreferred_providers()
         if not providers:
             return ''
         contacts = []
