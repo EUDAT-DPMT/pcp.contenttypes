@@ -25,6 +25,10 @@
               <thead>
                   <tr>
                     <th>Project</th>
+                    <th>Customer</th>
+                    <th>Topics</th>
+                    <th>Usage</th>
+                    <th>Registered Objects</th>
                     <th>Created</th>
                     <th>Modified</th>
                     <th>State</th>
@@ -35,6 +39,14 @@
                     <td tal:attributes="data-order row/title"
                         tal:content="structure row/title_with_link"/>
                     <td tal:on-error="string: (not set)"
+                        tal:content="structure row/customer_with_link"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/topics"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/usage"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/number"/>
+                    <td tal:on-error="string: (not set)"
                         tal:content="row/created"/>
                     <td tal:on-error="string: (not set)"
                         tal:content="row/modified"/>
@@ -44,6 +56,10 @@
               </tbody>
               <tfoot>
                   <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

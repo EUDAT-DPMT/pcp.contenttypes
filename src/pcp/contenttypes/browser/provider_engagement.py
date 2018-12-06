@@ -35,6 +35,12 @@ class ProviderEngagement(BrowserView):
             data['title'] = p.Title()
             data['url'] = p.absolute_url()
             data['title_with_link'] = '<a href="%s">%s</a>' % (p.absolute_url(), p.Title())
+            customer = p.getCommunity()
+            data['customer_with_link'] = '<a href="%s">%s</a>' % (customer.absolute_url(), 
+                                                                  customer.Title())
+            data['topics'] = p.getTopics()
+            data['usage'] = p.getUsed_new()
+            data['number'] = p.getRegistered_objects()
             data['created'] = p.created().Date()
             data['modified'] = p.modified().Date()
             data['state'] = self.context.portal_workflow.getInfoFor(p, 'review_state')
