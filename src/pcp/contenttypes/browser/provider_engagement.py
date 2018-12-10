@@ -54,8 +54,9 @@ class ProviderEngagement(BrowserView):
             data['url'] = p.absolute_url()
             data['title_with_link'] = '<a href="%s">%s</a>' % (p.absolute_url(), p.Title())
             customer = p.getCommunity()
-            data['customer_with_link'] = '<a href="%s">%s</a>' % (customer.absolute_url(), 
-                                                                  customer.Title())
+            if customer not in [None, '']:
+                data['customer_with_link'] = '<a href="%s">%s</a>' % (customer.absolute_url(), 
+                                                                      customer.Title())
             data['topics'] = p.getTopics()
             data['usage'] = p.getUsed_new()
             data['number'] = p.getRegistered_objects()
