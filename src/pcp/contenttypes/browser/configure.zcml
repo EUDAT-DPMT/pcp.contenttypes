@@ -370,6 +370,13 @@
 	permission="zope2.View"
 	/>
 
+  <browser:page
+	for="*"
+	name="dt_engagement_macros"
+	template="dt_engagement_macros.pt"
+	permission="zope2.View"
+	/>
+
   <browser:resourceDirectory
     name="pcp.contenttypes"
     directory="resources"

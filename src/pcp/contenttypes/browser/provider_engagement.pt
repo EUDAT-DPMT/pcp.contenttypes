@@ -209,7 +209,7 @@
               </tfoot>
             </table>
 
-            <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+            <metal:macro use-macro="context/dt_engagement_macros/macros/datatables_init" />    
 
 
 </metal:main>

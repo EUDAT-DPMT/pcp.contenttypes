@@ -1,0 +1,203 @@
+<metal:macro define-macro="datatable_css_headers">
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/css/buttons.dataTables.css" />
+</metal:macro>
+
+<metal:macro define-macro="datatable_js_headers">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/dataTables.buttons.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/buttons.html5.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/buttons.print.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++pcp.contenttypes/DataTables-1.10.13/extensions/Buttons/js/buttons.colVis.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+</metal:macro>
+
+
+<metal:macro define-macro="datatables_init">
+
+    <script type="text/javascript">
+        $(document).ready( function () {
+
+            try {
+                order = DT_ORDER_BY;
+            } catch(e) {
+                order = [0, "asc"];
+            }
+
+            $('.dt-table').each(function() {
+
+                var thead = $(this).find('thead');
+                var tfoot = $(this).find('tfoot');
+                if (!tfoot.length && thead.length) {
+                    var html = thead.wrap('<p/>').parent().html();
+                    html = html.replace('thead', 'tfoot');
+                    $(html).appendTo($(this));
+                }
+            });
+
+            $('.dt-table thead th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( title+'<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+            } );
+
+            $('.dt-table thead th input').on('click', function(e) {
+                e.stopPropagation();
+            });
+
+            var projects_table = $('#projects-table').DataTable({
+               columnDefs: [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                }],
+                buttons: ['colvis', 'copy', 'excel', 'pdf', 'print', {
+                        text: 'JSON',
+                        action: function( e, dt, button, config ) {
+                            var data = dt.buttons.exportData();
+         
+                            $.fn.dataTable.fileSave(
+                                new Blob( [ JSON.stringify( data ) ] ),
+                                'Export.json'
+                            );
+                        }
+                    }
+                ],
+                dom: '<"clear">Blfrtip',
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('.dt-table').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+            });
+
+            var component_table = $('#component-table').DataTable({
+               columnDefs: [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                }],
+                buttons: ['colvis', 'copy', 'excel', 'pdf', 'print', {
+                        text: 'JSON',
+                        action: function( e, dt, button, config ) {
+                            var data = dt.buttons.exportData();
+         
+                            $.fn.dataTable.fileSave(
+                                new Blob( [ JSON.stringify( data ) ] ),
+                                'Export.json'
+                            );
+                        }
+                    }
+                ],
+                dom: '<"clear">Blfrtip',
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('.dt-table').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+            });
+
+            var storage_table = $('#storage-table').DataTable({
+               columnDefs: [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                }],
+                buttons: ['colvis', 'copy', 'excel', 'pdf', 'print', {
+                        text: 'JSON',
+                        action: function( e, dt, button, config ) {
+                            var data = dt.buttons.exportData();
+         
+                            $.fn.dataTable.fileSave(
+                                new Blob( [ JSON.stringify( data ) ] ),
+                                'Export.json'
+                            );
+                        }
+                    }
+                ],
+                dom: '<"clear">Blfrtip',
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('.dt-table').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+            });
+
+            var service_table = $('#service-table').DataTable({
+               columnDefs: [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                }],
+                buttons: ['colvis', 'copy', 'excel', 'pdf', 'print', {
+                        text: 'JSON',
+                        action: function( e, dt, button, config ) {
+                            var data = dt.buttons.exportData();
+         
+                            $.fn.dataTable.fileSave(
+                                new Blob( [ JSON.stringify( data ) ] ),
+                                'Export.json'
+                            );
+                        }
+                    }
+                ],
+                dom: '<"clear">Blfrtip',
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('.dt-table').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+            });
+
+            projects_table.columns().every( function () {
+                var that = this;
+                $( 'input', this.header() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            });
+
+            service_table.columns().every( function () {
+                var that = this;
+                $( 'input', this.header() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            });
+
+            component_table.columns().every( function () {
+                var that = this;
+                $( 'input', this.header() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            });
+
+            storage_table.columns().every( function () {
+                var that = this;
+                $( 'input', this.header() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            });
+        });
+    </script>
+</metal:macro>
