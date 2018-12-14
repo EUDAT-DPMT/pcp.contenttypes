@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+  <head><title></title></head>
+
+  <body>
+
+    <metal:define define-macro="view">
+      <metal:use use-macro="context/widgets/string/macros/view">
+        <metal:fill fill-slot="inside">
+           <span tal:content="accessor">Content</span>
+           <span>is the coolest field data ever!</span>
+        </metal:fill>
+      </metal:use>
+    </metal:define>
+
+    <metal:define define-macro="edit">
+      <metal:block use-macro="context/widgets/string/macros/edit" />
+    </metal:define>
+
+    <metal:define define-macro="search">
+      <metal:block use-macro="context/widgets/string/macros/search" />
+    </metal:define>
+
+  </body>
+
+</html>

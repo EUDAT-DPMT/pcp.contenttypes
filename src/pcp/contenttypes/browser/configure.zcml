@@ -372,6 +372,13 @@
 
   <browser:page
 	for="*"
+	name="trusted_string"
+	template="trusted_string.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
+	for="*"
 	name="dt_engagement_macros"
 	template="dt_engagement_macros.pt"
 	permission="zope2.View"
