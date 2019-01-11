@@ -6,7 +6,7 @@ from Products.ATBackRef import BackReferenceWidget
 from zope.interface import implements
 
 from Products.Archetypes import atapi
-from Products.ATContentTypes.content import base
+from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 
 from Products.ATBackRef import BackReferenceField
@@ -19,7 +19,7 @@ from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
-RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+RegisteredServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('general_provider',
                          relationship='general_provider',
                          allowed_types=('Provider',),
@@ -110,15 +110,31 @@ RegisteredServiceSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 )) + CommonFields.copy()
 
 
-schemata.finalizeATCTSchema(RegisteredServiceSchema, moveDiscussion=False)
+schemata.finalizeATCTSchema(RegisteredServiceSchema, 
+                            folderish=True, 
+                            moveDiscussion=False
+)
 
 
-class RegisteredService(base.ATCTContent, CommonUtilities):
+class RegisteredService(folder.ATFolder, CommonUtilities):
     """A CDI admin registers a new service"""
     implements(IRegisteredService)
 
     meta_type = "RegisteredService"
     schema = RegisteredServiceSchema
 
+    # Lazy fixing of missing BTree initialization of old items
+
+    def __contains__(self, key):
+        try:
+            return key in self._tree
+        except TypeError:
+            from BTrees.OOBTree import OOBTree
+            from BTrees.Length import Length
+            self._tree = OOBTree()
+            self._mt_index = OOBTree()
+            self._count = Length()
+            self._cleanup()
+            return key in self._tree
 
 atapi.registerType(RegisteredService, PROJECTNAME)
