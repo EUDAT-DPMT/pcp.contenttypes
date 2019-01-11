@@ -13,8 +13,8 @@
   <property name="global_allow">false</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
-   <element value="Folder"/>
-   <element value="RegisteredServiceComponent"/>
+   <element value="Document"/>
+   <element value="File"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">table-view</property>
@@ -26,7 +26,7 @@
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
   <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/" visible="True">
+    url_expr="string:${folder_url}/" visible="True">
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
