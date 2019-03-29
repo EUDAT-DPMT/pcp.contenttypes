@@ -8,6 +8,7 @@ from zope.interface import implements
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
+from Products.ATVocabularyManager import NamedVocabulary ##neu
 
 from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
@@ -124,6 +125,13 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                       widget=atapi.StringWidget(description='Please mention the '
                                                 'scientific field(s) the data '
                                                 'originate from.'),
+                      ),
+    atapi.LinesField('scopes',
+                      required=1,
+                      format='checkbox',
+                      vocabulary=NamedVocabulary('scope_vocabulary'),
+                      widget=atapi.MultiSelectionWidget(description='Tick all that apply. '
+                                                'If in doubt, select "EUDAT".'),
                       ),
     BackReferenceField('resources',
                        relationship='project',
