@@ -128,10 +128,11 @@ ProjectSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                       ),
     atapi.LinesField('scopes',
                       required=1,
-                      format='checkbox',
                       vocabulary=NamedVocabulary('scope_vocabulary'),
                       widget=atapi.MultiSelectionWidget(description='Tick all that apply. '
-                                                'If in doubt, select "EUDAT".'),
+                                                        'If in doubt, select "EUDAT".',
+                                                        format='checkbox',
+                                                    ),
                       ),
     BackReferenceField('resources',
                        relationship='project',
