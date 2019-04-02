@@ -99,6 +99,10 @@ RegisteredServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                       'edit': 'invisible'},
                                                   ),
                        ),
+    atapi.ComputedField('scopes',
+                        expression='here.getScopeValues()',
+                        widget=atapi.ComputedWidget(label='Project Scopes'),
+                        ),
     BackReferenceField('resources',
                        relationship='services',
                        multiValued=True,
@@ -137,4 +141,13 @@ class RegisteredService(folder.ATFolder, CommonUtilities):
             self._cleanup()
             return key in self._tree
 
+    def getScopeValues(self):
+        """Return the human readable values of the scope keys"""
+        projects = self.getUsed_by_projects()
+        scopes = []
+        [scopes.extend(p.getScopeValues()) for p in projects]
+        return set(scopes)
+
+
 atapi.registerType(RegisteredService, PROJECTNAME)
+ 

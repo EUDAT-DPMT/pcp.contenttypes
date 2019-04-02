@@ -8,7 +8,7 @@ from zope.interface import implements
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
-from Products.ATVocabularyManager import NamedVocabulary ##neu
+from Products.ATVocabularyManager import NamedVocabulary
 
 from Products.ATExtensions import ateapi
 from Products.ATBackRef import BackReferenceField
@@ -177,6 +177,11 @@ class Project(folder.ATFolder, CommonUtilities):
         raw = self.schema['used'].get(self)
         return self.convert(raw)
 
+    def getScopeValues(self):
+        """Return the human readable values of the scope keys"""
+        vocab = self.portal_vocabularies.scope_vocabulary
+        raw = self.getScopes()
+        return [vocab.getVocabularyDict()[r] for r in raw]
 
 
 atapi.registerType(Project, PROJECTNAME)
