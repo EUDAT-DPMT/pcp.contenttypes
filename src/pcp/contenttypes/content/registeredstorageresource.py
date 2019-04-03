@@ -119,8 +119,17 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
                 return 0
             else:
                 return int(number)
-                
         return number
+
+    def getScopeValues(self, asString = 0):
+        """Return the human readable values of the scope keys"""
+        project = self.getProject()
+        scopes = []
+        scopes.extend(project.getScopeValues())
+        s = set(scopes)
+        if  asString:
+            return ", ".join(s)
+        return s # tuple(s)
 
 
 atapi.registerType(RegisteredStorageResource, PROJECTNAME)
