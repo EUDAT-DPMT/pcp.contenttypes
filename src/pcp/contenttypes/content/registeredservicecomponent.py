@@ -82,6 +82,10 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
                                                   label='Part of these registered services',
                                                   ),
                        ),
+    atapi.ComputedField('scopes',
+                        expression='here.getScopeValues(asString = 1)',
+                        widget=atapi.ComputedWidget(label='Project Scopes'),
+                        ),
     atapi.StringField('host_name',
                       searchable=1,
                       widget=atapi.StringWidget(label='Host name',
@@ -216,6 +220,18 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
             latest_version=latest_version,
             latest_version_url=latest_version_url,
             available_implementations=available_implementations)
+
+    def getScopeValues(self, asString = 0):
+        """Return the human readable values of the scope keys"""
+        ps = self.getParent_services()
+        projects = []
+        [projects.extend(rs.getUsed_by_projects()) for rs in ps]
+        scopes = []
+        [scopes.extend(p.getScopeValues()) for p in projects]
+        s = set(scopes)
+        if  asString:
+            return ", ".join(s)
+        return s # tuple(s)
 
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)
