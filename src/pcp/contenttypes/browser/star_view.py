@@ -25,7 +25,15 @@ body_star_template = \
   <sr:StorageSystem>{url}</sr:StorageSystem>
   <sr:StartTime>{starttime}Z</sr:StartTime>
   <sr:EndTime>{endtime}Z</sr:EndTime>
-  <sr:ResourceCapacityUsed>{usage}</sr:ResourceCapacityUsed>"""
+  <sr:ResourceCapacityUsed>{usage}</sr:ResourceCapacityUsed>
+  <sr:SubjectIdentity>
+    <sr:LocalUser>{customer_title}</sr:LocalUser>
+    <sr:LocalGroup>{project_title}</sr:LocalGroup>
+    <sr:UserIdentity>{customer_url}</sr:UserIdentity>
+    <sr:Group>{project_url}</sr:Group>
+    <sr:GroupAttribute sr:attributeType='title'>{project_title}</sr:GroupAttribute>
+    <sr:GroupAttribute sr:attributeType='scope'>{project_scope}</sr:GroupAttribute>
+  </sr:SubjectIdentity>"""
 
 class StarView(Accounting):
     """Render a StAR view for registered storage components"""
@@ -62,6 +70,21 @@ class StarView(Accounting):
         result['usage'] = latest['core'].get('value')  # has to be in byte
         # the below assumes that our acquisition parent is a provider
         result['site'] = context.aq_parent.getId().upper()
+        customer = context.getCustomer()
+        if customer is None:
+            result['customer_title'] = "(no customer found)"
+            result['customer_url'] = "(no customer found)"
+        else:            
+            result['customer_title'] = customer.Title()
+            result['customer_url'] = customer.absolute_url()
+        project = context.getProject()
+        if project is None:
+            result['project_title'] = "(no project found)"
+            result['project_url'] = "(no project foumd)"
+        else:
+            result['project_title'] = project.Title()
+            result['project_url'] = project.absolute_url()
+        result['project_scope'] = context.getScopeValues(asString=1) or "EUDAT"
         return result
 
     def star(self, with_ns=True):

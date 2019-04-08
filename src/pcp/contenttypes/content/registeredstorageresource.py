@@ -124,6 +124,11 @@ class RegisteredStorageResource(base.ATCTContent, CommonUtilities, Accountable):
     def getScopeValues(self, asString = 0):
         """Return the human readable values of the scope keys"""
         project = self.getProject()
+        if project is None:
+            if asString:
+                return ''
+            else:
+                return ('',)
         scopes = []
         scopes.extend(project.getScopeValues())
         s = set(scopes)
