@@ -178,19 +178,19 @@ class BaseSummaryView(BrowserView):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title',
                 'community', 'registered_services_used', 'general_provider',
-                'topics', 'used_new', 'registered_objects',
+                'topics', 'scopes', 'used_new', 'registered_objects',
                 'start_date', 'end_date', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Title',
                 'Customer', 'Service(s)', 'General provider',
-                'Topics', 'Used Storage', 'Objects',
+                'Topics', 'Scope(s)', 'Used Storage', 'Objects',
                 'Start date', 'End date', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('used_new', 'registered_objects', 'topics', 'start_date', 'end_date')
+        return ('used_new', 'registered_objects', 'topics', 'scopes', 'start_date', 'end_date')
 
     def content_items(self, portal_type):
         """The content items to show"""

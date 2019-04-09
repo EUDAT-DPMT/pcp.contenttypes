@@ -71,7 +71,7 @@ class StarView(Accounting):
         # the below assumes that our acquisition parent is a provider
         result['site'] = context.aq_parent.getId().upper()
         customer = context.getCustomer()
-        if customer is None:
+        if customer is None: 
             result['customer_title'] = "(no customer found)"
             result['customer_url'] = "(no customer found)"
         else:            
