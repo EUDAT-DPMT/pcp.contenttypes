@@ -321,17 +321,17 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'general_provider', 'contact', 'managers', 'monitored', 'service_components',
+        return ('title', 'general_provider', 'contact', 'managers', 'monitored', 'scopes', 'service_components',
                 'created', 'modified', 'state')
 
     def field_labels(self):
-        """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Service name', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Service component(s)',
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('Service name', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Project scope(s)', 'Service component(s)',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('monitored',)
+        return ('monitored', 'scopes')
 
 
 class RegisteredServiceComponentOverview(BaseSummaryView):
@@ -347,18 +347,18 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_url', 'parent_provider', 'contacts',
+        return ('title', 'service_url', 'parent_provider', 'scopes', 'contacts',
                 'monitored', 'host_name',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Service component', 'URL', 'Provider', 'Contact(s)', 'Monitored', 'Host name',
+        return ('Service component', 'URL', 'Provider', 'Project scope(s)', 'Contact(s)', 'Monitored', 'Host name',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('service_url', 'monitored', 'host_name')
+        return ('service_url', 'monitored', 'host_name', 'scopes')
 
 
 class RequestOverview(BaseSummaryView):
@@ -412,18 +412,18 @@ class RegisteredResourceOverview(BaseSummaryView):
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
-                'compute_resources', 'storage_resources',
+                'compute_resources', 'storage_resources', 'scopes', 
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Resource name', 'Provider', 'Operational contact (email)', 'Business contact (email)',
-                'Compute resources', 'Storage resources',
+                'Compute resources', 'Storage resources', 'Project scope(s)', 
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('compute_resources', 'storage_resources')
+        return ('compute_resources', 'storage_resources', 'scopes')
 
 class RegisteredStorageResourceOverview(BaseSummaryView):
     """Overview of all registered storage resources no matter where they are located"""
@@ -439,19 +439,19 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
 
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
-        return ('title', 'customer', 'project', 'parent_provider', 'services', \
+        return ('title', 'customer', 'project', 'parent_provider', 'scopes', 'services', \
                 'storage_class', 'number', 
                 'usage', 'allocated', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Storage Name', 'Customer', 'Project', 'Provider', 'Deployed on', \
+        return ('Storage Name', 'Customer', 'Project', 'Provider', 'Project scope(s)', 'Deployed on', \
                 'Storage Class', 'Registered Objects', 
                 'Used Storage', 'Allocated Storage', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('usage', 'allocated', 'storage_class')
+        return ('usage', 'allocated', 'storage_class', 'scopes')
 
 
 class ServiceOfferOverview(BaseSummaryView):
