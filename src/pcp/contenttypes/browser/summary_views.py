@@ -202,6 +202,35 @@ class BaseSummaryView(BrowserView):
         return renderer(content, field_id)
 
 
+class PeopleOverview(BaseSummaryView):
+    """Overview of all people involved"""
+
+    title = "People"
+
+    description = "All people/address book information stored in DPMT"
+
+    def content_items(self):
+        """All address book entries"""
+        return [element.getObject() for element in self.catalog(portal_type='Person')]
+
+    def fields(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for', 
+               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for', 
+               'community_representative', 'community_admin', 'enables', 'service_owner_of', 
+               'principle_investigator_of','manager_of_registered_service')
+
+    def field_labels(self):
+        """hardcoded for a start - to be overwritten in hte specific classs"""
+        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for',
+               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for',
+               'community_representative', 'community_admin', 'enables', 'service_owner_of',
+               'principle_investigator_of','manager_of_registered_service')
+
+    def simple_fields(self):
+        """Manually maintained subset of fields where it is safe to just render the widget."""
+        return ['email']
+
 class CustomerOverview(BaseSummaryView):
     """Overview of all customers/sponsors/communities"""
 

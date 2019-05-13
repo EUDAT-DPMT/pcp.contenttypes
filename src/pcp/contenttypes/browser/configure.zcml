@@ -196,6 +196,14 @@
 	/>
 
   <browser:page
+        for="Products.Archetypes.interfaces.IBaseObject"
+        name="people_overview"
+        class="pcp.contenttypes.browser.summary_views.PeopleOverview"
+        template="summary_views.pt"
+        permission="cmf.ManagePortal"
+        />
+
+  <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="customer_overview"
 	class="pcp.contenttypes.browser.summary_views.CustomerOverview"
