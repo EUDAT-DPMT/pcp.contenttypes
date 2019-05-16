@@ -30,6 +30,8 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
                                                        allow_search=1,
+                                                       visible={
+                                                           'edit': 'invisible'},
                                                        ),
                          ),
     atapi.ReferenceField('service_option',

@@ -7,6 +7,8 @@ from pcp.contenttypes.interfaces import IRegisteredStorageResource
 END_OF_EUDAT2020 = "2018-02-28"
 
 from zope.component.hooks import getSite
+from plone.app.uuid.utils import uuidToObject
+
 from DateTime.DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
@@ -431,6 +433,27 @@ class CommonUtilities(object):
                 continue
             converted.append(self.convert(item))
         return converted
+
+    # Service offer and request types need this enhanced mutator
+
+    def setService_option(self, value):
+        """
+        Custom mutator to set the linked service in addition
+        """
+        self.schema['service_option'].set(self, value)
+        # now infer the service from the service option
+        # this assumes that the service is the "grandparent" 
+        # of the selected service option
+        option = uuidToObject(value)
+        if option is None:
+            self.schema['service'].set(self, [])
+        else:
+            service = option.unrestrictedTraverse("../..")
+            try:
+                self.schema['service'].set(self, service.UID())
+            except KeyError:
+                pass    
+                
 
     # Enable backlinks to the central registry
 

@@ -25,6 +25,8 @@ ServiceOfferSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                        'the service being offered.',
                                                        allow_browse=1,
                                                        startup_directory='/catalog',
+                                                       visible={
+                                                           'edit': 'invisible'},
                                                        ),
                          ),
     atapi.ReferenceField('service_option',
