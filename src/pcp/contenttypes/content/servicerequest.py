@@ -36,9 +36,10 @@ ServiceRequestSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                          relationship='service_option',
                          allowed_types=('Document',),
                          widget=ReferenceBrowserWidget(label='Service option',
-                                                       allow_browse=1,
                                                        allow_search=1,
-                                                       startup_directory='/catalog',
+                                                       base_query={
+                                                           'Subject': ["Service option"]},
+                                                       show_results_without_query=1,
                                                        ),
                          ),
     atapi.ReferenceField('service_hours',
