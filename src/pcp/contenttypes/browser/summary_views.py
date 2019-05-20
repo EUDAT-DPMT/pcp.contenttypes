@@ -36,6 +36,25 @@ def render_reference_field(content, field_id, with_state=False):
                         (item.absolute_url(), item.Title()))
     return "<br />".join(text)
 
+def render_service_options(content, field_id, with_state=False):
+    try:
+        objs = content['options'].contentValues()
+    except KeyError:
+        return "No options specified"
+    text = []
+    if objs == []:
+        return "no options specified"
+    for item in objs:
+        if with_state:
+            state = content.portal_workflow.getInfoFor(item, 'review_state')
+            text.append("<a href='%s'>%s</a> (%s)" %
+                        (item.absolute_url(), item.Title(), state))
+
+        else:
+            text.append("<a href='%s'>%s</a>" %
+                        (item.absolute_url(), item.Title()))
+    return "<br />".join(text)
+
 def render_service_components(content, field_id):
     return render_reference_field(content, field_id, with_state=True)
 
@@ -144,6 +163,7 @@ class BaseSummaryView(BrowserView):
                       'modified': modification_date,
                       'startDate': render_date,
                       'resources': render_resources,
+                      'service_options': render_service_options,
                       'service_components': render_service_components,
                       'number': render_number_of_objects,
                       'contact_email': render_contact_email,
@@ -310,12 +330,12 @@ class ServiceOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_type', 'service_owner', 'contact',
+        return ('title', 'service_options', 'service_type', 'service_owner', 'contact',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Type', 'Owner', 'Contact',
+        return ('Title', 'Options', 'Type', 'Owner', 'Contact',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
