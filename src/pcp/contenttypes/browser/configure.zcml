@@ -60,6 +60,14 @@
 	permission="pcp.contenttypes.view_internals"
 	/>
 
+ <browser:page
+	for="Products.Archetypes.interfaces.IBaseObject"
+	name="qualifiedTitle"
+	class="pcp.contenttypes.browser.qualified_title.QualifiedTitleView"
+	attribute="qualifiedTitle"
+	permission="zope2.View"
+	/>
+
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="resetUID"

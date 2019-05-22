@@ -372,12 +372,6 @@ class CommonUtilities(object):
             ids.append(handle)
         return tuple(ids)
 
-    def qualifiedTitle(self):
-        """Portal type plus title"""
-        type_info = self.getTypeInfo()
-        title = self.Title()
-        return "%s: %s" % (type_info.Title(), title)
-
     def country(self):
         """
         Look for the country in the address field including the aq_parent
