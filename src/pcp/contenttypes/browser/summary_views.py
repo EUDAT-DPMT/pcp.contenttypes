@@ -45,6 +45,10 @@ def render_service_options(content, field_id, with_state=False):
     if objs == []:
         return "no options specified"
     for item in objs:
+        if item.portal_type != 'Document':
+            # this assumes that all documents here describe options
+            # and other types don't
+            continue
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
             text.append("<a href='%s'>%s</a> (%s)" %
