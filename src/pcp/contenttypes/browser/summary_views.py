@@ -564,6 +564,21 @@ class ResourceOfferOverview(RegisteredResourceOverview):
         """All resource offers regardless of location"""
         return [element.getObject() for element in self.catalog(portal_type='ResourceOffer')]
 
+    def fields(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
+                'compute_resources', 'storage_resources', 'constraints', 
+                'created', 'modified', 'state')
+
+    def field_labels(self):
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('Resource offer', 'Provider', 'Operational contact (email)', 'Business contact (email)',
+                'Compute resources', 'Storage resources', 'Constraints', 
+                'Created', 'Modified', 'State')
+
+    def simple_fields(self):
+        """Manually maintained subset of fields where it is safe to just render the widget."""
+        return ('compute_resources', 'storage_resources')
 
 class DowntimeOverview(BaseSummaryView):
 
