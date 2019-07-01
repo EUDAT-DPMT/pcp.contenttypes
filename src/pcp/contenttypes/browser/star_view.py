@@ -74,15 +74,15 @@ class StarView(Accounting):
         if customer is None: 
             result['customer_title'] = "(no customer found)"
             result['customer_url'] = "(no customer found)"
-        else:            
-            result['customer_title'] = customer.Title()
+        else: 
+            result['customer_title'] = customer.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
             result['customer_url'] = customer.absolute_url()
         project = context.getProject()
         if project is None:
             result['project_title'] = "(no project found)"
             result['project_url'] = "(no project foumd)"
         else:
-            result['project_title'] = project.Title()
+            result['project_title'] = project.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
             result['project_url'] = project.absolute_url()
         result['project_scope'] = context.getScopeValues(asString=1) or "EUDAT"
         return result
