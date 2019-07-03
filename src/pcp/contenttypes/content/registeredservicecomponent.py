@@ -6,7 +6,7 @@ import semantic_version
 from zope.interface import implements
 
 from Products.Archetypes import atapi
-from Products.ATContentTypes.content import base
+from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 from Products.ATVocabularyManager import NamedVocabulary
 from Products.ATExtensions import ateapi
@@ -21,7 +21,7 @@ from pcp.contenttypes.config import PROJECTNAME
 from pcp.contenttypes.content.common import CommonFields
 from pcp.contenttypes.content.common import CommonUtilities
 
-RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+RegisteredServiceComponentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.ReferenceField('service_component_implementation_details',
                          accessor='getServiceComponentImplementationDetails',
                          read_permission='View internals',
@@ -158,10 +158,10 @@ RegisteredServiceComponentSchema = schemata.ATContentTypeSchema.copy() + atapi.S
 
 
 schemata.finalizeATCTSchema(
-    RegisteredServiceComponentSchema, moveDiscussion=False)
+    RegisteredServiceComponentSchema, folderish=True, moveDiscussion=False)
 
 
-class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
+class RegisteredServiceComponent(folder.ATFolder, CommonUtilities):
     """A CDI admin registers a new service component"""
     implements(IRegisteredServiceComponent)
 
@@ -232,6 +232,22 @@ class RegisteredServiceComponent(base.ATCTContent, CommonUtilities):
         if  asString:
             return ", ".join(s)
         return s # tuple(s)
+
+# in place migration after enabling folderish behavior
+# Lazy fixing of missing BTree initialization of old items
+
+    def __contains__(self, key):
+        try:
+            return key in self._tree
+        except TypeError:
+            from BTrees.OOBTree import OOBTree
+            from BTrees.Length import Length
+            self._tree = OOBTree()
+            self._mt_index = OOBTree()
+            self._count = Length()
+            self._cleanup()
+            return key in self._tree
+
 
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)
