@@ -60,6 +60,7 @@ service_template = """
     <CORE></CORE>
     <IN_PRODUCTION></IN_PRODUCTION>
     <NODE_MONITORED>{monitored}</NODE_MONITORED>
+    <CONTACT_EMAIL>{email}</CONTACT_EMAIL>
     <SITENAME>{site_name}</SITENAME>
     <COUNTRY_NAME>{country}</COUNTRY_NAME>
     <COUNTRY_CODE>{country_code}</COUNTRY_CODE>
@@ -221,6 +222,9 @@ class ServiceView(BrowserView):
         result['service_type'] = context.Schema()['service_type'].vocabulary.getVocabularyDict(context).get(context.getService_type(),'')
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
+        contacts = context.getContacts()
+        result['email'] = ','.join([contact.getEmail() for 
+                                    contact in contacts])
         result['url'] = context.getService_url()
         result['hostname'] = context.getHost_name()
         # the below assumes that our acquisition parent is a provider
