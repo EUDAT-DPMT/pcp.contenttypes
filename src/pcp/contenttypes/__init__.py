@@ -48,3 +48,9 @@ def initialize(context):
                           permission=config.ADD_PERMISSIONS[atype.portal_type],
                           extra_constructors=(constructor,),
                           ).initialize(context)
+
+# custom object source binders for dexterity relation fields
+
+from plone.formwidget.contenttree import ObjPathSourceBinder
+project_source = ObjPathSourceBinder(portal_type='Project')
+rs_source = ObjPathSourceBinder(portal_type='RegisteredService')
