@@ -3,6 +3,7 @@ from datetime import datetime
 from cStringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_callable
 from Products.Archetypes.atapi import ReferenceField
 
 CSV_TEMPLATE = '"%s"'
@@ -225,6 +226,33 @@ class BaseSummaryView(BrowserView):
         renderer = self.render_methods.get(field_id, render_reference_field)
         return renderer(content, field_id)
 
+class EndpointOverview(BaseSummaryView):
+    """All specific endpoints"""
+    
+    title = "Endpoints"
+    description = "All specific endpoints"
+ 
+    def content_items(self):
+        """All endpoint entries"""
+        etypes = ['endpoint_handle', 'endpoint_irods']
+        return [element.getObject() for element in self.catalog(portal_type=etypes)]
+
+    def fields(self):
+        """Field names; needs to exist at all endpoint types"""
+        return ('title', 'host', 'monitored', 'system_operations_user')
+
+    def field_labels(self):
+        """just the field names for a start"""
+        return self.fields()
+
+    def render(self, content, field_id):
+        """Dexterity type rendering of field values"""
+        # https://github.com/plone/plone.app.contenttypes/blob/master/plone/app/contenttypes/browser/folder.py
+        value = getattr(content, field_id, '')
+        if safe_callable(value):
+            value = value()
+        return value
+    
 
 class PeopleOverview(BaseSummaryView):
     """Overview of all people involved"""

@@ -107,6 +107,13 @@
 	permission="zope2.View"
 	/>
 
+ <browser:page
+	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+	name="endpoint_summary_view"
+	class="pcp.contenttypes.browser.summary_views.EndpointOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
