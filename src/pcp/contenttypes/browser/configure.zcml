@@ -117,7 +117,7 @@
 
  <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-	name="endpoint_summary_view"
+	name="service_endpoint_overview"
 	class="pcp.contenttypes.browser.summary_views.EndpointOverview"
 	template="summary_views.pt"
 	permission="zope2.View"

@@ -262,7 +262,7 @@ class EndpointOverview(BaseSummaryView):
         """Field names; needs to exist at all endpoint types"""
         return ('title', 'parent_rsc','provider', 'host', 'monitored', 
                 'system_operations_user',
-                'related_project')
+                'related_project','related_service')
 
     def field_labels(self):
         """just the field names for a start"""
