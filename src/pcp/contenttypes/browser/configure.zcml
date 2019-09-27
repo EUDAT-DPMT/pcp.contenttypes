@@ -60,6 +60,14 @@
 	permission="pcp.contenttypes.view_internals"
 	/>
 
+  <browser:page
+	for="plone.dexterity.interfaces.IDexterityContent"
+	name="json"
+	class="pcp.contenttypes.browser.jsonview.JSONViewDX"
+	attribute="serialize"
+	permission="pcp.contenttypes.view_internals"
+	/>
+
  <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="qualifiedTitle"

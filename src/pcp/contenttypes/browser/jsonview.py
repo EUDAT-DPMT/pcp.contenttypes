@@ -2,6 +2,13 @@
 # http://opensourcehacker.com/2013/01/04/exporting-plone-content-as-json/
 # Thanks Mikko!
 
+#
+# for DX types use Plone's restapi (wasn't available before)
+#
+
+from zope.component import getMultiAdapter
+from plone.restapi.interfaces import ISerializeToJson
+
 import os
 import base64
 
@@ -40,6 +47,18 @@ hidden_fields = (
     'excludeFromNav',
     'nextPreviousEnabled'
 )
+
+
+class JSONViewDX(BrowserView):
+    """Present dexterity types as JSON"""
+
+    def serialize(self):
+        serializer = getMultiAdapter((self.context, self.request), ISerializeToJson)
+        data = serializer()
+        pretty = json.dumps(data, sort_keys=True, indent=4)
+        self.request.response.setHeader("Content-type", "application/json")
+        return pretty
+
 
 
 class JSONView(BrowserView):
