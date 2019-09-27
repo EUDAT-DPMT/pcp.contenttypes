@@ -70,6 +70,13 @@ def render_with_link(content, field_id):
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
 
+def render_with_link_dx(content, field_id):
+    field_value = getattr(content, field_id, '')
+    if safe_callable(field_value):
+        field_value = field_value()
+    url = content.absolute_url()
+    return "<a href='%s'>%s</a>" % (url, field_value)
+
 
 def render_parent(content, field_id):
     parent = content.aq_inner.aq_parent
@@ -159,6 +166,10 @@ def render_constraints(content, field_id):
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
+    render_methods_dx = {'title': render_with_link_dx,
+                         'parent_rsc': render_parent,
+                     }
+
     render_methods = {'state': render_state,
                       'portal_type': render_type,
                       'title': render_with_link,
@@ -239,7 +250,9 @@ class EndpointOverview(BaseSummaryView):
 
     def fields(self):
         """Field names; needs to exist at all endpoint types"""
-        return ('title', 'host', 'monitored', 'system_operations_user')
+        return ('title', 'parent_rsc','host', 'monitored', 
+                'system_operations_user',
+                'related_project')
 
     def field_labels(self):
         """just the field names for a start"""
@@ -248,6 +261,9 @@ class EndpointOverview(BaseSummaryView):
     def render(self, content, field_id):
         """Dexterity type rendering of field values"""
         # https://github.com/plone/plone.app.contenttypes/blob/master/plone/app/contenttypes/browser/folder.py
+        renderer = self.render_methods_dx.get(field_id, None)
+        if renderer is not None:
+            return renderer(content, field_id)
         value = getattr(content, field_id, '')
         if safe_callable(value):
             value = value()
