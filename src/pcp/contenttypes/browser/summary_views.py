@@ -265,8 +265,15 @@ class EndpointOverview(BaseSummaryView):
         if renderer is not None:
             return renderer(content, field_id)
         value = getattr(content, field_id, '')
+        # catch relation fields
+        target = getattr(value, 'to_object', None)
+        if target is not None:
+            title = target.Title()
+            url = target.absolute_url()
+            return "<a href='%s'>%s</a>" % (url, title)
         if safe_callable(value):
             value = value()
+
         return value
     
 
