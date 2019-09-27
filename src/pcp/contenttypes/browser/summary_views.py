@@ -85,9 +85,18 @@ def render_parent(content, field_id):
     return "<a href='%s'>%s</a>" % (url, title)
 
 
+def render_grandparent(content, field_id):
+    parent = content.aq_inner.aq_parent
+    grandparent = parent.aq_inner.aq_parent
+    title = grandparent.Title()
+    url = grandparent.absolute_url()
+    return "<a href='%s'>%s</a>" % (url, title)
+
+
 def creation_date(content, field_id):
     value = content.created()
     return value.Date()
+
 
 def modification_date(content, field_id):
     value = content.modified()
@@ -167,7 +176,8 @@ class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
     render_methods_dx = {'title': render_with_link_dx,
-                         'parent_rsc': render_parent,
+                         'parent_rsc': render_parent,     # endpoint specific
+                         'provider': render_grandparent,  # endpoint specific
                      }
 
     render_methods = {'state': render_state,
@@ -250,7 +260,7 @@ class EndpointOverview(BaseSummaryView):
 
     def fields(self):
         """Field names; needs to exist at all endpoint types"""
-        return ('title', 'parent_rsc','host', 'monitored', 
+        return ('title', 'parent_rsc','provider', 'host', 'monitored', 
                 'system_operations_user',
                 'related_project')
 
