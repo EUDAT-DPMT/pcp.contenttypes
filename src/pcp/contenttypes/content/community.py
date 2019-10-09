@@ -23,6 +23,9 @@ CommunitySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
     ateapi.UrlField('url'),
     ateapi.AddressField('address'),
+    atapi.StringField('VAT',
+                      searchable=1,
+                      ),
     atapi.ReferenceField('representative',
                          relationship='representative',
                          allowed_types=('Person',),

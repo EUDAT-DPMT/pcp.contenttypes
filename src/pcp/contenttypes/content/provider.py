@@ -64,6 +64,9 @@ ProviderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                       searchable=1,
                       ),
     ateapi.AddressField('address'),
+    atapi.StringField('VAT',
+                      searchable=1,
+                      ),
     atapi.StringField('timezone'),  # from a controlled vocab maybe?
     atapi.StringField('latitude',
                       widget=atapi.StringWidget(description='If known; GOCDB can use this. '
