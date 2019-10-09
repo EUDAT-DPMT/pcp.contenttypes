@@ -250,8 +250,8 @@ class BaseSummaryView(BrowserView):
 class EndpointOverview(BaseSummaryView):
     """All specific endpoints"""
     
-    title = "Endpoints"
-    description = "All specific endpoints"
+    title = "Service Endpoints"
+    description = "All specific endpoints of services / service components"
  
     def content_items(self):
         """All endpoint entries"""
@@ -261,12 +261,12 @@ class EndpointOverview(BaseSummaryView):
     def fields(self):
         """Field names; needs to exist at all endpoint types"""
         return ('title', 'parent_rsc','provider', 'host', 'monitored', 
-                'system_operations_user',
-                'related_project','related_service')
+                'system_operations_user', 'related_project','related_service')
 
     def field_labels(self):
-        """just the field names for a start"""
-        return self.fields()
+        """hardcoded for a start - to be overwritten in the specific classes"""
+        return ('Service endpoint', 'Service component','Provider', 'Host', 'Monitored',
+                'System operations user', 'Project','Service')
 
     def render(self, content, field_id):
         """Dexterity type rendering of field values"""
