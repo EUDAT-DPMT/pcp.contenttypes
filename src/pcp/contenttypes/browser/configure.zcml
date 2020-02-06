@@ -20,6 +20,7 @@
     permission="zope2.View"
   />
 
+<!--
   <browser:page
     name="table_view_macros"
     for="uwosh.pfg.d2c.interfaces.IFormSaveData2ContentEntry"
@@ -34,7 +35,7 @@
     attribute="process_enabling_form_data"
     permission="cmf.ModifyPortalContent"
     />
-
+ -->
 
   <browser:page
     name="getServices"
