@@ -6,12 +6,44 @@ from pcp.contenttypes import config
 
 from Products.Archetypes import atapi
 from Products.CMFCore import utils
+from plone.app.upgrade.utils import alias_module
+from zope.interface import Interface
 
 # Define a message factory for when this product is internationalised.
 # This will be imported with the special name "_" in most modules. Strings
 # like _(u"message") will then be extracted by i18n tools for translation.
 
 contenttypesMessageFactory = MessageFactory('pcp.contenttypes')
+
+
+class IBBB(Interface):
+    pass
+
+
+# stuff from incompletely uninstalled addons
+try:
+    from collective.handleclient.interfaces import ICollectiveHandleclientLayer
+    ICollectiveHandleclientLayer  # noqa
+except ImportError:
+    alias_module(
+        'collective.handleclient.interfaces.ICollectiveHandleclientLayer',
+        IBBB)
+
+try:
+    from App.interfaces import IPersistentExtra
+    IPersistentExtra  # noqa
+except ImportError:
+    alias_module(
+        'App.interfaces.IPersistentExtra',
+        IBBB)
+
+try:
+    from App.interfaces import IUndoSupport
+    IUndoSupport  # noqa
+except ImportError:
+    alias_module(
+        'App.interfaces.IUndoSupport',
+        IBBB)
 
 
 def initialize(context):
