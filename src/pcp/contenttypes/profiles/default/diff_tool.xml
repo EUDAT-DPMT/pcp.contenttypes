@@ -61,5 +61,10 @@
   <type portal_type="ServiceRequest">
    <field name="any" difftype="Compound Diff for AT types"/>
   </type>
+
+  <type portal_type="service_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+
  </difftypes>
 </object>

@@ -10,4 +10,8 @@
       id="pcp.contenttypes.modify_internals"
       title="Modify internals" />
 
+  <permission
+      id="pcp.contenttypes.addService"
+      title="pcp.contenttypes: Add Service" />
+
 </configure>
