@@ -18,7 +18,7 @@
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading" 
+        <h1 class="documentFirstHeading"
             tal:content="view/title">
         </h1>
 
@@ -34,23 +34,27 @@
     <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
     <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
 
-	<table class="listing dt-table" id="overview-table">
-	  <thead>
-	    <tr>
+  <table class="listing dt-table" id="overview-table"
+          tal:define="simple_fields python:view.simple_fields();
+                      fields python:view.fields();">
+    <thead>
+      <tr>
             <th tal:repeat="label view/field_labels" tal:content="label">Header</th>
-	    </tr>
-	  </thead>
+      </tr>
+    </thead>
       <tbody>
-	    <tr tal:repeat="content view/content_items">
-            <td tal:repeat="field view/fields">
+      <tr tal:repeat="content view/content_items">
+            <td tal:repeat="field python:fields">
+
                 <tal:def define="field_visible python: view.field_visible(content, field)">
                     <tal:if condition="field_visible">
-                      <div tal:condition="python:field in view.simple_fields()">
+                      <div tal:condition="python:field in simple_fields">
                         <metal:field use-macro="python:content.widget(field, mode='view')">
                           Field value
-                        </metal:field>	
+                        </metal:field>
                       </div>
-                      <div tal:condition="python:field not in view.simple_fields()"
+                      <div tal:condition="python:field not in simple_fields"
+                           tal:define="field python:field.__name__ if not isinstance(field, str) else field"
                            tal:content="structure python:view.render(content, field)">
                         field value
                       </div>
@@ -59,10 +63,10 @@
                </tal:def>
             </td>
         </tr>
-	  </tbody>
-	</table>
+    </tbody>
+  </table>
 
-   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />    
+   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>
