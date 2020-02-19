@@ -289,7 +289,7 @@ class OfferUtilities(object):
 
         result = ''
 
-        if regional: 
+        if regional:
             result += "<em>Regional:</em> %s <br />" % regional
         if thematic:
             result += "<em>Thematic:</em> %s <br />" % thematic
@@ -367,7 +367,7 @@ class CommonUtilities(object):
         """Tuple of all identifiers - from the field plus uid and pid"""
         ids = [entry.get('value', '') for entry in self.getIdentifiers()]
         ids.append(self.UID())
-        handle = self.handle_client._getHandle(self)
+        handle = None  # self.handle_client._getHandle(self)
         if handle is not None:
             ids.append(handle)
         return tuple(ids)
@@ -416,6 +416,7 @@ class CommonUtilities(object):
 
     def PID(self):
         """Return the handle PID if existing; None otherwise"""
+        return None
         return self.handle_client._getHandle(self)
 
     def getStorage_resources(self):
@@ -436,7 +437,7 @@ class CommonUtilities(object):
         """
         self.schema['service_option'].set(self, value)
         # now infer the service from the service option
-        # this assumes that the service is the "grandparent" 
+        # this assumes that the service is the "grandparent"
         # of the selected service option
         option = uuidToObject(value)
         if option is None:
@@ -446,8 +447,8 @@ class CommonUtilities(object):
             try:
                 self.schema['service'].set(self, service.UID())
             except KeyError:
-                pass    
-                
+                pass
+
 
     # Enable backlinks to the central registry
 
@@ -565,7 +566,7 @@ class CommonUtilities(object):
         try:
             return float(d['value']) * unit_map[d['unit']]
         except ValueError:
-            # Can happen if 'value' is a non-castable string 
+            # Can happen if 'value' is a non-castable string
             return 0.0 * unit_map[d['unit']]
 
     def pint_to_dict(self, p):
