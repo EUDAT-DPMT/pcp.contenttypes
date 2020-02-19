@@ -5,8 +5,8 @@ import string
 import pkg_resources
 from email.utils import formataddr
 from email.MIMEText import MIMEText
+from plone import api
 
-import plone.api
 from zopyx.plone.persistentlogger.logger import PersistentLoggerAdapter
 
 
@@ -46,6 +46,8 @@ def send_mail(sender, recipients, subject, template, params, cc=None, cc_admin=F
         email_text = unicode(email_text, 'iso-8859-15')
 
     email_text = formatter.format(email_text, **params)
+    email_from_address = api.portal.get_registry_record('plone.email_from_address')
+    email_from_name = api.portal.get_registry_record('plone.email_from_name')
 
     msg = MIMEText(email_text.encode('utf-8'), _charset='utf8')
     msg.set_charset('utf-8')
@@ -54,14 +56,14 @@ def send_mail(sender, recipients, subject, template, params, cc=None, cc_admin=F
     if sender:
         msg['From'] = sender
     else:
-        portal = plone.api.portal.get()
+        portal = api.portal.get()
         msg['From'] = formataddr(
-            (portal.email_from_name, portal.email_from_address))
+            (email_from_name, email_from_address))
     if cc_admin:
         if admin_alternative_email:
             cc.append(admin_alternative_email)
         else:
-            cc.append(portal.email_from_address)
+            cc.append(email_from_address)
     if cc:
         msg['CC'] = ','.join(cc)
     msg['Subject'] = subject
@@ -70,5 +72,5 @@ def send_mail(sender, recipients, subject, template, params, cc=None, cc_admin=F
         PersistentLoggerAdapter(context).log(
             u'Mail "{}" to {}  + {}, Subject: "{}" sent'.format(subject, recipients, cc, subject))
 
-    mh = plone.api.portal.get_tool('MailHost')
+    mh = api.portal.get_tool('MailHost')
     mh.send(msg.as_string(), immediate=True)

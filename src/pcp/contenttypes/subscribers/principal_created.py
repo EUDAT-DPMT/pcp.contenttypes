@@ -1,5 +1,7 @@
-import plone
+from plone import api
 from pcp.contenttypes.mail import send_mail
+
+import plone
 
 
 def principal_created(event):
@@ -16,10 +18,11 @@ def principal_created(event):
         'email': user.getProperty('email'),
         'id': principal.getId()
     }
+    email_from_address = api.portal.get_registry_record('plone.email_from_address')
 
     send_mail(
         sender=None,
-        recipients=[portal.email_from_address],
+        recipients=[email_from_address],
         subject='A new user visited DPMT',
         template='user-created-by-auto-user-maker.txt',
         params=params,
