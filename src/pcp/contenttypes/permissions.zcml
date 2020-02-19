@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <permission
+      id="pcp.contenttypes.view_internals"
+      title="View internals" />
+
+  <permission
+      id="pcp.contenttypes.modify_internals"
+      title="Modify internals" />
+
+</configure>
