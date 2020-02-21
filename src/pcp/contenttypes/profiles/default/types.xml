@@ -73,5 +73,6 @@
 
   <!-- Dexterity Types -->
   <object name="service_dx" meta_type="Dexterity FTI"/>
+  <object name="provider_dx" meta_type="Dexterity FTI"/>
 
 </object>

@@ -14,4 +14,8 @@
       id="pcp.contenttypes.addService"
       title="pcp.contenttypes: Add Service" />
 
+  <permission
+      id="pcp.contenttypes.addProvider"
+      title="pcp.contenttypes: Add Provider" />
+
 </configure>
