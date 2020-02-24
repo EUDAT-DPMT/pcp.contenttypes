@@ -18,4 +18,12 @@
       id="pcp.contenttypes.addProvider"
       title="pcp.contenttypes: Add Provider" />
 
+  <permission
+      id="pcp.contenttypes.addPerson"
+      title="pcp.contenttypes: Add Person" />
+
+  <permission
+      id="pcp.contenttypes.addProject"
+      title="pcp.contenttypes: Add Project" />
+
 </configure>

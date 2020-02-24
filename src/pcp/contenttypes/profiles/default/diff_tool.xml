@@ -68,7 +68,12 @@
   <type portal_type="provider_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
-
+  <type portal_type="person_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="project_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
 
  </difftypes>
 </object>

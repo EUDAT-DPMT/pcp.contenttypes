@@ -77,7 +77,14 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
-
+  <type name="person_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="project_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
 
  </policymap>
 </repositorytool>
