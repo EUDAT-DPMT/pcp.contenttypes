@@ -26,4 +26,11 @@
       id="pcp.contenttypes.addProject"
       title="pcp.contenttypes: Add Project" />
 
+  <permission
+      id="pcp.contenttypes.addCommunity"
+      title="pcp.contenttypes: Add Community" />
+
+  <permission
+      id="pcp.contenttypes.addDowntime"
+      title="pcp.contenttypes: Add Downtime" />
 </configure>

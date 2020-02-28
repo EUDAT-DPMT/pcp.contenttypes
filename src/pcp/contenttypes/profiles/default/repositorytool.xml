@@ -85,6 +85,14 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
+  <type name="community_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="downtime_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
 
  </policymap>
 </repositorytool>

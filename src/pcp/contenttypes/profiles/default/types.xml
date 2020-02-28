@@ -76,5 +76,7 @@
   <object name="provider_dx" meta_type="Dexterity FTI"/>
   <object name="person_dx" meta_type="Dexterity FTI"/>
   <object name="project_dx" meta_type="Dexterity FTI"/>
+  <object name="community_dx" meta_type="Dexterity FTI"/>
+  <object name="downtime_dx" meta_type="Dexterity FTI"/>
 
 </object>
