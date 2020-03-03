@@ -4,7 +4,10 @@ Includes form fields and behaviour adapters that are useful
 throughout the application 
 """
 
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from plone.dexterity.interfaces import IDexterityContent
+from plone import autoform
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import directives
 from plone.supermodel import model
@@ -15,6 +18,18 @@ from zope.interface import implementer
 from zope.interface import provider
 
 from plone.uuid.interfaces import IUUID
+
+# parts for the data grid type fields
+
+class IIdentifierRowSchema(Interface):
+    type = schema.Choice(title=u"Identifier Type",
+                         values=[u'DOI', u'ORCID', u'EPIC'],)
+    # XXX TODO: get the vocab from the registry
+    value = schema.TextLine(title=u"Identifier Value")
+
+class IAdditionalRowSchema(Interface):
+    key = schema.TextLine(title=u"Key")
+    value = schema.TextLine(title=u"Value")
 
 
 @provider(IFormFieldProvider)
@@ -35,21 +50,27 @@ class IDPMTCommon(model.Schema):
         # allow_uncommon=True,  # what's this?
     )
 
-    identifiers = schema.Tuple(
+    identifiers = schema.List(
         title=u"Identifiers",
         description=u"Further identifiers for this item",
-        value_type=schema.TextLine(),
+        value_type=DictRow(title=u"Identifier", schema=IIdentifierRowSchema),
+        required=False,
+        # widgetFactory = DataGridFieldFactory,
+        # missing_value=(),
+    )
+
+    autoform.directives.widget('identifiers', DataGridFieldFactory)
+    
+    additional = schema.List(
+        title=u"Additional Properties",
+        description=u"Further key/value pairs describing this item",
+        value_type=DictRow(title=u"Additional Property", 
+                           schema=IAdditionalRowSchema),
         required=False,
         missing_value=(),
     )
 
-    additional = schema.Tuple(
-        title=u"Additional Properties",
-        description=u"Further key/value pairs describing this item",
-        value_type=schema.TextLine(),
-        required=False,
-        missing_value=(),
-    )
+    autoform.directives.widget('additional', DataGridFieldFactory)
 
 
 @implementer(IDPMTCommon)
@@ -70,7 +91,7 @@ class DPMTCommon(object):
         pass
 
     def _get_identifiers(self):
-        return self.context.identifiers or []
+        return self.context.identifiers
         
     def _set_identifiers(self, value):
         self.context.identifiers = value
@@ -78,7 +99,7 @@ class DPMTCommon(object):
     identifiers = property(_get_identifiers, _set_identifiers)
 
     def _get_additional(self):
-        return self.context.additional or []
+        return self.context.additional
         
     def _set_additional(self, value):
         self.context.additional = value
