@@ -78,5 +78,9 @@
   <object name="project_dx" meta_type="Dexterity FTI"/>
   <object name="community_dx" meta_type="Dexterity FTI"/>
   <object name="downtime_dx" meta_type="Dexterity FTI"/>
+  <object name="registeredcomputeresource_dx" meta_type="Dexterity FTI"/>
+  <object name="registeredservicecomponent_dx" meta_type="Dexterity FTI"/>
+  <object name="registeredservice_dx" meta_type="Dexterity FTI"/>
+  <object name="registeredstorageresource_dx" meta_type="Dexterity FTI"/>
 
 </object>

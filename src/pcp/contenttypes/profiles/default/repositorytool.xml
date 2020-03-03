@@ -93,6 +93,21 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
-
+  <type name="registeredcomputeresource_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="registeredservicecomponent_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="registeredservice_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="registeredstorageresource_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
  </policymap>
 </repositorytool>

@@ -80,6 +80,17 @@
   <type portal_type="downtime_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
-
+  <type portal_type="registeredcomputeresource_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="registeredservicecomponent_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="registeredservice_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="registeredstorageresource_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
  </difftypes>
 </object>

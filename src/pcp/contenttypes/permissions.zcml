@@ -33,4 +33,21 @@
   <permission
       id="pcp.contenttypes.addDowntime"
       title="pcp.contenttypes: Add Downtime" />
+
+  <permission
+      id="pcp.contenttypes.addRegisteredComputeResource"
+      title="pcp.contenttypes: Add RegisteredComputeResource" />
+
+  <permission
+      id="pcp.contenttypes.addRegisteredServiceComponent"
+      title="pcp.contenttypes: Add RegisteredServiceComponent" />
+
+  <permission
+      id="pcp.contenttypes.addRegisteredService"
+      title="pcp.contenttypes: Add RegisteredService" />
+
+  <permission
+      id="pcp.contenttypes.addRegisteredStorageResource"
+      title="pcp.contenttypes: Add RegisteredStorageResource" />
+
 </configure>
