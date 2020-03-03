@@ -43,6 +43,7 @@ class IDPMTCommon(model.Schema):
         fields=('uid', 'identifiers', 'additional'),
     )
 
+    autoform.directives.mode(uid='hidden')
     uid = schema.TextLine(
         title=u"UID",
         description=u"The application internal UID",
