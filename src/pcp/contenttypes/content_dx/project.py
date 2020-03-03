@@ -2,6 +2,7 @@
 from collective import dexteritytextindexer
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.autoform import directives
+from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from z3c.relationfield.schema import RelationChoice
@@ -29,11 +30,14 @@ class IProject(model.Schema):
             title=u'Start date',
             required=False,
             )
+    directives.widget('start_date', DatetimeFieldWidget)
+
 
     end_date = schema.Datetime(
             title=u'End date',
             required=False,
             )
+    directives.widget('end_date', DatetimeFieldWidget)
 
     call_for_collaboration = schema.URI(
             title=u'Call for collaboration',
