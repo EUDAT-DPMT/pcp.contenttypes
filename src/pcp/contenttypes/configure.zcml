@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:monkey="http://namespaces.plone.org/monkey"
     xmlns:browser="http://namespaces.zope.org/browser"
@@ -11,6 +12,7 @@
 
   <include package="collective.monkeypatcher" />
   <include package=".subscribers" />
+  <include package="plone.behavior" file="meta.zcml" />
   <include file="permissions.zcml" />
 
   <!-- jbot support-->
@@ -24,6 +26,15 @@
       directory="profiles/default"
       description="Content types for the Project Coordination Portal application"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <!-- register DPMT behaviors -->
+  <plone:behavior
+      title="DPMT common"
+      description="Common DPMT-specific behaviors "
+      provides=".behaviors.common.IDPMTCommon"
+      factory=".behaviors.common.DPMTCommon"
+      marker=".behaviors.common.IDPMTCommonMarker"
       />
 
   <!-- support custom info via string interpolation-->
