@@ -28,6 +28,7 @@
   <element value="plone.richtext" />
   <element value="plone.relateditems" />
   <element value="plone.locking" />
+  <element value="pcp.contenttypes.behaviors.common.IDPMTCommon" />
  </property>
  <property name="model_source"></property>
  <property name="model_file"></property>
