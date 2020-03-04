@@ -4,5 +4,6 @@
   <dependencies>
     <dependency>profile-Products.ATExtensions:default</dependency>
     <dependency>profile-Products.ATBackRef:default</dependency>
+    <dependency>profile-collective.z3cform.datagridfield:default</dependency>
   </dependencies>  
 </metadata>
