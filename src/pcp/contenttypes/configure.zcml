@@ -11,8 +11,8 @@
   <five:registerPackage package="." initialize=".initialize" />
 
   <include package="collective.monkeypatcher" />
+  <include package=".behaviors" />
   <include package=".subscribers" />
-  <include package="plone.behavior" file="meta.zcml" />
   <include file="permissions.zcml" />
 
   <!-- jbot support-->
@@ -26,15 +26,6 @@
       directory="profiles/default"
       description="Content types for the Project Coordination Portal application"
       provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
-  <!-- register DPMT behaviors -->
-  <plone:behavior
-      title="DPMT common"
-      description="Common DPMT-specific behaviors "
-      provides=".behaviors.common.IDPMTCommon"
-      factory=".behaviors.common.DPMTCommon"
-      marker=".behaviors.common.IDPMTCommonMarker"
       />
 
   <!-- support custom info via string interpolation-->
