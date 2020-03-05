@@ -12,6 +12,7 @@
 
   <!-- register DPMT behaviors -->
   <plone:behavior
+      name="DPMT.common"
       title="DPMT common"
       description="Common DPMT-specific behaviors "
       provides=".common.IDPMTCommon"
