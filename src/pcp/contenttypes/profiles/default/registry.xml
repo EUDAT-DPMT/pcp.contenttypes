@@ -1,7 +1,9 @@
-<?xml version="1.0" ?>
-<registry
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    i18n:domain="plone">
-    <records interface="pcp.contenttypes.interfaces.settings.ISettings" />
+<?xml version="1.0" encoding="UTF-8"?>
+<registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="plone">
+
+  <records interface="pcp.contenttypes.interfaces.settings.ISettings"
+           prefix="dpmt" />
+
 </registry>
 

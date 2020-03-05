@@ -21,3 +21,19 @@ class ISettings(Interface):
         title=u'Password of the manager account on the accounting server',
         default=None
     )
+
+    identifier_types = schema.List(
+        title=u'Identifiers',
+        description=u"Types of identifiers used to refer items.",
+        required=False,
+        default=[
+            u'handle',
+            u'doi',
+            u'epic',
+            u'orcid',
+            u'rct_uid',
+            u'dmp_online',
+        ],
+        missing_value=[],
+        value_type=schema.TextLine(),
+    )

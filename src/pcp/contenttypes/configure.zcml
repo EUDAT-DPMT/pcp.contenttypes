@@ -76,4 +76,8 @@
          handler=".content.downtime.handleDowntimeTransition"
     />
 
+  <utility
+      name="dpmt.identifier_types"
+      component="pcp.contenttypes.vocabularies.identifier_types" />
+
 </configure>
