@@ -109,5 +109,38 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
+  <type name="registeredresource_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="resourcerequest_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="servicecomponentrequest_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="resourceoffer_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="serviceoffer_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="servicecomponentoffer_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="servicerequest_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="environment_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+ 
  </policymap>
 </repositorytool>

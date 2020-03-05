@@ -13,22 +13,23 @@ class IRegisteredService(model.Schema):
     """Dexterity Schema for Registered services
     """
 
-    #ReferenceField general_provider
-    #ReferenceField contact
-    #ReferenceField managers
+    # ReferenceField general_provider
+    # ReferenceField contact
+    # ReferenceField managers
 
     monitored = schema.Bool(
-            title=u'Monitored',
-            description=u'Should this service be monitored?',
-            required=False,
-            )
+        title=u"Monitored",
+        description=u"Should this service be monitored?",
+        required=False,
+    )
 
-    #ReferenceField service_components
-    #ReferenceField original_request
-    #ComputedField registry_link
-    #BackReferenceField used_by_projects
-    #ComputedField scopes
-    #BackReferenceField resources
+    # ReferenceField service_components
+    # ReferenceField original_request
+    # ComputedField registry_link
+    # BackReferenceField used_by_projects
+    # ComputedField scopes
+    # BackReferenceField resources
+
 
 @implementer(IRegisteredService)
 class RegisteredService(Container):

@@ -14,43 +14,34 @@ class IDowntime(model.Schema):
     """
 
     dexteritytextindexer.searchable(
-        'startDateTime',        
-        'endDateTime',
-        'severity',
-        'classification'
+        "startDateTime", "endDateTime", "severity", "classification"
     )
 
     startDateTime = schema.Datetime(
-            title=u'Start date (UTC)',
-            description=u'When does the downtime start? In UTC!',
-            required=True,
-            )
+        title=u"Start date (UTC)",
+        description=u"When does the downtime start? In UTC!",
+        required=True,
+    )
 
     endDateTime = schema.Datetime(
-            title=u'End date (UTC)',
-            description=u'When does the downtime end? In UTC!',
-            required=True,
-            )
+        title=u"End date (UTC)",
+        description=u"When does the downtime end? In UTC!",
+        required=True,
+    )
 
-    #ReferenceField affected_registered_services
+    # ReferenceField affected_registered_services
 
     reason = schema.URI(
-            title=u'Reason',
-            description=u'Optional URL to the change management document providing the reason for this downtime.',
-            required=False,
-            )
+        title=u"Reason",
+        description=u"Optional URL to the change management document providing the reason for this downtime.",
+        required=False,
+    )
 
-    severity = schema.TextLine(
-            title=u'Severity',
-            required=False,
-            )
+    severity = schema.TextLine(title=u"Severity", required=False,)
 
-    classification = schema.TextLine(
-            title=u'Classification',
-            required=False,
-            )
-            
+    classification = schema.TextLine(title=u"Classification", required=False,)
+
+
 @implementer(IDowntime)
 class Downtime(Container):
     """Downtime instance"""
-

@@ -13,34 +13,27 @@ class IRegisteredStorageResource(model.Schema):
     """Dexterity Schema for Registered Storage Resources
     """
 
-    #RecordField size
-    #ComputedField usage
-    #ComputedField number
-    #ComputedField allocated
-    #ComputedField storage_class
+    # RecordField size
+    # ComputedField usage
+    # ComputedField number
+    # ComputedField allocated
+    # ComputedField storage_class
 
     max_objects = schema.Int(
-            title=u'Max. Objects',
-            description=u'Allocated (maximum) number of objects',
-            required=False,
-            )
+        title=u"Max. Objects",
+        description=u"Allocated (maximum) number of objects",
+        required=False,
+    )
 
-    cost_factor = schema.Float(
-            title=u'Cost factor',
-            required=False,
-            )
+    cost_factor = schema.Float(title=u"Cost factor", required=False,)
 
     preserve_until = schema.Datetime(
-            title=u'Preserve until',
-            description=u'Until when does this resource need to be allocated?',
-            required=False,
-            )
+        title=u"Preserve until",
+        description=u"Until when does this resource need to be allocated?",
+        required=False,
+    )
+
 
 @implementer(IRegisteredStorageResource)
 class RegisteredStorageResource(Container):
     """RegisteredStorageResource instance"""
-
-
-
-
-

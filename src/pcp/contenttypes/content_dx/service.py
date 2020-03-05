@@ -14,61 +14,40 @@ class IService(model.Schema):
     """
 
     dexteritytextindexer.searchable(
-        'url',
-        'service_area',
-        'service_type',
-        'value_to_customer',
-        'risks',
-        'funders_for_service',
-        'request_procedures',
+        "url",
+        "service_area",
+        "service_type",
+        "value_to_customer",
+        "risks",
+        "funders_for_service",
+        "request_procedures",
     )
 
     description_internal = schema.TextLine(
-        title=u'Internal description',
-        required=False,
-        )
+        title=u"Internal description", required=False,
+    )
 
-    url = schema.URI(
-        title=u'Url',
-        required=False,
-        )
+    url = schema.URI(title=u"Url", required=False,)
 
-    service_area = schema.TextLine(
-        title=u'Service area',
-        required=False,
-        )
+    service_area = schema.TextLine(title=u"Service area", required=False,)
 
-    service_type = schema.TextLine(
-        title=u'Service type',
-        required=False,
-        )
+    service_type = schema.TextLine(title=u"Service type", required=False,)
 
-    value_to_customer = schema.TextLine(
-        title=u'Value to customer',
-        required=False,
-        )
+    value_to_customer = schema.TextLine(title=u"Value to customer", required=False,)
 
-    risks = schema.TextLine(
-        title=u'Risks',
-        required=False,
-        )
+    risks = schema.TextLine(title=u"Risks", required=False,)
 
     funders_for_service = schema.TextLine(
-        title=u'Funders',
-        description=u'Funders for this service',
-        required=False,
-        )
+        title=u"Funders", description=u"Funders for this service", required=False,
+    )
 
-    request_procedures = schema.TextLine(
-        title=u'Request procedures',
-        required=False,
-        )
+    request_procedures = schema.TextLine(title=u"Request procedures", required=False,)
 
     managed_by = RelationChoice(
-        title=u'Managed by',
+        title=u"Managed by",
         required=False,
-        source=CatalogSource(portal_type=['Person']),
-        )
+        source=CatalogSource(portal_type=["Person"]),
+    )
 
 
 @implementer(IService)

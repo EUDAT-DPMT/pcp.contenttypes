@@ -50,4 +50,35 @@
       id="pcp.contenttypes.addRegisteredStorageResource"
       title="pcp.contenttypes: Add RegisteredStorageResource" />
 
+  <permission
+      id="pcp.contenttypes.addRegisteredResource"
+      title="pcp.contenttypes: Add RegisteredResource" />
+
+  <permission
+      id="pcp.contenttypes.addServiceComponentRequest"
+      title="pcp.contenttypes: Add ServiceComponentRequest" />
+
+  <permission
+      id="pcp.contenttypes.addResourceOffer"
+      title="pcp.contenttypes: Add ResourceOffer" />
+
+  <permission
+      id="pcp.contenttypes.addServiceOffer"
+      title="pcp.contenttypes: Add ServiceOffer" />
+
+  <permission
+      id="pcp.contenttypes.addServiceComponentOffer"
+      title="pcp.contenttypes: Add ServiceComponentOffer" />
+
+  <permission
+      id="pcp.contenttypes.addServiceRequest"
+      title="pcp.contenttypes: Add ServiceRequest" />
+
+  <permission
+      id="pcp.contenttypes.addEnvironment"
+      title="pcp.contenttypes: Add Environment" />
+
+  <permission
+      id="pcp.contenttypes.addResourceRequest"
+      title="pcp.contenttypes: Add ResourceRequest" />
 </configure>

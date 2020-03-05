@@ -92,5 +92,29 @@
   <type portal_type="registeredstorageresource_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
+  <type portal_type="registeredresource_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="resourcerequest_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="servicecomponentrequest_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="resourceoffer_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="serviceoffer_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="servicecomponentoffer_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="servicerequest_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="environment_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
  </difftypes>
 </object>
