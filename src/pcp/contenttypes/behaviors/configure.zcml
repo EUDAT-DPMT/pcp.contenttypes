@@ -28,4 +28,13 @@
       for="plone.dexterity.interfaces.IDexterityContent"
       />
 
+
+  <plone:behavior
+      name="DPMT.request"
+      title="DPMT request"
+      description="Fields common to all DPMT request types "
+      provides=".request.IDPMTRequest"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
+
 </configure>
