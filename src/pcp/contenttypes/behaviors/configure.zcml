@@ -20,4 +20,12 @@
       marker=".common.IDPMTCommonMarker"
       />
 
+  <plone:behavior
+      name="DPMT.constraints"
+      title="DPMT constraints"
+      description="Fields to define constraints "
+      provides=".constraints.IDPMTConstraints"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
+
 </configure>
