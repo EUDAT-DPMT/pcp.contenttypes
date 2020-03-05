@@ -21,15 +21,30 @@ from zope.interface import provider
 
 # parts for the data grid type fields
 class IIdentifierRowSchema(Interface):
-    type = schema.Choice(title=u"Identifier Type",
-                         values=[u'DOI', u'ORCID', u'EPIC'],)
-    # XXX TODO: get the vocab from the registry
-    value = schema.TextLine(title=u"Identifier Value")
+
+    type = schema.Choice(
+        title=u"Identifier Type",
+        vocabulary='dpmt.identifier_types',
+        required=False,
+        )
+
+    value = schema.TextLine(
+        title=u"Identifier Value",
+        required=False,
+        )
 
 
 class IAdditionalRowSchema(Interface):
-    key = schema.TextLine(title=u"Key")
-    value = schema.TextLine(title=u"Value")
+
+    key = schema.TextLine(
+        title=u"Key",
+        required=True,
+        )
+
+    value = schema.TextLine(
+        title=u"Value",
+        required=True,
+        )
 
 
 @provider(IFormFieldProvider)

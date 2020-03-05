@@ -1,19 +1,14 @@
-from plone.app.registry.browser import controlpanel
-
+# -*- coding: UTF-8 -*-
 from pcp.contenttypes.interfaces.settings import ISettings
+from plone.app.registry.browser import controlpanel
 
 
 class SettingsEditForm(controlpanel.RegistryEditForm):
 
     schema = ISettings
+    schema_prefix = 'dpmt'
     label = u'DPTMP settings'
     description = u''
-
-    def updateFields(self):
-        super(SettingsEditForm, self).updateFields()
-
-    def updateWidgets(self):
-        super(SettingsEditForm, self).updateWidgets()
 
 
 class SettingsControlPanel(controlpanel.ControlPanelFormWrapper):
