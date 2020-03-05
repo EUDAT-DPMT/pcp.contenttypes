@@ -43,13 +43,14 @@ class IDPMTRequest(model.Schema):
         description=u"If there is a reason to prefer certain "
         u"provider(s) this can be specified here. Usually "
         u"this can be left empty.",
-        value_type=RelationChoice(source=CatalogSource()),
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
         'preferred_providers', 
         RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
             "selectableTypes": ["provider_dx"],
             "basePath": make_relation_root_path,
