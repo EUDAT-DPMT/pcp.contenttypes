@@ -73,7 +73,7 @@ class IProvider(model.Schema):
     contact = RelationChoice(
         title=u"Contact",
         description=u"Main contact person for the operations of this provider.",
-        source=CatalogSource(),
+        vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
@@ -88,7 +88,7 @@ class IProvider(model.Schema):
     business_contact = RelationChoice(
         title=u"Business contact",
         description=u"Main contact person for the financial matters of this provider.",
-        source=CatalogSource(),
+        vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
@@ -103,7 +103,7 @@ class IProvider(model.Schema):
     security_contact = RelationChoice(
         title=u"Security contact",
         description=u"Person specifically to be contacted for security-related matters.",
-        source=CatalogSource(),
+        vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
@@ -118,13 +118,14 @@ class IProvider(model.Schema):
     admins = RelationList(
         title=u"Administrators",
         default=[],
-        value_type=RelationChoice(source=CatalogSource()),
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
         "admins",
         RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
             "selectableTypes": ["person_dx"],
             "basePath": make_relation_root_path,
