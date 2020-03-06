@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -32,7 +33,8 @@ class IProvider(model.Schema):
 
     url = schema.URI(title=u"Url", required=False)
 
-    # Computed field 'link2offers'
+    link2offers = schema.TextLine(readonly=True)
+    # TODO: directives.widget('link2offers', TrustedStringWidget)
 
     provider_type = schema.TextLine(title=u"Provider type", required=False)
 
@@ -155,3 +157,19 @@ class IProvider(model.Schema):
 @implementer(IProvider)
 class Provider(Container):
     """Provider instance"""
+
+    @property
+    def link2offers(self):
+        # Warning! In a property the obj self is not acquisition-wrapped.
+        # So you don't have self.__parent__ or self.absolute_url() here!
+        # To get the object you need to get it like this:
+        wrapped = api.content.get(UID=self.UID())
+        try:
+            offers = wrapped['offers']
+        except KeyError:
+            return "No offers found"
+        url = offers.absolute_url()
+        title = u"Resources offered by {}".format(self.title)
+        anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(
+            url, title, title)
+        return anchor
