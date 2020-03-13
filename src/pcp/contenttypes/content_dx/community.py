@@ -1,10 +1,14 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from plone import api
+from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
@@ -21,9 +25,37 @@ class ICommunity(model.Schema):
 
     VAT = schema.TextLine(title=u"VAT", required=False,)
 
-    # ReferenceField representative
+    representative = RelationChoice(
+        title=u"Representative",
+        description=u"Main person representing the Customer.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget(
+        "representative",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["person_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-    # ReferenceField admins
+    admins = RelationList(
+        title=u"Administrators",
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "admins",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["person_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     # BackReferenceField affiliated
 

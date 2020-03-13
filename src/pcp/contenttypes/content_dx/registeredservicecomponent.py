@@ -1,10 +1,15 @@
 # -*- coding: UTF-8 -*-
+# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from plone import api
+from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
@@ -14,6 +19,7 @@ class IRegisteredServiceComponent(model.Schema):
     """
 
     dexteritytextindexer.searchable(
+        "service_component_implementation_details",    
         "service_type",
         "service_url",
         "host_name",
@@ -26,9 +32,56 @@ class IRegisteredServiceComponent(model.Schema):
         "supported_os",
     )
 
-    # ReferenceField service_component_implementation_details
-    # ReferenceField service_providers
-    # ReferenceField contacts
+    service_component_implementation_details = RelationChoice(
+        title=u"Service Component Implementation Details",
+        description=u"Reference to specific implementation Details",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget(
+        "service_component_implementation_details",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["person_dx"], #Actually, it should allows the ServiceComponentImplementationDetails type, but it has not been ported to Dexterity yet.
+            "basePath": make_relation_root_path,
+        },
+    )
+
+    service_providers = RelationList(
+        title=u"Service provider(s)",
+        description=u"The provider(s) hosting this service component.",
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        missing_value=[],
+        required=False,
+    )
+    directives.widget(
+        "service_providers",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["provider_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
+
+    contacts = RelationList(
+        title=u"Contact(s)",
+        description=u"Contact person(s) for this specific component.",
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        missing_value=[],
+        required=False,
+    )
+    directives.widget(
+        "contacts",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["person_dx"],
+            "basePath": make_relation_root_path,
+        },
+    ) 
 
     service_type = schema.TextLine(title=u"Service component type", required=False,)
 
