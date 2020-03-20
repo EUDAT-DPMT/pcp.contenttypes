@@ -26,7 +26,7 @@ class IServiceComponentRequest(model.Schema):
         "service_component",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"], #Actually, it should allows the ServiceComponent type, but it has not been ported to Dexterity yet. 
+            "selectableTypes": ["servicecomponent_dx"], 
             "basePath": make_relation_root_path,
         },
     )
@@ -44,7 +44,7 @@ class IServiceComponentRequest(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"], #Actually, it should allows the ServiceComponentImplementation type, but it has not been ported to Dexterity yet.
+            "selectableTypes": ["servicecomponentimplementation_dx"],
             "basePath": make_relation_root_path,
         },
     )

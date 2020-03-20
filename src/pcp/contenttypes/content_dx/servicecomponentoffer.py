@@ -27,7 +27,7 @@ class IServiceComponentOffer(model.Schema):
         "service_component",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"], #Actually ServiceComponent 
+            "selectableTypes": ["servicecomponent_dx"], 
             "basePath": make_relation_root_path,
         },
     )   
@@ -45,7 +45,7 @@ class IServiceComponentOffer(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"], #Actually ServiceComponentImplementation
+            "selectableTypes": ["servicecomponentimplementation_dx"],
             "basePath": make_relation_root_path,
         },
     )   

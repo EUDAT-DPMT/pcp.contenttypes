@@ -42,7 +42,7 @@ class IRegisteredServiceComponent(model.Schema):
         "service_component_implementation_details",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"], #Actually, it should allows the ServiceComponentImplementationDetails type, but it has not been ported to Dexterity yet.
+            "selectableTypes": ["servicecomponentimplementationdetails_dx"],
             "basePath": make_relation_root_path,
         },
     )
