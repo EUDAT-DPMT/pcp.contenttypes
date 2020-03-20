@@ -13,6 +13,13 @@
   />
 
   <browser:page
+    name="shibboleth"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    template="shibboleth.pt"
+    permission="zope.Public"
+  />
+
+  <browser:page
     name="enabling-start"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".enabling.Enabling"
@@ -52,6 +59,14 @@
     attribute="getProjects"
     permission="zope2.View"
   />
+
+  <browser:page
+	for="*"
+	name="hasJSON"
+	class="pcp.contenttypes.browser.jsonview.JSONhelper"
+	attribute="hasJSON"
+	permission="zope2.View"
+	/>
 
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
