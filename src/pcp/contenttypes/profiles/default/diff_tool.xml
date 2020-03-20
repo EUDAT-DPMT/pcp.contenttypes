@@ -116,5 +116,14 @@
  <type portal_type="environment_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
+ <type portal_type="servicecomponent_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="servicecomponentimplementation_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+ <type portal_type="servicecomponentimplementationdetails_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
  </difftypes>
 </object>
