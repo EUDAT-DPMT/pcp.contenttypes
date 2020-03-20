@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.widgets import TrustedTextWidget
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -34,7 +35,7 @@ class IProvider(model.Schema):
     url = schema.URI(title=u"Url", required=False)
 
     link2offers = schema.TextLine(readonly=True)
-    # TODO: directives.widget('link2offers', TrustedStringWidget)
+    directives.widget('link2offers', TrustedTextWidget)
 
     provider_type = schema.TextLine(title=u"Provider type", required=False)
 
