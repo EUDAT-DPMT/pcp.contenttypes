@@ -141,6 +141,18 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
+  <type name="servicecomponent_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="servicecomponentimplementation_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
+  <type name="servicecomponentimplementationdetails_dx">
+    <policy name="at_edit_autoversion"/>
+    <policy name="version_on_revert"/>
+  </type>
  
  </policymap>
 </repositorytool>

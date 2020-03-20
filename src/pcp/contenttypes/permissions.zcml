@@ -81,4 +81,16 @@
   <permission
       id="pcp.contenttypes.addResourceRequest"
       title="pcp.contenttypes: Add ResourceRequest" />
+ 
+  <permission
+      id="pcp.contenttypes.addServiceComponent"
+      title="pcp.contenttypes: Add ServiceComponent" />
+  
+  <permission
+      id="pcp.contenttypes.addServiceComponentImplementation"
+      title="pcp.contenttypes: Add ServiceComponentImplementation" />
+
+  <permission
+      id="pcp.contenttypes.addServiceComponentImplementationDetails"
+      title="pcp.contenttypes: Add ServiceComponentImplementationDetails" />
 </configure>
