@@ -49,6 +49,22 @@ hidden_fields = (
 )
 
 
+class JSONhelper(BrowserView):
+    """condition for the JSON action"""
+    
+    def hasJSON(self):
+        """condition for showing the JSON action
+        suppress it in the 'operations' section and at top level
+        """
+
+        path_elements = self.context.getPhysicalPath()
+
+        if 'operations' in path_elements:
+            return False
+
+        return len(path_elements) > 2
+
+
 class JSONViewDX(BrowserView):
     """Present dexterity types as JSON"""
 

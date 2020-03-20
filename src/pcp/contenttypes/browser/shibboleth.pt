@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title> Hello World </title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  </head>
+  <body>
+    
+    <h2>
+    <span tal:replace="here/title_or_id">content title or id</span>
+    </h2>
+
+    This is the default Shibboleth landing page <em tal:content="template/id">template id</em> (a browser page).
+  </body>
+</html>
