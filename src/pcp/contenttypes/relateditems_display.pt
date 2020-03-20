@@ -1,0 +1,41 @@
+<span id="form-widgets-fieldname"
+      class="relateditems-widget textline-field"
+      i18n:domain="plone"
+      tal:define="plone_view nocall:context/@@plone;
+                  normalizeString nocall:plone_view/normalizeString;
+                  uuids python: view.value.split(view.separator) if view.value else [];
+                  relations_helper context/@@relations_helper;
+                  related python:relations_helper.uuids_to_contentlisting(uuids);
+                  "
+      tal:condition="related"
+      tal:attributes="id python:'form-widgets-{}'.format(view.__name__);
+                      class python: 'relateditems-widget {}-field'.format(normalizeString(view.field.__class__.__name__));
+                      ">
+    <div tal:define="use_view_action python:context.portal_registry.get('types_use_view_action_in_listings', []);">
+        <ul>
+          <li tal:repeat="item related">
+            <span tal:define="desc                item/Description;
+                              item_type           item/portal_type;
+                              item_type_class     python:'contenttype-' + normalizeString(item_type);
+                              item_wf_state       item/review_state;
+                              item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
+                              item_url            item/getURL|item/absolute_url;
+                              item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url;
+                              item_has_image      python:item.getIcon"
+                  tal:attributes="title item_type">
+              <a tal:attributes="href  item_url">
+                 <img class="thumb-icon"
+                      tal:define="getIcon python:item.getURL() +'/@@images/image/icon'"
+                      tal:condition="item_has_image"
+                      tal:attributes="src  string:$getIcon;alt item/Description">
+                  <span tal:attributes="class string:$item_type_class $item_wf_state_class url;"
+                        tal:content="item/title">
+                          Item Title</span>
+                  <span class="discreet"
+                        tal:content="item/Description">description</span>
+               </a>
+            </span>
+          </li>
+        </ul>
+    </div>
+</span>

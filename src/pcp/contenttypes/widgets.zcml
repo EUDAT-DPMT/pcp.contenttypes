@@ -1,13 +1,30 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:z3c="http://namespaces.zope.org/z3c"
-    i18n_domain="z3c.form">
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="pcp.contenttypes">
 
   <z3c:widgetTemplate
       mode="display"
+      field="*"
       widget=".widgets.ITrustedTextWidget"
       layer="z3c.form.interfaces.IFormLayer"
       template="trusted_text_display.pt"
+      />
+
+  <z3c:widgetTemplate
+      mode="display"
+      field="*"
+      widget="plone.app.z3cform.interfaces.IRelatedItemsWidget"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      template="relateditems_display.pt"
+      />
+
+  <browser:page
+      name="relations_helper"
+      for="*"
+      class=".relations.RelationsHelper"
+      permission="zope.Public"
       />
 
 </configure>
