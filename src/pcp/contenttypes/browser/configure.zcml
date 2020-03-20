@@ -131,6 +131,14 @@
 	permission="zope2.View"
 	/>
 
+  <browser:page
+	for="*"
+	name="detailed_view"
+	class="pcp.contenttypes.browser.summary_views.DetailedView"
+	attribute="detailed_view"
+	permission="zope2.View"
+	/>
+
  <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
 	name="service_endpoint_overview"

@@ -171,6 +171,27 @@ def render_constraints(content, field_id):
     """
     return content.aggregated_constraints()
 
+class DetailedView(BrowserView):
+    """Dispatcher to the more specific summary views"""
+
+    def detailed_view(self):
+
+        id = self.context.getId()
+        
+        mapping = {
+            'projects':'project_summary_view',
+            'customers':'customer_overview',
+            'providers':'provider_overview',
+            'catalog':'service_overview'
+        }
+        
+        view = mapping.get(id, 'folder_summary_view')
+        
+        target = '{base}/{view}'.format(base=self.context.absolute_url(), 
+                                        view=view)
+        return self.request.response.redirect(target)
+
+
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
