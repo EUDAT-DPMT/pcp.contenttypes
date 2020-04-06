@@ -38,7 +38,7 @@ class BackrelField(TextLine):
         self.relation = kw.pop('relation', '')
         if not self.relation:
             raise ValueError(u'BackrelField requires a relation, e.g. relation="relatedItems"')
-        super(BackrelField, self).__init__(**kw)
+        super(BackrelField, self).__init__(required=False, **kw)
 
 
 class IBackrelWidget(ITextWidget):
