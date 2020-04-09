@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -59,7 +60,11 @@ class IServiceRequest(model.Schema):
         },
     )   
 
-    # BackReferenceField registered_service
+    registered_service = BackrelField(
+        title=u'Registered service',
+        relation='original_request',
+        )
+
     # CommentField resource_comment
 
 
