@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -36,10 +37,27 @@ class IPerson(model.Schema):
 
     # Phone numbers field 'phone'
     # Back reference field 'manages'
-    # Back reference field 'provider_contact_for'
-    # Back reference field 'business_contact_for'
-    # Back reference field 'security_contact_for'
-    # Back reference field 'provider_admin'
+
+    provider_contact_for = BackrelField(
+        title=u'General contact for',
+        relation='contact',
+        )
+
+    business_contact_for = BackrelField(
+        title=u'Business contact for',
+        relation='business_contact',
+        )
+
+    security_contact_for = BackrelField(
+        title=u'Security contact for',
+        relation='security_contact',
+        )
+
+    provider_admin = BackrelField(
+        title=u'Administrator for',
+        relation='admins',
+        )
+
     # Back reference field 'she_contact'
     # Back reference field 'community_contact_for'
     # Back reference field 'community_representative'
