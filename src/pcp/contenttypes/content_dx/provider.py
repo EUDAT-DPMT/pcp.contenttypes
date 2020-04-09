@@ -141,8 +141,17 @@ class IProvider(model.Schema):
         required=False,
     )
 
-    # alarm email
-    # helpdesk email
+#    alarm_email = schema.EMail(
+#        title=u"Alarm E-mail",
+#        description=u"To be used in emergencies",
+#        required=False,
+#    )
+#    
+#    helpdesk_email = schema.EMail(
+#        title=u"Helpdesk E-mail",
+#        description=u"Generic helpdesk email address of this provider; not specific to any service.",
+#        required=False,
+#    )
     # supported os
 
     getAccount = schema.URI(
