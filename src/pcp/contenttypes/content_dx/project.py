@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -138,7 +139,10 @@ class IProject(model.Schema):
     #        required=True,
     #        )
 
-    # Back reference field "resources"
+    resources = BackrelField(
+        title=u'Resources',
+        relation='project',
+        )
     # Computed field "resource usage"
     # Computed field "registered objects"
 

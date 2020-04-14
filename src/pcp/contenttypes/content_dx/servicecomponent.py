@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -17,8 +18,15 @@ class IServiceComponent(model.Schema):
     """Dexterity Schema for ServiceComponent
     """
 
-    # BackReferenceField offered_by
-    # BackReferenceField requested_by
+    offered_by = BackrelField(
+        title=u'Offered by',
+        relation='service_component_offered',
+        )
+
+    requested_by = BackrelField(
+        title=u'Requested by',
+        relation='requested_component',
+        )
     
 @implementer(IServiceComponent)
 class ServiceComponent(Container):

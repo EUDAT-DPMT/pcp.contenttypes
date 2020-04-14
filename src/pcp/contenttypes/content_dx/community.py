@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -57,13 +58,26 @@ class ICommunity(model.Schema):
         },
     )
 
-    # BackReferenceField affiliated
+    affiliated = BackrelField(
+        title=u'Affiliated',
+        relation='affiliated',
+        )
 
-    # BackReferenceField projects_involved
+    projects_involved = BackrelField(
+        title=u'Projects involved',
+        description=u'Projects involving this customer',
+        relation='done_for',
+        )
 
-    # BackReferenceField primary_provider
+    primary_provider = BackrelField(
+        title=u'Primary_provider',
+        relation='primary_provider_for',
+        )
 
-    # BackReferenceField secondary_provider
+    secondary_provider = BackrelField(
+        title=u'Secondary_provider',
+        relation='secondary_provider_for',
+        )
 
     topics = schema.TextLine(
         title=u"Topics",
@@ -71,7 +85,10 @@ class ICommunity(model.Schema):
         required=False,
     )
 
-    # BackReferenceField resources
+    resources = BackrelField(
+        title=u'Customer\'s Resources',
+        relation='customer',
+        )
 
     # ComputedField usage_summary
 

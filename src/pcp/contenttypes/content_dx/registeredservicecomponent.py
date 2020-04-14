@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -91,7 +91,11 @@ class IRegisteredServiceComponent(model.Schema):
         required=False,
     )
 
-    # BackReferenceField parent_services
+    parent_services = BackrelField(
+        title=u'Part of these registered services',
+        relation='service_components',
+        )
+
     # ComputedField scopes
 
     host_name = schema.TextLine(
@@ -134,7 +138,10 @@ class IRegisteredServiceComponent(model.Schema):
 
     # ComputedField registrylink
     # RecordsField implementation_configuration
-    # BackReferenceField resources
+    resources = BackrelField(
+        title=u"Registered service component's resources",
+        relation='services',
+        )
 
 
 @implementer(IRegisteredServiceComponent)

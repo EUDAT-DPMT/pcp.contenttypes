@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -103,9 +104,15 @@ class IRegisteredService(model.Schema):
     )
     
     # ComputedField registry_link
-    # BackReferenceField used_by_projects
+    used_by_projects = BackrelField(
+        title=u'Used by project',
+        relation='using',
+        )
     # ComputedField scopes
-    # BackReferenceField resources
+    resources = BackrelField(
+        title=u'Registered service\'s resources',
+        relation='services',
+        )
 
 
 @implementer(IRegisteredService)
