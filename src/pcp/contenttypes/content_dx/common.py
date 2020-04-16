@@ -112,25 +112,26 @@ class CommonUtilities(object):
             ids.append(handle)
         return tuple(ids)
 
-    def country(self):
-        """
-        Look for the country in the address field including the aq_parent
-        for indexing. Returns 'not set' if nothing found. Should not fail.
-        """
-        try:
-            address = self.address
-        except AttributeError:
-            try:
-                address = self.aq_parent.address
-            except AttributeError:
-                return "not set"
-        return address.get('country', 'not set')
+    # replace with a default schema field...
+    # def country(self):
+    #     """
+    #     Look for the country in the address field including the aq_parent
+    #     for indexing. Returns 'not set' if nothing found. Should not fail.
+    #     """
+    #     try:
+    #         address = self.address
+    #     except AttributeError:
+    #         try:
+    #             address = self.aq_parent.address
+    #         except AttributeError:
+    #             return "not set"
+    #     return address.get('country', 'not set')
 
     def country_code(self):
         """Two letter country code infered from the address - if found"""
-        country = self.country()
-        if country == 'not set':
-            return country
+        country = self.country
+        if not country:
+            return
         # a hard-coded exception
         if country == "United Kingdom":
             return "UK"
