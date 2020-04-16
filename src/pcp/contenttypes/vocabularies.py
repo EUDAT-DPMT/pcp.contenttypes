@@ -39,3 +39,10 @@ def provider_stati(context):
     values = api.portal.get_registry_record(name)
     return safe_simplevocabulary_from_values(values)
 
+
+@provider(IVocabularyFactory)
+def country_names(context):
+    name = 'dpmt.country_names'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+

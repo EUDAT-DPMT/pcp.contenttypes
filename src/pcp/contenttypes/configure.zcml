@@ -98,4 +98,8 @@
       name="dpmt.provider_stati"
       component="pcp.contenttypes.vocabularies.provider_stati" />
 
+  <utility
+      name="dpmt.country_names"
+      component="pcp.contenttypes.vocabularies.country_names" />
+
 </configure>
