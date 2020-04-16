@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.content_dx.accountable import Accountable
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.autoform import directives
 from plone.dexterity.content import Container
@@ -35,5 +37,5 @@ class IRegisteredStorageResource(model.Schema):
 
 
 @implementer(IRegisteredStorageResource)
-class RegisteredStorageResource(Container):
+class RegisteredStorageResource(Container, CommonUtilities, Accountable):
     """RegisteredStorageResource instance"""

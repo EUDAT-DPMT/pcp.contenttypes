@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from pcp.contenttypes.widgets import TrustedTextWidget
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -160,12 +161,12 @@ class IProvider(model.Schema):
         required=False,
     )
 
-
-# computedfield registry_link
+    registry_link = schema.TextLine(title=u'Central Registry', readonly=True)
+    directives.widget('registry_link', TrustedTextWidget)
 
 
 @implementer(IProvider)
-class Provider(Container):
+class Provider(Container, CommonUtilities):
     """Provider instance"""
 
     @property
@@ -183,3 +184,7 @@ class Provider(Container):
         anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(
             url, title, title)
         return anchor
+
+    @property
+    def registry_link(self):
+        return self.getCregURL()
