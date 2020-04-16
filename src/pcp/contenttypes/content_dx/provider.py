@@ -8,6 +8,7 @@ from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
+from plone.schema.email import Email
 from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
@@ -153,17 +154,17 @@ class IProvider(model.Schema):
         required=False,
     )
 
-#    alarm_email = schema.EMail(
-#        title=u"Alarm E-mail",
-#        description=u"To be used in emergencies",
-#        required=False,
-#    )
-#    
-#    helpdesk_email = schema.EMail(
-#        title=u"Helpdesk E-mail",
-#        description=u"Generic helpdesk email address of this provider; not specific to any service.",
-#        required=False,
-#    )
+    alarm_email = Email(
+        title=u"Alarm E-mail",
+        description=u"To be used in emergencies",
+        required=False,
+    )
+
+    helpdesk_email = Email(
+        title=u"Helpdesk E-mail",
+        description=u"Generic helpdesk email address of this provider; not specific to any service.",
+        required=False,
+    )
 
     directives.widget(supported_os=CheckBoxFieldWidget)
     supported_os = schema.List(
