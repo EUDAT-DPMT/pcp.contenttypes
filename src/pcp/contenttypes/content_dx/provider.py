@@ -38,7 +38,7 @@ class IProvider(model.Schema):
 
     url = schema.URI(title=u"Url", required=False)
 
-    link2offers = schema.TextLine(readonly=True)
+    link2offers = schema.TextLine(title=u'Offers', readonly=True)
     directives.widget('link2offers', TrustedTextWidget)
 
     directives.widget(provider_type=RadioFieldWidget)
@@ -197,7 +197,7 @@ class Provider(Container, CommonUtilities):
         try:
             offers = wrapped['offers']
         except KeyError:
-            return "No offers found"
+            return u'No offers found'
         url = offers.absolute_url()
         title = u"Resources offered by {}".format(self.title)
         anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(
