@@ -9,6 +9,8 @@ from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from z3c.form.browser.radio import RadioFieldWidget
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
@@ -38,11 +40,20 @@ class IProvider(model.Schema):
     link2offers = schema.TextLine(readonly=True)
     directives.widget('link2offers', TrustedTextWidget)
 
-    provider_type = schema.TextLine(title=u"Provider type", required=False)
+    directives.widget(provider_type=RadioFieldWidget)
+    provider_type = schema.Choice(
+        title=u'Provider type',
+        vocabulary='dpmt.provider_types',
+        required=False,
+        )
 
     provider_userid = schema.TextLine(title=u"Provider user ID", required=True)
 
-    provider_status = schema.TextLine(title=u"Provider status", required=False)
+    provider_status = schema.Choice(
+        title=u'Provider status',
+        vocabulary='dpmt.provider_stati',
+        required=False,
+        )
 
     status_details = schema.TextLine(title=u"Status details/comment", required=False)
 
@@ -153,7 +164,14 @@ class IProvider(model.Schema):
 #        description=u"Generic helpdesk email address of this provider; not specific to any service.",
 #        required=False,
 #    )
-    # supported os
+
+    directives.widget(supported_os=CheckBoxFieldWidget)
+    supported_os = schema.List(
+        title=u'Supported Operating Systems',
+        value_type=schema.Choice(vocabulary='dpmt.operating_systems'),
+        required=False,
+        missing_value=[],
+    )
 
     getAccount = schema.URI(
         title=u"Account",
