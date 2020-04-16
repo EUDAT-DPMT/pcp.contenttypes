@@ -82,4 +82,20 @@
       name="dpmt.identifier_types"
       component="pcp.contenttypes.vocabularies.identifier_types" />
 
+  <utility
+      name="dpmt.storage_types"
+      component="pcp.contenttypes.vocabularies.storage_types" />
+
+  <utility
+      name="dpmt.operating_systems"
+      component="pcp.contenttypes.vocabularies.operating_systems" />
+
+  <utility
+      name="dpmt.provider_types"
+      component="pcp.contenttypes.vocabularies.provider_types" />
+
+  <utility
+      name="dpmt.provider_stati"
+      component="pcp.contenttypes.vocabularies.provider_stati" />
+
 </configure>

@@ -11,3 +11,31 @@ def identifier_types(context):
     values = api.portal.get_registry_record(name)
     return safe_simplevocabulary_from_values(values)
 
+
+@provider(IVocabularyFactory)
+def storage_types(context):
+    name = 'dpmt.storage_types'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def operating_systems(context):
+    name = 'dpmt.operating_systems'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def provider_types(context):
+    name = 'dpmt.provider_types'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def provider_stati(context):
+    name = 'dpmt.provider_stati'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
