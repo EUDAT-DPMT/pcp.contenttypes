@@ -54,3 +54,6 @@ def initialize(context):
 from plone.formwidget.contenttree import ObjPathSourceBinder
 project_source = ObjPathSourceBinder(portal_type='Project')
 rs_source = ObjPathSourceBinder(portal_type='RegisteredService')
+handle_servers = ObjPathSourceBinder(portal_type='RegisteredServiceComponent',
+                                     service_type='51') # 51 => b2handle.handle.api
+

@@ -30,6 +30,7 @@
                     <th>Used Storage</th>
                     <th>Registered Objects</th>
                     <th>Service</th>
+                    <th>Annotation</th>
                 </tr>
               </thead>
               <tbody> 
@@ -42,10 +43,13 @@
                         tal:content="row/meta/number"/>
                     <td tal:on-error="string: (not set)"
                         tal:content="row/meta/service"/>
+                    <td tal:on-error="string: (not set)"
+                        tal:content="row/meta"/>
                  </tr>
               </tbody>
               <tfoot>
                   <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
