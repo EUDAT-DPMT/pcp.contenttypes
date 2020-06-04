@@ -1,15 +1,14 @@
 """Common components shared by content types
 """
+from incf.countryutils.datatypes import Country
+from pcp.contenttypes.interfaces import IRegisteredStorageResource
+from plone.app.uuid.utils import uuidToObject
+from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
+
 import math
 
-from pcp.contenttypes.interfaces import IRegisteredStorageResource
-
 END_OF_EUDAT2020 = "2018-02-28"
-
-from zope.component.hooks import getSite
-from plone.app.uuid.utils import uuidToObject
-
-from incf.countryutils.datatypes import Country
 
 
 class OfferUtilities(object):
@@ -241,7 +240,7 @@ class CommonUtilities(object):
         """Checking REQUEST for a target unit and converting
         if necessary
         """
-        request = self.REQUEST
+        request = getRequest()
         target_unit = request.get('unit', target_unit)
         return self.convert_pure(raw, target_unit)
 
@@ -360,8 +359,9 @@ class CommonUtilities(object):
             d = self.convert(d)
         except ValueError:
             return ""
+        request = getRequest()
         value = float(d['value'])
-        unit = d['unit'] if self.REQUEST.get('unit') not in unit_map else ''
+        unit = d['unit'] if request.get('unit') not in unit_map else ''
         return '%0.2f %s' % (value, unit)
 
     def renderResourceUsage(self, used, size):
@@ -433,23 +433,6 @@ class CommonUtilities(object):
                   }
 
         return result
-
-    def informationUnits(self, instance=None):
-        """
-        Controlled vocabulary (DisplayList) of information units
-        supported
-        """
-        units = unit_map.keys()
-        units.sort()
-        return atapi.DisplayList(zip(units, units))
-
-    # helper methods for resource handling
-    def storageTypes(self, instance=None):
-        """Look up the controlled vocabulary for the storage types
-        from the properties tool"""
-        if instance is None:
-            return ateapi.getDisplayList(self, 'storage_types', add_select=True)
-        return ateapi.getDisplayList(instance, 'storage_types', add_select=True)
 
     def yesno(self, instance):
         """Seems like RecordsFields do not support checkboxes"""

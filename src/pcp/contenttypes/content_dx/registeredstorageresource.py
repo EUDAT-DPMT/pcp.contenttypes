@@ -5,6 +5,7 @@ from collective.z3cform.datagridfield import DictRow
 from pcp.contenttypes.content_dx.accountable import Accountable
 from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -51,11 +52,13 @@ class IRegisteredStorageResource(model.Schema):
         allow_insert=False,
     )
 
-    # RecordField size
-    # ComputedField usage
-    # ComputedField number
-    # ComputedField allocated
-    # ComputedField storage_class
+    usage = schema.TextLine(title=u'Current usage', readonly=True)
+
+    number = schema.TextLine(title=u'Registered objects', readonly=True)
+
+    allocated = schema.TextLine(title=u'Allocated storage', readonly=True)
+
+    storage_class = schema.TextLine(title=u'Storage class', readonly=True)
 
     max_objects = schema.Int(
         title=u"Max. Objects",
@@ -70,8 +73,82 @@ class IRegisteredStorageResource(model.Schema):
         description=u"Until when does this resource need to be allocated?",
         required=False,
     )
-
+    directives.widget('preserve_until', DatetimeFieldWidget)
 
 @implementer(IRegisteredStorageResource)
 class RegisteredStorageResource(Container, CommonUtilities, Accountable):
     """RegisteredStorageResource instance"""
+
+    @property
+    def usage(self):
+        return self.renderMemoryValue(self.getUsedMemory() and self.getUsedMemory()['core'])
+
+    @property
+    def number(self):
+        return self.getNumberOfRegisteredObjects()
+
+    @property
+    def allocated(self):
+        return self.renderMemoryValue(self.getAllocatedMemory())
+
+    @property
+    def storage_class(self):
+        return self.size and self.size[0]['storage_class']
+
+    def getCachedRecords(self):
+        return getattr(self, 'cached_records', None)
+
+    def getUsedMemory(self):
+        return getattr(self, 'cached_newest_record', None)
+
+    def getAllocatedMemory(self):
+        size = self.size[0]
+        if 'value' in size and 'unit' in size:
+            # unit should be enforced by field's vocabulary
+            try:
+                float(size['value'])
+            except ValueError:
+                return None
+            return size
+        else:
+            return None
+
+    def getResourceUsage(self):
+        used = self.getUsedMemory()
+        size = self.getAllocatedMemory()
+
+        if used:
+            meta = used['meta']
+            submission_time = meta['submission_time']
+        else:
+            submission_time = '??'
+
+        return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size),
+                                submission_time)
+
+    def getNumberOfRegisteredObjects(self, as_int=False):
+        used = self.getUsedMemory()
+        number = None
+        if used:
+            number = used['meta'].get('number', None)
+        if as_int:
+            if number in [None, '']:
+                return 0
+            else:
+                return int(number)
+        return number
+
+    def getScopeValues(self, asString = 0):
+        """Return the human readable values of the scope keys"""
+        project = self.getProject()
+        if project is None:
+            if asString:
+                return ''
+            else:
+                return ('',)
+        scopes = []
+        scopes.extend(project.getScopeValues())
+        s = set(scopes)
+        if  asString:
+            return ", ".join(s)
+        return s # tuple(s)
