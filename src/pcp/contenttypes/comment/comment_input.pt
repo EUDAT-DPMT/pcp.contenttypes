@@ -1,0 +1,12 @@
+<span id="form-widgets-fieldname"
+      class="comment-widget commentfield-field"
+      i18n:domain="plone"
+      tal:define="plone_view nocall:context/@@plone;
+                  normalizeString python:plone_view.normalizeString;
+                  "
+      tal:attributes="id python:'form-widgets-{}'.format(view.__name__);
+                      class python: 'comment-widget {}-field'.format(normalizeString(view.field.__class__.__name__));
+                      ">
+    <p tal:content="python: view.field.comment" />
+</span>
+

@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.comment.comment import CommentField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -63,7 +64,11 @@ class IServiceComponentRequest(model.Schema):
         },
     )
 
-# CommentField resource_comment
+    resource_comment = CommentField(
+        comment=u"If applicable and already known how much resources shall be provisioned "
+                "through this service then this should be specified here. Otherwise this "
+                "can be left empty (or added later).",
+        )
 
 
 @implementer(IServiceComponentRequest)

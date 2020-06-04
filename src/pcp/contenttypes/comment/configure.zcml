@@ -1,0 +1,25 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <include package="z3c.form" file="meta.zcml" />
+  <include package="z3c.form" />
+
+  <adapter factory=".comment.CommentFieldWidget" />
+
+  <z3c:widgetTemplate
+      mode="input"
+      widget=".comment.ICommentWidget"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      template="comment_input.pt"
+      />
+
+  <z3c:widgetTemplate
+      mode="display"
+      widget=".comment.ICommentWidget"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      template="comment_display.pt"
+      />
+
+</configure>
