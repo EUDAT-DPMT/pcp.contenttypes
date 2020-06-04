@@ -16,6 +16,7 @@
   <include package=".backrels" />
   <include file="permissions.zcml" />
   <include file="widgets.zcml" />
+  <include file="upgrades.zcml" />
 
   <!-- jbot support-->
   <include package="z3c.jbot" file="meta.zcml" />
