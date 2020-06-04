@@ -29,3 +29,8 @@ from accountable import IAccountable
 from rolerequest import IRoleRequest
 from actionitem import IActionItem
 from actionlist import IActionList
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+
+class IPcpContenttypesLayer(IDefaultBrowserLayer):
+    """Marker interface that defines a browser layer."""
