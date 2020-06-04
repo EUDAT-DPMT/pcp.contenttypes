@@ -103,4 +103,8 @@
       name="dpmt.country_names"
       component="pcp.contenttypes.vocabularies.country_names" />
 
+  <utility
+      name="dpmt.information_units"
+      component="pcp.contenttypes.vocabularies.information_units" />
+
 </configure>

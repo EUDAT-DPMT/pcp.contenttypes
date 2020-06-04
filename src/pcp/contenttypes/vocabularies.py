@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pcp.contenttypes.content_dx.common import unit_map
 from plone import api
 from plone.app.vocabularies.terms import safe_simplevocabulary_from_values
 from zope.interface import provider
@@ -46,3 +47,9 @@ def country_names(context):
     values = api.portal.get_registry_record(name)
     return safe_simplevocabulary_from_values(values)
 
+
+@provider(IVocabularyFactory)
+def information_units(context):
+    units = unit_map.keys()
+    units.sort()
+    return safe_simplevocabulary_from_values(units)
