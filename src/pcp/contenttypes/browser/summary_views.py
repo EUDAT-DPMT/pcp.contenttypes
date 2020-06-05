@@ -21,8 +21,13 @@ def render_type(content, field_id):
 
 
 def render_reference_field(content, field_id, with_state=False):
-    field = content.schema[field_id]
-    objs = field.get(content, aslist=True)
+    try: # first the Archetypes way
+        field = content.schema[field_id]
+        objs = field.get(content, aslist=True)
+    except AttributeError: # likely a dexterity type
+        objs = getattr(content, field_id, [])
+        if type(objs) != type([]):
+            objs = [objs]
     text = []
     if objs == []:
         return "no reference set"
@@ -65,8 +70,13 @@ def render_service_components(content, field_id):
 
 
 def render_with_link(content, field_id):
-    field = content.schema[field_id]
-    value = field.get(content)
+    try: # first the Archetypes way
+        field = content.schema[field_id]
+        value = field.get(content)
+    except AttributeError: # Dexterity way
+        value = getattr(content, field_id, '<link>')
+        if save_callable(value):
+            value = value()
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
 
@@ -104,8 +114,11 @@ def modification_date(content, field_id):
 
 
 def render_date(content, field_id):
-    field = content.schema[field_id]
-    value = field.get(content)
+    try: # the Archetypes way
+        field = content.schema[field_id]
+        value = field.get(content)
+    except AttributeError:
+        value = getattr(content, field_id)
     try:
         return value.Date()
     except AttributeError:
@@ -136,7 +149,11 @@ def render_contact_email(content, field_id):
     try:
         email = content.getContact().getEmail()
     except AttributeError:
-        email = ''
+        try:
+            contact = getattr(content, 'contact')
+            email = getattr(contact, 'email')
+        except AttributeError:            
+            email = ''
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
@@ -147,7 +164,11 @@ def render_business_email(content, field_id):
     try:
         email = content.getBusiness_contact().getEmail()
     except AttributeError:
-        email = ''
+        try:
+            contact = getattr(content, 'business_contact')
+            email = getattr(contact, 'email')
+        except AttributeError:
+            email = ''
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
@@ -223,7 +244,7 @@ class BaseSummaryView(BrowserView):
                       }
 
     def field_visible(self, obj, field_name):
-
+        # XXX How to do the same for dexterity types ???
         field = obj.getField(field_name)
         if field:
             permission = field.read_permission

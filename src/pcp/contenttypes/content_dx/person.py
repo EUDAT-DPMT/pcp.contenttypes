@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -7,24 +9,59 @@ from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
+from plone.schema.email import Email
 from plone.supermodel import model
+from z3c.form.interfaces import IDisplayForm
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
+from zope.interface import Interface
+
+
+class IPhone(Interface):
+    """Schema for Datagrid field phone
+    """
+    number_type = schema.Choice(
+        title=u'Type',
+        values=[
+            u'Office',
+            u'Secretariat',
+            u'Laboratory',
+            u'Mobile',
+            u'Fax',
+            u'Private',
+            ],
+        required=False,
+        )
+
+    number = schema.TextLine(
+        title=u'Number',
+        required=False,
+        )
 
 
 class IPerson(model.Schema):
     """Dexterity Schema for Persons
     """
+    dexteritytextindexer.searchable('email')
 
-    # Formattable name field 'name'
-    # Email field 'email'
+    name = schema.TextLine(title=u'Name', readonly=True)
+
+    directives.omitted(IDisplayForm, 'firstname', 'lastname')
+    firstname = schema.TextLine(title=u'First name(s)')
+
+    lastname = schema.TextLine(title=u'Last name(s)')
+
+    email = Email(
+        title=u"E-mail",
+        required=False,
+    )
 
     affiliation = RelationChoice(
         title=u"Affiliation",
         vocabulary='plone.app.vocabularies.Catalog',
-        required=False, 
+        required=False,
     )
     directives.widget(
         "affiliation",
@@ -35,8 +72,14 @@ class IPerson(model.Schema):
         },
     )
 
-    # Phone numbers field 'phone'
-    
+    phone = schema.List(
+        title=u"Phone",
+        value_type=DictRow(schema=IPhone),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget('phone', DataGridFieldFactory)
+
     manages = BackrelField(
         title=u'Managed by',
         relation='managed_by',
@@ -105,3 +148,7 @@ class IPerson(model.Schema):
 @implementer(IPerson)
 class Person(Container):
     """Person instance"""
+
+    @property
+    def name(self):
+        return u'{} {}'.format(self.firstname, self.lastname)
