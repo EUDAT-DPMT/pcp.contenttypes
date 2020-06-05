@@ -1,5 +1,8 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from collective.relationhelpers import api as relapi
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -12,6 +15,13 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
+from zope.interface import Interface
+
+
+class IImplementationConfiguration(Interface):
+
+    key = schema.TextLine(title=u'Key')
+    value = schema.TextLine(title=u'Value')
 
 
 class IRegisteredServiceComponent(model.Schema):
@@ -19,7 +29,7 @@ class IRegisteredServiceComponent(model.Schema):
     """
 
     dexteritytextindexer.searchable(
-        "service_component_implementation_details",    
+        "service_component_implementation_details",
         "service_type",
         "service_url",
         "host_name",
@@ -81,7 +91,7 @@ class IRegisteredServiceComponent(model.Schema):
             "selectableTypes": ["person_dx"],
             "basePath": make_relation_root_path,
         },
-    ) 
+    )
 
     service_type = schema.TextLine(title=u"Service component type", required=False,)
 
@@ -96,7 +106,7 @@ class IRegisteredServiceComponent(model.Schema):
         relation='service_components',
         )
 
-    # ComputedField scopes
+    scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
 
     host_name = schema.TextLine(
         title=u"Host name",
@@ -136,8 +146,18 @@ class IRegisteredServiceComponent(model.Schema):
 
     monitored = schema.Bool(title=u"Monitored", required=False,)
 
-    # ComputedField registrylink
-    # RecordsField implementation_configuration
+    registrylink = schema.TextLine(title=u'Central Registry', readonly=True)
+
+    implementation_configuration = schema.List(
+        title=u'Implementation configuration',
+        description=u'Implementation specific configuration according to the referenced component details implementation',
+        value_type=DictRow(schema=IImplementationConfiguration),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget('implementation_configuration', DataGridFieldFactory)
+    # TODO: Add custom form with condition="python:here.stateNotIn(['considered'])",
+
     resources = BackrelField(
         title=u"Registered service component's resources",
         relation='services',
@@ -147,3 +167,29 @@ class IRegisteredServiceComponent(model.Schema):
 @implementer(IRegisteredServiceComponent)
 class RegisteredServiceComponent(Container):
     """RegisteredServiceComponent instance"""
+
+    @property
+    def scopes(self):
+        return self.getScopeValues(asString=1)
+
+    def getScopeValues(self, asString = 0):
+        """Return the human readable values of the scope keys"""
+        parent_services = relapi.get_relations(self, 'service_components', backrefs=True, fullobj=True) or []
+        parent_services = [i['fullobj'] for i in parent_services]
+        projects = []
+
+        for parent_service in parent_services:
+            used_by = relapi.get_relations(parent_service, 'registered_services_used', backrefs=True, fullobj=True) or []
+            used_by = [i['fullobj'] for i in used_by]
+            [projects.extend(rs.getUsed_by_projects()) for rs in used_by]
+
+        scopes = []
+        [scopes.extend(p.getScopeValues()) for p in projects]
+        s = set(scopes)
+        if  asString:
+            return ", ".join(s)
+        return s # tuple(s)
+
+    @property
+    def registrylink(self):
+        return self.getCregURL()

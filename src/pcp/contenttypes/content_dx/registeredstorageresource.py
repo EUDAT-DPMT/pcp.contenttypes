@@ -140,7 +140,7 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
 
     def getScopeValues(self, asString = 0):
         """Return the human readable values of the scope keys"""
-        project = self.getProject()
+        project = self.project
         if project is None:
             if asString:
                 return ''

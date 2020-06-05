@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -12,6 +13,7 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
+
 
 class IRegisteredService(model.Schema):
     """Dexterity Schema for Registered services
@@ -102,13 +104,16 @@ class IRegisteredService(model.Schema):
             "basePath": make_relation_root_path,
         },
     )
-    
-    # ComputedField registry_link
+
+    registry_link = schema.TextLine(title=u'Central Registry', readonly=True)
+
     used_by_projects = BackrelField(
         title=u'Used by project',
         relation='using',
         )
-    # ComputedField scopes
+
+    scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
+
     resources = BackrelField(
         title=u'Registered service\'s resources',
         relation='services',
@@ -118,3 +123,21 @@ class IRegisteredService(model.Schema):
 @implementer(IRegisteredService)
 class RegisteredService(Container):
     """RegisteredService instance"""
+
+    @property
+    def registry_link(self):
+        return self.getCregURL()
+
+    @property
+    def scopes(self):
+        return self.getScopeValues(asString=True)
+
+    def getScopeValues(self, asString=False):
+        """Return the human readable values of the scope keys"""
+        projects = relapi.get_relations(self, 'services', backrefs=True, fullobj=True) or []
+        scopes = []
+        [scopes.extend(p['fullobj'].getScopeValues()) for p in projects]
+        s = set(scopes)
+        if asString:
+            return u', '.join(s)
+        return s  # tuple(s)
