@@ -344,3 +344,81 @@ class ISettings(Interface):
         value_type=schema.TextLine(),
     )
 
+    downtime_classes = schema.List(
+        title=u'Downtime Classes',
+        required=False,
+        default=[
+            u'Scheduled',
+            u'Unscheduled',
+        ],
+        missing_value=[],
+        value_type=schema.TextLine(),
+    )
+
+    scope_vocabulary = schema.List(
+        title=u'Scope Vocabulary',
+        required=False,
+        default=[
+            u'EOSC-hub',
+            u'EUDAT CDI',
+            u'SeaDataCloud',
+        ],
+        missing_value=[],
+        value_type=schema.TextLine(),
+    )
+
+    service_types = schema.List(
+        title=u'Service Types for Registered Service Components',
+        required=False,
+        default=[
+            u'b2access.ca',
+            u'b2access.crowd',
+            u'b2access.myproxy',
+            u'b2access.oauth',
+            u'b2access.openid-bridge',
+            u'b2access.unity',
+            u'b2drop.nextcloud',
+            u'b2drop.owncloud',
+            u'b2find.ckan',
+            u'b2gether.cms.drupal',
+            u'b2handle.handle.api',
+            u'b2handle.handle.resolver',
+            u'b2host.gateway.api',
+            u'b2host.gateway.ssh',
+            u'b2note.fe',
+            u'b2safe.dpm',
+            u'b2safe.dsi',
+            u'b2safe.irods',
+            u'b2share.invenio',
+            u'b2stage.gridftp',
+            u'b2stage.http',
+            u'b2type.dtr',
+            u'eudat.cms.confluence',
+            u'eudat.coord.acct',
+            u'eudat.coord.dpmt',
+            u'eudat.coord.rct',
+            u'eudat.gitlab',
+            u'eudat.helpdesk.rt',
+            u'eudat.its.jira',
+            u'eudat.itsm.spmt',
+            u'eudat.monitoring',
+            u'eudat.monitoring.argo',
+            u'eudat.monitoring.nsca-client',
+            u'eudat.registry.gocdb',
+            u'eudat.rep.gitlab',
+            u'eudat.rep.svn',
+            u'eudat.webpresence',        ],
+        missing_value=[],
+        value_type=schema.TextLine(),
+    )
+
+    severity_levels = schema.List(
+        title=u'Severity Levels',
+        required=False,
+        default=[
+            u'Outage',
+            u'Warning',
+        ],
+        missing_value=[],
+        value_type=schema.TextLine(),
+    )

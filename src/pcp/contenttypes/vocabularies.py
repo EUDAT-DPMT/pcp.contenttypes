@@ -53,3 +53,32 @@ def information_units(context):
     units = unit_map.keys()
     units.sort()
     return safe_simplevocabulary_from_values(units)
+
+
+@provider(IVocabularyFactory)
+def downtime_classes(context):
+    name = 'dpmt.downtime_classes'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def scope_vocabulary(context):
+    name = 'dpmt.scope_vocabulary'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def service_types(context):
+    name = 'dpmt.service_types'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+
+
+@provider(IVocabularyFactory)
+def severity_levels(context):
+    name = 'dpmt.severity_levels'
+    values = api.portal.get_registry_record(name)
+    return safe_simplevocabulary_from_values(values)
+

@@ -108,4 +108,20 @@
       name="dpmt.information_units"
       component="pcp.contenttypes.vocabularies.information_units" />
 
+  <utility
+      name="dpmt.downtime_classes"
+      component="pcp.contenttypes.vocabularies.downtime_classes" />
+
+  <utility
+      name="dpmt.scope_vocabulary"
+      component="pcp.contenttypes.vocabularies.scope_vocabulary" />
+
+  <utility
+      name="dpmt.service_types"
+      component="pcp.contenttypes.vocabularies.service_types" />
+
+  <utility
+      name="dpmt.severity_levels"
+      component="pcp.contenttypes.vocabularies.severity_levels" />
+
 </configure>
