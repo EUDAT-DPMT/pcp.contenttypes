@@ -55,9 +55,17 @@ class IDowntime(model.Schema):
         required=False,
     )
 
-    severity = schema.TextLine(title=u"Severity", required=False,)
+    severity = schema.Choice(
+        title=u'Severity',
+        vocabulary='dpmt.severity_levels',
+        required=False,
+        )
 
-    classification = schema.TextLine(title=u"Classification", required=False,)
+    classification = schema.Choice(
+        title=u'Classification',
+        vocabulary='dpmt.downtime_classes',
+        required=False,
+        )
 
 
 @implementer(IDowntime)
