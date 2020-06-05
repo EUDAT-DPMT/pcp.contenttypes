@@ -1,7 +1,6 @@
 """Common components shared by content types
 """
 from incf.countryutils.datatypes import Country
-from pcp.contenttypes.interfaces import IRegisteredStorageResource
 from plone.app.uuid.utils import uuidToObject
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
@@ -324,6 +323,7 @@ class CommonUtilities(object):
         """ Get sum of all resources' usage. If this value can not be determined
             (i.e. some resource's values are not available) then None is returned.
         """
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
         usages = []
 
         for resource in resources:
@@ -340,6 +340,7 @@ class CommonUtilities(object):
         """ Get sum of all resources' size. If this value can not be determined
             (i.e. size of a resource is not available) then None is returned.
         """
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
         sizes = []
 
         for resource in resources:
@@ -403,6 +404,7 @@ class CommonUtilities(object):
 
     def listResourceUsage(self, resources):
         """ List usage of resources, i.e. all resource's usage. """
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
         usages = []
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
@@ -412,6 +414,7 @@ class CommonUtilities(object):
 
     def registeredObjectsTotal(self):
         """ Sum of all registered objects across related registered storage resources """
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
         total = 0
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
