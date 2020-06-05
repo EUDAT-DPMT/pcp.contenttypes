@@ -98,7 +98,7 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
         # do not send notifications for past downtimes
         return
 
-    affected_services = downtime.getAffected_registered_serivces()
+    affected_services = downtime.affected_registered_services
 
     chain = downtime.aq_chain
     provider = None
@@ -109,15 +109,15 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
     assert provider
 
     params = {
-        'description': downtime.Description(),
+        'description': downtime.description,
         # UTC because we have no clue in which timezone the recipient is (using Plone 4)
-        'start_date': str(downtime.start().toZone('UTC')),
-        'end_date': str(downtime.end().toZone('UTC')),
+        'start_date': str(downtime.start.toZone('UTC')),
+        'end_date': str(downtime.end.toZone('UTC')),
         'provider_name': provider.title,
         'provider_url': provider.url,
-        'contact_mail_alarm': provider.getAlarm_email(),
-        'contact_mail_helpdesk': provider.getHelpdesk_email(),
-        'contact_phone_emergency': provider.getEmergency_phone(),
+        'contact_mail_alarm': provider.alarm_email,
+        'contact_mail_helpdesk': provider.helpdesk_email,
+        'contact_phone_emergency': provider.emergency_phone,
         'services': '\n'.join(['* ' + service.title for service in affected_services]),
         'downtime_link': downtime.absolute_url(),
     }
