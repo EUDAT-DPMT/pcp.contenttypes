@@ -75,10 +75,16 @@
     />
 
   <subscriber
-    for=".interfaces.IDowntime
-         Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-         handler=".content.downtime.handleDowntimeTransition"
-    />
+      for=".interfaces.IDowntime
+           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+      handler=".content.downtime.handleDowntimeTransition"
+      />
+
+  <subscriber
+      for=".content_dx.downtime.IDowntime
+           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+      handler=".content_dx.downtime.handleDowntimeTransition"
+      />
 
   <utility
       name="dpmt.identifier_types"
