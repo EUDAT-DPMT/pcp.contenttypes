@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from pcp.contenttypes.widgets import TrustedTextWidget
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -121,13 +123,13 @@ class ICommunity(model.Schema):
         relation='customer',
         )
 
-    # ComputedField usage_summary
+    usage_summary = schema.TextLine(title=u'Usage', readonly=True)
 
-    # ComputedField resource_usage
+    resource_usage = schema.TextLine(title=u'Resource Usage', readonly=True)
 
 
 @implementer(ICommunity)
-class Community(Container):
+class Community(Container, CommonUtilities):
     """Community instance"""
 
     @property
@@ -143,3 +145,15 @@ class Community(Container):
         city = u'{} {}'.format(self.zip, self.city) if self.zip else self.city
         items = [street, city, self.country]
         return u'<br />'.join(i for i in items if i)
+
+    def get_resources(self):
+        resources = relapi.get_relations(self, 'customer', backrefs=True, fullobj=True) or []
+        return [i['fullobj'] for i in resources]
+
+    @property
+    def usage_summary(self):
+        return self.getResourceUsageSummary(self.get_resources())
+
+    @property
+    def resource_usage(self):
+        return self.listResourceUsage(self.get_resources())
