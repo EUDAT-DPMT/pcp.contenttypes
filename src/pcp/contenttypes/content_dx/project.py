@@ -67,6 +67,7 @@ class IProject(model.Schema):
                 "basePath": make_relation_root_path,
             },
         )
+    # TODO: Add custom edit-form: https://community.plone.org/t/conditional-fields-in-dexterity-schema/12248/5
     # condition='python:here.stateIn(["enabling","pre_production","production","terminated"])' <-- Where does that fit?
 
     allocated_new = schema.TextLine(title=u'Allocated', readonly=True)
