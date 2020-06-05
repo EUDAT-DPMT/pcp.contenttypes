@@ -10,6 +10,9 @@ def migrate_service():
             {'AT_field_name': 'description_internal',
              'DX_field_name': 'description_internal',
              },
+            {'AT_field_name': 'url',
+             'DX_field_name': 'url',
+             },             
     )
     migrateCustomAT(
         fields_mapping,
