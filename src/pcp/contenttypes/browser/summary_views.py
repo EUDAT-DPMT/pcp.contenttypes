@@ -244,7 +244,7 @@ class BaseSummaryView(BrowserView):
                       }
 
     def field_visible(self, obj, field_name):
-
+        # XXX How to do the same for dexterity types ???
         field = obj.getField(field_name)
         if field:
             permission = field.read_permission
