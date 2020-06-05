@@ -1,14 +1,14 @@
 # -*- coding: UTF-8 -*-
-from collective import dexteritytextindexer
+from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
-from plone import api
-from plone.app.vocabularies.catalog import CatalogSource
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
+from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
-from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.dexterity.content import Container
 from plone.supermodel import model
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
@@ -69,8 +69,9 @@ class IProject(model.Schema):
         )
     # condition='python:here.stateIn(["enabling","pre_production","production","terminated"])' <-- Where does that fit?
 
-    # Computed field 'allocated_new'
-    # Computed field 'used_new'
+    allocated_new = schema.TextLine(title=u'Allocated', readonly=True)
+
+    used_new = schema.TextLine(title=u'Used', readonly=True)
 
     general_provider = RelationChoice(
             title=u"General provider",
@@ -132,21 +133,45 @@ class IProject(model.Schema):
         required=False,
     )
 
-    # Can a LinesField in an Archetype type be transfered into a List in a Dexterity type?
-    # scopes = schema.List(
-    #        title=u'Scope',
-    #        description=u'Tick all that apply. If in doubt, select "EUDAT".',
-    #        required=True,
-    #        )
+    directives.widget(scopes=CheckBoxFieldWidget)
+    scopes = schema.List(
+        title=u'Scope',
+        description=u'Tick all that apply. If in doubt, select "EUDAT".',
+        value_type=schema.Choice(vocabulary='dpmt.scope_vocabulary'),
+        missing_value=[],
+        required=True,
+    )
 
     resources = BackrelField(
         title=u'Resources',
         relation='project',
-        )
-    # Computed field "resource usage"
-    # Computed field "registered objects"
+    )
+
+    resource_usage = schema.TextLine(title=u'Resource usage', readonly=True)
+
+    registered_objects = schema.TextLine(title=u'Registered objects', readonly=True)
 
 
 @implementer(IProject)
-class Project(Container):
+class Project(Container, CommonUtilities):
     """Project instance"""
+
+    def get_resources(self):
+        resources = relapi.get_relations(self, 'customer', backrefs=True, fullobj=True) or []
+        return [i['fullobj'] for i in resources]
+
+    @property
+    def resource_usage(self):
+        return self.listResourceUsage(self.get_resources())
+
+    @property
+    def registered_objects(self):
+        return self.registeredObjectsTotal()
+
+    @property
+    def allocated_new(self):
+        return self.renderMemoryValue(self.convert(self.getStorageResourcesSizeSummary(self.get_resources())))
+
+    @property
+    def used_new(self):
+        return self.renderMemoryValue(self.convert(self.getStorageResourcesUsedSummary(self.get_resources())))
