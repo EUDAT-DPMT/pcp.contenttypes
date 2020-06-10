@@ -103,7 +103,7 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
 
     def getAllocatedMemory(self):
         size = self.size[0]
-        if 'value' in size and 'unit' in size:
+        if size.get('value') and size.get('unit'):
             # unit should be enforced by field's vocabulary
             try:
                 float(size['value'])
