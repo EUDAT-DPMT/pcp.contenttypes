@@ -132,7 +132,7 @@ class IPerson(model.Schema):
 
     service_owner_of = BackrelField(
         title=u'Service owner of',
-        relation='owned_by',
+        relation='service_owner',
         )
 
     principal_investigator_of = BackrelField(
