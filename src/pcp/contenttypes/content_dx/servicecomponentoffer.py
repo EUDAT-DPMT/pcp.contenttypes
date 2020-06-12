@@ -17,14 +17,14 @@ class IServiceComponentOffer(model.Schema):
     """Dexterity Schema for ServiceComponentOffer
     """
 
-    service_component = RelationChoice(
+    service_component_offered = RelationChoice(
         title=u"Service component offered",
         description=u"Reference to the catalog entry of the service component being offered.",
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_component",
+            "service_component_offered",
         RelatedItemsFieldWidget,
         pattern_options={
             "selectableTypes": ["servicecomponent_dx"], 
@@ -32,7 +32,7 @@ class IServiceComponentOffer(model.Schema):
         },
     )   
 
-    implementations = RelationList(
+    service_component_implementations_offered = RelationList(
         title=u"Implementations offered",
         description=u"Reference to the catalog entry of the implementations(s) of the service component being offered.",
         default=[],
@@ -41,7 +41,7 @@ class IServiceComponentOffer(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        "implementations",
+        "service_component_implementations_offered",
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={

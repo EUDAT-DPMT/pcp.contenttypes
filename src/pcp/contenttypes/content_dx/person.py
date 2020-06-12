@@ -127,7 +127,7 @@ class IPerson(model.Schema):
 
     enables = BackrelField(
         title=u'Project enabler for',
-        relation='enabled_by',
+        relation='project_enabler',
         )
 
     service_owner_of = BackrelField(

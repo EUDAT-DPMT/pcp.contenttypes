@@ -74,7 +74,7 @@ class ICommunity(model.Schema):
         },
     )
 
-    admins = RelationList(
+    community_admins = RelationList(
         title=u"Administrators",
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
@@ -82,7 +82,7 @@ class ICommunity(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        "admins",
+        "community_admins",
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
@@ -93,13 +93,13 @@ class ICommunity(model.Schema):
 
     affiliated = BackrelField(
         title=u'Affiliated',
-        relation='affiliated',
+        relation='affiliation',
         )
 
     projects_involved = BackrelField(
         title=u'Projects involved',
         description=u'Projects involving this customer',
-        relation='done_for',
+        relation='community',
         )
 
     primary_provider = BackrelField(

@@ -16,14 +16,14 @@ class IServiceOffer(model.Schema):
     """Dexterity Schema for ServiceOffer
     """
 
-    service = RelationChoice(
+    service_offered = RelationChoice(
         title=u"Service offered",
         description=u"Reference to the catalog entry of the service being offered.",
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )   
     directives.widget(
-        "service",
+        "service_offered",
         RelatedItemsFieldWidget,
         pattern_options={
             "selectableTypes": ["service_dx"],
