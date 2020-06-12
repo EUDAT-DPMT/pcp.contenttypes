@@ -114,8 +114,8 @@ RegisteredServiceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 )) + CommonFields.copy()
 
 
-schemata.finalizeATCTSchema(RegisteredServiceSchema, 
-                            folderish=True, 
+schemata.finalizeATCTSchema(RegisteredServiceSchema,
+                            folderish=True,
                             moveDiscussion=False
 )
 
@@ -126,20 +126,6 @@ class RegisteredService(folder.ATFolder, CommonUtilities):
 
     meta_type = "RegisteredService"
     schema = RegisteredServiceSchema
-
-    # Lazy fixing of missing BTree initialization of old items
-
-    def __contains__(self, key):
-        try:
-            return key in self._tree
-        except TypeError:
-            from BTrees.OOBTree import OOBTree
-            from BTrees.Length import Length
-            self._tree = OOBTree()
-            self._mt_index = OOBTree()
-            self._count = Length()
-            self._cleanup()
-            return key in self._tree
 
     def getScopeValues(self, asString = 0):
         """Return the human readable values of the scope keys"""
@@ -153,4 +139,4 @@ class RegisteredService(folder.ATFolder, CommonUtilities):
 
 
 atapi.registerType(RegisteredService, PROJECTNAME)
- 
+

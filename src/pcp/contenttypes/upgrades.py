@@ -2,18 +2,37 @@
 from plone import api
 from plone.app.contenttypes.migration.migration import migrateCustomAT
 from plone.dexterity.interfaces import IDexterityFTI
+from plone.folder.interfaces import IOrdering
+from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from zope.globalrequest import getRequest
+from zope.interface import alsoProvides
 
 import logging
 
 log = logging.getLogger(__name__)
 
 
+def fix_some_at_folders(context=None):
+    # fix some AT objects
+
+    portal = api.portal.get()
+
+    def treeify(obj, path):
+        if getattr(obj, 'portal_type', None) in ['RegisteredServiceComponent', 'RegisteredService']:
+            if not obj._tree:
+                alsoProvides(obj, IOrdering)
+                BTreeFolder2Base._initBTrees(obj)
+                #  If Itemish becomes Folderish we have to update obj _tree
+                log.info(u'Fix _tree for {}'.format(obj))
+
+    portal.ZopeFindAndApply(portal, search_sub=True, apply_func=treeify)
+
+
 def after_plone5_upgrade(context=None):
     """Various cleanup tasks after upgrade from Plone 4.3 to 5.2
     """
     # reinstall pcp.contenttypes to enable new dx types
-    portal_setup - api.portal.get_tool('portal_setup')
+    portal_setup = api.portal.get_tool('portal_setup')
     portal_setup.runAllImportStepsFromProfile(
         'profile-pcp.contenttypes:default', purge_old=False)
     remove_all_revisions()
@@ -49,16 +68,7 @@ def migrate_to_dexterity(context=None):
     portal = api.portal.get()
     request = getRequest()
     pac_migration = api.content.get_view('migrate_from_atct', portal, request)
-    content_types = [
-        'Document',
-        'Event',
-        'File',
-        'Image',
-        'Link',
-        'News Item',
-        'Topic',
-        'Collection',
-        ]
+    content_types = 'all'
     pac_migration(
         migrate=True,
         content_types=content_types,

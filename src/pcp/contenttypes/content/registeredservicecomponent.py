@@ -233,21 +233,5 @@ class RegisteredServiceComponent(folder.ATFolder, CommonUtilities):
             return ", ".join(s)
         return s # tuple(s)
 
-# in place migration after enabling folderish behavior
-# Lazy fixing of missing BTree initialization of old items
-
-    def __contains__(self, key):
-        try:
-            return key in self._tree
-        except TypeError:
-            from BTrees.OOBTree import OOBTree
-            from BTrees.Length import Length
-            self._tree = OOBTree()
-            self._mt_index = OOBTree()
-            self._count = Length()
-            self._cleanup()
-            return key in self._tree
-
-
 
 atapi.registerType(RegisteredServiceComponent, PROJECTNAME)
