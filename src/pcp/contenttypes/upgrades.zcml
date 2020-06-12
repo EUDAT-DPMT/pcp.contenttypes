@@ -3,10 +3,55 @@
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
 
   <genericsetup:upgradeStep
-    source="1000"
+    source="*"
     destination="2000"
-    title="Demo Upgrade Step"
-    description="das hier tut"
+    title="Cleanup after Upgrade to Plone 5.2"
+    description=""
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.after_plone5_upgrade"
+    />
+
+  <genericsetup:upgradeStep
+    source="*"
+    destination="2000"
+    title="Disable versioning for all DX types (for now)"
+    description=""
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.disable_versioning"
+    />
+
+  <genericsetup:upgradeStep
+    source="2000"
+    destination="2001"
+    title="Install plone.app.contenttypes"
+    description=""
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.install_pac"
+    />
+
+  <genericsetup:upgradeStep
+    source="2001"
+    destination="2002"
+    title="Migrate folders"
+    description="Migrate default folders from AT to DX"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.migrate_folders"
+    />
+
+  <genericsetup:upgradeStep
+    source="2002"
+    destination="2003"
+    title="Migrate default AT to DX"
+    description="Migrate other default content types from AT to DX"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.migrate_to_dexterity"
+    />
+
+  <genericsetup:upgradeStep
+    source="2005"
+    destination="2006"
+    title="Migrate Custom AT to DX"
+    description="Migrate all custom content types from AT to DX"
     profile="pcp.contenttypes:default"
     handler=".upgrades.test_at_migration"
     />
