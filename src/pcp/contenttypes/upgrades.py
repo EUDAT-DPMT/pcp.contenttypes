@@ -22,7 +22,6 @@ def fix_some_at_folders(context=None):
             if not obj._tree:
                 alsoProvides(obj, IOrdering)
                 BTreeFolder2Base._initBTrees(obj)
-                #  If Itemish becomes Folderish we have to update obj _tree
                 log.info(u'Fix _tree for {}'.format(obj))
 
     portal.ZopeFindAndApply(portal, search_sub=True, apply_func=treeify)
@@ -38,6 +37,8 @@ def after_plone5_upgrade(context=None):
     remove_all_revisions()
     # workaround issue with versioning for now
     disable_versioning()
+    rebuild_catalog_without_indexing_blobs()
+    pack_database()
 
 
 def install_pac(context=None):
@@ -131,3 +132,17 @@ def disable_versioning(context=None):
         behaviors = tuple(behaviors)
         fti._updateProperty('behaviors', behaviors)
         log.info(u'Disabled versioning for {}'.format(fti.id))
+
+
+def rebuild_catalog(context=None):
+    log.info('rebuilding catalog')
+    catalog = api.portal.get_tool('portal_catalog')
+    catalog.clearFindAndRebuild()
+
+
+def pack_database(context=None):
+    """Pack the database"""
+    portal = api.portal.get()
+    app = portal.__parent__
+    db = app._p_jar.db()
+    db.pack(days=0)
