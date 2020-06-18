@@ -34,6 +34,7 @@ def after_plone5_upgrade(context=None):
     portal_setup = api.portal.get_tool('portal_setup')
     portal_setup.runAllImportStepsFromProfile(
         'profile-pcp.contenttypes:default', purge_old=False)
+    cleanup_skins()
     remove_all_revisions()
     # workaround issue with versioning for now
     disable_versioning()
@@ -146,3 +147,14 @@ def pack_database(context=None):
     app = portal.__parent__
     db = app._p_jar.db()
     db.pack(days=0)
+
+
+def cleanup_skins(context=None):
+    to_delete = [
+        'referencebrowser',
+        ]
+    portal_skins = api.portal.get_tool('portal_skins')
+    custom = portal_skins.custom
+    for item in to_delete:
+        if item in custom:
+            custom.manage_delObjects(item)
