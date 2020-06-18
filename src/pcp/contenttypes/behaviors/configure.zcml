@@ -37,4 +37,12 @@
       for="plone.dexterity.interfaces.IDexterityContent"
       />
 
+  <plone:behavior
+      name="DPMT.resourcecontext"
+      title="DPMT resource context"
+      description="Fields to describe the context of a resource"
+      provides=".resourcecontext.IDPMTResourceContext"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
+
 </configure>
