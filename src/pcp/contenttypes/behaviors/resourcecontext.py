@@ -26,7 +26,7 @@ class IDPMTResourceContext(model.Schema):
 
 
     services = RelationList(
-        title=u"services(s)",
+        title=u"Services(s)",
         description=u"Registered service(s) or service component(s) "\
         u"through which this resource can be accessed.",
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
@@ -34,12 +34,12 @@ class IDPMTResourceContext(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        'services', 
+        'services',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registered_service_dx", 
-                                "registered_service_component_dx"],
+            "selectableTypes": ["registeredservice_dx",
+                                "registeredservicecomponent_dx"],
             "basePath": make_relation_root_path,
         },
     )
