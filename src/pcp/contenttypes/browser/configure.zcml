@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="pcp.contenttypes">
 
   <include package="plone.app.contentmenu" />
@@ -11,12 +12,25 @@
       layer="pcp.contenttypes.interfaces.IPcpContenttypesLayer"
       />
 
+  <!-- new static files -->
+  <plone:static
+      name="pcp.contenttypes"
+      type="plone"
+      directory="static"
+      />
+
+  <!-- old static files -->
+  <browser:resourceDirectory
+      name="pcp.contenttypes"
+      directory="resources"
+      />
+
   <browser:page
-    name="pcp-settings"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".controlpanel.SettingsControlPanel"
-    permission="cmf.ManagePortal"
-  />
+      name="pcp-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.SettingsControlPanel"
+      permission="cmf.ManagePortal"
+      />
 
   <browser:page
     name="shibboleth"
@@ -444,11 +458,6 @@
 	template="dt_engagement_macros.pt"
 	permission="zope2.View"
 	/>
-
-  <browser:resourceDirectory
-    name="pcp.contenttypes"
-    directory="resources"
-    />
 
   <browser:page
     for="*"

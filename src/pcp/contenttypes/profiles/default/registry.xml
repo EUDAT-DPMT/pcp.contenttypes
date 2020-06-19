@@ -2,6 +2,23 @@
 <registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
           i18n:domain="plone">
 
+  <record name="plone.site_title" >
+    <value>EUDAT Data Project Management Tool</value>
+  </record>
+
+  <!-- the dpmt bundle -->
+  <records prefix="plone.bundles/dpmt-bundle"
+           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>dpmt-main</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="compile">True</value>
+    <value key="csscompilation">++plone++pcp.contenttypes/dpmt.css</value>
+    <value key="jscompilation">++plone++pcp.contenttypes/dpmt.js</value>
+    <value key="last_compilation"></value>
+  </records>
+
   <records interface="pcp.contenttypes.interfaces.settings.ISettings"
            prefix="dpmt" />
 
