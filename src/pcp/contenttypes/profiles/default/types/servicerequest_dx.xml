@@ -29,6 +29,7 @@
   <element value="plone.relateditems" />
   <element value="plone.locking" />
   <element value="DPMT.common" />
+  <element value="DPMT.request" />
  </property>
  <property name="model_source"></property>
  <property name="model_file"></property>
