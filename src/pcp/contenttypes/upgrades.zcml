@@ -21,15 +21,6 @@
     />
 
   <genericsetup:upgradeStep
-    source="2001"
-    destination="2002"
-    title="Disable versioning for all DX types (for now)"
-    description=""
-    profile="pcp.contenttypes:default"
-    handler=".upgrades.disable_versioning"
-    />
-
-  <genericsetup:upgradeStep
     source="2002"
     destination="2003"
     title="Install plone.app.contenttypes"

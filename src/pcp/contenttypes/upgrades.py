@@ -38,7 +38,7 @@ def after_plone5_upgrade(context=None):
     remove_all_revisions()
     # workaround issue with versioning for now
     disable_versioning()
-    rebuild_catalog_without_indexing_blobs()
+    rebuild_catalog()
     pack_database()
 
 
