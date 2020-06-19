@@ -22,5 +22,75 @@
   <records interface="pcp.contenttypes.interfaces.settings.ISettings"
            prefix="dpmt" />
 
+  <record name="plone.email_from_address">
+    <value>dp-admin@mpcdf.mpg.de</value>
+  </record>
+
+  <record name="plone.email_from_name">
+    <value>DP Site Administration</value>
+  </record>
+
+  <record name="plone.smtp_host">
+    <value>localhost</value>
+  </record>
+
+  <record name="plone.enable_sitemap">
+    <value>True</value>
+  </record>
+
+  <record name="plone.exposeDCMetaTags">
+    <value>True</value>
+  </record>
+
+  <record name="plone.portal_timezone">
+    <value>Europe/Berlin</value>
+  </record>
+
+  <record name="plone.available_timezones">
+    <value>
+      <element>Europe/Berlin</element>
+    </value>
+  </record>
+
+  <record name="plone.navigation_depth">
+      <value>2</value>
+  </record>
+
+  <record name="plone.available_languages">
+    <value>
+      <element>en</element>
+    </value>
+  </record>
+
+  <record name="plone.default_language">
+    <value>en</value>
+  </record>
+
+  <record name="plone.displayed_types">
+    <value purge="False">
+      <element>service_dx</element>
+      <element>provider_dx</element>
+      <element>person_dx</element>
+      <element>project_dx</element>
+      <element>community_dx</element>
+      <element>downtime_dx</element>
+      <element>registeredcomputeresource_dx</element>
+      <element>registeredservicecomponent_dx</element>
+      <element>registeredservice_dx</element>
+      <element>registeredstorageresource_dx</element>
+      <element>registeredresource_dx</element>
+      <element>resourcerequest_dx</element>
+      <element>servicecomponentrequest_dx</element>
+      <element>resourceoffer_dx</element>
+      <element>serviceoffer_dx</element>
+      <element>servicecomponentoffer_dx</element>
+      <element>servicerequest_dx</element>
+      <element>environment_dx</element>
+      <element>servicecomponent_dx</element>
+      <element>servicecomponentimplementation_dx</element>
+      <element>servicecomponentimplementationdetails_dx</element>
+    </value>
+  </record>
+
 </registry>
 
