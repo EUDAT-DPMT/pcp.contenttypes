@@ -94,6 +94,119 @@ def test_at_migration(context=None):
     migrate_service()
 
 
+def remove_archetypes(context=None):
+    """Yet untested!"""
+    old_types = [
+        'ATBooleanCriterion',
+        'ATCurrentAuthorCriterion',
+        'ATDateCriteria',
+        'ATDateRangeCriterion',
+        'ATListCriterion',
+        'ATPathCriterion',
+        'ATRelativePathCriterion',
+        'ATPortalTypeCriterion',
+        'ATReferenceCriterion',
+        'ATSelectionCriterion',
+        'ATSimpleIntCriterion',
+        'ATSimpleStringCriterion',
+        'ATSortCriterion',
+        'ChangeSet',
+        'AliasVocabulary',
+        'SimpleVocabulary',
+        'SimpleVocabularyTerm',
+        'SortedSimpleVocabulary',
+        'TreeVocabulary',
+        'TreeVocabularyTerm',
+        'VdexFileVocabulary',
+        'VocabularyLibrary',
+        'RegisteredStorageResource',
+        'RegisteredComputeResource',
+        'ServiceOffer',
+        'AccountingRecord',
+        'Downtime',
+        'ServiceComponentImplementationDetails',
+        'ServiceComponentImplementation',
+        'ServiceComponent',
+        'Service Details',
+        'RegisteredResource',
+        'RegisteredServiceComponent',
+        'RegisteredService',
+        'ResourceRequest',
+        'ServiceComponentRequest',
+        'ServiceRequest',
+        'ServiceComponentOffer',
+        'ResourceOffer',
+        'Plan',
+        'Environment',
+        'Provider',
+        'Person',
+        'Resource',
+        'Center',
+        'Community',
+        'Project',
+        'Service',
+        'ActionItem',
+        'ActionList',
+        'RoleRequest',
+        'FormSaveData2ContentAdapter',
+        'FormSaveData2ContentEntry',
+    ]
+    portal_types = api.portal.get_tool('portal_types')
+    old_types = [i for i in old_types if i in portal_types]
+    portal_catalog = api.portal.get_tool('portal_catalog')
+    for old_type in old_types:
+        brains = portal_catalog(portal_type=old_type)
+        if brains:
+            log.info(u'{} existing Instances of Type {}!'.format(len(brains), old_type))
+        else:
+            portal_types.manage_delObjects([old_type])
+            log.info(u'Removed Type {}!'.format(old_type))
+
+    portal = api.portal.get()
+    installer = get_installer(portal)
+
+    installer.uninstall_product('ATBackRef')
+    installer.uninstall_product('ATExtensions')
+
+    # uninstall AT Types and some dependency tools
+    installer.uninstall_product('Products.ATContentTypes')
+
+    # uninstall AT
+    installer.uninstall_product('Archetypes')
+
+    # remove obsolete AT tools
+    tools = [
+        'portal_languages',
+        'portal_tinymce',
+        'kupu_library_tool',
+        'portal_factory',
+        'portal_atct',
+        'uid_catalog',
+        'archetype_tool',
+        'reference_catalog',
+        'portal_metadata',
+    ]
+    for tool in tools:
+        if tool not in portal.keys():
+            log.info('Tool {} not found'.format(tool))
+            continue
+        try:
+            portal.manage_delObjects([tool])
+            log.info('Deleted {}'.format(tool))
+        except Exception as e:
+            log.info(u'Problem removing {}: {}'.format(tool, e))
+            try:
+                log.info(u'Fallback to remove without permission_checks')
+                portal._delObject(tool)
+                log.info('Deleted {}'.format(tool))
+            except Exception as e:
+                log.info(u'Another problem removing {}: {}'.format(tool, e))
+
+    pprops = api.portal.get_tool('portal_properties')
+    if 'extensions_properties' in pprops:
+        pprops.manage_delObjects('extensions_properties')
+
+
 def migrate_service():
     fields_mapping = (
             {'AT_field_name': 'description_internal',
