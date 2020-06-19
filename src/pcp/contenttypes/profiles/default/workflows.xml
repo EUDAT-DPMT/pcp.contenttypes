@@ -40,6 +40,9 @@
   <type type_id="Discussion Item">
    <bound-workflow workflow_id="one_state_workflow"/>
   </type>
+  <type type_id="downtime_dx">
+   <bound-workflow workflow_id="downtime_workflow"/>
+  </type>
   <type type_id="Downtime">
    <bound-workflow workflow_id="downtime_workflow"/>
   </type>

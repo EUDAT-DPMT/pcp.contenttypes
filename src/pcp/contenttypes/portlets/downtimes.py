@@ -1,19 +1,18 @@
+from pcp.contenttypes.content_dx.provider import IProvider
+from plone.app.portlets.portlets import base
+from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.interface import implementer
+
 import datetime
 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from pcp.contenttypes.interfaces import IProvider
-from plone.app.portlets.portlets import base
-from zope.formlib import form
-from zope.interface import Interface
-from zope.interface import implements
 
-
-class IDowntimePortlet(Interface):
+class IDowntimePortlet(IPortletDataProvider):
     pass
 
 
+@implementer(IDowntimePortlet)
 class Assignment(base.Assignment):
-    implements(IDowntimePortlet)
 
     @property
     def title(self):
@@ -24,10 +23,10 @@ class AddForm(base.AddForm):
     # Parameters
     # *  count of downtimes to display
     # *  query time range
+    schema = IDowntimePortlet
+    label = u"Add Upcoming Downtime Portlet"
+    description = u"Display upcoming Downtimes."
 
-    form_fields = form.Fields(IDowntimePortlet)
-    label = "Add Upcoming Downtime Portlet"
-    description = "Display upcoming Downtimes"
     def create(self, data):
         return Assignment()
 
@@ -72,7 +71,7 @@ class Renderer(base.Renderer):
             'range': 'min:max'
         }
 
-        downtimeBrains = catalog(portal_type='Downtime',
+        downtimeBrains = catalog(portal_type='downtime_dx',
                                  path=query_path,
                                  end=date_query,
                                  review_state='published',

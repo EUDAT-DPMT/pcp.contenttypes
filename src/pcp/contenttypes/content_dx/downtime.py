@@ -1,5 +1,9 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from collective.relationhelpers import api as relapi
+from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
+from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
+from pcp.contenttypes.content_dx.provider import IProvider
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -14,6 +18,7 @@ from zope import schema
 from zope.interface import implementer
 
 import datetime
+import pytz
 
 
 class IDowntime(model.Schema):
@@ -29,14 +34,22 @@ class IDowntime(model.Schema):
         description=u"When does the downtime start? In UTC!",
         required=True,
     )
-    directives.widget('start', DatetimeFieldWidget)
+    directives.widget(
+        'start',
+        DatetimeFieldWidget,
+        default_timezone='UTC',
+    )
 
     end = schema.Datetime(
         title=u"End date (UTC)",
         description=u"When does the downtime end? In UTC!",
         required=True,
     )
-    directives.widget('end', DatetimeFieldWidget)
+    directives.widget(
+        'end',
+        DatetimeFieldWidget,
+        default_timezone='UTC',
+    )
 
     affected_registered_services = RelationList(
         title=u"Affected registered services",
@@ -88,17 +101,52 @@ class Downtime(Container):
         return self.end.strftime("%Y-%m-%d %H:%M")
 
 
+def findDowntimeRecipients(downtime):
+    # TODO: Maybe avoid 'dereferencing' objects by using relation objects manually instead via backreferences
+    affected_services_or_components = [i.to_object for i in downtime.affected_registered_services]
+
+    affected_components = [component for component in affected_services_or_components
+                           if IRegisteredServiceComponent.providedBy(component)]
+
+    indirectly_affected_services = []
+    for component in affected_components:
+        indirectly_affected_services += [i['fullobj'] for i in relapi.get_backrelations(component, 'service_components', fullobj=True)]
+
+    indirectly_affected_services = set(indirectly_affected_services)
+
+    directly_affected_services = set([service for service in affected_services_or_components
+                                      if IRegisteredService.providedBy(service)])
+
+    affected_services = set.union(directly_affected_services, indirectly_affected_services)
+
+    affected_projects = []
+    for affected_service in affected_services:
+        affected_projects += [i['fullobj'] for i in relapi.get_backrelations(affected_service, 'using', fullobj=True)]
+
+    affected_communities = [project.community.to_object for project in affected_projects if project.community]
+
+    project_contacts = set([project.community_contact.to_object.email
+                            for project in affected_projects
+                            if project.community_contact and project.community_contact.to_object.email])
+    community_admins = set([admin.email
+                            for community in affected_communities
+                            for admin in [i.to_object for i in community.community_admins]
+                            if admin.email])
+
+    recipients = set.union(project_contacts, community_admins)
+    return recipients
+
+
 def _getCurrentTime():
-    now = datetime.datetime.utcnow()
-    return DateTime(now)
+    return datetime.datetime.now(pytz.timezone('UTC'))
 
 
 def notifyDowntimeRecipients(downtime, subject, template, recipients):
-    if downtime.end() + 1 < _getCurrentTime():
+    if downtime.end + datetime.timedelta(hours=1) < _getCurrentTime():
         # do not send notifications for past downtimes
         return
 
-    affected_services = downtime.affected_registered_services
+    affected_services = [i.to_object  for i in downtime.affected_registered_services]
 
     chain = downtime.aq_chain
     provider = None
@@ -111,8 +159,8 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
     params = {
         'description': downtime.description,
         # UTC because we have no clue in which timezone the recipient is (using Plone 4)
-        'start_date': str(downtime.start.toZone('UTC')),
-        'end_date': str(downtime.end.toZone('UTC')),
+        'start_date': str(downtime.start),
+        'end_date': str(downtime.end),
         'provider_name': provider.title,
         'provider_url': provider.url,
         'contact_mail_alarm': provider.alarm_email,

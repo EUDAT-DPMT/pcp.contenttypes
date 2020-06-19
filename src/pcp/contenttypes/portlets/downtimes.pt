@@ -16,8 +16,8 @@
 
             <div class="portletItemDetails">
                 <p>
-                    <span tal:replace="python:downtime.start()">Start</span> -
-                    <span tal:replace="python:downtime.end()">Ende</span>
+                    <span tal:replace="python:downtime.start">Start</span> -
+                    <span tal:replace="python:downtime.end">Ende</span>
                 </p>
                 <p>
                     <span tal:replace="downtime/Description">Description</span>
