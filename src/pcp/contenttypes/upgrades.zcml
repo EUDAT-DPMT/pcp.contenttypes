@@ -13,7 +13,7 @@
 
   <genericsetup:upgradeStep
     source="2000"
-    destination="2001"
+    destination="2002"
     title="Cleanup after Upgrade to Plone 5.2"
     description=""
     profile="pcp.contenttypes:default"
@@ -32,7 +32,7 @@
   <genericsetup:upgradeStep
     source="2003"
     destination="2004"
-    title="Migrate folders"
+    title="Migrate folders - Warning: This will break listings of AT Content! "
     description="Migrate default folders from AT to DX"
     profile="pcp.contenttypes:default"
     handler=".upgrades.migrate_folders"
@@ -41,7 +41,7 @@
   <genericsetup:upgradeStep
     source="2004"
     destination="2005"
-    title="Migrate default AT to DX"
+    title="Migrate other default content from AT to DX"
     description="Migrate other default content types from AT to DX"
     profile="pcp.contenttypes:default"
     handler=".upgrades.migrate_to_dexterity"
@@ -50,7 +50,7 @@
   <genericsetup:upgradeStep
     source="2005"
     destination="2006"
-    title="Migrate Custom AT to DX"
+    title="Migrate Custom AT to DX (Work in progress)"
     description="Migrate all custom content types from AT to DX"
     profile="pcp.contenttypes:default"
     handler=".upgrades.test_at_migration"
