@@ -5,6 +5,12 @@
 
   <include package="plone.app.contentmenu" />
 
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="overrides"
+      layer="pcp.contenttypes.interfaces.IPcpContenttypesLayer"
+      />
+
   <browser:page
     name="pcp-settings"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"

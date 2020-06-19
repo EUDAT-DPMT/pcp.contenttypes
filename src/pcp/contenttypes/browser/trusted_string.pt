@@ -11,8 +11,7 @@
     <metal:define define-macro="view">
       <metal:use use-macro="context/widgets/string/macros/view">
         <metal:fill fill-slot="inside">
-           <span tal:content="accessor">Content</span>
-           <span>is the coolest field data ever!</span>
+           <span tal:content="structure accessor">Content</span>
         </metal:fill>
       </metal:use>
     </metal:define>

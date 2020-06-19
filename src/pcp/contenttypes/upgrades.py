@@ -166,6 +166,8 @@ def cleanup_skins(context=None):
         'kss_generic_macros',
         'manage_raiseRequest',
         'migrateOffers',
+        'backreferencewidget',
+        'trusted_string',
         ]
     portal_skins = api.portal.get_tool('portal_skins')
     custom = portal_skins.custom
