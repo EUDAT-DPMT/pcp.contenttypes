@@ -35,6 +35,7 @@ def after_plone5_upgrade(context=None):
     portal_setup.runAllImportStepsFromProfile(
         'profile-pcp.contenttypes:default', purge_old=False)
     cleanup_skins()
+    remove_broken_steps()
     remove_all_revisions()
     # workaround issue with versioning for now
     disable_versioning()
@@ -175,3 +176,29 @@ def cleanup_skins(context=None):
         if item in custom:
             custom.manage_delObjects(item)
             log.info(u'Removed {} from portal_skins/custom.'.format(item))
+
+
+def remove_broken_steps(context=None):
+    portal_setup = api.portal.get_tool('portal_setup')
+    broken_import_steps = [
+        'collective.z3cform.datetimewidget',
+        'languagetool',
+        'ploneformgen',
+        'uwosh.pfg.d2c.install',
+        'zopyx.plone.cassandra.various',
+    ]
+    log.info('remove import-steps')
+    registry = portal_setup.getImportStepRegistry()
+    for broken_import_step in broken_import_steps:
+        if broken_import_step in registry.listSteps():
+            registry.unregisterStep(broken_import_step)
+
+    broken_export_steps = [
+        'languagetool',
+    ]
+    log.info('remove export-steps')
+    registry = portal_setup.getExportStepRegistry()
+    for broken_export_step in broken_export_steps:
+        if broken_export_step in registry.listSteps():
+            registry.unregisterStep(broken_export_step)
+    portal_setup._p_changed = True
