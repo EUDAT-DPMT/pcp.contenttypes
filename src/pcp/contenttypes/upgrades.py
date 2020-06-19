@@ -152,9 +152,24 @@ def pack_database(context=None):
 def cleanup_skins(context=None):
     to_delete = [
         'referencebrowser',
+        'favicon.ico',
+        'logo.png',
+        'maintenance_icon.png',
+        'detailed_view',
+        'hasJSON',
+        'len',
+        'shibboleth',
+        'demo_method',
+        'fgvalidate_base',
+        'getServices',
+        'initialzeAccount',
+        'kss_generic_macros',
+        'manage_raiseRequest',
+        'migrateOffers',
         ]
     portal_skins = api.portal.get_tool('portal_skins')
     custom = portal_skins.custom
     for item in to_delete:
         if item in custom:
             custom.manage_delObjects(item)
+            log.info(u'Removed {} from portal_skins/custom.'.format(item))
