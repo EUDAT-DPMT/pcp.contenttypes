@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from plone import api
 from plone.app.contenttypes.migration.migration import migrateCustomAT
+from plone.app.upgrade.utils import loadMigrationProfile
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
@@ -34,6 +35,13 @@ def after_plone5_upgrade(context=None):
     portal_setup = api.portal.get_tool('portal_setup')
     portal_setup.runAllImportStepsFromProfile(
         'profile-pcp.contenttypes:default', purge_old=False)
+
+    loadMigrationProfile(
+        context,
+        'profile-Products.CMFPlone:plone',
+        steps=['controlpanel'],
+    )
+
     cleanup_skins()
     remove_broken_steps()
     remove_all_revisions()
