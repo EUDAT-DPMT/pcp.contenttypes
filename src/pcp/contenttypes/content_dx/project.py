@@ -176,3 +176,8 @@ class Project(Container, CommonUtilities):
     @property
     def used_new(self):
         return self.renderMemoryValue(self.convert(self.getStorageResourcesUsedSummary(self.get_resources())))
+
+    def getScopeValues(self):
+        """Return the human readable values of the scope keys"""
+        # BBB
+        return list(self.scopes)

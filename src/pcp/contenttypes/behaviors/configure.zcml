@@ -42,7 +42,8 @@
       title="DPMT resource context"
       description="Fields to describe the context of a resource"
       provides=".resourcecontext.IDPMTResourceContext"
-      for="plone.dexterity.interfaces.IDexterityContent"
+      factory=".resourcecontext.DPMTResourceContext"
+      marker=".resourcecontext.IDPMTResourceContextMarker"
       />
 
 </configure>
