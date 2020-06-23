@@ -38,6 +38,14 @@
       />
 
   <plone:behavior
+      name="DPMT.resource"
+      title="DPMT resource"
+      description="Fields to specify resource amounts"
+      provides=".resource.IDPMTResource"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
+
+  <plone:behavior
       name="DPMT.resourcecontext"
       title="DPMT resource context"
       description="Fields to describe the context of a resource"
