@@ -18,18 +18,3 @@ class IRegisteredResource(model.Schema):
 class RegisteredResource(Container):
     """RegisteredResource instance"""
 
-    # XXX Shoud this come from a mixin class ???
-    def getScopeValues(self, asString = 0):
-        """Return the human readable values of the scope keys"""
-        project = self.project  # XXX is this found??? project is defined in a behavior
-        if project is None:
-            if asString:
-                return ''
-            else:
-                return ('',)
-        scopes = []
-        scopes.extend(project.getScopeValues())
-        s = set(scopes)
-        if  asString:
-            return ", ".join(s)
-        return s # tuple(s)

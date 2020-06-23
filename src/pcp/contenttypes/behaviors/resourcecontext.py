@@ -147,9 +147,24 @@ class DPMTResourceContext(object):
     def __init__(self, context):
         self.context = context
 
+    def _getScopeValues(self, asString = 0):
+        """Return the human readable values of the scope keys"""
+        project = self.project.to_object
+        if project is None:
+            if asString:
+                return u''
+            else:
+                return (u'',)
+        scopes = []
+        scopes.extend(project.getScopeValues())
+        s = set(scopes)
+        if  asString:
+            return u", ".join(s)
+        return s # tuple(s)
+
     @property
     def scopes(self):
-        return self.context.getScopeValues(asString=1)
+        return self._getScopeValues(asString=1)
 
     @scopes.setter
     def scopes(self, value):
