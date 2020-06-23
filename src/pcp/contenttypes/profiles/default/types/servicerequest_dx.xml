@@ -28,8 +28,9 @@
   <element value="plone.richtext" />
   <element value="plone.relateditems" />
   <element value="plone.locking" />
-  <element value="DPMT.common" />
   <element value="DPMT.request" />
+  <element value="DPMT.resource" />
+  <element value="DPMT.common" />
  </property>
  <property name="model_source"></property>
  <property name="model_file"></property>

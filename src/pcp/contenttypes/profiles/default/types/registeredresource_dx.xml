@@ -28,6 +28,7 @@
   <element value="plone.richtext" />
   <element value="plone.relateditems" />
   <element value="plone.locking" />
+  <element value="DPMT.resource" />
   <element value="DPMT.resourcecontext" />
   <element value="DPMT.common" />
  </property>
