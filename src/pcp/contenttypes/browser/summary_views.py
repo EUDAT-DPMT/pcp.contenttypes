@@ -5,6 +5,8 @@ from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
 from Products.Archetypes.atapi import ReferenceField
+from Products.Archetypes.BaseObject import BaseObject
+
 
 CSV_TEMPLATE = '"%s"'
 
@@ -75,7 +77,7 @@ def render_with_link(content, field_id):
         value = field.get(content)
     except AttributeError: # Dexterity way
         value = getattr(content, field_id, '<link>')
-        if save_callable(value):
+        if safe_callable(value):
             value = value()
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
@@ -118,7 +120,7 @@ def render_date(content, field_id):
         field = content.schema[field_id]
         value = field.get(content)
     except AttributeError:
-        value = getattr(content, field_id)
+        value = getattr(content, field_id, '')
     try:
         return value.Date()
     except AttributeError:
@@ -242,6 +244,11 @@ class BaseSummaryView(BrowserView):
                       # add more as needed; reference fields don't need to be
                       # included here
                       }
+
+    def ATbased(self, obj):
+        """Helper method to check if 'obj' is Archetypes based"""
+        return isinstance(obj, BaseObject)
+
 
     def field_visible(self, obj, field_name):
         # XXX How to do the same for dexterity types ???
@@ -526,7 +533,8 @@ class RequestOverview(BaseSummaryView):
 
     def content_items(self):
         """All requests regardless of location"""
-        types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest']
+        types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest',
+                 'servicerequest_dx', 'servicecomponentrequest_dx', 'resourcerequest_dx']
         return [element.getObject() for element in self.catalog(portal_type=types)]
 
     def fields(self):
