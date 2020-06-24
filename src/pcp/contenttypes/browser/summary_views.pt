@@ -31,17 +31,14 @@
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
 
-    <div metal:use-macro="context/dt_macros/macros/datatable_css_headers"/>
-    <div metal:use-macro="context/dt_macros/macros/datatable_js_headers"/>
-
-  <table class="listing dt-table" id="overview-table"
+  <table class="pat-datatables listing dt-table" id="overview-table"
           tal:define="simple_fields python:view.simple_fields();
                       fields python:view.fields();">
-    <thead>
-      <tr>
-            <th tal:repeat="label view/field_labels" tal:content="label">Header</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr>
+              <th tal:repeat="label view/field_labels" tal:content="label">Header</th>
+        </tr>
+      </thead>
       <tbody>
       <tr tal:repeat="content view/content_items">
             <td tal:repeat="field python:fields">
@@ -63,13 +60,16 @@
                </tal:def>
             </td>
         </tr>
-    </tbody>
+      </tbody>
+      <tfoot>
+        <tr>
+              <th tal:repeat="label view/field_labels" tal:content="label">Footer</th>
+        </tr>
+      </tfoot>
   </table>
 
-   <metal:macro use-macro="context/dt_macros/macros/datatables_init" />
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
-    </tal:main-macro>
 </metal:main>
 
 </body>
