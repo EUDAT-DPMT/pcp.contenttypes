@@ -4,6 +4,7 @@ from collective.relationhelpers import api as relapi
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
 from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
 from pcp.contenttypes.content_dx.provider import IProvider
+from pcp.contenttypes.mail import send_mail
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -102,15 +103,14 @@ class Downtime(Container):
 
 
 def findDowntimeRecipients(downtime):
-    # TODO: Maybe avoid 'dereferencing' objects by using relation objects manually instead via backreferences
-    affected_services_or_components = [i.to_object for i in downtime.affected_registered_services]
+    affected_services_or_components = relapi.unrestricted_relations(downtime, 'affected_registered_services')
 
     affected_components = [component for component in affected_services_or_components
                            if IRegisteredServiceComponent.providedBy(component)]
 
     indirectly_affected_services = []
     for component in affected_components:
-        indirectly_affected_services += [i['fullobj'] for i in relapi.get_backrelations(component, 'service_components', fullobj=True)]
+        indirectly_affected_services += relapi.unrestricted_backrelations(component, 'service_components')
 
     indirectly_affected_services = set(indirectly_affected_services)
 
@@ -121,19 +121,19 @@ def findDowntimeRecipients(downtime):
 
     affected_projects = []
     for affected_service in affected_services:
-        affected_projects += [i['fullobj'] for i in relapi.get_backrelations(affected_service, 'using', fullobj=True)]
+        affected_projects += relapi.unrestricted_backrelations(affected_service, 'registered_services_used')
 
-    affected_communities = [project.community.to_object for project in affected_projects if project.community]
+    affected_communities = [relapi.relation(project, 'community') for project in affected_projects]
 
-    project_contacts = set([project.community_contact.to_object.email
-                            for project in affected_projects
-                            if project.community_contact and project.community_contact.to_object.email])
-    community_admins = set([admin.email
-                            for community in affected_communities
-                            for admin in [i.to_object for i in community.community_admins]
-                            if admin.email])
+    project_contacts = [relapi.relation(project, 'community_contact', restricted=False) for project in affected_projects]
+    project_contacts_emails = set([i.email for i in project_contacts if i.email])
 
-    recipients = set.union(project_contacts, community_admins)
+    community_admins = []
+    for community in affected_communities:
+        community_admins.extend(relapi.relations(community, 'community_admins'))
+    community_admin_emails = set([i.email for i in community_admins if i.email])
+
+    recipients = set.union(project_contacts_emails, community_admin_emails)
     return recipients
 
 

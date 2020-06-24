@@ -107,11 +107,11 @@ class IDPMTResourceContext(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        'services', 
+        'services',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredservice_dx", 
+            "selectableTypes": ["registeredservice_dx",
                                 "registeredservicecomponent_dx"],
             "basePath": make_relation_root_path,
         },
@@ -125,11 +125,11 @@ class IDPMTResourceContext(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        'linked_resources', 
+        'linked_resources',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredresource_dx", 
+            "selectableTypes": ["registeredresource_dx",
                                 "registeredcomputeresource_dx",
                                 "registeredstorageresource_dx"],
             "basePath": make_relation_root_path,
