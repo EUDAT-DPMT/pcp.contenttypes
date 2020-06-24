@@ -1,7 +1,7 @@
 """Resource behaviours for DPMT content types.
 
 Includes form fields and behaviour adapters for specifying
-resource amounts 
+resource amounts
 """
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
@@ -83,7 +83,7 @@ class IDPMTResource(model.Schema):
     compute_resources = schema.List(
         title=u"Compute resources",
         description=u"Specification of the compute resources",
-        value_type=DictRow(title=u"Compute resources", 
+        value_type=DictRow(title=u"Compute resources",
                            schema=IComputeResourceRowSchema),
         required=False,
         missing_value=[],
@@ -99,5 +99,3 @@ class IDPMTResource(model.Schema):
         missing_value=[],
     )
     directives.widget('storage_resources', DataGridFieldFactory)
-
-

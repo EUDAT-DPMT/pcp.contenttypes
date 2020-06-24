@@ -109,7 +109,7 @@ class IRegisteredService(model.Schema):
 
     used_by_projects = BackrelField(
         title=u'Used by project',
-        relation='using',
+        relation='registered_services_used',
         )
 
     scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
@@ -134,9 +134,9 @@ class RegisteredService(Container):
 
     def getScopeValues(self, asString=False):
         """Return the human readable values of the scope keys"""
-        projects = relapi.get_relations(self, 'services', backrefs=True, fullobj=True) or []
+        projects = relapi.backrelations(self, 'services')
         scopes = []
-        [scopes.extend(p['fullobj'].getScopeValues()) for p in projects]
+        [scopes.extend(p.getScopeValues()) for p in projects]
         s = set(scopes)
         if asString:
             return u', '.join(s)

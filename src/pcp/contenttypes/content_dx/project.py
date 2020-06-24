@@ -158,8 +158,7 @@ class Project(Container, CommonUtilities):
     """Project instance"""
 
     def get_resources(self):
-        resources = relapi.get_relations(self, 'customer', backrefs=True, fullobj=True) or []
-        return [i['fullobj'] for i in resources]
+        return relapi.backrelations(self, 'customer')
 
     @property
     def resource_usage(self):

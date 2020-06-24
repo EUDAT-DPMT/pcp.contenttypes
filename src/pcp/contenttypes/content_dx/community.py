@@ -147,8 +147,7 @@ class Community(Container, CommonUtilities):
         return u'<br />'.join(i for i in items if i)
 
     def get_resources(self):
-        resources = relapi.get_relations(self, 'customer', backrefs=True, fullobj=True) or []
-        return [i['fullobj'] for i in resources]
+        return relapi.backrelations(self, 'customer')
 
     @property
     def usage_summary(self):

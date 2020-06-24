@@ -1,11 +1,13 @@
 
 
 import os
+import six
 import string
 import pkg_resources
 from email.utils import formataddr
 from email.MIMEText import MIMEText
 from plone import api
+from Products.CMFPlone.utils import safe_text
 
 from zopyx.plone.persistentlogger.logger import PersistentLoggerAdapter
 
@@ -18,8 +20,8 @@ class Formatter(string.Formatter):
             if not name in kw:
                 kw[str(name)] = u''
             else:
-                if not isinstance(kw[str(name)], unicode):
-                    kw[str(name)] = unicode(kw[str(name)], 'utf8')
+                if not isinstance(kw[str(name)], six.text_type):
+                    kw[str(name)] = safe_text(kw[str(name)])
 
         return super(Formatter, self).format(fmt, *args, **kw)
 

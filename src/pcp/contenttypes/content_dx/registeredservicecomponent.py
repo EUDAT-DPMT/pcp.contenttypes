@@ -174,17 +174,13 @@ class RegisteredServiceComponent(Container):
 
     def getScopeValues(self, asString = 0):
         """Return the human readable values of the scope keys"""
-        parent_services = relapi.get_relations(self, 'service_components', backrefs=True, fullobj=True) or []
-        parent_services = [i['fullobj'] for i in parent_services]
+        parent_services = relapi.backrelations(self, 'service_components')
         projects = []
-
         for parent_service in parent_services:
-            used_by = relapi.get_relations(parent_service, 'registered_services_used', backrefs=True, fullobj=True) or []
-            used_by = [i['fullobj'] for i in used_by]
-            [projects.extend(rs.getUsed_by_projects()) for rs in used_by]
+            projects.extend(relapi.backrelations(parent_service, 'registered_services_used'))
 
         scopes = []
-        [scopes.extend(p.getScopeValues()) for p in projects]
+        [scopes.extend(p.scopes) for p in projects]
         s = set(scopes)
         if  asString:
             return ", ".join(s)
