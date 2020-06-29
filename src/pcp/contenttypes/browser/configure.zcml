@@ -144,7 +144,7 @@
 	/-->
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	for="plone.dexterity.interfaces.IDexterityContainer"
 	name="project_summary_view"
 	class="pcp.contenttypes.browser.summary_views.ProjectOverview"
 	template="summary_views.pt"
@@ -270,6 +270,14 @@
         permission="cmf.ManagePortal"
         />
 
+ <browser:page
+        for="plone.dexterity.interfaces.IDexterityContainer"
+        name="people_overview"
+        class="pcp.contenttypes.browser.summary_views.PeopleOverview"
+        template="summary_views.pt"
+        permission="cmf.ManagePortal"
+        />
+
   <browser:page
 	for="Products.Archetypes.interfaces.IBaseObject"
 	name="customer_overview"
@@ -279,7 +287,23 @@
 	/>
 
   <browser:page
+	for="plone.dexterity.interfaces.IDexterityContainer"
+	name="customer_overview"
+	class="pcp.contenttypes.browser.summary_views.CustomerOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+	/>
+
+  <browser:page
 	for="Products.ATContentTypes.interfaces.IATFolder"
+	name="provider_overview"
+	class="pcp.contenttypes.browser.summary_views.ProviderOverview"
+	template="summary_views.pt"
+	permission="zope2.View"
+  />
+
+  <browser:page
+	for="plone.dexterity.interfaces.IDexterityContainer"
 	name="provider_overview"
 	class="pcp.contenttypes.browser.summary_views.ProviderOverview"
 	template="summary_views.pt"
