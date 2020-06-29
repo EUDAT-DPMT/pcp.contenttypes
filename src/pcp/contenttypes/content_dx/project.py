@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
@@ -176,7 +176,11 @@ class Project(Container, CommonUtilities):
     def used_new(self):
         return self.renderMemoryValue(self.convert(self.getStorageResourcesUsedSummary(self.get_resources())))
 
-    def getScopeValues(self):
+    def getScopeValues(self, asString=False):
         """Return the human readable values of the scope keys"""
         # BBB
-        return list(self.scopes)
+        scopes = list(self.scopes)
+        if asString:
+            return u', '.join(scopes)
+        else:
+            return scopes

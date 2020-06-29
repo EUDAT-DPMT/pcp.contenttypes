@@ -376,7 +376,7 @@ class CustomerOverview(BaseSummaryView):
     def content_items(self):
         """All customers regardless of location"""
         # customers were originally called communities
-        return [element.getObject() for element in self.catalog(portal_type='Community')]
+        return [element.getObject() for element in self.catalog(portal_type=['Community', 'community_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -402,7 +402,7 @@ class ProviderOverview(BaseSummaryView):
 
     def content_items(self):
         """All providers regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='Provider')]
+        return [element.getObject() for element in self.catalog(portal_type=['Provider', 'provider_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -469,7 +469,7 @@ class ProjectOverview(BaseSummaryView):
 
     def content_items(self):
         """All projects regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='Project')]
+        return [element.getObject() for element in self.catalog(portal_type=['Project', 'project_dx'])]
 
 
 class RegisteredServiceOverview(BaseSummaryView):
