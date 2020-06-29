@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
@@ -134,9 +134,9 @@ class RegisteredService(Container):
 
     def getScopeValues(self, asString=False):
         """Return the human readable values of the scope keys"""
-        projects = relapi.backrelations(self, 'services')
+        projects = relapi.get_backrelations(self, 'registered_services_used', fullobj=True)
         scopes = []
-        [scopes.extend(p.getScopeValues()) for p in projects]
+        [scopes.extend(p['fullobj'].getScopeValues()) for p in projects]
         s = set(scopes)
         if asString:
             return u', '.join(s)

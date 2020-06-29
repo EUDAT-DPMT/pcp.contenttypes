@@ -481,7 +481,8 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered services regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='RegisteredService')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['RegisteredService', 'registeredservice_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -507,7 +508,8 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered service components regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='RegisteredServiceComponent')]
+        return [element.getObject() for element in \
+                self.catalog(portal_type=['RegisteredServiceComponent', 'registeredservicecomponent_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""

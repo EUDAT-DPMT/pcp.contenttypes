@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -174,13 +174,14 @@ class RegisteredServiceComponent(Container):
 
     def getScopeValues(self, asString = 0):
         """Return the human readable values of the scope keys"""
-        parent_services = relapi.backrelations(self, 'service_components')
+        parent_services = relapi.get_backrelations(self, 'service_components', fullobj=True)
         projects = []
         for parent_service in parent_services:
-            projects.extend(relapi.backrelations(parent_service, 'registered_services_used'))
+            p_service = parent_service['fullobj']
+            projects.extend(relapi.get_backrelations(p_service, 'registered_services_used', fullobj=True))
 
         scopes = []
-        [scopes.extend(p.scopes) for p in projects]
+        [scopes.extend(p['fullobj'].scopes) for p in projects]
         s = set(scopes)
         if  asString:
             return ", ".join(s)
