@@ -491,4 +491,11 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    name="widget_view"
+    class="pcp.contenttypes.browser.widget.WidgetView"
+    attribute="get_widget"
+    permission="zope2.View"
+    />
+
 </configure>
