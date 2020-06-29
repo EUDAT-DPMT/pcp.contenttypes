@@ -25,8 +25,11 @@ class OfferUtilities(object):
         regional = self.regional_constraints
         thematic = self.thematic_constraints
         organizational = self.organizational_constraints
-#        general = self.constraints
-        general = transformer(self.constraints, 'text/plain')
+        general_constraints = self.constraints
+        if general_constraints is not None:
+            general = transformer(self.constraints, 'text/plain')
+        else:
+            general = ''
 
         result = ''
 

@@ -629,8 +629,9 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service offers regardless of location"""
-        return [element.getObject() for element in 
+        items= [element.getObject() for element in \
                 self.catalog(portal_type=['ServiceOffer', 'serviceoffer_dx'])]
+        return items
 
     def fields(self):
         """Fields to show in the overview"""

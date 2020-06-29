@@ -79,6 +79,6 @@ class IServiceOffer(model.Schema):
         },
     )
 
-@implementer(IServiceOffer, OfferUtilities)
-class ServiceOffer(Container):
+@implementer(IServiceOffer)
+class ServiceOffer(Container, OfferUtilities):
     """ServiceOffer instance"""
