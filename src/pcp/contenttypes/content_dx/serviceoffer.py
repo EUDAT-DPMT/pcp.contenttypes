@@ -22,7 +22,7 @@ class IServiceOffer(model.Schema):
         description=u"Reference to the catalog entry of the service being offered.",
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
-    )   
+    )
     directives.widget(
         "service_offered",
         RelatedItemsFieldWidget,
@@ -36,7 +36,7 @@ class IServiceOffer(model.Schema):
         title=u"Service option offered",
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
-    )   
+    )
     directives.widget(
         "service_option",
         RelatedItemsFieldWidget,
@@ -56,7 +56,7 @@ class IServiceOffer(model.Schema):
     )
     directives.widget(
         "slas",
-        RelatedItemsFieldWidget,        
+        RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
             "selectableTypes": ["Document"],
@@ -69,7 +69,7 @@ class IServiceOffer(model.Schema):
         description=u"Contact responsible for this service offer.",
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
-    )   
+    )
     directives.widget(
         "contact",
         RelatedItemsFieldWidget,
