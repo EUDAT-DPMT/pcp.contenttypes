@@ -346,7 +346,7 @@ class PeopleOverview(BaseSummaryView):
 
     def content_items(self):
         """All address book entries"""
-        return [element.getObject() for element in self.catalog(portal_type='Person')]
+        return [element.getObject() for element in self.catalog(portal_type=['Person', 'person_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
