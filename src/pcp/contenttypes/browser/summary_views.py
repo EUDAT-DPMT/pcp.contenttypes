@@ -27,9 +27,10 @@ def render_reference_field(content, field_id, with_state=False):
         field = content.schema[field_id]
         objs = field.get(content, aslist=True)
     except AttributeError: # likely a dexterity type
-        objs = getattr(content, field_id, [])
-        if type(objs) != type([]):
-            objs = [objs]
+        obj_refs = getattr(content, field_id, [])
+        if type(obj_refs) != type([]):
+            obj_refs = [obj_refs]
+        objs = [o.to_object for o in obj_refs]
     text = []
     if objs == []:
         return "no reference set"

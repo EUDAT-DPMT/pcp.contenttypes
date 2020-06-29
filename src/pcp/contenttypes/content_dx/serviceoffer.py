@@ -1,5 +1,6 @@
-## -*- coding: UTF-8 -*-
+## -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.content_dx.common import OfferUtilities
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -78,6 +79,6 @@ class IServiceOffer(model.Schema):
         },
     )
 
-@implementer(IServiceOffer)
+@implementer(IServiceOffer, OfferUtilities)
 class ServiceOffer(Container):
     """ServiceOffer instance"""
