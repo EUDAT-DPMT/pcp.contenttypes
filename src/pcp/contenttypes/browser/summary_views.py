@@ -571,7 +571,8 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered resources regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='RegisteredResource')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['RegisteredResource', 'registeredresource_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -599,7 +600,7 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def content_items(self):
         """All registered storage resources regardless of location"""
         return [element.getObject() for element in \
-                self.catalog(portal_type='RegisteredStorageResource')]
+                self.catalog(portal_type=['RegisteredStorageResource', 'registeredstorageresource_dx'])]
 
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
@@ -627,7 +628,8 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service offers regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='ServiceOffer')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['ServiceOffer', 'serviceoffer_dx'])]
 
     def fields(self):
         """Fields to show in the overview"""
@@ -649,7 +651,8 @@ class ServiceComponentOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service component offers regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='ServiceComponentOffer')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['ServiceComponentOffer', 'servicecomponentoffer_dx'])]
 
     def fields(self):
         """Fields to show in the overview"""
@@ -673,7 +676,8 @@ class ResourceOfferOverview(RegisteredResourceOverview):
 
     def content_items(self):
         """All resource offers regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type='ResourceOffer')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['ResourceOffer', 'resourceoffer_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -698,7 +702,8 @@ class DowntimeOverview(BaseSummaryView):
     description = ""
 
     def content_items(self):
-        return [element.getObject() for element in self.catalog(portal_type='Downtime')]
+        return [element.getObject() for element in 
+                self.catalog(portal_type=['Downtime', 'downtime_dx'])]
 
     def fields(self):
         return ('title', 'startDateTime', 'endDateTime', 

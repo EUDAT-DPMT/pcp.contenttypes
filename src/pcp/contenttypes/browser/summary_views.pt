@@ -64,7 +64,7 @@
           <tal:if condition="not: python:view.ATbased(content)">
             <td tal:repeat="field python:fields">
                       <div tal:condition="python:field in simple_fields"
-                           tal:content="python:content.w[field].render()">
+                           tal:content="python:getattr(content, field, '')">
                           Field value
                       </div>
                       <div tal:condition="python:field not in simple_fields"

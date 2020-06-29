@@ -1,6 +1,7 @@
 """Common components shared by content types
 """
 from incf.countryutils.datatypes import Country
+from plone.app.textfield.interfaces import ITransformer
 from plone.app.uuid.utils import uuidToObject
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
@@ -19,11 +20,13 @@ class OfferUtilities(object):
     def aggregated_constraints(self):
         """Formated string summarizing all constraints"""
 
-        regional = self.getRegional_constraints()
-        thematic = self.getThematic_constraints()
-        organizational = self.getOrganizational_constraints()
-#        general = self.getConstraints()
-        general = self.getField('constraints').get(self, mimetype='text/plain')
+        transformer = ITransformer(self)
+
+        regional = self.regional_constraints
+        thematic = self.thematic_constraints
+        organizational = self.organizational_constraints
+#        general = self.constraints
+        general = transformer(self.constraints, 'text/plain')
 
         result = ''
 
