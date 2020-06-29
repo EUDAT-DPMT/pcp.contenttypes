@@ -30,7 +30,7 @@ def render_reference_field(content, field_id, with_state=False):
         obj_refs = getattr(content, field_id, [])
         if type(obj_refs) != type([]):
             obj_refs = [obj_refs]
-        objs = [o.to_object for o in obj_refs]
+        objs = [o.to_object for o in obj_refs if o]
     text = []
     if objs == []:
         return "no reference set"
