@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
@@ -101,6 +101,14 @@ class Downtime(Container):
         """'end' without explicit time zone"""
         return self.end.strftime("%Y-%m-%d %H:%M")
 
+    # BBB
+    @property
+    def startDateTime(self):
+        return self.start
+
+    @property
+    def endDateTime(self):
+        return self.end
 
 def findDowntimeRecipients(downtime):
     affected_services_or_components = relapi.unrestricted_relations(downtime, 'affected_registered_services')
