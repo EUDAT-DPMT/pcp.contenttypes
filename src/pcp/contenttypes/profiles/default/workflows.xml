@@ -37,6 +37,9 @@
   <type type_id="Community">
    <bound-workflow workflow_id="community_workflow"/>
   </type>
+  <type type_id="community_dx">
+   <bound-workflow workflow_id="community_workflow"/>
+  </type>
   <type type_id="Discussion Item">
    <bound-workflow workflow_id="one_state_workflow"/>
   </type>
@@ -84,16 +87,34 @@
   <type type_id="Project">
    <bound-workflow workflow_id="project_workflow"/>
   </type>
+  <type type_id="project_dx">
+   <bound-workflow workflow_id="project_workflow"/>
+  </type>
   <type type_id="RegisteredComputeResource">
+   <bound-workflow workflow_id="service_workflow"/>
+  </type>
+  <type type_id="registeredcomputeresource_dx">
    <bound-workflow workflow_id="service_workflow"/>
   </type>
   <type type_id="RegisteredResource">
    <bound-workflow workflow_id="service_workflow"/>
   </type>
+  <type type_id="registeredresource_dx">
+   <bound-workflow workflow_id="service_workflow"/>
+  </type>
   <type type_id="RegisteredService">
    <bound-workflow workflow_id="service_workflow"/>
   </type>
+  <type type_id="registeredservice_dx">
+   <bound-workflow workflow_id="service_workflow"/>
+  </type>
   <type type_id="RegisteredServiceComponent">
+   <bound-workflow workflow_id="service_workflow"/>
+  </type>
+  <type type_id="registeredservicecomponent_dx">
+   <bound-workflow workflow_id="service_workflow"/>
+  </type>
+  <type type_id="registeredstorageresource_dx">
    <bound-workflow workflow_id="service_workflow"/>
   </type>
   <type type_id="RegisteredStorageResource">
@@ -102,16 +123,31 @@
   <type type_id="ResourceOffer">
    <bound-workflow workflow_id="offer_workflow"/>
   </type>
+  <type type_id="resourceoffer_dx">
+   <bound-workflow workflow_id="offer_workflow"/>
+  </type>
   <type type_id="ResourceRequest">
+   <bound-workflow workflow_id="request_workflow"/>
+  </type>
+  <type type_id="resourcerequest_dx">
    <bound-workflow workflow_id="request_workflow"/>
   </type>
   <type type_id="ServiceComponentOffer">
    <bound-workflow workflow_id="offer_workflow"/>
   </type>
+  <type type_id="servicecomponentoffer_dx">
+   <bound-workflow workflow_id="offer_workflow"/>
+  </type>
   <type type_id="ServiceComponentRequest">
    <bound-workflow workflow_id="request_workflow"/>
   </type>
+  <type type_id="servicecomponentrequest_dx">
+   <bound-workflow workflow_id="request_workflow"/>
+  </type>
   <type type_id="ServiceRequest">
+   <bound-workflow workflow_id="request_workflow"/>
+  </type>
+  <type type_id="servicerequest_dx">
    <bound-workflow workflow_id="request_workflow"/>
   </type>
  </bindings>
