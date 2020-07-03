@@ -15,7 +15,7 @@ class Accounting(BrowserView):
 
     def has_account(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISettings)
+        settings = registry.forInterface(ISettings, check=False)
         f = furl.furl(settings.accounting_url)
         if settings.accounting_username:
             f.username = settings.accounting_username
@@ -50,7 +50,7 @@ class Accounting(BrowserView):
 
     def fetch_records(self, uid):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISettings)
+        settings = registry.forInterface(ISettings, check=False)
         f = furl.furl(settings.accounting_url)
         if settings.accounting_username:
             f.username = settings.accounting_username

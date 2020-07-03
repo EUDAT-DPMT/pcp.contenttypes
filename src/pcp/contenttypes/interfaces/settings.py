@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from zope import schema
 from zope.interface import Interface
 
@@ -407,7 +407,8 @@ class ISettings(Interface):
             u'eudat.registry.gocdb',
             u'eudat.rep.gitlab',
             u'eudat.rep.svn',
-            u'eudat.webpresence',        ],
+            u'eudat.webpresence',
+        ],
         missing_value=[],
         value_type=schema.TextLine(),
     )
