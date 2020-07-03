@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 from plone import api
-from plone.app.contenttypes.migration.migration import migrateCustomAT
 from plone.app.upgrade.utils import loadMigrationProfile
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
@@ -91,7 +90,8 @@ def migrate_to_dexterity(context=None):
 
 
 def test_at_migration(context=None):
-    migrate_service()
+    from pcp.contenttypes import custom_migration
+    custom_migration.migrate_community()
 
 
 def remove_archetypes(context=None):
@@ -205,30 +205,6 @@ def remove_archetypes(context=None):
     pprops = api.portal.get_tool('portal_properties')
     if 'extensions_properties' in pprops:
         pprops.manage_delObjects('extensions_properties')
-
-
-def migrate_service():
-    fields_mapping = (
-            {'AT_field_name': 'description_internal',
-             'DX_field_name': 'description_internal',
-             },
-            {'AT_field_name': 'url',
-             'DX_field_name': 'url',
-             },
-            {'AT_field_name':'service_area',
-             'DX_field_name':'service_area',
-             },
-    )
-    #service_at = api.content.get(path='/catalog/B2DROP')
-    #log.info(service_at.__dict__)
-    #import pdb; pdb.set_trace()
-    migrateCustomAT(
-        fields_mapping,
-        src_type='Service',
-        dst_type='service_dx')
-    #service_dx = api.content.get(path='/catalog/B2DROP')
-    #log.info(service_dx.__dict__)
-    #import pdb; pdb.set_trace()
 
 
 def remove_all_revisions(context=None):
