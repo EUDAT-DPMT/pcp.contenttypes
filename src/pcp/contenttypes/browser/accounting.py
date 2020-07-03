@@ -15,12 +15,15 @@ class Accounting(BrowserView):
 
     def has_account(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISettings, check=False)
-        f = furl.furl(settings.accounting_url)
-        if settings.accounting_username:
-            f.username = settings.accounting_username
-        if settings.accounting_password:
-            f.password = settings.accounting_password
+        #settings = registry.forInterface(ISettings, check=False)
+        #f = furl.furl(settings.accounting_url)
+        #if settings.accounting_username:
+        #    f.username = settings.accounting_username
+        #if settings.accounting_password:
+        #    f.password = settings.accounting_password
+        f = furl.furl(registry['dpmt.accounting_url'])
+        f.username = registry['dpmt.accounting_username']
+        f.password = registry['dpmt.accounting_password']
         f.path = str(f.path) + '/hasAccount'
         f.args['id'] = self.context.UID()
         url = str(f)
@@ -51,11 +54,13 @@ class Accounting(BrowserView):
     def fetch_records(self, uid):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings, check=False)
-        f = furl.furl(settings.accounting_url)
-        if settings.accounting_username:
-            f.username = settings.accounting_username
-        if settings.accounting_password:
-            f.password = settings.accounting_password
+        f = furl.furl(registry['dpmt.accounting_url'])
+        f.username = registry['dpmt.accounting_username']
+        f.password = registry['dpmt.accounting_password']
+        #if settings.accounting_username:
+        #    f.username = settings.accounting_username
+        #if settings.accounting_password:
+        #    f.password = settings.accounting_password
         f.path = str(f.path) + '/' + uid + '/listRecords'
         url = str(f)
         result = requests.get(url)

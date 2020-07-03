@@ -9,7 +9,7 @@ class ISettings(Interface):
     accounting_url = schema.TextLine(
         title=u'Connection accounting server',
         description=u'Use http://host:port/path/to/domain',
-        default=u'http://accounting.eudat.eu',
+        default=u'https://accounting.eudat.eu/eudat',
         required=True,
     )
 
