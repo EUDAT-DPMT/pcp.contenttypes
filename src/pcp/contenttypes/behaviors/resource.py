@@ -22,7 +22,7 @@ from zope.interface import provider
 # parts for the data grid type fields
 class IComputeResourceRowSchema(Interface):
 
-    nCore = schema.TextLine(
+    nCores = schema.TextLine(
         title=u"Number of cores",
         required=False,
         )
