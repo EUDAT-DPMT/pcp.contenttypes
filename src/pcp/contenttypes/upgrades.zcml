@@ -32,6 +32,14 @@
   <genericsetup:upgradeStep
     source="2003"
     destination="2004"
+    title="Store references on portal"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.store_references"
+    />
+
+  <genericsetup:upgradeStep
+    source="2004"
+    destination="2005"
     title="Migrate folders - Warning: This will break listings of AT Content! "
     description="Migrate default folders from AT to DX"
     profile="pcp.contenttypes:default"
@@ -39,8 +47,8 @@
     />
 
   <genericsetup:upgradeStep
-    source="2004"
-    destination="2005"
+    source="2005"
+    destination="2006"
     title="Migrate other default content from AT to DX"
     description="Migrate other default content types from AT to DX"
     profile="pcp.contenttypes:default"
@@ -48,12 +56,20 @@
     />
 
   <genericsetup:upgradeStep
-    source="2005"
-    destination="2006"
-    title="Migrate Custom AT to DX (Work in progress)"
+    source="2006"
+    destination="2007"
+    title="Migrate Custom AT to DX"
     description="Migrate all custom content types from AT to DX"
     profile="pcp.contenttypes:default"
-    handler=".upgrades.test_at_migration"
+    handler=".upgrades.custom_at_migration"
+    />
+
+  <genericsetup:upgradeStep
+    source="2007"
+    destination="2008"
+    title="Restore relations"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.restore_references"
     />
 
 </configure>

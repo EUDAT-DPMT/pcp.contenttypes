@@ -11,6 +11,7 @@ from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
+from Products.CMFPlone.utils import safe_text
 from z3c.form.interfaces import IDisplayForm
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
@@ -144,7 +145,7 @@ class Community(Container, CommonUtilities):
 
         city = u'{} {}'.format(self.zip, self.city) if self.zip else self.city
         items = [street, city, self.country]
-        return u'<br />'.join(i for i in items if i)
+        return u'<br />'.join(safe_text(i) for i in items if i)
 
     def get_resources(self):
         return relapi.backrelations(self, 'customer')

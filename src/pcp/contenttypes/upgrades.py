@@ -1,15 +1,19 @@
 # -*- coding: UTF-8 -*-
+from collective.relationhelpers import api as relapi
 from plone import api
 from plone.app.upgrade.utils import loadMigrationProfile
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
+from zope.annotation.interfaces import IAnnotations
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
+import os
 
 log = logging.getLogger(__name__)
+RELATIONS_KEY = 'ALL_REFERENCES'
 
 
 def fix_some_at_folders(context=None):
@@ -50,6 +54,12 @@ def after_plone5_upgrade(context=None):
     pack_database()
 
 
+def store_references(context=None):
+    from plone.app.contenttypes.migration.utils import store_references
+    portal = api.portal.get()
+    store_references(portal)
+
+
 def install_pac(context=None):
     """Run this in Plone 5.2
     """
@@ -87,11 +97,84 @@ def migrate_to_dexterity(context=None):
         reindex_catalog=False,
         patch_searchabletext=True,
     )
+    loadMigrationProfile(
+        context,
+        'profile-pcp.contenttypes:default',
+        steps=['workflow'],
+    )
 
 
-def test_at_migration(context=None):
+def custom_at_migration(context=None):
+    # Disable queueing of indexing/reindexing/unindexing
+    queue_indexing = os.environ.get('CATALOG_OPTIMIZATION_DISABLED', None)
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     from pcp.contenttypes import custom_migration
+    custom_migration.migrate_project()
     custom_migration.migrate_community()
+    custom_migration.migrate_downtime()
+    custom_migration.migrate_environment()
+    custom_migration.migrate_person()
+    custom_migration.migrate_provider()
+    custom_migration.migrate_registeredcomputeresource()
+    custom_migration.migrate_registeredresource()
+    custom_migration.migrate_registeredservice()
+    custom_migration.migrate_registeredservicecomponent()
+    custom_migration.migrate_registeredstorageresource()
+    custom_migration.migrate_resourceoffer()
+    custom_migration.migrate_resourcerequest()
+    custom_migration.migrate_service()
+    custom_migration.migrate_servicecomponent()
+    custom_migration.migrate_servicecomponentimplementation()
+    custom_migration.migrate_servicecomponentimplementationdetails()
+    custom_migration.migrate_servicecomponentoffer()
+    custom_migration.migrate_servicecomponentrequest()
+    custom_migration.migrate_serviceoffer()
+    custom_migration.migrate_servicerequest()
+    if queue_indexing:
+        os.environ['CATALOG_OPTIMIZATION_DISABLED'] = queue_indexing
+    else:
+        del os.environ['CATALOG_OPTIMIZATION_DISABLED']
+
+
+# Map some AT Reference to DX Relation
+RELATIONSHIP_FIELD_MAPPING = {
+    'community_admins': 'admins',
+    'done_for': 'community',
+    'using': 'registered_services_used',
+    'enabled_by': 'project_enabler',
+    'admin_of': 'admins',
+    'contact_for': 'contact',
+    'managers_for': 'managers',
+    'implemented_by': 'service_component_implementation_details',
+    'provided_by': 'service_providers',
+    'contact_for': 'contacts',
+    'rolerequest_for_context': 'context',
+    'owned_by': 'service_owner',
+    'service_component_offered': 'service_component',
+    'service_component_implementations_offered': 'implementations',
+    'slas_offered': 'slas',
+    'requested_component': 'service_component',
+    'requested_component_implementations': 'implementations',
+    'depends_on': 'dependencies',
+    'service_offered': 'service',
+    'service_option_offered': 'service_option',
+}
+
+
+def restore_references(context=None):
+    portal = api.portal.get()
+    all_stored_relations = IAnnotations(portal)[RELATIONS_KEY]
+    log.info('Loaded {0} relations to restore'.format(
+        len(all_stored_relations))
+    )
+    all_fixed_relations = []
+    # pac exports references with 'relationship' relapi expects 'from_attribute'
+    # also some fields have special relationship-names in AT
+    for rel in all_stored_relations:
+        rel['from_attribute'] = RELATIONSHIP_FIELD_MAPPING.get(
+            rel['relationship'], rel['relationship'])
+        all_fixed_relations.append(rel)
+    relapi.restore_relations(all_relations=all_fixed_relations)
 
 
 def remove_archetypes(context=None):

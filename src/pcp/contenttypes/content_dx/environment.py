@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -12,8 +13,9 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
+
 class IEnvironment(model.Schema):
-    """Dexterity Schema for Environment 
+    """Dexterity Schema for Environment
     """
 
     contact = RelationChoice(
@@ -42,5 +44,5 @@ class IEnvironment(model.Schema):
 
 
 @implementer(IEnvironment)
-class Environment(Container):
+class Environment(Container, CommonUtilities):
     """Environment instance"""

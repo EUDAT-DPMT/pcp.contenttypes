@@ -202,6 +202,7 @@ class IProvider(model.Schema):
         value_type=schema.Choice(vocabulary='dpmt.operating_systems'),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     getAccount = schema.URI(

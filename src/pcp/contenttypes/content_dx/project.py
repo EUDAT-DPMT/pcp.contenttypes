@@ -3,7 +3,7 @@ from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.z3cform.widget import DatetimeFieldWidget
+from plone.app.z3cform.widget import DateFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
@@ -22,7 +22,7 @@ class IProject(model.Schema):
     website = schema.URI(title=u"Website", required=False,)
 
     community = RelationChoice(
-            title=u"Community",
+            title=u"Customer",
             description=u"Main customer involved in this project.",
             vocabulary='plone.app.vocabularies.Catalog',
             required=False,
@@ -104,11 +104,11 @@ class IProject(model.Schema):
     )
     # condition="python:here.stateNotIn(['considered'])" <-- Where does that fit?
 
-    start_date = schema.Datetime(title=u"Start date", required=False,)
-    directives.widget("start_date", DatetimeFieldWidget)
+    start_date = schema.Date(title=u"Start date", required=False,)
+    directives.widget("start_date", DateFieldWidget)
 
-    end_date = schema.Datetime(title=u"End date", required=False,)
-    directives.widget("end_date", DatetimeFieldWidget)
+    end_date = schema.Date(title=u"End date", required=False,)
+    directives.widget("end_date", DateFieldWidget)
 
     call_for_collaboration = schema.URI(
         title=u"Call for collaboration",
@@ -140,6 +140,7 @@ class IProject(model.Schema):
         description=u'Tick all that apply. If in doubt, select "EUDAT".',
         value_type=schema.Choice(vocabulary='dpmt.scope_vocabulary'),
         missing_value=[],
+        default=[],
         required=True,
     )
 
