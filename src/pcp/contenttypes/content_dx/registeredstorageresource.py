@@ -1,9 +1,10 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from pcp.contenttypes.content_dx.accountable import Accountable
 from pcp.contenttypes.content_dx.common import CommonUtilities
+from pcp.contenttypes.interfaces.accountable import IAccountable
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.autoform import directives
@@ -76,6 +77,7 @@ class IRegisteredStorageResource(model.Schema):
     directives.widget('preserve_until', DatetimeFieldWidget)
 
 @implementer(IRegisteredStorageResource)
+@implementer(IAccountable)
 class RegisteredStorageResource(Container, CommonUtilities, Accountable):
     """RegisteredStorageResource instance"""
 
