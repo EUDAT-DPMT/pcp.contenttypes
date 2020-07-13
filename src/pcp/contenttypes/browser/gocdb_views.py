@@ -1,11 +1,14 @@
-import plone
 from DateTime import DateTime
-from Products.ATVocabularyManager import NamedVocabulary
-from Products.CMFCore.MemberDataTool import MemberData
-from Products.Five.browser import BrowserView
 from incf.countryutils.datatypes import Country
 from pcp.contenttypes.interfaces import IRegisteredService
 from pcp.contenttypes.interfaces import IRegisteredServiceComponent
+from Products.CMFCore.MemberDataTool import MemberData
+from Products.Five.browser import BrowserView
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
+
+import plone
+
 
 header =  """<?xml version="1.0" encoding="UTF-8"?>
 <results>"""
@@ -347,6 +350,7 @@ class DowntimeView(BrowserView):
         vocabulary = NamedVocabulary('service_types')
         vocabulary = vocabulary.getVocabularyDict(component)
         return vocabulary[serviceType]
+        vocabulary = getUtility(IVocabularyFactory, 'dpmt.service_types')
 
     def buildDateRangeQuery(self, min, max):
         if min or max:

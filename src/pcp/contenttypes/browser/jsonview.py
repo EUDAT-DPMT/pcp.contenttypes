@@ -17,11 +17,7 @@ import json
 import plone.api
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IFolderish
-from plone.app.blob.interfaces import IBlobWrapper
 from DateTime import DateTime
-
-from Products.Archetypes.atapi import ReferenceField
-from Products.ATExtensions.ateapi import FormattableName
 
 #: Private attributes we add to the export list
 EXPORT_ATTRIBUTES = ["portal_type", "id"]
@@ -51,7 +47,7 @@ hidden_fields = (
 
 class JSONhelper(BrowserView):
     """condition for the JSON action"""
-    
+
     def hasJSON(self):
         """condition for showing the JSON action
         suppress it in the 'operations' section and at top level
@@ -99,11 +95,8 @@ class JSONView(BrowserView):
             # Zope DateTime
             # http://pypi.python.org/pypi/DateTime/3.0.2
             return value.ISO8601()
-        elif isinstance(value, FormattableName):
-            return dict(value.items())
-        elif IBlobWrapper.providedBy(value):
-            # TODO: equivalent handling of binary data as in isBinary special case
-            return None
+        # elif isinstance(value, FormattableName):
+        #     return dict(value.items())
         elif hasattr(value, "isBinary") and value.isBinary():
 
             if not EXPORT_BINARY:
@@ -135,20 +128,20 @@ class JSONView(BrowserView):
                 if name in hidden_fields:
                     continue
 
-            if isinstance(field, ReferenceField):
-                value = []
-                objs = field.get(context, aslist=True)
-                uids = field.getRaw(context, aslist=True)
-                for o, u in zip(objs, uids):
-                    d = {}
-                    d['uid'] = u
-                    d['title'] = o.Title()
-                    d['path'] = '/'.join(self.url_tool.getRelativeContentPath(o))
-                    if self.handle_client() is not None:
-                        handle = self.handle_client()._getHandle(o)
-                        if handle:
-                            d['handle'] = handle
-                    value.append(d)
+            # if isinstance(field, ReferenceField):
+            #     value = []
+            #     objs = field.get(context, aslist=True)
+            #     uids = field.getRaw(context, aslist=True)
+            #     for o, u in zip(objs, uids):
+            #         d = {}
+            #         d['uid'] = u
+            #         d['title'] = o.Title()
+            #         d['path'] = '/'.join(self.url_tool.getRelativeContentPath(o))
+            #         if self.handle_client() is not None:
+            #             handle = self.handle_client()._getHandle(o)
+            #             if handle:
+            #                 d['handle'] = handle
+            #         value.append(d)
             else:
                 try:
                     value = field.getRaw(context)

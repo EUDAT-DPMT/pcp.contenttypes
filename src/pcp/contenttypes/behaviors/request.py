@@ -10,8 +10,6 @@ from plone.app.textfield import RichText
 from plone.autoform import directives
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.app.z3cform.widget import DatetimeFieldWidget
-from plone.formwidget.contenttree import MultiContentTreeFieldWidget
-from plone.formwidget.contenttree import PathSourceBinder
 from plone.supermodel import model
 from zope import schema
 from zope.interface import provider

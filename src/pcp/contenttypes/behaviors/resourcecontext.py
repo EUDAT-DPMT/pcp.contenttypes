@@ -11,8 +11,6 @@ from plone.autoform import directives
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.dexterity.interfaces import IDexterityContent
-from plone.formwidget.contenttree import MultiContentTreeFieldWidget
-from plone.formwidget.contenttree import PathSourceBinder
 from plone.supermodel import model
 from zope import schema
 from zope.component import adapter

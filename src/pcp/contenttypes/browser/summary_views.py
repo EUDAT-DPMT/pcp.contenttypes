@@ -4,8 +4,12 @@ from cStringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
-from Products.Archetypes.atapi import ReferenceField
-from Products.Archetypes.BaseObject import BaseObject
+try:
+    from Products.Archetypes.BaseObject import BaseObject
+    HAS_AT = True
+except ImportError:
+    HAS_AT = False
+
 
 
 CSV_TEMPLATE = '"%s"'
@@ -248,7 +252,8 @@ class BaseSummaryView(BrowserView):
 
     def ATbased(self, obj):
         """Helper method to check if 'obj' is Archetypes based"""
-        return isinstance(obj, BaseObject)
+        if HAS_AT:
+            return isinstance(obj, BaseObject)
 
 
     def field_visible(self, obj, field_name):

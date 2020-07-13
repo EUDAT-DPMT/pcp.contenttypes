@@ -2,8 +2,6 @@ from datetime import datetime
 from cStringIO import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.Archetypes.atapi import ReferenceField
-from pcp.contenttypes.content.common import CommonUtilities
 
 CSV_TEMPLATE = '"%s"'
 

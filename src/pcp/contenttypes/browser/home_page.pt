@@ -9,15 +9,13 @@
 
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-           tal:define="kssClassesView context/@@kss_field_decorator_view;
-                       getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                       portal context/portal_url/getPortalObject;
+           tal:define="portal context/portal_url/getPortalObject;
                        templateId template/getId;">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading"> 
-            Welcome to the EUDAT Data Project Management Tool 
+        <h1 class="documentFirstHeading">
+            Welcome to the EUDAT Data Project Management Tool
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />

@@ -4,10 +4,14 @@
 from zope.i18nmessageid import MessageFactory
 from pcp.contenttypes import config
 
-from Products.Archetypes import atapi
 from Products.CMFCore import utils
 from plone.app.upgrade.utils import alias_module
 from zope.interface import Interface
+try:
+    from Products.Archetypes import atapi
+    HAS_AT = True
+except ImportError:
+    HAS_AT = False
 
 # Define a message factory for when this product is internationalised.
 # This will be imported with the special name "_" in most modules. Strings
@@ -62,27 +66,21 @@ def initialize(context):
     # during ZCML processing, but we do it here again to be explicit. Of
     # course, even if we import the module several times, it is only run
     # once.
+    if HAS_AT:
+        content_types, constructors, ftis = atapi.process_types(
+            atapi.listTypes(config.PROJECTNAME),
+            config.PROJECTNAME)
 
-    content_types, constructors, ftis = atapi.process_types(
-        atapi.listTypes(config.PROJECTNAME),
-        config.PROJECTNAME)
+        # Now initialize all these content types. The initialization process takes
+        # care of registering low-level Zope 2 factories, including the relevant
+        # add-permission. These are listed in config.py. We use different
+        # permissions for each content type to allow maximum flexibility of who
+        # can add which content types, where. The roles are set up in rolemap.xml
+        # in the GenericSetup profile.
 
-    # Now initialize all these content types. The initialization process takes
-    # care of registering low-level Zope 2 factories, including the relevant
-    # add-permission. These are listed in config.py. We use different
-    # permissions for each content type to allow maximum flexibility of who
-    # can add which content types, where. The roles are set up in rolemap.xml
-    # in the GenericSetup profile.
-
-    for atype, constructor in zip(content_types, constructors):
-        utils.ContentInit('%s: %s' % (config.PROJECTNAME, atype.portal_type),
-                          content_types=(atype, ),
-                          permission=config.ADD_PERMISSIONS[atype.portal_type],
-                          extra_constructors=(constructor,),
-                          ).initialize(context)
-
-# custom object source binders for dexterity relation fields
-
-from plone.formwidget.contenttree import ObjPathSourceBinder
-project_source = ObjPathSourceBinder(portal_type='Project')
-rs_source = ObjPathSourceBinder(portal_type='RegisteredService')
+        for atype, constructor in zip(content_types, constructors):
+            utils.ContentInit('%s: %s' % (config.PROJECTNAME, atype.portal_type),
+                              content_types=(atype, ),
+                              permission=config.ADD_PERMISSIONS[atype.portal_type],
+                              extra_constructors=(constructor,),
+                              ).initialize(context)

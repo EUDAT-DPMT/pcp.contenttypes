@@ -10,9 +10,7 @@
 <metal:main fill-slot="main">
 
     <tal:main-macro metal:define-macro="main"
-           tal:define="kssClassesView context/@@kss_field_decorator_view;
-                       getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                       portal context/portal_url/getPortalObject;
+           tal:define="portal context/portal_url/getPortalObject;
                        templateId template/getId;
                        abstracts view/getAbstractsForCurrentMember|nothing;">
 
