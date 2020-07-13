@@ -56,7 +56,6 @@
 
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" />
-  <include package=".content" />
   <include package=".portlets" />
 
   <!-- -*- apply custom patches -*- -->
@@ -67,18 +66,6 @@
     replacement=".patches.patched_field_mapping"
     handler=".patches.apply_patched_mapping"
     />
-
-  <subscriber
-    for=".interfaces.IRoleRequest
-         Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-         handler=".content.rolerequest.handleRoleRequestTransition"
-    />
-
-  <subscriber
-      for=".interfaces.IDowntime
-           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-      handler=".content.downtime.handleDowntimeTransition"
-      />
 
   <subscriber
       for=".content_dx.downtime.IDowntime

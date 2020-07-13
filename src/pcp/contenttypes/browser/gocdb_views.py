@@ -347,10 +347,9 @@ class DowntimeView(BrowserView):
 
     def getServiceType(self, component):
         serviceType = component.getService_type()
-        vocabulary = NamedVocabulary('service_types')
-        vocabulary = vocabulary.getVocabularyDict(component)
-        return vocabulary[serviceType]
         vocabulary = getUtility(IVocabularyFactory, 'dpmt.service_types')
+        vocabulary = vocabulary(component)
+        return vocabulary.by_value[serviceType]
 
     def buildDateRangeQuery(self, min, max):
         if min or max:

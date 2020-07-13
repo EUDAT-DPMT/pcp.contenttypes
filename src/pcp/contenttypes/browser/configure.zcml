@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="pcp.contenttypes">
 
   <include package="plone.app.contentmenu" />
@@ -89,7 +90,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="json"
 	class="pcp.contenttypes.browser.jsonview.JSONView"
 	attribute="json_view"
@@ -105,7 +107,8 @@
 	/>
 
  <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="qualifiedTitle"
 	class="pcp.contenttypes.browser.qualified_title.QualifiedTitleView"
 	attribute="qualifiedTitle"
@@ -113,7 +116,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="resetUID"
 	class="pcp.contenttypes.browser.manage_uids.UpdateUID"
 	attribute="reset_uid"
@@ -121,7 +125,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="table-view"
 	class=".table_view.TableView"
 	template="table_view.pt"
@@ -136,7 +141,8 @@
 	/>
 
   <!--browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="project_summary_view"
 	class="pcp.contenttypes.browser.project_summary_view.ProjectOverview"
 	template="project_summary_view.pt"
@@ -168,7 +174,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="service_edit"
 	template="service_edit.pt"
 	permission="cmf.ModifyPortalContent"
@@ -263,6 +270,7 @@
 	/>
 
   <browser:page
+        zcml:condition="installed Products.Archetypes"
         for="Products.Archetypes.interfaces.IBaseObject"
         name="people_overview"
         class="pcp.contenttypes.browser.summary_views.PeopleOverview"
@@ -279,7 +287,8 @@
         />
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="customer_overview"
 	class="pcp.contenttypes.browser.summary_views.CustomerOverview"
 	template="summary_views.pt"
@@ -295,7 +304,8 @@
 	/>
 
   <browser:page
-	for="Products.ATContentTypes.interfaces.IATFolder"
+	zcml:condition="installed Products.ATContentTypes"
+    for="Products.ATContentTypes.interfaces.IATFolder"
 	name="provider_overview"
 	class="pcp.contenttypes.browser.summary_views.ProviderOverview"
 	template="summary_views.pt"
@@ -319,7 +329,8 @@
   />
 
   <browser:page
-	for="Products.ATContentTypes.interfaces.IATFolder"
+	zcml:condition="installed Products.ATContentTypes"
+    for="Products.ATContentTypes.interfaces.IATFolder"
 	name="provider_registered_service_components"
 	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
 	template="provider_registered_service_components.pt"
@@ -327,7 +338,8 @@
 	/>
 
   <browser:page
-	for="Products.ATContentTypes.interfaces.IATFolder"
+	zcml:condition="installed Products.ATContentTypes"
+    for="Products.ATContentTypes.interfaces.IATFolder"
 	name="notify-outdated-implementation-details"
 	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
     attribute="notify_outdated"
@@ -335,7 +347,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="service_overview"
 	class="pcp.contenttypes.browser.summary_views.ServiceOverview"
 	template="summary_views.pt"
@@ -343,7 +356,8 @@
 	/>
 
   <browser:page
-	for="Products.Archetypes.interfaces.IBaseObject"
+	zcml:condition="installed Products.Archetypes"
+    for="Products.Archetypes.interfaces.IBaseObject"
 	name="projects.csv"
 	class="pcp.contenttypes.browser.project_summary_view.CsvView"
 	attribute="csv_export"
@@ -415,6 +429,7 @@
 	/>
 
   <browser:page
+    zcml:condition="installed Products.ATVocabularyManager"
 	for="Products.ATVocabularyManager.interfaces.ISimpleVocabularyTerm"
 	name="xml"
 	class="pcp.contenttypes.browser.gocdb_views.TermView"
