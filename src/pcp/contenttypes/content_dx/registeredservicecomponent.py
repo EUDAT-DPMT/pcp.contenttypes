@@ -93,7 +93,11 @@ class IRegisteredServiceComponent(model.Schema):
         },
     )
 
-    service_type = schema.TextLine(title=u"Service component type", required=False,)
+    service_type = schema.Choice(
+        title=u"Service component type",
+        vocabulary='dpmt.service_types',
+        required=False,
+    )
 
     service_url = schema.TextLine(
         title=u"Service URL",
