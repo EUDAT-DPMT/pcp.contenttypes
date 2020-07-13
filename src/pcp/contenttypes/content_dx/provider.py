@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
 from pcp.contenttypes.widgets import TrustedTextWidget
 from plone import api
@@ -204,6 +205,22 @@ class IProvider(model.Schema):
         missing_value=[],
         default=[],
     )
+
+    affiliated = BackrelField(
+        title=u'Affiliated',
+        relation=u'affiliated',
+        )
+
+    # obsolete since ct Resource are removed?
+    # hosts = BackrelField(
+    #     title=u'Hosts',
+    #     relation=u'hosted_by',
+    #     )
+
+    projects_involved = BackrelField(
+        title=u'Projects involved',
+        relation=u'service_providers',
+        )
 
     getAccount = schema.URI(
         title=u"Account",
