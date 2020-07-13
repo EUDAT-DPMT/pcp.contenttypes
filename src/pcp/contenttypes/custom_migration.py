@@ -2,6 +2,8 @@
 from collective.relationhelpers import api as relapi
 from plone import api
 from plone.app.contenttypes.migration.migration import migrateCustomAT
+from plone.app.contenttypes.migration.field_migrators import datetime_fixer
+from plone.event.utils import default_timezone
 from Products.CMFPlone.utils import safe_text
 
 import logging
@@ -39,38 +41,60 @@ def migrate_simple_datagrid(src_obj, dst_obj, src_fieldname, dst_fieldname):
     setattr(dst_obj, dst_fieldname, dx_values)
 
 
-# Some AT fields have different names than the relationships!
-FIELD_RELATIONSHIP_MAPPING = {
-    'admins': 'community_admins',
-    'community': 'done_for',
-    'registered_services_used': 'using',
-    'project_enabler': 'enabled_by',
-    'admins': 'admin_of',
-}
+def migrate_vocabulary(src_obj, dst_obj, src_fieldname, dst_fieldname):
+    # Migrate from ATVocabularymanager to manual Vocabularies built with
+    # safe_simplevocabulary_from_values from registry values.
+    # In AT the value is usually all-lowercase while in dx it is same as the title.
+    # E.g. AT: "scheduled", DX: "Scheduled"
+    from plone.dexterity.interfaces import IDexterityFTI
+    from zope.component import getUtility
+    from zope.schema.interfaces import IVocabularyFactory
 
-def migrate_relations(src_obj, dst_obj, src_fieldname, dst_fieldname):
-    src_fieldname = FIELD_RELATIONSHIP_MAPPING.get(src_fieldname, src_fieldname)
-    reference_catalog = api.portal.get_tool('reference_catalog')
-    if not reference_catalog:
+    field = src_obj.getField(src_fieldname)
+    at_value = field.get(src_obj)
+    if not at_value:
+        # empty value
+        setattr(dst_obj, dst_fieldname, at_value)
         return
-    # During the migration the uid was already moved to dst_obj (=the dexterity target)!
-    # That's why src_obj.getField(src_fieldname).get(src_obj) is empty!
-    uid = dst_obj.UID()
-    for brain in reference_catalog._optimizedQuery(
-            uid=uid,
-            indexname='sourceUID',
-            relationship=src_fieldname):
-        rel = brain.getObject()
-        target = rel.getTargetObject()
-        if not target:
-            log.info(u'Warning: relation {} from {} to {} not migrated!'.format(
-                rel.relationship, rel.sourceUID, rel.targetUID))
-            continue
-            # if not target:
-            #     log.info(u'Warning: relation {} from {} to {} not migrated!'.format(
-            #         rel.relationship, rel.sourceUID, rel.targetUID))
-            #     continue
-        relapi.link_objects(dst_obj, target, relationship=dst_fieldname)
+
+    voc = field.vocabulary
+    fti = getUtility(IDexterityFTI, name=dst_obj.portal_type)
+    dx_field, dx_schema = relapi.get_field_and_schema_for_fieldname(dst_fieldname, fti)
+    if isinstance(at_value, (list, tuple)):
+        dx_voc = getUtility(IVocabularyFactory, dx_field.value_type.vocabularyName)
+        dx_voc = dx_voc(None)
+
+        # deal with multiple choice fields
+        dx_value = []
+        for one_at_value in at_value:
+            one_at_title = voc.getVocabularyDict(src_obj)[one_at_value]
+            for term in dx_voc:
+                if term.title == one_at_title:
+                    dx_value.append(safe_text(term.value))
+                    break
+        setattr(dst_obj, dst_fieldname, dx_value)
+
+    else:
+        dx_voc = getUtility(IVocabularyFactory, dx_field.vocabularyName)
+        dx_voc = dx_voc(None)
+        at_title = voc.getVocabularyDict(src_obj)[at_value]
+        for term in dx_voc:
+            if term.title == at_title:
+                dx_value = term.value
+                break
+        setattr(dst_obj, dst_fieldname, safe_text(dx_value))
+
+
+def migrate_datetimefield(src_obj, dst_obj, src_fieldname, dst_fieldname):
+    old_value = src_obj.getField(src_fieldname).get(src_obj)
+    if not old_value:
+        return
+    if src_obj.getField('timezone', None) is not None:
+        old_timezone = src_obj.getField('timezone').get(src_obj)
+    else:
+        old_timezone = default_timezone(fallback='UTC')
+    new_value = datetime_fixer(old_value.asdatetime(), old_timezone)
+    setattr(dst_obj, dst_fieldname, new_value)
 
 
 # Field mappings for behaviors to inject into content-type mappings
@@ -83,6 +107,10 @@ fields_mapping_common = [
         {'AT_field_name': 'additional',
          'DX_field_name': 'additional',
          'field_migrator': migrate_simple_datagrid,
+         },
+        {'AT_field_name': 'text',
+         'DX_field_name': 'text',
+         'DX_field_type': 'RichText',
          },
     ]
 
@@ -99,7 +127,7 @@ fields_mapping_constraints = [
          },
         {'AT_field_name': 'constraints',
          'DX_field_name': 'constraints',
-         'dx_fieldtype': 'RichText',
+         'DX_field_type': 'RichText',
          },
     ]
 
@@ -107,19 +135,15 @@ fields_mapping_constraints = [
 fields_mapping_request = [
         {'AT_field_name': 'startDate',
          'DX_field_name': 'startDate',
-         'dx_fieldtype': 'Datetime',
+         'field_migrator': migrate_datetimefield,
          },
         {'AT_field_name': 'endDate',
          'DX_field_name': 'endDate',
-         'dx_fieldtype': 'Datetime',
+         'field_migrator': migrate_datetimefield,
          },
-        # {'AT_field_name': 'preferred_providers',
-        #  'DX_field_name': 'preferred_providers',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'constraints',
          'DX_field_name': 'constraints',
-         'dx_fieldtype': 'RichText',
+         'DX_field_type': 'RichText',
          },
         {'AT_field_name': 'ticketid',
          'DX_field_name': 'ticketid',
@@ -139,32 +163,8 @@ fields_mapping_resource = [
     ]
 
 # ResourceContextFields => IDPMTResourceContext
-fields_mapping_resourcecontext = [
-        # {'AT_field_name': 'project',
-        #  'DX_field_name': 'project',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'customer',
-        #  'DX_field_name': 'customer',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'contact',
-        #  'DX_field_name': 'contact',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'request',
-        #  'DX_field_name': 'request',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'services',
-        #  'DX_field_name': 'services',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'linked_resources',
-        #  'DX_field_name': 'linked_resources',
-        #  'field_migrator': migrate_relations,
-        #  },
-    ]
+# only relations!
+fields_mapping_resourcecontext = []
 
 
 # content type migrators
@@ -181,14 +181,6 @@ def migrate_community(context=None):
         {'AT_field_name': 'VAT',
          'DX_field_name': 'VAT',
          },
-        # {'AT_field_name': 'representative',
-        #  'DX_field_name': 'representative',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'admins',
-        #  'DX_field_name': 'community_admins',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'topics',
          'DX_field_name': 'topics',
          },
@@ -204,24 +196,22 @@ def migrate_downtime(context=None):
     fields_mapping = [
         {'AT_field_name': 'startDateTime',
          'DX_field_name': 'start',
-         'dx_fieldtype': 'Datetime',
+         'field_migrator': migrate_datetimefield,
          },
         {'AT_field_name': 'endDateTime',
          'DX_field_name': 'end',
-         'dx_fieldtype': 'Datetime',
+         'field_migrator': migrate_datetimefield,
          },
-        # {'AT_field_name': 'affected_registered_serivces',
-        #  'DX_field_name': 'affected_registered_services',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'reason',
          'DX_field_name': 'reason',
          },
         {'AT_field_name': 'severity',
          'DX_field_name': 'severity',
+         'field_migrator': migrate_vocabulary,
          },
         {'AT_field_name': 'classification',
          'DX_field_name': 'classification',
+         'field_migrator': migrate_vocabulary,
          },
     ]
     migrateCustomAT(
@@ -232,10 +222,6 @@ def migrate_downtime(context=None):
 
 def migrate_environment(context=None):
     fields_mapping = [
-        # {'AT_field_name': 'contact',
-        #  'DX_field_name': 'contact',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'account',
          'DX_field_name': 'account',
          },
@@ -291,10 +277,6 @@ def migrate_person(context=None):
         {'AT_field_name': 'email',
          'DX_field_name': 'email',
          },
-        # {'AT_field_name': 'affiliation',
-        #  'DX_field_name': 'affiliation',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'phone',
          'DX_field_name': 'phone',
          'field_migrator': migrate_phone,
@@ -320,26 +302,6 @@ def migrate_project(context=None):
         {'AT_field_name': 'website',
          'DX_field_name': 'website',
          },
-        # {'AT_field_name': 'community',
-        #  'DX_field_name': 'community',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'community_contact',
-        #  'DX_field_name': 'community_contact',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'registered_services_used',
-        #  'DX_field_name': 'registered_services_used',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'general_provider',
-        #  'DX_field_name': 'general_provider',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'project_enabler',
-        #  'DX_field_name': 'project_enabler',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'start_date',
          'DX_field_name': 'start_date',
          'field_migrator': migrate_datetime_to_date,
@@ -362,6 +324,7 @@ def migrate_project(context=None):
          },
         {'AT_field_name': 'scopes',
          'DX_field_name': 'scopes',
+         'field_migrator': migrate_vocabulary,
          },
     ]
     fields_mapping += fields_mapping_common
@@ -416,22 +379,6 @@ def migrate_provider(context=None):
         {'AT_field_name': 'ip6range',
          'DX_field_name': 'ip6range',
          },
-        # {'AT_field_name': 'contact',
-        #  'DX_field_name': 'contact',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'business_contact',
-        #  'DX_field_name': 'business_contact',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'security_contact',
-        #  'DX_field_name': 'security_contact',
-        #  'field_migrator': migrate_relations,
-        #  },
-        # {'AT_field_name': 'admins',
-        #  'DX_field_name': 'admins',
-        #  'field_migrator': migrate_relations,
-        #  },
         {'AT_field_name': 'emergency_phone',
          'DX_field_name': 'emergency_phone',
          },
@@ -511,7 +458,6 @@ def migrate_registeredservice(context=None):
         dst_type='registeredservice_dx')
 
 
-
 def migrate_registeredservice(context=None):
     # fix fti.content_meta_type being 'Registered Service' with a space
     portal_types = api.portal.get_tool('portal_types')
@@ -534,6 +480,7 @@ def migrate_registeredservicecomponent(context=None):
     fields_mapping = [
         {'AT_field_name': 'service_type',
          'DX_field_name': 'service_type',
+         'field_migrator': migrate_vocabulary,
          },
         {'AT_field_name': 'service_url',
          'DX_field_name': 'service_url',
@@ -598,7 +545,6 @@ def migrate_registeredstorageresource(context=None):
          },
         {'AT_field_name': 'cost_factor',
          'DX_field_name': 'cost_factor',
-         'dx_fieldtype': 'Datetime',
          },
     ]
     fields_mapping += fields_mapping_common + fields_mapping_resourcecontext
@@ -712,15 +658,6 @@ def migrate_servicecomponentrequest(context=None):
         fields_mapping,
         src_type='ServiceComponentRequest',
         dst_type='servicecomponentrequest_dx')
-
-
-# def migrate_servicedetails(context=None):
-#     fields_mapping = []
-#     fields_mapping += fields_mapping_common + fields_mapping_request
-#     migrateCustomAT(
-#         fields_mapping,
-#         src_type='ServiceDetails',
-#         dst_type='servicedetails_dx')
 
 
 def migrate_serviceoffer(context=None):

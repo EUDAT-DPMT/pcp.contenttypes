@@ -2,9 +2,11 @@
 from collective.relationhelpers import api as relapi
 from plone import api
 from plone.app.upgrade.utils import loadMigrationProfile
+from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
+from Products.CMFPlone.utils import get_installer
 from zope.annotation.interfaces import IAnnotations
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
@@ -100,7 +102,7 @@ def migrate_to_dexterity(context=None):
     loadMigrationProfile(
         context,
         'profile-pcp.contenttypes:default',
-        steps=['workflow'],
+        steps=['workflow', 'typeinfo'],
     )
 
 
@@ -138,27 +140,44 @@ def custom_at_migration(context=None):
 
 # Map some AT Reference to DX Relation
 RELATIONSHIP_FIELD_MAPPING = {
-    'community_admins': 'admins',
+    # old AT Relations!
+    'relatesTo': 'relatedItems',
     'done_for': 'community',
     'using': 'registered_services_used',
     'enabled_by': 'project_enabler',
     'admin_of': 'admins',
-    'contact_for': 'contact',
     'managers_for': 'managers',
     'implemented_by': 'service_component_implementation_details',
     'provided_by': 'service_providers',
     'contact_for': 'contacts',
     'rolerequest_for_context': 'context',
     'owned_by': 'service_owner',
-    'service_component_offered': 'service_component',
-    'service_component_implementations_offered': 'implementations',
     'slas_offered': 'slas',
-    'requested_component': 'service_component',
-    'requested_component_implementations': 'implementations',
+    'affiliated': 'affiliation',
     'depends_on': 'dependencies',
-    'service_offered': 'service',
     'service_option_offered': 'service_option',
+    # These fields were renamed in DX to match the relations:
+    # 'service_offered': 'service',
+    # 'community_admins': 'admins',
+    # 'service_component_offered': 'service_component',
+    # 'service_component_implementations_offered': 'implementations',
+    # 'requested_component': 'service_component',
+    # 'requested_component_implementations': 'implementations',
 }
+
+
+def get_from_attribute(rel):
+    source_obj = uuidToObject(rel['from_uuid'])
+    if source_obj.portal_type == 'serviceoffer_dx' and rel['relationship'] == 'contact_for':
+        return 'contact'
+    if source_obj.portal_type == 'registeredservice_dx' and rel['relationship'] == 'contact_for':
+        return 'contact'
+    if source_obj.portal_type == 'environment_dx' and rel['relationship'] == 'contact_for':
+        return 'contact'
+    # normal mapping
+    return RELATIONSHIP_FIELD_MAPPING.get(
+        rel['relationship'], rel['relationship'])
+
 
 
 def restore_references(context=None):
@@ -171,8 +190,7 @@ def restore_references(context=None):
     # pac exports references with 'relationship' relapi expects 'from_attribute'
     # also some fields have special relationship-names in AT
     for rel in all_stored_relations:
-        rel['from_attribute'] = RELATIONSHIP_FIELD_MAPPING.get(
-            rel['relationship'], rel['relationship'])
+        rel['from_attribute'] = get_from_attribute(rel)
         all_fixed_relations.append(rel)
     relapi.restore_relations(all_relations=all_fixed_relations)
 
