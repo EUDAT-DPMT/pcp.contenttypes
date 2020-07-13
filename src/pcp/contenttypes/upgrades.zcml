@@ -72,4 +72,13 @@
     handler=".upgrades.restore_references"
     />
 
+  <genericsetup:upgradeStep
+    source="2008"
+    destination="2009"
+    title="Remove Archetypes"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.remove_archetypes"
+    />
+
+
 </configure>

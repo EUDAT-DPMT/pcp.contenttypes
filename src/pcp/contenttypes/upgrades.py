@@ -196,84 +196,36 @@ def restore_references(context=None):
 
 
 def remove_archetypes(context=None):
-    """Yet untested!"""
-    old_types = [
-        'ATBooleanCriterion',
-        'ATCurrentAuthorCriterion',
-        'ATDateCriteria',
-        'ATDateRangeCriterion',
-        'ATListCriterion',
-        'ATPathCriterion',
-        'ATRelativePathCriterion',
-        'ATPortalTypeCriterion',
-        'ATReferenceCriterion',
-        'ATSelectionCriterion',
-        'ATSimpleIntCriterion',
-        'ATSimpleStringCriterion',
-        'ATSortCriterion',
-        'ChangeSet',
-        'AliasVocabulary',
-        'SimpleVocabulary',
-        'SimpleVocabularyTerm',
-        'SortedSimpleVocabulary',
-        'TreeVocabulary',
-        'TreeVocabularyTerm',
-        'VdexFileVocabulary',
-        'VocabularyLibrary',
-        'RegisteredStorageResource',
-        'RegisteredComputeResource',
-        'ServiceOffer',
-        'AccountingRecord',
-        'Downtime',
-        'ServiceComponentImplementationDetails',
-        'ServiceComponentImplementation',
-        'ServiceComponent',
-        'Service Details',
-        'RegisteredResource',
-        'RegisteredServiceComponent',
-        'RegisteredService',
-        'ResourceRequest',
-        'ServiceComponentRequest',
-        'ServiceRequest',
-        'ServiceComponentOffer',
-        'ResourceOffer',
-        'Plan',
-        'Environment',
-        'Provider',
-        'Person',
-        'Resource',
-        'Center',
-        'Community',
-        'Project',
-        'Service',
-        'ActionItem',
-        'ActionList',
-        'RoleRequest',
-        'FormSaveData2ContentAdapter',
-        'FormSaveData2ContentEntry',
-    ]
     portal_types = api.portal.get_tool('portal_types')
-    old_types = [i for i in old_types if i in portal_types]
     portal_catalog = api.portal.get_tool('portal_catalog')
-    for old_type in old_types:
-        brains = portal_catalog(portal_type=old_type)
+    KEEP = [
+        'Plone Site',
+        'Comment',
+        'TempFolder',
+        ]
+    from plone.dexterity.interfaces import IDexterityFTI
+    for fti in portal_types.listTypeInfo():
+        if IDexterityFTI.providedBy(fti) or fti.id in KEEP:
+            continue
+        brains = portal_catalog(portal_type=fti.portal_type)
         if brains:
-            log.info(u'{} existing Instances of Type {}!'.format(len(brains), old_type))
+            log.info(u'{} existing Instances of Type {}!'.format(len(brains), fti.portal_type))
         else:
-            portal_types.manage_delObjects([old_type])
-            log.info(u'Removed Type {}!'.format(old_type))
+            portal_types.manage_delObjects([fti.id])
+            log.info(u'Removed Type {}!'.format(fti.id))
 
     portal = api.portal.get()
-    installer = get_installer(portal)
+    old_installer = api.portal.get_tool('portal_quickinstaller')
+    old_installer.uninstallProducts(['ATBackRef'])
+    old_installer.uninstallProducts(['ATExtensions'])
+    old_installer.uninstallProducts(['ATVocabularyManager'])
 
-    installer.uninstall_product('ATBackRef')
-    installer.uninstall_product('ATExtensions')
-
+    new_installer = get_installer(portal)
     # uninstall AT Types and some dependency tools
-    installer.uninstall_product('Products.ATContentTypes')
+    new_installer.uninstall_product('Products.ATContentTypes')
 
     # uninstall AT
-    installer.uninstall_product('Archetypes')
+    new_installer.uninstall_product('Archetypes')
 
     # remove obsolete AT tools
     tools = [
@@ -286,6 +238,7 @@ def remove_archetypes(context=None):
         'archetype_tool',
         'reference_catalog',
         'portal_metadata',
+        'portal_vocabularies',
     ]
     for tool in tools:
         if tool not in portal.keys():
