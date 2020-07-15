@@ -45,4 +45,4 @@ except ImportError:
 
 
 def initialize(context):
-    pass
+    """Initializer called when used as a Zope 2 product."""
