@@ -1,4 +1,4 @@
-from accountable import IAccountable
+from pcp.contenttypes.interfaces.accountable import IAccountable
 
 
 class IRegisteredStorageResource(IAccountable):
