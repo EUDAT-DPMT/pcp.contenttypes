@@ -3,6 +3,7 @@
 import math
 
 from pcp.contenttypes.interfaces import IRegisteredStorageResource
+from six.moves import zip
 
 END_OF_EUDAT2020 = "2018-02-28"
 
@@ -467,7 +468,7 @@ class CommonUtilities(object):
         and returns its value if found. Otherwise returns None.
         """
         for entry in self.getAdditional():
-            if not entry.has_key('key'):
+            if 'key' not in entry:
                 return None
             if entry['key'] == id_key:
                 return entry['value']
@@ -577,7 +578,7 @@ class CommonUtilities(object):
         """ Sum all values in our memory quantity dict format using pint. """
         return self.pint_to_dict(
             sum(
-                map(lambda d: self.pint_from_dict(d), values),
+                [self.pint_from_dict(d) for d in values],
                 0 * ur.byte))
 
     def getStorageResourcesUsedSummary(self, resources):
@@ -698,9 +699,9 @@ class CommonUtilities(object):
         Controlled vocabulary (DisplayList) of information units
         supported
         """
-        units = unit_map.keys()
+        units = list(unit_map.keys())
         units.sort()
-        return atapi.DisplayList(zip(units, units))
+        return atapi.DisplayList(list(zip(units, units)))
 
     # helper methods for resource handling
     def storageTypes(self, instance=None):

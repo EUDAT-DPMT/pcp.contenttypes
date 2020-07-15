@@ -343,7 +343,7 @@ class DowntimeView(BrowserView):
         return downtime.getEffectiveDate() or downtime.created()
 
     def getHosters(self, registeredComponent):
-        return ','.join(map(lambda x: x.Title() if x else '?', registeredComponent.getService_providers()))
+        return ','.join([x.Title() if x else '?' for x in registeredComponent.getService_providers()])
 
     def getServiceType(self, component):
         serviceType = component.getService_type()
@@ -446,7 +446,7 @@ class SiteContactsView(BrowserView):
             allowed_roles = (roletype,) if roletype in allowed_roles else ()
 
         def filter_roles(rs):
-            return filter(lambda r: r in allowed_roles, rs)
+            return [r for r in rs if r in allowed_roles]
 
         return [(plone.api.user.get(userid=userid), filter_roles(roles)) for userid, roles in site.get_local_roles()]
 

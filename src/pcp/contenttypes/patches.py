@@ -13,6 +13,7 @@ from Products.CMFDiffTool.TextDiff import AsTextDiff
 from Products.CMFDiffTool.FieldDiff import FieldDiff
 from Products.CMFDiffTool.BinaryDiff import BinaryDiff
 from Products.CMFDiffTool.ListDiff import ListDiff
+from six.moves import map
 
 NEW_AT_FIELD_MAPPING = {'text': 'variable_text',
                         'string': 'variable_text',
@@ -175,20 +176,20 @@ def export(self, export_context, subdir, root=False):
 
     def update_role(role):
         # wrap principal id in dict and extend user information
-        principals = map(lambda principal_id: dict(user_id=principal_id), role['principals'])
-        role['principals'] = map(update_user, principals)
+        principals = [dict(user_id=principal_id) for principal_id in role['principals']]
+        role['principals'] = list(map(update_user, principals))
         return role
 
     if self._FILENAME == 'zodbusers.xml':
         # override source_users.xml with version containing fullname and email
         template = PageTemplateResource('overrides/%s' % self._FILENAME,
                                         pcp.contenttypes.__path__[0]).__of__(self.context)
-        info['users'] = map(update_user, info['users'])
+        info['users'] = list(map(update_user, info['users']))
     elif self._FILENAME == 'zodbroles.xml':
         # override portal_role_manager.xml with version containing fullname and email
         template = PageTemplateResource('overrides/%s' % self._FILENAME,
                                         pcp.contenttypes.__path__[0]).__of__(self.context)
-        info['roles'] = map(update_role, info['roles'])
+        info['roles'] = list(map(update_role, info['roles']))
     else:
         package_path = getPackagePath(self)
         template = PageTemplateResource('xml/%s' % self._FILENAME,

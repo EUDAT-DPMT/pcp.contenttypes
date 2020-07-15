@@ -1,7 +1,8 @@
 from datetime import datetime
-from cStringIO import StringIO
+from io import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+import six
 
 CSV_TEMPLATE = '"%s"'
 
@@ -117,7 +118,7 @@ class CsvView(ProjectOverview):
             values = []
             for field in project:
                 text = field['text']
-                if isinstance(text, unicode):
+                if isinstance(text, six.text_type):
                     text = text.encode('utf8')
                 value = CSV_TEMPLATE % text
                 values.append(value)

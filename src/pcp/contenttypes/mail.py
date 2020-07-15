@@ -5,7 +5,7 @@ import six
 import string
 import pkg_resources
 from email.utils import formataddr
-from email.MIMEText import MIMEText
+from email.mime.text import MIMEText
 from plone import api
 from Products.CMFPlone.utils import safe_text
 
@@ -17,11 +17,10 @@ class Formatter(string.Formatter):
     def format(self, fmt, *args, **kw):
         field_names = [tp[1] for tp in self.parse(fmt)]
         for name in field_names:
-            if not name in kw:
+            if name not in kw:
                 kw[str(name)] = u''
             else:
-                if not isinstance(kw[str(name)], six.text_type):
-                    kw[str(name)] = safe_text(kw[str(name)])
+                kw[str(name)] = safe_text(kw[str(name)])
 
         return super(Formatter, self).format(fmt, *args, **kw)
 
@@ -36,17 +35,13 @@ def send_mail(sender, recipients, subject, template, params, cc=None, cc_admin=F
 
     footer_text = pkg_resources.resource_string(
         'pcp.contenttypes.templates', 'footer.txt')
-    params['footer'] = unicode(footer_text, 'utf-8')
+    params['footer'] = safe_text(footer_text)
 
     formatter = Formatter()
     email_text = pkg_resources.resource_string(
         'pcp.contenttypes.templates', template)
 
-    try:
-        email_text = unicode(email_text, 'utf-8')
-    except UnicodeError:
-        email_text = unicode(email_text, 'iso-8859-15')
-
+    email_text = safe_text(email_text)
     email_text = formatter.format(email_text, **params)
     email_from_address = api.portal.get_registry_record('plone.email_from_address')
     email_from_name = api.portal.get_registry_record('plone.email_from_name')

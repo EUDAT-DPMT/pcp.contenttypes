@@ -51,7 +51,7 @@ class RegisteredServiceComponents(BrowserView):
         if not notifications:
             annotations[NOTIFICATION_KEY] = OOBTree()
 
-        result = self.items()
+        result = list(self.items())
         for item in self.items():
 
             version_info = item['version_info']

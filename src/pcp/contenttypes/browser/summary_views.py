@@ -1,9 +1,10 @@
 import plone.api
 from datetime import datetime
-from cStringIO import StringIO
+from io import StringIO
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
+import six
 try:
     from Products.Archetypes.BaseObject import BaseObject
     HAS_AT = True
@@ -159,7 +160,7 @@ def render_contact_email(content, field_id):
         try:
             contact = getattr(content, 'contact')
             email = getattr(contact, 'email')
-        except AttributeError:            
+        except AttributeError:
             email = ''
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
@@ -205,17 +206,17 @@ class DetailedView(BrowserView):
     def detailed_view(self):
 
         id = self.context.getId()
-        
+
         mapping = {
             'projects':'project_summary_view',
             'customers':'customer_overview',
             'providers':'provider_overview',
             'catalog':'service_overview'
         }
-        
+
         view = mapping.get(id, 'folder_summary_view')
-        
-        target = '{base}/{view}'.format(base=self.context.absolute_url(), 
+
+        target = '{base}/{view}'.format(base=self.context.absolute_url(),
                                         view=view)
         return self.request.response.redirect(target)
 
@@ -304,10 +305,10 @@ class BaseSummaryView(BrowserView):
 
 class EndpointOverview(BaseSummaryView):
     """All specific endpoints"""
-    
+
     title = "Service Endpoints"
     description = "All specific endpoints of services / service components"
- 
+
     def content_items(self):
         """All endpoint entries"""
         etypes = ['endpoint_handle', 'endpoint_irods']
@@ -315,7 +316,7 @@ class EndpointOverview(BaseSummaryView):
 
     def fields(self):
         """Field names; needs to exist at all endpoint types"""
-        return ('title', 'parent_rsc','provider', 'host', 'monitored', 
+        return ('title', 'parent_rsc','provider', 'host', 'monitored',
                 'system_operations_user', 'related_project','related_service')
 
     def field_labels(self):
@@ -340,7 +341,7 @@ class EndpointOverview(BaseSummaryView):
             value = value()
 
         return value
-    
+
 
 class PeopleOverview(BaseSummaryView):
     """Overview of all people involved"""
@@ -355,9 +356,9 @@ class PeopleOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for', 
-               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for', 
-               'community_representative', 'community_admin', 'enables', 'service_owner_of', 
+        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for',
+               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for',
+               'community_representative', 'community_admin', 'enables', 'service_owner_of',
                'principle_investigator_of','manager_of_registered_service')
 
     def field_labels(self):
@@ -411,7 +412,7 @@ class ProviderOverview(BaseSummaryView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'url', 'contact', 'contact_email', 
+        return ('title', 'url', 'contact', 'contact_email',
                 'business_contact', 'business_email',
                 'provider_type', 'provider_status', 'status_details',
                 'infrastructure',
@@ -433,7 +434,7 @@ class ProviderOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('url', 'status_details', 'infrastructure', 'helpdesk_email', 
+        return ('url', 'status_details', 'infrastructure', 'helpdesk_email',
                 'provider_status', 'provider_type')
 
 
@@ -486,7 +487,7 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered services regardless of location"""
-        return [element.getObject() for element in 
+        return [element.getObject() for element in
                 self.catalog(portal_type=['RegisteredService', 'registeredservice_dx'])]
 
     def fields(self):
@@ -579,19 +580,19 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered resources regardless of location"""
-        return [element.getObject() for element in 
+        return [element.getObject() for element in
                 self.catalog(portal_type=['RegisteredResource', 'registeredresource_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
-                'compute_resources', 'storage_resources', 'scopes', 
+                'compute_resources', 'storage_resources', 'scopes',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Resource name', 'Provider', 'Operational contact (email)', 'Business contact (email)',
-                'Compute resources', 'Storage resources', 'Project scope(s)', 
+                'Compute resources', 'Storage resources', 'Project scope(s)',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -613,13 +614,13 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
         return ('title', 'customer', 'project', 'parent_provider', 'scopes', 'services', \
-                'storage_class', 'number', 
+                'storage_class', 'number',
                 'usage', 'allocated', 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Storage Name', 'Customer', 'Project', 'Provider', 'Project scope(s)', 'Deployed on', \
-                'Storage Class', 'Registered Objects', 
+                'Storage Class', 'Registered Objects',
                 'Used Storage', 'Allocated Storage', 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -660,18 +661,18 @@ class ServiceComponentOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service component offers regardless of location"""
-        return [element.getObject() for element in 
+        return [element.getObject() for element in
                 self.catalog(portal_type=['ServiceComponentOffer', 'servicecomponentoffer_dx'])]
 
     def fields(self):
         """Fields to show in the overview"""
-        return ('title', 'service_component', 'implementations', 
+        return ('title', 'service_component', 'implementations',
                 'parent_provider', 'slas', 'constraints',
                 'state', 'created', 'modified')
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service Component (offer)', 'Service Component (in catalog)', 'Implementations supported', 
+        return ('Service Component (offer)', 'Service Component (in catalog)', 'Implementations supported',
                 'Provider', 'SLAs/OLAs', 'Constraints',
                 'State', 'Created', 'Modified')
 
@@ -685,19 +686,19 @@ class ResourceOfferOverview(RegisteredResourceOverview):
 
     def content_items(self):
         """All resource offers regardless of location"""
-        return [element.getObject() for element in 
+        return [element.getObject() for element in
                 self.catalog(portal_type=['ResourceOffer', 'resourceoffer_dx'])]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
-                'compute_resources', 'storage_resources', 'constraints', 
+                'compute_resources', 'storage_resources', 'constraints',
                 'created', 'modified', 'state')
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
         return ('Resource offer', 'Provider', 'Operational contact (email)', 'Business contact (email)',
-                'Compute resources', 'Storage resources', 'Constraints', 
+                'Compute resources', 'Storage resources', 'Constraints',
                 'Created', 'Modified', 'State')
 
     def simple_fields(self):
@@ -711,17 +712,17 @@ class DowntimeOverview(BaseSummaryView):
     description = ""
 
     def content_items(self):
-        return [element.getObject() for element in 
+        return [element.getObject() for element in
                 self.catalog(portal_type=['Downtime', 'downtime_dx'])]
 
     def fields(self):
-        return ('title', 'startDateTime', 'endDateTime', 
-                'affected_registered_serivces', 
+        return ('title', 'startDateTime', 'endDateTime',
+                'affected_registered_serivces',
                 'parent_provider', 'created', 'modified', 'state',)
 
     def field_labels(self):
-        return ('Title', 'Start Date (UTC)', 'End Date (UTC)', 
-                'Affected Services and Components', 
+        return ('Title', 'Start Date (UTC)', 'End Date (UTC)',
+                'Affected Services and Components',
                 'Provider', 'Created', 'Modified', 'State',)
 
     def simple_fields(self):
@@ -750,7 +751,7 @@ class CsvView(ProjectOverview):
             values = []
             for field in project:
                 text = field['text']
-                if isinstance(text, unicode):
+                if isinstance(text, six.text_type):
                     text = text.encode('utf8')
                 value = CSV_TEMPLATE % text
                 values.append(value)
