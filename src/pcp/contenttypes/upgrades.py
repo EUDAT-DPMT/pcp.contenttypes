@@ -1,18 +1,24 @@
 # -*- coding: UTF-8 -*-
 from collective.relationhelpers import api as relapi
+from ComputedAttribute import ComputedAttribute
 from plone import api
 from plone.app.upgrade.utils import loadMigrationProfile
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFPlone.utils import get_installer
 from zope.annotation.interfaces import IAnnotations
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
 import os
+import six
 
 log = logging.getLogger(__name__)
 RELATIONS_KEY = 'ALL_REFERENCES'
@@ -193,32 +199,45 @@ def restore_references(context=None):
         rel['from_attribute'] = get_from_attribute(rel)
         all_fixed_relations.append(rel)
     relapi.restore_relations(all_relations=all_fixed_relations)
+    rebuild_catalog()
 
 
 def remove_archetypes(context=None):
+    # rebuild_catalog()
     portal_types = api.portal.get_tool('portal_types')
     portal_catalog = api.portal.get_tool('portal_catalog')
     to_drop = [
         'Plan',
         'Resource',
         'Service Details',
+        'AliasVocabulary',
+        'SimpleVocabulary',
+        'SimpleVocabularyTerm',
+        'SortedSimpleVocabulary',
+        'TreeVocabulary',
+        'TreeVocabularyTerm',
+        'VdexFileVocabulary',
         ]
     for portal_type in to_drop:
         for brain in portal_catalog(portal_type=portal_type):
             obj = brain.getObject()
+            log.info(u'Removing {} at {}'.format(portal_type, brain.getURL()))
             api.content.delete(obj=obj, check_linkintegrity=False)
     KEEP = [
         'Plone Site',
         'Comment',
         'TempFolder',
+        'Discussion Item',
+        'VocabularyLibrary',
         ]
     from plone.dexterity.interfaces import IDexterityFTI
     for fti in portal_types.listTypeInfo():
         if IDexterityFTI.providedBy(fti) or fti.id in KEEP:
             continue
-        brains = portal_catalog(portal_type=fti.portal_type)
+        brains = portal_catalog(portal_type=fti.id)
         if brains:
-            log.info(u'{} existing Instances of Type {}!'.format(len(brains), fti.portal_type))
+            log.info(u'{} existing Instances of Type {}!'.format(len(brains), fti.id))
+            import pdb; pdb.set_trace()
         else:
             portal_types.manage_delObjects([fti.id])
             log.info(u'Removed Type {}!'.format(fti.id))
@@ -227,11 +246,12 @@ def remove_archetypes(context=None):
     old_installer = api.portal.get_tool('portal_quickinstaller')
     old_installer.uninstallProducts(['ATBackRef'])
     old_installer.uninstallProducts(['ATExtensions'])
-    old_installer.uninstallProducts(['ATVocabularyManager'])
 
     new_installer = get_installer(portal)
     # uninstall AT Types and some dependency tools
     new_installer.uninstall_product('Products.ATContentTypes')
+
+    old_installer.uninstallProducts(['ATVocabularyManager'])
 
     # uninstall AT
     new_installer.uninstall_product('Archetypes')
@@ -268,6 +288,13 @@ def remove_archetypes(context=None):
     pprops = api.portal.get_tool('portal_properties')
     if 'extensions_properties' in pprops:
         pprops.manage_delObjects('extensions_properties')
+
+
+def cleanup_after_py3_migration(context=None):
+    if not six.PY3:
+        raise RuntimeError('This needs top run in Python 3!')
+    fix_portlets()
+    # relapi.rebuild_relations()
 
 
 def remove_all_revisions(context=None):
@@ -362,3 +389,48 @@ def remove_broken_steps(context=None):
         if broken_export_step in registry.listSteps():
             registry.unregisterStep(broken_export_step)
     portal_setup._p_changed = True
+
+
+def fix_portlets(context=None):
+    """Fix portlets that use ComputedValue for path-storage instead of a UUID.
+    """
+    catalog = api.portal.get_tool('portal_catalog')
+    portal = api.portal.get()
+    fix_portlets_for(portal)
+    for brain in catalog.getAllBrains():
+        try:
+            obj = brain.getObject()
+        except KeyError:
+            log.info('Broken brain for {}'.format(brain.getPath()))
+            continue
+        fix_portlets_for(obj)
+
+
+def fix_portlets_for(obj):
+    """Fix portlets for a certain object."""
+    attrs_to_fix = [
+        'root_uid',
+        'search_base_uid',
+        'uid',
+    ]
+    if getattr(obj.aq_base, 'getLayout', None) is not None and obj.getLayout() is not None:
+        try:
+            view = obj.restrictedTraverse(obj.getLayout())
+        except KeyError:
+            view = obj.restrictedTraverse('@@view')
+    else:
+        view = obj.restrictedTraverse('@@view')
+    for manager_name in ['plone.leftcolumn', 'plone.rightcolumn', 'plone.footerportlets']:
+        manager = queryUtility(IPortletManager, name=manager_name, context=obj)
+        if not manager:
+            continue
+        mappings = queryMultiAdapter((obj, manager), IPortletAssignmentMapping)
+        if not mappings:
+            continue
+        for key, assignment in mappings.items():
+            for attr in attrs_to_fix:
+                if getattr(assignment, attr, None) is not None and isinstance(getattr(assignment, attr), ComputedAttribute):
+                    setattr(assignment, attr, None)
+                    log.info('Reset {} for portlet {} assigned at {} in {}'.format(attr, key, obj.absolute_url(), manager_name))  # noqa: E501
+                    log.info('You may need to configure it manually at {}/@@manage-portlets'.format(obj.absolute_url()))  # noqa: E501
+

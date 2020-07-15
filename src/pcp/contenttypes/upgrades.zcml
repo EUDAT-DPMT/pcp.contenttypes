@@ -80,5 +80,13 @@
     handler=".upgrades.remove_archetypes"
     />
 
+  <genericsetup:upgradeStep
+    source="2009"
+    destination="2010"
+    title="Cleanup after Python 3 Migration"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.cleanup_after_py3_migration"
+    />
+
 
 </configure>

@@ -79,11 +79,14 @@ setup(name='pcp.contenttypes',
       tests_require=tests_require,
       extras_require=dict(test=tests_require),
       test_suite='pcp.contenttypes.tests.test_docs.test_suite',
-      entry_points="""
-      # -*- entry_points -*-
-      [z3c.autoinclude.plugin]
-      target = plone
-      """,
+      entry_points={
+          'z3c.autoinclude.plugin': [
+              'target = plone',
+          ],
+          'zodbupdate': [
+              'renames = pcp.contenttypes:zodbupdate_rename_dict',
+          ],
+      },
       setup_requires=["PasteScript"],
       paster_plugins=["templer.localcommands"],
       )
