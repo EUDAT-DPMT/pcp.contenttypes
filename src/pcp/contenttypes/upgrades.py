@@ -198,6 +198,15 @@ def restore_references(context=None):
 def remove_archetypes(context=None):
     portal_types = api.portal.get_tool('portal_types')
     portal_catalog = api.portal.get_tool('portal_catalog')
+    to_drop = [
+        'Plan',
+        'Resource',
+        'Service Details',
+        ]
+    for portal_type in to_drop:
+        for brain in portal_catalog(portal_type=portal_type):
+            obj = brain.getObject()
+            api.content.delete(obj=obj, check_linkintegrity=False)
     KEEP = [
         'Plone Site',
         'Comment',
