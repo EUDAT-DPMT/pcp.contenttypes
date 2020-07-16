@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading" tal:content="context/Title" />
+
+    <p class="documentDescription" tal:content="context/Description" />
+
+    <table>
+    <tal:block repeat="widget view/widgets/values">
+        <div class="field" tal:condition="python:widget.__name__ not in ('IBasic.title', 'IBasic.description', 'title', 'description',)">
+          <tr tal:condition="widget/value">
+            <td>  
+            <label tal:content="widget/label" />
+            </td>
+            <td>
+            <div tal:content="structure widget/render" />
+            </td>
+          </tr>
+        </div>
+    </tal:block>
+    </table>
+
+    <fieldset tal:repeat="group view/groups"
+              tal:attributes="id python:''.join((group.prefix, 'groups.', group.__name__)).replace('.', '-')">
+        <legend tal:content="group/label" />
+        <table>
+        <div class="field" tal:repeat="widget group/widgets/values">
+        <tr tal:condition="widget/value">
+          <td>
+            <label tal:content="widget/label" />
+          <td/>
+          <td>
+            <div tal:content="structure widget/render" />
+          </td>
+        </tr>
+        </div>
+        </table>
+    </fieldset>
+
+</metal:main>
+
+</body>
+</html>

@@ -27,6 +27,14 @@
       />
 
   <browser:page
+      for="plone.dexterity.interfaces.IDexterityContent"
+      name="compact-view"
+      class="plone.dexterity.browser.view.DefaultView"
+      template="item.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       name="pcp-settings"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.SettingsControlPanel"
