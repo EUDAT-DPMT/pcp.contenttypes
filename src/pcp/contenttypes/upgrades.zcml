@@ -83,10 +83,25 @@
   <genericsetup:upgradeStep
     source="2009"
     destination="2010"
+    title="Rebuild relations (again!)"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.rebuild_relations"
+    />
+
+  <genericsetup:upgradeStep
+    source="2010"
+    destination="2011"
+    title="Various fixes"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.fix_stuff"
+    />
+
+  <genericsetup:upgradeStep
+    source="2020"
+    destination="2021"
     title="Cleanup after Python 3 Migration"
     profile="pcp.contenttypes:default"
     handler=".upgrades.cleanup_after_py3_migration"
     />
-
 
 </configure>

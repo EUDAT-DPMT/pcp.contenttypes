@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from Acquisition import aq_base
 from collective.relationhelpers import api as relapi
 from ComputedAttribute import ComputedAttribute
 from plone import api
@@ -66,6 +67,8 @@ def store_references(context=None):
     from plone.app.contenttypes.migration.utils import store_references
     portal = api.portal.get()
     store_references(portal)
+    relapi.purge_relations()
+    relapi.cleanup_intids()
 
 
 def install_pac(context=None):
@@ -90,6 +93,7 @@ def migrate_folders(context=None):
         reindex_catalog=False,
         patch_searchabletext=True,
     )
+    rebuild_catalog()
 
 
 def migrate_to_dexterity(context=None):
@@ -110,6 +114,8 @@ def migrate_to_dexterity(context=None):
         'profile-pcp.contenttypes:default',
         steps=['workflow', 'typeinfo'],
     )
+    disable_versioning()  # because it was re-enabled by typeinfo
+    rebuild_catalog()
 
 
 def custom_at_migration(context=None):
@@ -142,6 +148,7 @@ def custom_at_migration(context=None):
         os.environ['CATALOG_OPTIMIZATION_DISABLED'] = queue_indexing
     else:
         del os.environ['CATALOG_OPTIMIZATION_DISABLED']
+    rebuild_catalog()
 
 
 # Map some AT Reference to DX Relation
@@ -203,7 +210,6 @@ def restore_references(context=None):
 
 
 def remove_archetypes(context=None):
-    # rebuild_catalog()
     portal_types = api.portal.get_tool('portal_types')
     portal_catalog = api.portal.get_tool('portal_catalog')
     to_drop = [
@@ -237,7 +243,6 @@ def remove_archetypes(context=None):
         brains = portal_catalog(portal_type=fti.id)
         if brains:
             log.info(u'{} existing Instances of Type {}!'.format(len(brains), fti.id))
-            import pdb; pdb.set_trace()
         else:
             portal_types.manage_delObjects([fti.id])
             log.info(u'Removed Type {}!'.format(fti.id))
@@ -288,6 +293,43 @@ def remove_archetypes(context=None):
     pprops = api.portal.get_tool('portal_properties')
     if 'extensions_properties' in pprops:
         pprops.manage_delObjects('extensions_properties')
+
+
+def rebuild_relations(context=None):
+    disable_versioning()
+    remove_all_revisions()
+    relapi.rebuild_relations()
+
+
+def fix_stuff(context=None):
+    portal = api.portal.get()
+    annotations = IAnnotations(portal)
+    if 'plone.app.controlpanel.wicked' in annotations:
+        del annotations['plone.app.controlpanel.wicked']
+
+    # Fix conversations that still have the old AT co tehnt as __parent__
+    # TODO: Fix in plone.app.contenttypes?
+    def fix_at_remains(obj, path):
+        annotations = getattr(aq_base(obj), '__annotations__', None)
+        if not annotations:
+            return
+        if 'plone.app.discussion:conversation' not in annotations.keys():
+            return
+        conversation = annotations['plone.app.discussion:conversation']
+        if 'broken' in conversation.__parent__.__repr__():
+            conversation.__parent__ = obj
+            log.info(u'Fix conversation for {}'.format(obj.absolute_url()))
+        else:
+            log.info(u'Conversation parent ok: {}'.format(conversation.__parent__))
+    portal.ZopeFindAndApply(portal, search_sub=True, apply_func=fix_at_remains)
+
+    # remove openid plugin
+    acl = api.portal.get_tool('acl_users')
+    try:
+        acl.manage_delObjects(['openid'])
+        log.info('Deleted openid plugin')
+    except BadRequest:
+        pass
 
 
 def cleanup_after_py3_migration(context=None):
