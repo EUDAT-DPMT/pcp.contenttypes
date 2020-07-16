@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.backrels.backrelfield import BackrelField
+from pcp.contenttypes.content_dx.common import RequestUtilities
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -69,5 +70,5 @@ class IServiceRequest(model.Schema):
 
 
 @implementer(IServiceRequest)
-class ServiceRequest(Container):
+class ServiceRequest(Container, RequestUtilities):
     """ServiceRequest instance"""

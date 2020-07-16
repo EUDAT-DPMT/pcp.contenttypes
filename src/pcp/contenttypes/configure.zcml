@@ -54,6 +54,13 @@
     name="start_date"
     />
 
+  <adapter
+    for='*'
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".adapters.DPMTUsersToNotifySubstitution"
+    name="users_to_notify"
+    />
+
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" />
   <include package=".portlets" />

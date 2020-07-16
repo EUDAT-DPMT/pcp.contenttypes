@@ -45,3 +45,17 @@ class DPMTStartDateSubstitution(BaseSubstitution):
             return value.Date()
         except AttributeError:
             return _(u'not specified')
+
+
+class DPMTUsersToNotifySubstitution(BaseSubstitution):
+    adapts(IContentish)
+
+    category = _(u'Service or resource requests')
+    description = _(u'Users to notify')
+
+    def safe_call(self):
+        try:
+            users = self.context.users_to_notify()
+            return u','.join(users)
+        except AttributeError:
+            return _(u'not specified')

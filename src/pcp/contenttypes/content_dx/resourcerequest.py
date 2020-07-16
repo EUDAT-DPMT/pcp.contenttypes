@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
+from pcp.contenttypes.content_dx.common import RequestUtilities
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.autoform import directives
 from plone.dexterity.content import Container
@@ -15,5 +16,5 @@ class IResourceRequest(model.Schema):
 
 
 @implementer(IResourceRequest)
-class ResourceRequest(Container):
+class ResourceRequest(Container, RequestUtilities):
     """ResourceRequest instance"""

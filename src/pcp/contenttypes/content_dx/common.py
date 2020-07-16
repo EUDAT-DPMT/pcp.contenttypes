@@ -1,5 +1,6 @@
 """Common components shared by content types
 """
+from collective.relationhelpers import api as relapi
 from incf.countryutils.datatypes import Country
 from plone.app.textfield.interfaces import ITransformer
 from plone.app.uuid.utils import uuidToObject
@@ -51,8 +52,8 @@ class RequestUtilities(object):
     def request_details(self):
         """Helper method used for string interpolation"""
         values = []
-        compute = self.getCompute_resources()
-        storage = self.getStorage_resources()
+        compute = self.compute_resources
+        storage = self.storage_resources
         if compute:
             for c in compute:
                 formatted = self.comp2string(c)
@@ -74,38 +75,33 @@ class RequestUtilities(object):
 
     def providers2string(self):
         """Helper method used for string interpolation"""
-        providers = self.getPreferred_providers()
+        providers = relapi.relations(self, 'preferred_providers')
         if not providers:
             return "not specified"
-        return ", ".join([p.Title() for p in providers])
+        return u", ".join([p.title for p in providers])
 
     def users_to_notify(self):
         """Email addresses to be notified infered from the preferred providers"""
         try:
-            providers = self.getPreferred_providers()
+            providers = relapi.relations(self, 'preferred_providers')
         except AttributeError:
             portal = getSite()
-            providers = self.__of__(portal).getPreferred_providers()
+            providers = relapi.relations(self.__of__(portal), 'preferred_providers')
         if not providers:
             return ''
         contacts = []
         for provider in providers:
-            operations_contact = provider.getContact()
-            business_contact = provider.getBusiness_contact()
+            operations_contact = relapi.relation(provider, 'contact')
+            business_contact = relapi.relation(provider, 'business_contact')
             if operations_contact:
-                contacts.append(operations_contact.getEmail())
+                contacts.append(operations_contact.email)
             if business_contact:
-                contacts.append(business_contact.getEmail())
+                contacts.append(business_contact.email)
         return contacts
 
 
 class CommonUtilities(object):
     """Mixin class to provide shared functionality across content types"""
-
-    def identifierTypes(self, instance):
-        """Controlled vocabulary for the supported PID systems"""
-
-        return ateapi.getDisplayList(instance, 'identifier_types', add_select=True)
 
     def ids(self):
         """Tuple of all identifiers - from the field plus uid and pid"""

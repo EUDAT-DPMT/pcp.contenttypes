@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.comment.comment import CommentField
+from pcp.contenttypes.content_dx.common import RequestUtilities
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.vocabularies.catalog import CatalogSource
@@ -72,5 +73,5 @@ class IServiceComponentRequest(model.Schema):
 
 
 @implementer(IServiceComponentRequest)
-class ServiceComponentRequest(Container):
+class ServiceComponentRequest(Container, RequestUtilities):
     """ServiceComponentRequest instance"""
