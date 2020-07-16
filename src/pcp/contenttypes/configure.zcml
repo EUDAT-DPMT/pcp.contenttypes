@@ -32,6 +32,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:registerProfile
+      name="migration"
+      title="PCP upgrade to Plone 5"
+      directory="profiles/migration"
+      description=""
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <!-- support custom info via string interpolation-->
   <adapter
     for='*'

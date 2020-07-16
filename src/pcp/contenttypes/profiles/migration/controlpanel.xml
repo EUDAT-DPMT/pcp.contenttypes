@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <configlet
+    action_id="portal_vocabularies"
+    remove="true" />
+ <configlet
+    action_id="statistics"
+    remove="true" />
+ <configlet
+    action_id="workflowmanager"
+    remove="true" />
+ <configlet
+    action_id="plone.app.event.eventsettings"
+    remove="true" />
+ <configlet title="Date and Time" action_id="DateAndTime" appId="DateAndTime"
+    category="plone-general" condition_expr=""
+    icon_expr="string:$portal_url/event_icon.png"
+    url_expr="string:${portal_url}/@@dateandtime-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Site</permission>
+ </configlet>
+ <configlet title="Language" action_id="LanguageSettings"
+    appId="Plone" category="plone-general" condition_expr=""
+    icon_expr="string:$portal_url/flag-plone.png"
+    url_expr="string:${portal_url}/@@language-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Language</permission>
+ </configlet>
+ <configlet title="HTML Filtering" action_id="FilterSettings" appId="FilterSettings"
+    category="plone-security" condition_expr=""
+    icon_expr="string:$portal_url/htmlfilter_icon.png"
+    url_expr="string:${portal_url}/@@filter-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Filtering</permission>
+ </configlet>
+ <configlet
+     title="Discussion"
+     action_id="discussion"
+     appId="plone.app.discussion"
+     category="plone-general"
+     condition_expr=""
+     icon_expr="string:${portal_url}/discussionitem_icon.png"
+     url_expr="string:${portal_url}/@@discussion-controlpanel"
+     visible="True"
+     i18n:attributes="title">
+         <permission>Manage portal</permission>
+ </configlet>
+</object>
