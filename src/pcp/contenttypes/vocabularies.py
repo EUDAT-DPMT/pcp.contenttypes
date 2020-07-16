@@ -51,8 +51,7 @@ def country_names(context):
 @provider(IVocabularyFactory)
 def information_units(context):
     units = unit_map.keys()
-    units.sort()
-    return safe_simplevocabulary_from_values(units)
+    return safe_simplevocabulary_from_values(sorted(units))
 
 
 @provider(IVocabularyFactory)

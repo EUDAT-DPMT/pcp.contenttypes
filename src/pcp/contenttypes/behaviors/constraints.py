@@ -52,6 +52,7 @@ class IDPMTConstraints(model.Schema):
     constraints = RichText(
         title=u"Constraints",
         description=u"Any other constraints not yet covered.",
+        required=False,
     )
 
 
