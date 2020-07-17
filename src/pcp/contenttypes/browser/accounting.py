@@ -74,7 +74,8 @@ class Accounting(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
 
         catalog = self.context.portal_catalog
-        resource_brains = catalog(portal_type='RegisteredStorageResource')
+        resource_brains = catalog(portal_type=['RegisteredStorageResource',
+                                               'registeredstorageresource_dx'])
         updated_resources = []
 
         for brain in resource_brains:
