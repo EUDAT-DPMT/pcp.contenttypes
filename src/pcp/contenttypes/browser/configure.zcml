@@ -364,6 +364,14 @@
 	/>
 
   <browser:page
+    for="plone.dexterity.interfaces.IDexterityContainer"
+    name="service_overview"
+    class="pcp.contenttypes.browser.summary_views.ServiceOverview"
+    template="summary_views.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
 	zcml:condition="installed Products.Archetypes"
     for="Products.Archetypes.interfaces.IBaseObject"
 	name="projects.csv"
