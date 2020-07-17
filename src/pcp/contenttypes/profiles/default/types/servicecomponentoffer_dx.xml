@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <object name="servicecomponentoffer_dx" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">ServiceComponentOffer_DX</property>
- <property name="description" i18n:translate=""></property>
- <property name="icon_expr">string:${portal_url}/document_icon.png</property>
+ <property name="title" i18n:translate="">Service Component Offer</property>
+ <property name="description" i18n:translate="">Provider offers service components</property>
+ <property name="icon_expr">string:${portal_url}/maintenance_icon.png</property>
  <property name="factory">servicecomponentoffer</property>
  <property name="add_view_expr">string:${folder_url}/++add++servicecomponentoffer_dx</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
- <property name="global_allow">True</property>
+ <property name="global_allow">False</property>
  <property name="filter_content_types">False</property>
  <property name="allowed_content_types"/>
  <property name="allow_discussion">False</property>
- <property name="default_view">view</property>
+ <property name="default_view">compact-view</property>
  <property name="view_methods">
+  <element value="compact-view"/>
   <element value="view"/>
  </property>
  <property name="default_view_fallback">False</property>

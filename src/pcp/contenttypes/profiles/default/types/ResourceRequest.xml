@@ -2,7 +2,7 @@
 <object name="ResourceRequest"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Resource Request</property>
+  <property name="title" i18n:translate="">Resource Request (AT)</property>
   <property name="description"
     i18n:translate="">A project requests a storage or compute resource</property>
   <property name="content_meta_type">ResourceRequest</property>
