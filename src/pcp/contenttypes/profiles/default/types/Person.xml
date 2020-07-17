@@ -2,7 +2,7 @@
 <object name="Person"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Contact</property>
+  <property name="title" i18n:translate="">Contact (AT)</property>
   <property name="description"
     i18n:translate="">Specific contact information - typically of a person</property>
   <property name="content_meta_type">Person</property>
