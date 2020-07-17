@@ -11,6 +11,8 @@
 
     <h1 class="documentFirstHeading" tal:content="context/Title" />
 
+    <p class="discreet" tal:content="python:context.getTypeInfo().title" />
+
     <p class="documentDescription" tal:content="context/Description" />
 
     <table>
