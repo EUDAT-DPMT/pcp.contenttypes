@@ -2,7 +2,7 @@
 <object name="ServiceComponentImplementation"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Service Component Implementation</property>
+  <property name="title" i18n:translate="">Service Component Implementation (AT)</property>
   <property name="description"
     i18n:translate="">Specific implementation of a service component</property>
   <property name="content_meta_type">ServiceComponentImplementation</property>

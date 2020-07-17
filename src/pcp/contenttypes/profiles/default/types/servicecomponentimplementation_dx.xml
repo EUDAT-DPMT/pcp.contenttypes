@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 <object name="servicecomponentimplementation_dx" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">ServiceComponentImplementation_DX</property>
- <property name="description" i18n:translate=""></property>
- <property name="icon_expr">string:${portal_url}/document_icon.png</property>
+ <property name="title" i18n:translate="">Service Component Implementation</property>
+ <property name="description" i18n:translate="">Specific implementation of a service component</property>
+ <property name="icon_expr">string:${portal_url}/maintenance_icon.png</property>
  <property name="factory">servicecomponentimplementation</property>
  <property name="add_view_expr">string:${folder_url}/++add++servicecomponentimplementation_dx</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
- <property name="global_allow">True</property>
- <property name="filter_content_types">False</property>
- <property name="allowed_content_types"/>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types">
+   <element value="servicecomponentimplementationdetails_dx"/>
+   <element value="Folder"/>
+ </property>
  <property name="allow_discussion">False</property>
- <property name="default_view">view</property>
+ <property name="default_view">compact-view</property>
  <property name="view_methods">
+  <element value="compact-view"/>
   <element value="view"/>
  </property>
  <property name="default_view_fallback">False</property>

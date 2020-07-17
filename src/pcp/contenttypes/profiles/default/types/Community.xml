@@ -2,7 +2,7 @@
 <object name="Community"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Customer</property>
+  <property name="title" i18n:translate="">Customer (AT)</property>
   <property name="description"
     i18n:translate="">A customer served by a project on this site.</property>
   <property name="content_meta_type">Community</property>

@@ -2,7 +2,7 @@
 <object name="ServiceComponent"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Service Component</property>
+  <property name="title" i18n:translate="">Service Component (AT)</property>
   <property name="description"
     i18n:translate="">Component of an EUDAT service</property>
   <property name="content_meta_type">ServiceComponent</property>
