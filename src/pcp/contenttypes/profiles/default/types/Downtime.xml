@@ -2,7 +2,7 @@
 <object name="Downtime"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="pcp.contenttypes" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Downtime</property>
+  <property name="title" i18n:translate="">Downtime (AT)</property>
   <property name="description"
     i18n:translate="">Schedule a downtime of a service or component</property>
   <property name="content_meta_type">Downtime</property>
