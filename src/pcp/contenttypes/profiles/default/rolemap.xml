@@ -39,10 +39,6 @@
       <role name="CDI Manager"/>
       <role name="Administrator"/>
     </permission>
-    <permission name="pcp.contenttypes: Add AccountingRecord" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
-    </permission>
     <permission name="pcp.contenttypes: Add Downtime" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
@@ -59,10 +55,6 @@
       <role name="Contributor" />
     </permission>
     <permission name="pcp.contenttypes: Add ServiceComponent" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
-    </permission>
-    <permission name="pcp.contenttypes: Add Service Details" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
     </permission>
@@ -133,10 +125,6 @@
       <role name="CDI Manager"/>
       <role name="Administrator"/>
     </permission>
-    <permission name="pcp.contenttypes: Add Plan" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
-    </permission>
     <permission name="pcp.contenttypes: Add Environment" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />
@@ -157,14 +145,6 @@
       <role name="Site Manager"/>
       <role name="CDI Manager"/>
       <role name="Administrator"/>
-    </permission>
-    <permission name="pcp.contenttypes: Add Resource" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
-    </permission>
-    <permission name="pcp.contenttypes: Add Center" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
     </permission>
     <permission name="pcp.contenttypes: Add Community" acquire="False">
       <role name="Manager" />
