@@ -15,36 +15,37 @@
 
     <p class="documentDescription" tal:content="context/Description" />
 
-    <table>
-    <tal:block repeat="widget view/widgets/values">
-        <div class="field" tal:condition="python:widget.__name__ not in ('IBasic.title', 'IBasic.description', 'title', 'description',)">
-          <tr tal:condition="widget/value">
-            <td>  
-            <label tal:content="widget/label" />
+    <table class="listing">
+      <tal:block repeat="widget view/widgets/values">
+        <tal:field
+             tal:condition="python:widget.__name__ not in ('IBasic.title', 'IBasic.description', 'title', 'description',)">
+          <tr tal:condition="python: widget.value">
+            <td>
+              <label tal:content="python: widget.label" />
             </td>
             <td>
-            <div tal:content="structure widget/render" />
+              <div tal:replace="structure python:widget.render()" />
             </td>
           </tr>
-        </div>
-    </tal:block>
+        </tal:field>
+      </tal:block>
     </table>
 
     <fieldset tal:repeat="group view/groups"
               tal:attributes="id python:''.join((group.prefix, 'groups.', group.__name__)).replace('.', '-')">
-        <legend tal:content="group/label" />
-        <table>
-        <div class="field" tal:repeat="widget group/widgets/values">
+      <legend tal:content="group/label" />
+      <table class="listing">
+        <tal:field tal:repeat="widget group/widgets/values">
         <tr tal:condition="widget/value">
           <td>
             <label tal:content="widget/label" />
-          <td/>
+          </td>
           <td>
             <div tal:content="structure widget/render" />
           </td>
         </tr>
-        </div>
-        </table>
+        </tal:field>
+      </table>
     </fieldset>
 
 </metal:main>
