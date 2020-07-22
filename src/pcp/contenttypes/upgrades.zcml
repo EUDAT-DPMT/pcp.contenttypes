@@ -97,6 +97,22 @@
     />
 
   <genericsetup:upgradeStep
+    source="2011"
+    destination="2012"
+    title="Remove broken registry entries"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.remove_broken_registry_entries"
+    />
+
+  <genericsetup:upgradeStep
+    source="2012"
+    destination="2013"
+    title="Cleanup Utilities"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.remove_utilities"
+    />
+
+  <genericsetup:upgradeStep
     source="2020"
     destination="2021"
     title="Cleanup after Python 3 Migration"

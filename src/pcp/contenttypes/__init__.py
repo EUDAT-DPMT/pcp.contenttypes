@@ -8,6 +8,11 @@ from zope.interface import Interface
 
 contenttypesMessageFactory = MessageFactory('pcp.contenttypes')
 
+zodbupdate_rename_dict = {
+    'webdav.EtagSupport EtagSupport': 'OFS.EtagSupport EtagSupport',
+    'webdav.EtagSupport EtagBaseInterface': 'OFS.EtagSupport EtagBaseInterface',
+}
+
 
 class IBBB(Interface):
     pass

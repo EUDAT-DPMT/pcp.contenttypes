@@ -9,9 +9,11 @@ from plone.dexterity.interfaces import IDexterityFTI
 from plone.folder.interfaces import IOrdering
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
+from plone.registry.interfaces import IRegistry
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFPlone.utils import get_installer
 from zope.annotation.interfaces import IAnnotations
+from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
@@ -20,6 +22,7 @@ from zope.interface import alsoProvides
 import logging
 import os
 import six
+import transaction
 
 log = logging.getLogger(__name__)
 RELATIONS_KEY = 'ALL_REFERENCES'
@@ -332,6 +335,88 @@ def fix_stuff(context=None):
         pass
 
 
+def remove_broken_registry_entries(context=None):
+    records = [
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_core',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_widget',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_mouse',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_position',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_draggable',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_droppable',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_resizable',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_selectable',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_sortable',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_accordion',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_autocomplete',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_button',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_datepicker',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_dialog',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_menu',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_progressbar',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_slider',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_spinner',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_tabs',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_tooltip',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_blind',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_bounce',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_clip',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_drop',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_explode',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_fade',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_fold',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_highlight',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_pulsate',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_scale',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_shake',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_slide',
+        'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_effect_transfer',
+        'collective.js.jqueryui.controlpanel.IJQueryUICSS.css',
+        'collective.js.jqueryui.controlpanel.IJQueryUICSS.patch',
+        'Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings.resourceBundlesForThemes',
+        'plone.resourceBundlesForThemes',
+    ]
+    registry = getUtility(IRegistry)
+    for record in records:
+        try:
+            del registry.records[record]
+            log.info('Removed record {}'.format(record))
+        except KeyError:
+            pass
+
+
+def remove_utilities(context=None):
+    """Example that removes collective.zipfiletransport
+    """
+    portal = api.portal.get()
+    sm = portal.getSiteManager()
+
+    from Products.CMFCore.interfaces import IMetadataTool
+    if IMetadataTool in sm.utilities._adapters[0]:
+        del sm.utilities._adapters[0][IMetadataTool]
+        log.info(u'Unregistering adapter for MetadataTool')
+
+    if IMetadataTool in sm.utilities._subscribers[0]:
+        del sm.utilities._subscribers[0][IMetadataTool]
+        log.info(u'Unregistering subscriber for MetadataTool')
+
+    if IMetadataTool in sm.utilities._provided:
+        del sm.utilities._provided[IMetadataTool]
+        log.info(u'Unregistering subscriber for MetadataTool')
+
+    if (IMetadataTool, '') in sm._utility_registrations:
+        del sm._utility_registrations[(IMetadataTool, '')]
+        log.info(u'Drop subscriber for MetadataTool')
+
+    from Products.CMFCore.interfaces import IDiscussionTool
+    for util in sm.getAllUtilitiesRegisteredFor(IDiscussionTool):
+        sm.unregisterUtility(util, IDiscussionTool)
+        log.info(u'Removed IDiscussionTool utility')
+
+    sm.utilities._p_changed = True
+    transaction.commit()
+
+
 def cleanup_after_py3_migration(context=None):
     if not six.PY3:
         raise RuntimeError('This needs top run in Python 3!')
@@ -415,6 +500,7 @@ def remove_broken_steps(context=None):
         'ploneformgen',
         'uwosh.pfg.d2c.install',
         'zopyx.plone.cassandra.various',
+        'various-atextensions',
     ]
     log.info('remove import-steps')
     registry = portal_setup.getImportStepRegistry()
