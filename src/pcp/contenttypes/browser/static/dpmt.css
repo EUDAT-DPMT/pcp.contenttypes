@@ -1,0 +1,8 @@
+.portlet.portletStaticText .portletContent > ul > li a {
+    display: inline;
+    border-top: none;
+}
+
+.portlet.portletStaticText .portletContent > ul > li i.link-https::after {
+    content: none;
+}
