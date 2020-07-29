@@ -124,7 +124,7 @@
                                tal:attributes="href string:$portal_url/@@user-information?${userquery};
                                                title userid">
                                 <span tal:replace="user/fullname">Full Name</span>
-                                <em> – <em tal:replace="user/login">login name</em></em>
+                                <em>(<span tal:replace="user/email">email</span> – <em tal:replace="user/login">login name</em></em>)
                             </a>
                             <input type="hidden" name="users.id:records" tal:attributes="value userid" />
                         </td>
