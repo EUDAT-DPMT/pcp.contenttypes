@@ -90,6 +90,7 @@
             <tbody metal:define-macro="user-group-sharing-settings" id="user-group-sharing-settings">
                 <tal:entries repeat="entry role_settings">
                     <tr tal:define="is_group python:entry['type'] == 'group';
+                                    user_obj python: context.acl_users.getUser(entry['id']);
                                     disabled entry/disabled | python:False;
                                     oddrow repeat/entry/odd;
                                     sticky python:entry['id'] in view.STICKY"
@@ -106,7 +107,9 @@
                             <tal:nonsticky condition="not:sticky">
                               <span tal:replace="entry/title" />
                               <tal:title condition="entry/login|nothing">
-                                (<span tal:replace="entry/login" />)
+                                  (<span tal:replace="entry/login" />,
+                                   <span tal:content="python: user_obj.getProperty('email')"/>,
+                                   <span tal:content="python: user_obj.getProperty('level_of_assurance') or 'UNKNOWN'"/>)
                               </tal:title>
                             </tal:nonsticky>
                             </a>
