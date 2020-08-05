@@ -262,8 +262,8 @@ def migrate_phone(src_obj, dst_obj, src_fieldname, dst_fieldname):
         if not at_value:
             continue
         dx_value = {}
-        dx_value['number_type'] = at_value['type']
-        dx_value['number'] = at_value['number']
+        dx_value['number_type'] = at_value.get('type', u'Office')
+        dx_value['number'] = at_value.get('number', None)
         dx_values.append(dx_value)
     setattr(dst_obj, dst_fieldname, dx_values)
 
@@ -438,7 +438,7 @@ def migrate_registeredcomputeresource(context=None):
 
 def migrate_registeredresource(context=None):
     fields_mapping = []
-    fields_mapping += fields_mapping_common + fields_mapping_resource + fields_mapping_resourcecontext
+    fields_mapping += fields_mapping_resource + fields_mapping_resourcecontext
     migrateCustomAT(
         fields_mapping,
         src_type='RegisteredResource',
