@@ -5,6 +5,24 @@
   <genericsetup:upgradeStep
     source="1000"
     destination="1001"
+    title="Cleanup"
+    description=""
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.cleanup"
+    />
+
+  <genericsetup:upgradeStep
+    source="1001"
+    destination="1002"
+    title="Fix RegisteredServiceComponent and RegisteredService as at folders"
+    description=""
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.fix_some_at_folders"
+    />
+
+  <genericsetup:upgradeStep
+    source="1002"
+    destination="1003"
     title="Prepare Plone 5 Upgrade"
     description=""
     profile="pcp.contenttypes:default"

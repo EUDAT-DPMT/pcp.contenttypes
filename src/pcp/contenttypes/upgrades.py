@@ -1,12 +1,44 @@
 # -*- coding: utf-8 -*-
 from plone import api
 from plone.app.upgrade.utils import loadMigrationProfile
+from plone.folder.interfaces import IOrdering
+from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from zExceptions import BadRequest
+from zope.interface import alsoProvides
 
 import logging
 
 
 log = logging.getLogger(__name__)
+
+
+def cleanup(context=None):
+    portal = api.portal.get()
+    app = portal.__parent__
+    if 'demo' in app.keys():
+        app.manage_delObjects(['demo'])
+
+    # remove openid plugin
+    acl = api.portal.get_tool('acl_users')
+    try:
+        acl.manage_delObjects(['openid'])
+        log.info('Deleted openid plugin')
+    except BadRequest:
+        pass
+
+
+def fix_some_at_folders(context=None):
+    # fix some AT objects
+    portal = api.portal.get()
+
+    def treeify(obj, path):
+        if getattr(obj, 'portal_type', None) in ['RegisteredServiceComponent', 'RegisteredService']:
+            if not obj._tree:
+                alsoProvides(obj, IOrdering)
+                BTreeFolder2Base._initBTrees(obj)
+                log.info(u'Fix _tree for {}'.format(obj))
+
+    portal.ZopeFindAndApply(portal, search_sub=True, apply_func=treeify)
 
 
 def prepare_plone5_upgrade(context=None):
@@ -48,9 +80,8 @@ def prepare_plone5_upgrade(context=None):
             qi.uninstallProducts([addon])
         else:
             log.info(u'{} is not installed'.format(addon))
-
-    # log.info('rebuilding catalog')
-    # catalog.clearFindAndRebuild()
+    remove_ttw_types()
+    rebuild_catalog()
     pack_database()
 
 
@@ -159,6 +190,18 @@ def cleanup_in_plone52(context=None):
     pack_database()
 
 
+def remove_ttw_types(context=None):
+    # TODO: Remove when endpoint_handle endpoint_irods are filesystem types
+    do_delete = ['endpoint_handle', 'endpoint_irods']
+    portal_types = api.portal.get_tool('portal_types')
+    for portal_type in do_delete:
+        for brain in api.content.find(portal_type=portal_type):
+            obj = brain.getObject()
+            api.content.delete(obj, check_linkintegrity=False)
+        if portal_type in portal_types:
+            portal_types.manage_delObjects([portal_type])
+    log.info(u'Removed instances and fti for {}'.format(portal_type))
+
 
 def pack_database(context=None):
     """Pack the database"""
@@ -167,3 +210,8 @@ def pack_database(context=None):
     db = app._p_jar.db()
     db.pack(days=0)
 
+
+def rebuild_catalog(context=None):
+    log.info('rebuilding catalog')
+    catalog = api.portal.get_tool('portal_catalog')
+    catalog.clearFindAndRebuild()
