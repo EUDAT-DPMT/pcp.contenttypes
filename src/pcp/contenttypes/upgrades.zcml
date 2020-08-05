@@ -113,6 +113,14 @@
     />
 
   <genericsetup:upgradeStep
+    source="2013"
+    destination="2014"
+    title="Pack database"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.pack_database"
+    />
+
+  <genericsetup:upgradeStep
     source="2020"
     destination="2021"
     title="Cleanup after Python 3 Migration"

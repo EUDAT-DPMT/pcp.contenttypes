@@ -12,6 +12,7 @@ from plone.portlets.interfaces import IPortletManager
 from plone.registry.interfaces import IRegistry
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFPlone.utils import get_installer
+from zExceptions import BadRequest
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -47,6 +48,7 @@ def after_plone5_upgrade(context=None):
     """Various cleanup tasks after upgrade from Plone 4.3 to 5.2
     """
     # reinstall pcp.contenttypes to enable new dx types
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal_setup = api.portal.get_tool('portal_setup')
     portal_setup.runAllImportStepsFromProfile(
         'profile-pcp.contenttypes:default', purge_old=False)
@@ -84,6 +86,7 @@ def install_pac(context=None):
 
 
 def migrate_folders(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     request = getRequest()
     pac_migration = api.content.get_view('migrate_from_atct', portal, request)
@@ -100,6 +103,7 @@ def migrate_folders(context=None):
 
 
 def migrate_to_dexterity(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     request = getRequest()
     pac_migration = api.content.get_view('migrate_from_atct', portal, request)
@@ -208,6 +212,7 @@ def get_from_attribute(rel):
 
 
 def restore_references(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     all_stored_relations = IAnnotations(portal)[RELATIONS_KEY]
     log.info('Loaded {0} relations to restore'.format(
@@ -217,6 +222,13 @@ def restore_references(context=None):
     # pac exports references with 'relationship' relapi expects 'from_attribute'
     # also some fields have special relationship-names in AT
     for rel in all_stored_relations:
+        if not uuidToObject(rel['from_uuid']):
+            continue
+        if not uuidToObject(rel['to_uuid']):
+            continue
+        # drop outdated relations
+        if rel['relationship'] in ['primary_provider_for', 'secondary_provider_for']:
+            continue
         rel['from_attribute'] = get_from_attribute(rel)
         all_fixed_relations.append(rel)
     relapi.restore_relations(all_relations=all_fixed_relations)
@@ -224,6 +236,7 @@ def restore_references(context=None):
 
 
 def remove_archetypes(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal_types = api.portal.get_tool('portal_types')
     portal_catalog = api.portal.get_tool('portal_catalog')
     to_drop = [
@@ -310,12 +323,14 @@ def remove_archetypes(context=None):
 
 
 def rebuild_relations(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     disable_versioning()
     remove_all_revisions()
     relapi.rebuild_relations()
 
 
 def fix_stuff(context=None):
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     annotations = IAnnotations(portal)
     if 'plone.app.controlpanel.wicked' in annotations:
@@ -533,6 +548,7 @@ def remove_broken_steps(context=None):
 def fix_portlets(context=None):
     """Fix portlets that use ComputedValue for path-storage instead of a UUID.
     """
+    os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     catalog = api.portal.get_tool('portal_catalog')
     portal = api.portal.get()
     fix_portlets_for(portal)
