@@ -125,6 +125,17 @@ def custom_at_migration(context=None):
     # Disable queueing of indexing/reindexing/unindexing
     queue_indexing = os.environ.get('CATALOG_OPTIMIZATION_DISABLED', None)
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
+    obsolete = [
+        'Plan',
+        'Service Details',
+        'Resource',
+    ]
+    for portal_type in obsolete:
+        for brain in api.content.find(portal_type=portal_type):
+            obj = brain.getObject()
+            log.info(u'Remove {} at {}'.format(portal_type, obj.absolute_url()))
+            api.content.delete(obj, check_linkintegrity=False)
+
     from pcp.contenttypes import custom_migration
     custom_migration.migrate_project()
     custom_migration.migrate_community()
