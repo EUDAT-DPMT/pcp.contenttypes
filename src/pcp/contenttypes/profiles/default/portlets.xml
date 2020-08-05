@@ -12,4 +12,12 @@
     title="Downtimes"
     description="Portlet showing upcoming Downtimes"/>
 
+  <assignment name="recent-items" category="context" key="/"
+     manager="plone.leftcolumn" type="portlets.Recent" visible="True">
+    <property name="count">5</property>
+    <property name="no_icons">True</property>
+    <property name="no_thumbs">True</property>
+    <property name="thumb_scale"/>
+  </assignment>
+
 </portlets>

@@ -128,4 +128,12 @@
     handler=".upgrades.cleanup_after_py3_migration"
     />
 
+  <genericsetup:upgradeStep
+    source="2021"
+    destination="2022"
+    title="Fix recent portlets"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.fix_recent_portlet"
+    />
+
 </configure>

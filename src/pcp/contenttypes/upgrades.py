@@ -447,7 +447,6 @@ def cleanup_after_py3_migration(context=None):
     if not six.PY3:
         raise RuntimeError('This needs top run in Python 3!')
     fix_portlets()
-    # relapi.rebuild_relations()
 
 
 def remove_all_revisions(context=None):
@@ -589,3 +588,31 @@ def fix_portlets_for(obj):
                     log.info('Reset {} for portlet {} assigned at {} in {}'.format(attr, key, obj.absolute_url(), manager_name))  # noqa: E501
                     log.info('You may need to configure it manually at {}/@@manage-portlets'.format(obj.absolute_url()))  # noqa: E501
 
+
+def fix_recent_portlet(context=None):
+    from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+    from plone.portlets.constants import CONTEXT_CATEGORY
+    from plone.portlets.constants import GROUP_CATEGORY
+    from plone.portlets.constants import USER_CATEGORY
+    from zope.component import getUtilitiesFor
+    from plone.portlets.interfaces import IPortletManager
+    from zope.container import contained
+    portal = api.portal.get()
+    fixing_up = contained.fixing_up
+    contained.fixing_up = True
+
+    # find assignments in the global categories
+    for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY):
+        for manager_name, manager in getUtilitiesFor(IPortletManager):
+            for key, mapping in manager.get(category, {}).items():
+                mapping = mapping.__of__(portal)
+                for key in mapping:
+                    if 'recent-items' in key or 'calendar' in key:
+                        del mapping[key]
+                        log.info(f'removed recent items portlet from {manager_name}')
+    contained.fixing_up = fixing_up
+    loadMigrationProfile(
+        context,
+        'profile-pcp.contenttypes:default',
+        steps=['portlets'],
+    )
