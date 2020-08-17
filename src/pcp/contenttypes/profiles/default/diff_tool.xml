@@ -95,34 +95,40 @@
   <type portal_type="registeredresource_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="resourcerequest_dx">
+  <type portal_type="resourcerequest_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicecomponentrequest_dx">
+  <type portal_type="servicecomponentrequest_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="resourceoffer_dx">
+  <type portal_type="resourceoffer_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="serviceoffer_dx">
+  <type portal_type="serviceoffer_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicecomponentoffer_dx">
+  <type portal_type="servicecomponentoffer_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicerequest_dx">
+  <type portal_type="servicerequest_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="environment_dx">
+  <type portal_type="environment_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicecomponent_dx">
+  <type portal_type="servicecomponent_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicecomponentimplementation_dx">
+  <type portal_type="servicecomponentimplementation_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
- <type portal_type="servicecomponentimplementationdetails_dx">
+  <type portal_type="servicecomponentimplementationdetails_dx">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="handleendpoint">
+    <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+  <type portal_type="irodsendpoint">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
  </difftypes>

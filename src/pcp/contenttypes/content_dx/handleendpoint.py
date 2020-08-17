@@ -53,7 +53,7 @@ class IHandleEndpoint(model.Schema):
     prefix = schema.TextLine(
             title=u'Prefix',
             )
-    
+
     mirrored_to = RelationList(
         title=u"Mirror(s)",
         description=u"Other Handle server(s) mirroring this prefix.",

@@ -66,22 +66,22 @@ class IIrodsEndpoint(model.Schema):
             title=u'Path',
             required=False,
             )
-    
+
     path_description = schema.TextLine(
             title = u'Path description',
             required = False,
             )
-    
+
     alternative_path = schema.TextLine(
             title=u'Alternative path',
             required=False,
             )
-    
+
     alt_path_description = schema.TextLine(
             title=u'Alternative path description',
             required=False,
             )
-    
+
     contacts = schema.TextLine(
         title=u'Contacts',
         required=False,

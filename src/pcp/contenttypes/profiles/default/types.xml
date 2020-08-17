@@ -93,4 +93,6 @@
   <object name="servicecomponent_dx" meta_type="Dexterity FTI"/>
   <object name="servicecomponentimplementation_dx" meta_type="Dexterity FTI"/>
   <object name="servicecomponentimplementationdetails_dx" meta_type="Dexterity FTI"/>
+  <object name="handleendpoint" meta_type="Dexterity FTI"/>
+  <object name="irodsendpoint" meta_type="Dexterity FTI"/>
 </object>

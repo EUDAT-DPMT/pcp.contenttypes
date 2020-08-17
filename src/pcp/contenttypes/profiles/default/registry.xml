@@ -89,6 +89,8 @@
       <element>servicecomponent_dx</element>
       <element>servicecomponentimplementation_dx</element>
       <element>servicecomponentimplementationdetails_dx</element>
+      <element>handleendpoint</element>
+      <element>irodsendpoint</element>
     </value>
   </record>
 
