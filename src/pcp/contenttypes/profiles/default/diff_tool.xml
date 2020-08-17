@@ -125,10 +125,10 @@
   <type portal_type="servicecomponentimplementationdetails_dx">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
-  <type portal_type="handleendpoint">
+  <type portal_type="endpoint_handle">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
-  <type portal_type="irodsendpoint">
+  <type portal_type="endpoint_irods">
     <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
  </difftypes>

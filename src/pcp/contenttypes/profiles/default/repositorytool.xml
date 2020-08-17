@@ -153,11 +153,11 @@
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
-  <type name="handleendpoint">
+  <type name="endpoint_handle">
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>
-  <type name="irodsendpoint">
+  <type name="endpoint_irods">
     <policy name="at_edit_autoversion"/>
     <policy name="version_on_revert"/>
   </type>

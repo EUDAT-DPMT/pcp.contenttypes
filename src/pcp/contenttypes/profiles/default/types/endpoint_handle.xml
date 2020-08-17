@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<object name="irodsendpoint" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="endpoint_handle" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Irods Endpoint</property>
+ <property name="title" i18n:translate="">Handle Endpoint</property>
  <property name="description" i18n:translate=""></property>
  <property name="icon_expr"></property>
- <property name="factory">irodsendpoint</property>
- <property name="add_view_expr">string:${folder_url}/++add++irodsendpoint</property>
+ <property name="factory">endpoint_handle</property>
+ <property name="add_view_expr">string:${folder_url}/++add++endpoint_handle</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
  <property name="global_allow">True</property>
@@ -21,7 +21,7 @@
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>
  <property name="klass">plone.dexterity.content.Container</property>
- <property name="schema">pcp.contenttypes.content_dx.irodsendpoint.IIrodsEndpoint</property>
+ <property name="schema">pcp.contenttypes.content_dx.handleendpoint.IHandleEndpoint</property>
  <property name="behaviors">
   <element value="plone.dublincore"/>
   <element value="plone.namefromtitle"/>
