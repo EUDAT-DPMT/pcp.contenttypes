@@ -80,7 +80,6 @@ def prepare_plone5_upgrade(context=None):
             qi.uninstallProducts([addon])
         else:
             log.info(u'{} is not installed'.format(addon))
-    remove_ttw_types()
     rebuild_catalog()
     pack_database()
 
@@ -188,19 +187,6 @@ def cleanup_in_plone52(context=None):
     portal_properties.manage_delObjects(['quickupload_properties'])
     portal_properties.manage_delObjects(['imaging_properties'])
     pack_database()
-
-
-def remove_ttw_types(context=None):
-    # TODO: Remove when endpoint_handle endpoint_irods are filesystem types
-    do_delete = ['endpoint_handle', 'endpoint_irods']
-    portal_types = api.portal.get_tool('portal_types')
-    for portal_type in do_delete:
-        for brain in api.content.find(portal_type=portal_type):
-            obj = brain.getObject()
-            api.content.delete(obj, check_linkintegrity=False)
-        if portal_type in portal_types:
-            portal_types.manage_delObjects([portal_type])
-    log.info(u'Removed instances and fti for {}'.format(portal_type))
 
 
 def pack_database(context=None):
