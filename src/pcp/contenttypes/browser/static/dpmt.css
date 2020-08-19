@@ -6,3 +6,29 @@
 .portlet.portletStaticText .portletContent > ul > li i.link-https::after {
     content: none;
 }
+
+.contenttype-community_dx::before {content: '\e842' !important;}
+.contenttype-downtime_dx::before {content: '\e813' !important;}
+.contenttype-endpoint_handle::before {content: '\e838' !important;}
+.contenttype-endpoint_irods::before {content: '\e838' !important;}
+.contenttype-environment_dx::before {content: '\e814' !important;}
+.contenttype-person_dx::before {content: '\e800' !important;}
+.contenttype-project_dx::before {content: '\e81b' !important;}
+.contenttype-provider_dx::before {content: '\e80c' !important;}
+.contenttype-registeredcomputeresource_dx::before {content: '\e826' !important;}
+.contenttype-registeredresource_dx::before {content: '\e825' !important;}
+.contenttype-registeredservice_dx::before {content: '\e823' !important;}
+.contenttype-registeredservicecomponent_dx::before {content: '\e81d' !important;}
+.contenttype-registeredstorageresource_dx::before {content: '\e825' !important;}
+.contenttype-resourceoffer_dx::before {content: '\e83b' !important;}
+.contenttype-resourcerequest_dx::before {content: '\e80a' !important;}
+.contenttype-service_dx::before {content: '\e80b' !important;}
+.contenttype-servicecomponent_dx::before {content: '\e80b' !important;}
+.contenttype-servicecomponentimplementation_dx::before {content: '\e80b' !important;}
+.contenttype-servicecomponentimplementationdetails_dx::before {content: '\e80b' !important;}
+.contenttype-servicecomponentoffer_dx::before {content: '\e83b' !important;}
+.contenttype-servicecomponentrequest_dx::before {content: '\e80a' !important;}
+.contenttype-serviceoffer_dx::before {content: '\e83b' !important;}
+.contenttype-servicerequest_dx::before {content: '\e80a' !important;}
+
+
