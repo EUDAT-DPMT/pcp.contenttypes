@@ -74,7 +74,7 @@
   <genericsetup:upgradeStep
     source="2009"
     destination="2010"
-    title="Rebuild relations (again!)"
+    title="Rebuild relations (again!) (py2)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.rebuild_relations"
     />
@@ -82,7 +82,7 @@
   <genericsetup:upgradeStep
     source="2010"
     destination="2011"
-    title="Various fixes"
+    title="Various fixes (py2)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.fix_stuff"
     />
@@ -90,7 +90,7 @@
   <genericsetup:upgradeStep
     source="2011"
     destination="2012"
-    title="Remove broken registry entries"
+    title="Remove broken registry entries (py2)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.remove_broken_registry_entries"
     />
@@ -98,7 +98,7 @@
   <genericsetup:upgradeStep
     source="2012"
     destination="2013"
-    title="Cleanup Utilities"
+    title="Cleanup Utilities (py2)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.remove_utilities"
     />
@@ -106,7 +106,7 @@
   <genericsetup:upgradeStep
     source="2013"
     destination="2014"
-    title="Pack database"
+    title="Pack database (py2)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.pack_database"
     />
@@ -114,7 +114,7 @@
   <genericsetup:upgradeStep
     source="2020"
     destination="2021"
-    title="Cleanup after Python 3 Migration"
+    title="Cleanup after Python 3 Migration (py3)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.cleanup_after_py3_migration"
     />
@@ -122,9 +122,25 @@
   <genericsetup:upgradeStep
     source="2021"
     destination="2022"
-    title="Fix recent portlets"
+    title="Fix recent portlets (py3)"
     profile="pcp.contenttypes:default"
     handler=".upgrades.fix_recent_portlet"
+    />
+
+  <genericsetup:upgradeStep
+    source="2022"
+    destination="2023"
+    title="Rebuild catalog (py3)"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.rebuild_catalog"
+    />
+
+  <genericsetup:upgradeStep
+    source="2023"
+    destination="2024"
+    title="Pack database (py3)"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.pack_database"
     />
 
 </configure>

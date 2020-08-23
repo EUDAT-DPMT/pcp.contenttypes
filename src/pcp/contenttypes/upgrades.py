@@ -308,6 +308,14 @@ def remove_archetypes(context=None):
 
 
 def rebuild_relations(context=None):
+    if not six.PY2:
+        raise RuntimeError('This needs top run in Python 2!')
+    try:
+        from Products.Archetypes import atapi
+        raise RuntimeError('This needs top run without AT!')
+    except:
+        pass
+
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     disable_versioning()
     remove_all_revisions()
@@ -315,6 +323,8 @@ def rebuild_relations(context=None):
 
 
 def fix_stuff(context=None):
+    if not six.PY2:
+        raise RuntimeError('This needs top run in Python 2!')
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     annotations = IAnnotations(portal)
@@ -347,6 +357,8 @@ def fix_stuff(context=None):
 
 
 def remove_broken_registry_entries(context=None):
+    if not six.PY2:
+        raise RuntimeError('This needs top run in Python 2!')
     records = [
         'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_core',
         'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_widget',
@@ -397,8 +409,9 @@ def remove_broken_registry_entries(context=None):
 
 
 def remove_utilities(context=None):
-    """Example that removes collective.zipfiletransport
-    """
+    if not six.PY2:
+        raise RuntimeError('This needs top run in Python 2!')
+
     portal = api.portal.get()
     sm = portal.getSiteManager()
 
@@ -468,6 +481,7 @@ def rebuild_catalog(context=None):
 
 def pack_database(context=None):
     """Pack the database"""
+    log.info('packing Database')
     portal = api.portal.get()
     app = portal.__parent__
     db = app._p_jar.db()
