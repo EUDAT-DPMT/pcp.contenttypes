@@ -83,4 +83,12 @@
          handler=".content.downtime.handleDowntimeTransition"
     />
 
+  <browser:page
+    name="export_restapi"
+    for="zope.interface.Interface"
+    class=".export.ExportRestapi"
+    template="export_restapi.pt"
+    permission="cmf.ManagePortal"
+    />
+
 </configure>
