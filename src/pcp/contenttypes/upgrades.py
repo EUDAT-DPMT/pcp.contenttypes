@@ -191,6 +191,7 @@ def cleanup_in_plone52(context=None):
 
 def pack_database(context=None):
     """Pack the database"""
+    log.info('packing Database')
     portal = api.portal.get()
     app = portal.__parent__
     db = app._p_jar.db()
