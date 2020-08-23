@@ -29,21 +29,6 @@ log = logging.getLogger(__name__)
 RELATIONS_KEY = 'ALL_REFERENCES'
 
 
-def fix_some_at_folders(context=None):
-    # fix some AT objects
-
-    portal = api.portal.get()
-
-    def treeify(obj, path):
-        if getattr(obj, 'portal_type', None) in ['RegisteredServiceComponent', 'RegisteredService']:
-            if not obj._tree:
-                alsoProvides(obj, IOrdering)
-                BTreeFolder2Base._initBTrees(obj)
-                log.info(u'Fix _tree for {}'.format(obj))
-
-    portal.ZopeFindAndApply(portal, search_sub=True, apply_func=treeify)
-
-
 def after_plone5_upgrade(context=None):
     """Various cleanup tasks after upgrade from Plone 4.3 to 5.2
     """
@@ -609,7 +594,7 @@ def fix_recent_portlet(context=None):
                 for key in mapping:
                     if 'recent-items' in key or 'calendar' in key:
                         del mapping[key]
-                        log.info(f'removed recent items portlet from {manager_name}')
+                        log.info(u'removed recent items portlet from {}'.format(manager_name))
     contained.fixing_up = fixing_up
     loadMigrationProfile(
         context,

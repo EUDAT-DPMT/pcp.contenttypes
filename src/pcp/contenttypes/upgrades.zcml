@@ -4,15 +4,6 @@
 
   <genericsetup:upgradeStep
     source="*"
-    destination="2000"
-    title="Fix RegisteredServiceComponent and RegisteredService as at folders"
-    description=""
-    profile="pcp.contenttypes:default"
-    handler=".upgrades.fix_some_at_folders"
-    />
-
-  <genericsetup:upgradeStep
-    source="2000"
     destination="2002"
     title="Cleanup after Upgrade to Plone 5.2"
     description=""
