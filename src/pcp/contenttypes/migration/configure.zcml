@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="dynajet.site">
+
+  <browser:page
+    name="import_form"
+    for="plone.app.layout.navigation.interfaces.INavigationRoot"
+    class=".import_form.ImportForm"
+    template="import_form.pt"
+    permission="cmf.ManagePortal"
+    />
+
+</configure>
