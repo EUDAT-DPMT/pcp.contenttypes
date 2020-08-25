@@ -21,7 +21,7 @@ CONFIG = {
 
 BUGS = {}
 
-DROP = []
+DROP_FIELDS = []
 
 DEFAULTS = {}
 
@@ -117,9 +117,8 @@ class ImportForm(BrowserView):
             new = container[item['id']]
 
             # import using plone.restapi deserializers
-            self.request['BODY'] = json.dumps(item)
             deserializer = getMultiAdapter((new, self.request), IDeserializeFromJson)
-            new = deserializer(validate_all=False)
+            new = deserializer(validate_all=False, data=item)
 
             if api.content.find(UID=uuid):
                 logger.warn(
@@ -156,7 +155,7 @@ class ImportForm(BrowserView):
 
     def handle_dropped(self, item):
         """Drop some fields, especially relations."""
-        for key in DROP:
+        for key in DROP_FIELDS:
             item.pop(key, None)
         return item
 
@@ -179,12 +178,12 @@ class ImportForm(BrowserView):
         return item
 
     def custom_modifier(self, obj):
-        modifier = getattr(self, f'fixup_{self.portal_type.replace(".", "_")}', None)
+        modifier = getattr(self, f'fixup_{self.portal_type.lower().replace(".", "_")}', None)
         if modifier and callable(modifier):
             modifier(obj)
 
     def handle_container(self, item):
-        method = getattr(self, f'handle_{self.portal_type.replace(".", "_")}_container', None)
+        method = getattr(self, f'handle_{self.portal_type.lower().replace(".", "_")}_container', None)
         if method and callable(method):
             return method(item)
 
