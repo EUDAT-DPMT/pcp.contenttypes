@@ -76,7 +76,7 @@ class ExportRestapi(BrowserView):
             obj = brain.getObject()
             try:
                 serializer = getMultiAdapter((obj, self.request), ISerializeToJson)
-                item = serializer()
+                item = serializer(include_items=False)
                 data.append(item)
             except Exception as e:
                 logger.info(e)
@@ -133,7 +133,7 @@ class FileFieldSerializerWithBlobs(DefaultFieldSerializer):
         result = {
             "filename": namedfile.filename,
             "content-type": namedfile.contentType,
-            "content-type": base64.b64encode(namedfile.data),
+            "data": base64.b64encode(namedfile.data),
             "encoding": "base64",
         }
         return json_compatible(result)
