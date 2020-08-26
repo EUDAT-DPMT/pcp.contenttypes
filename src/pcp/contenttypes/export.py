@@ -76,7 +76,7 @@ class ExportRestapi(BrowserView):
             obj = brain.getObject()
             try:
                 serializer = getMultiAdapter((obj, self.request), ISerializeToJson)
-                item = serializer(include_items=False)
+                item = serializer()
                 data.append(item)
             except Exception as e:
                 logger.info(e)
@@ -94,8 +94,6 @@ class ExportRestapi(BrowserView):
         portal_types = api.portal.get_tool('portal_types')
         results = []
         for fti in portal_types.listTypeInfo():
-            if not IDexterityFTI.providedBy(fti):
-                continue
             number = len(catalog(portal_type=fti.id, Language='all'))
             if number >= 1:
                 results.append({
