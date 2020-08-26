@@ -31,14 +31,22 @@
 
       <div id="dashboard">
           <div class="visualClear"><!-- --></div>
+        <div class="container">
+         <div class="row">
           <div id="dashboard-portlets1"
+            class="col-lg-3"
             tal:content="structure provider:plone.dashboard1" />
           <div id="dashboard-portlets2"
+            class="col-lg-3"
             tal:content="structure provider:plone.dashboard2" />
           <div id="dashboard-portlets3"
+            class="col-lg-3"
             tal:content="structure provider:plone.dashboard3" />
           <div id="dashboard-portlets4"
+            class="col-lg-3"
             tal:content="structure provider:plone.dashboard4" />
+         </div>
+        </div>
       </div>
       <div class="visualClear"><!-- --></div>
     </div>
