@@ -34,6 +34,15 @@
       permission="zope2.View"
       />
 
+  <!-- BBB -->
+  <browser:page
+      for="plone.dexterity.interfaces.IDexterityContent"
+      name="table-view"
+      class="plone.dexterity.browser.view.DefaultView"
+      template="item.pt"
+      permission="zope2.View"
+      />
+
   <browser:page
       name="pcp-settings"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -405,9 +414,9 @@
 	/>
 
   <browser:page
-	for="pcp.contenttypes.interfaces.IRegisteredStorageResource"
+	for="pcp.contenttypes.content_dx.registeredstorageresource.IRegisteredStorageResource"
 	name="star"
-	class="pcp.contenttypes.browser.star_view.StarView"
+	class="pcp.contenttypes.browser.star_view_dx.StarView"
 	attribute="star"
 	permission="zope2.View"
 	/>
