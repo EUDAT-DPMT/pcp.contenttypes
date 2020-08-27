@@ -33,7 +33,7 @@ long_description = (
     '********\n')
 
 tests_require = ['zope.testing', 'plone.testing', 'plone.app.testing', 'robotsuite',
-                 'robotframework-selenium2library', 'Products.PloneTestCase', 'mock']
+                 'robotframework-selenium2library', 'mock']
 
 setup(name='pcp.contenttypes',
       version=version,
@@ -57,11 +57,8 @@ setup(name='pcp.contenttypes',
       zip_safe=False,
       install_requires=['setuptools',
                         'pint',
-                        # 'Products.ATExtensions',
-                        # 'Products.ATBackRef',
                         # 'Products.ATReferenceBrowserWidget',
                         # 'Products.MasterSelectWidget',
-                        # 'Products.ATVocabularyManager',
                         # 'plone.formwidget.contenttree',
                         'collective.handleclient',
                         'collective.monkeypatcher',

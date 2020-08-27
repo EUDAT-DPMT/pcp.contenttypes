@@ -615,3 +615,42 @@ def fix_recent_portlet(context=None):
         'profile-pcp.contenttypes:default',
         steps=['portlets'],
     )
+
+
+def install_autousermaker(context=None):
+    old_installer = api.portal.get_tool('portal_quickinstaller')
+    old_installer.installProducts(['AutoUserMakerPASPlugin'])
+
+
+def configure_autousermaker(context=None):
+    settings = [
+        ('prefix', ''),
+        ('strip_domain_names', 1),
+        ('strip_domain_name_list', ()),
+        ('http_remote_user', ('HTTP_EUDAT_ID', 'HTTP_X_REMOTE_USER', 'HTTP_REMOTE_USER')),
+        ('http_commonname', ('HTTP_CN', 'HTTP_SHIB_PERSON_COMMONNAME')),
+        ('http_description', ('HTTP_DN', 'HTTP_SHIB_ORGPERSON_TITLE')),
+        ('http_email', ('HTTP_MAIL', 'HTTP_SHIB_INETORGPERSON_MAIL')),
+        ('http_locality', ('HTTP_SHIB_ORGPERSON_LOCALITY',)),
+        ('http_state', ('HTTP_SHIB_ORGPERSON_STATE',)),
+        ('http_country', ('HTTP_SHIB_ORGPERSON_C',)),
+        ('auto_update_user_properties', 0),
+        ('auto_update_user_properties_interval', 86400),
+        ('http_authz_tokens', ()),
+        ('http_sharing_tokens', ()),
+        ('http_sharing_labels', ()),
+        ('required_roles', ()),
+        ('login_users', ()),
+        ('use_custom_redirection', True),
+        ('challenge_pattern', 'http://(.*)'),
+        ('challenge_replacement', 'https://\\1'),
+        ('challenge_header_enabled', False),
+        ('challenge_header_name', ''),
+        ('fire_pas_events', ('principal_created',)),
+        ('default_roles', ('Member',)),
+        ('level_of_assurance', ('HTTP_LOA', 'HTTP_loa')),
+    ]
+    pas = api.portal.get_tool('acl_users')
+    plugin = pas['AutoUserMakerPASPlugin']
+    for key, value in settings:
+        plugin.manage_changeProperties({key: value})

@@ -143,4 +143,20 @@
     handler=".upgrades.pack_database"
     />
 
+  <genericsetup:upgradeStep
+    source="2024"
+    destination="2025"
+    title="Install AutoUserMakerPASPlugin"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.install_autousermaker"
+    />
+
+  <genericsetup:upgradeStep
+    source="2025"
+    destination="2026"
+    title="Configure AutoUserMakerPASPlugin"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.configure_autousermaker"
+    />
+
 </configure>
