@@ -159,4 +159,12 @@
     handler=".upgrades.configure_autousermaker"
     />
 
+  <genericsetup:upgradeStep
+    source="2026"
+    destination="2027"
+    title="Setp Dashboard as frontpage"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.set_frontpage"
+    />
+
 </configure>

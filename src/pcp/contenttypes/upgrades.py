@@ -654,3 +654,7 @@ def configure_autousermaker(context=None):
     plugin = pas['AutoUserMakerPASPlugin']
     for key, value in settings:
         plugin.manage_changeProperties({key: value})
+
+def set_frontpage(context=None):
+    portal = api.portal.get()
+    portal.setLayout('@@dashboard')
