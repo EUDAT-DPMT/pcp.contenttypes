@@ -1,48 +1,33 @@
-from plone.app.testing import PLONE_FIXTURE
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 from plone.testing import z2
-from zope.configuration import xmlconfig
 
 
 class PcpcontenttypesLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        import Products.ATExtensions
-        import Products.ATBackRef
-        import collective.handleclient
-        import plone.formwidget.datetime
-        import pcp.contenttypes
+        # import collective.handleclient
         import zopyx
-
-        xmlconfig.file('configure.zcml', Products.ATExtensions, context=configurationContext)
-        xmlconfig.file('configure.zcml', Products.ATBackRef,  context=configurationContext)
-        xmlconfig.file('configure.zcml', collective.handleclient, context=configurationContext)
-        xmlconfig.file('configure.zcml', plone.formwidget.datetime, context=configurationContext)
-        xmlconfig.file('configure.zcml', pcp.contenttypes, context=configurationContext)
-        xmlconfig.file('configure.zcml', zopyx.plone.persistentlogger, context=configurationContext)
-
-        # Install products that use an old-style initialize() function
-        #z2.installProduct(app, 'Products.PloneFormGen')
-        z2.installProduct(app, 'Products.ATExtensions')
-        z2.installProduct(app, 'pcp.contenttypes')
+        import pcp.contenttypes
+        import collective.z3cform.datagridfield
+        # self.loadZCML(package=collective.handleclient)
+        self.loadZCML(package=zopyx.plone.persistentlogger)
+        self.loadZCML(package=collective.z3cform.datagridfield)
+        self.loadZCML(package=pcp.contenttypes)
 
     def tearDownZope(self, app):
+        pass
         # Uninstall products installed above
-        # z2.uninstallProduct(app, 'Products.PloneFormGen')
-        z2.uninstallProduct(app, 'Products.ATExtensions')
-        z2.uninstallProduct(app, 'pcp.contenttypes')
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'Products.ATBackRef:default')
-        applyProfile(portal, 'Products.ATExtensions:default')
-        applyProfile(portal, 'collective.handleclient:default')
+        # applyProfile(portal, 'collective.handleclient:default')
+        applyProfile(portal, 'collective.z3cform.datagridfield:default')
         applyProfile(portal, 'pcp.contenttypes:default')
-        applyProfile(portal, 'plone.formwidget.datetime:default')
         applyProfile(portal, 'zopyx.plone.persistentlogger:default')
 
 PCP_CONTENTTYPES_FIXTURE = PcpcontenttypesLayer()

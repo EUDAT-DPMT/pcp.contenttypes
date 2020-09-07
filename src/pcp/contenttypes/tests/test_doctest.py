@@ -1,25 +1,13 @@
 import unittest
 import doctest
 
-#from zope.testing import doctestunit
-#from zope.component import testing, eventtesting
+from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 
-from Testing import ZopeTestCase as ztc
-
-from pcp.contenttypes.tests import base
-
+from plone.testing import layered
 
 def test_suite():
-    return unittest.TestSuite([
-
-        # Demonstrate the main content types
-        ztc.ZopeDocFileSuite(
-            'README.txt', package='pcp.contenttypes',
-            test_class=base.FunctionalTestCase,
-            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE |
-            doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
-
-    ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+    return unittest.TestSuite(
+        [layered(doctest.DocFileSuite('README.txt', package='pcp.contenttypes',
+         optionflags=doctest.ELLIPSIS | doctest.REPORT_ONLY_FIRST_FAILURE),
+         layer=PCP_CONTENTTYPES_FUNCTIONAL_TESTING)]
+    )

@@ -6,9 +6,6 @@ import unittest
 import plone
 import transaction
 from DateTime import DateTime
-from Products.ATBackRef import BackReferenceField
-from Products.ATVocabularyManager import NamedVocabulary
-from Products.Archetypes.Field import ReferenceField
 from Products.CMFCore.utils import getToolByName
 from mock import patch, call, MagicMock
 from pcp.contenttypes.browser.accounting import Accounting
@@ -40,7 +37,7 @@ class TestFunctional(unittest.TestCase):
         browser.open(portal_url + '/login_form')
         browser.getControl(name='__ac_name').value = TEST_USER_NAME
         browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
-        browser.getControl(name='submit').click()
+        browser.getControl(name='button.login').click()
 
         self.assertIn('You are now logged in', browser.contents)
         return browser
@@ -75,7 +72,8 @@ class TestFunctional(unittest.TestCase):
             portal_types.getTypeInfo(portal_type).global_allow = True
             self.folder.invokeFactory(portal_type, obj_id)
             obj = self.folder[obj_id]
-            obj._setUID(table['uid'])
+            setattr(obj, '_plone.uuid', table['uid'])
+            obj.reindexObject(idxs=['UID'])
 
         # Second and final pass of bootstrapping:
         # Actually assign all properties in table. References can be set in any order as
@@ -91,19 +89,19 @@ class TestFunctional(unittest.TestCase):
                 # Set references only once (forward ones).
                 # Check BackReferenceField before ReferenceField because
                 # BackRefField derives from RefField.
-                if isinstance(field, BackReferenceField):
-                    table.pop(field_name)
-                    continue
+                # if isinstance(field, BackReferenceField):
+                #     table.pop(field_name)
+                #     continue
                 # References are stored in a more detailed format than expected by fields.
                 # Therefore strip down.
-                elif isinstance(field, ReferenceField):
-                    pure_uids = [reference['uid'] for reference in table[field_name]]
-                    table[field_name] = pure_uids
+                # elif isinstance(field, ReferenceField):
+                #     pure_uids = [reference['uid'] for reference in table[field_name]]
+                #     table[field_name] = pure_uids
                 # Vocabulary not available in fixtureq
                 # TODO: make named vocabulary available in fixture
-                elif isinstance(field.vocabulary, NamedVocabulary):
-                    table.pop(field_name)
-                    continue
+                # elif isinstance(field.vocabulary, NamedVocabulary):
+                #     table.pop(field_name)
+                #     continue
 
             obj.update(**table)
 

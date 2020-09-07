@@ -1,9 +1,10 @@
-import unittest2 as unittest
+from pcp.contenttypes.testing import PCP_CONTENTTYPES_INTEGRATION_TESTING
+from plone import api
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from Products.CMFPlone.utils import get_installer
 
-from Products.CMFCore.utils import getToolByName
-
-from pcp.contenttypes.testing import \
-    PCP_CONTENTTYPES_INTEGRATION_TESTING
+import unittest
 
 
 class TestExample(unittest.TestCase):
@@ -11,15 +12,33 @@ class TestExample(unittest.TestCase):
     layer = PCP_CONTENTTYPES_INTEGRATION_TESTING
 
     def setUp(self):
-        self.app = self.layer['app']
         self.portal = self.layer['portal']
-        self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
+        self.installer = get_installer(self.portal, self.layer['request'])
 
-    def test_product_is_installed(self):
-        """ Validate that our products GS profile has been run and the product
-            installed
-        """
-        pid = 'pcp.contenttypes'
-        installed = [p['id'] for p in self.qi_tool.listInstalledProducts()]
-        self.assertTrue(pid in installed,
-                        'package appears not to have been installed')
+    def test_product_installed(self):
+        """Test if dynajet.site is installed."""
+        self.assertTrue(self.installer.is_product_installed('pcp.contenttypes'))
+
+    def test_browserlayer(self):
+        """Test that IDynajetSiteLayer is registered."""
+        from pcp.contenttypes.interfaces import IPcpContenttypesLayer
+        from plone.browserlayer import utils
+
+        self.assertIn(IPcpContenttypesLayer, utils.registered_layers())
+
+
+class TestUninstall(unittest.TestCase):
+
+    layer = PCP_CONTENTTYPES_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.installer = get_installer(self.portal, self.layer['request'])
+        roles_before = api.user.get_roles(TEST_USER_ID)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.installer.uninstall_product('pcp.contenttypes')
+        setRoles(self.portal, TEST_USER_ID, roles_before)
+
+    def test_product_uninstalled(self):
+        """Test if dynajet.site is cleanly uninstalled."""
+        self.assertFalse(self.installer.is_product_installed('dynajet.site'))
