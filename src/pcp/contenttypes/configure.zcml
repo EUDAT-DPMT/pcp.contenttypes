@@ -20,10 +20,6 @@
   <include file="upgrades.zcml" />
   <include package=".migration" />
 
-  <!-- jbot support-->
-  <include package="z3c.jbot" file="meta.zcml" />
-  <browser:jbot directory="overrides" />
-
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"
@@ -73,15 +69,6 @@
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" />
   <include package=".portlets" />
-
-  <!-- -*- apply custom patches -*- -->
-  <monkey:patch
-    description="Add diff support for ATExtensions' fields"
-    module="Products.CMFDiffTool.ATCompoundDiff"
-    original="AT_FIELD_MAPPING"
-    replacement=".patches.patched_field_mapping"
-    handler=".patches.apply_patched_mapping"
-    />
 
   <subscriber
       for=".content_dx.downtime.IDowntime
