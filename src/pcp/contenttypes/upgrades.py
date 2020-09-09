@@ -658,3 +658,23 @@ def configure_autousermaker(context=None):
 def set_frontpage(context=None):
     portal = api.portal.get()
     portal.setLayout('@@dashboard')
+
+
+def enable_versioning(context=None):
+    """enable versioning for all DX types
+    """
+    portal_types = api.portal.get_tool('portal_types')
+    versioning = 'plone.versioning'
+    for fti in portal_types.listTypeInfo():
+        if not IDexterityFTI.providedBy(fti) or versioning in fti.behaviors:
+            continue
+        behaviors = list(fti.behaviors)
+        behaviors.append(versioning)
+        behaviors = tuple(behaviors)
+        fti._updateProperty('behaviors', behaviors)
+        log.info(u'Enabled versioning for {}'.format(fti.id))
+    loadMigrationProfile(
+        context,
+        'profile-pcp.contenttypes:default',
+        steps=['actions'],
+    )

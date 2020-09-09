@@ -162,9 +162,17 @@
   <genericsetup:upgradeStep
     source="2026"
     destination="2027"
-    title="Setp Dashboard as frontpage"
+    title="Set Dashboard as frontpage"
     profile="pcp.contenttypes:default"
     handler=".upgrades.set_frontpage"
+    />
+
+  <genericsetup:upgradeStep
+    source="2027"
+    destination="2028"
+    title="Enable Versioning"
+    profile="pcp.contenttypes:default"
+    handler=".upgrades.enable_versioning"
     />
 
 </configure>
