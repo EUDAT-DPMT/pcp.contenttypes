@@ -9,11 +9,15 @@
 
 <metal:main fill-slot="main">
 
-    <h1 class="documentFirstHeading" tal:content="context/Title" />
+    <header>
+      <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" />
+      <h1 class="documentFirstHeading" tal:content="context/Title" />
+      <div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" />
+      <p class="formHelp" tal:content="python:context.getTypeInfo().title" />
+      <p class="documentDescription" tal:content="context/Description" />
+    </header>
 
-    <p class="formHelp" tal:content="python:context.getTypeInfo().title" />
-
-    <p class="documentDescription" tal:content="context/Description" />
+    <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" />
 
     <table class="listing">
       <tal:block repeat="widget view/widgets/values">
@@ -47,6 +51,8 @@
         </tal:field>
       </table>
     </fieldset>
+
+    <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" />
 
 </metal:main>
 
