@@ -665,8 +665,11 @@ def enable_versioning(context=None):
     """
     portal_types = api.portal.get_tool('portal_types')
     versioning = 'plone.versioning'
+    unversioned = ['Folder', 'Collection', 'File', 'Image', 'Plone Site']
     for fti in portal_types.listTypeInfo():
         if not IDexterityFTI.providedBy(fti) or versioning in fti.behaviors:
+            continue
+        if fti.id in unversioned:
             continue
         behaviors = list(fti.behaviors)
         behaviors.append(versioning)
