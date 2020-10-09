@@ -1,7 +1,7 @@
 from DateTime import DateTime
 from incf.countryutils.datatypes import Country
-from pcp.contenttypes.interfaces import IRegisteredService
-from pcp.contenttypes.interfaces import IRegisteredServiceComponent
+from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
+from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
 from Products.CMFCore.MemberDataTool import MemberData
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
@@ -51,7 +51,7 @@ provider_template = """
   </SITE>
 """
 
-service_template = """  
+service_template = """
   <SERVICE_ENDPOINT PRIMARY_KEY="{pk}">
     <PRIMARY_KEY>{pk}</PRIMARY_KEY>
     <HOSTNAME>{hostname}</HOSTNAME>
@@ -226,7 +226,7 @@ class ServiceView(BrowserView):
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
         contacts = context.getContacts()
-        result['email'] = ','.join([contact.getEmail() for 
+        result['email'] = ','.join([contact.getEmail() for
                                     contact in contacts])
         result['url'] = context.getService_url()
         result['hostname'] = context.getHost_name()

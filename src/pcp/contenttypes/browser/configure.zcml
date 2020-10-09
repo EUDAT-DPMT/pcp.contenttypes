@@ -65,23 +65,6 @@
     permission="zope2.View"
   />
 
-<!--
-  <browser:page
-    name="table_view_macros"
-    for="uwosh.pfg.d2c.interfaces.IFormSaveData2ContentEntry"
-    template="save_adapter_macros.pt"
-    permission="zope2.View"
-    />
-
-  <browser:page
-    name="process-enabling-form-data"
-    for="uwosh.pfg.d2c.interfaces.IFormSaveData2ContentEntry"
-    class=".enabling.Enabling"
-    attribute="process_enabling_form_data"
-    permission="cmf.ModifyPortalContent"
-    />
- -->
-
   <browser:page
     name="getServices"
     for="*"
@@ -107,15 +90,6 @@
 	/>
 
   <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="json"
-	class="pcp.contenttypes.browser.jsonview.JSONView"
-	attribute="json_view"
-	permission="pcp.contenttypes.view_internals"
-	/>
-
-  <browser:page
 	for="plone.dexterity.interfaces.IDexterityContent"
 	name="json"
 	class="pcp.contenttypes.browser.jsonview.JSONViewDX"
@@ -123,48 +97,12 @@
 	permission="pcp.contenttypes.view_internals"
 	/>
 
- <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="qualifiedTitle"
-	class="pcp.contenttypes.browser.qualified_title.QualifiedTitleView"
-	attribute="qualifiedTitle"
-	permission="zope2.View"
-	/>
-
   <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="resetUID"
-	class="pcp.contenttypes.browser.manage_uids.UpdateUID"
-	attribute="reset_uid"
-	permission="cmf.ManagePortal"
-	/>
-
-  <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="table-view"
-	class=".table_view.TableView"
-	template="table_view.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="..interfaces.IRegisteredServiceComponent"
+	for="pcp.contenttypes.content_dx.registeredservicecomponent.IRegisteredServiceComponent"
 	name="table_view_macros"
 	template="registeredservicecomponent_table_view_macros.pt"
 	permission="zope2.View"
 	/>
-
-  <!--browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="project_summary_view"
-	class="pcp.contenttypes.browser.project_summary_view.ProjectOverview"
-	template="project_summary_view.pt"
-	permission="zope2.View"
-	/-->
 
   <browser:page
 	for="plone.dexterity.interfaces.IDexterityContainer"
@@ -188,14 +126,6 @@
 	class="pcp.contenttypes.browser.summary_views.EndpointOverview"
 	template="summary_views.pt"
 	permission="zope2.View"
-	/>
-
-  <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="service_edit"
-	template="service_edit.pt"
-	permission="cmf.ModifyPortalContent"
 	/>
 
   <browser:page
@@ -286,15 +216,6 @@
 	permission="zope2.View"
 	/>
 
-  <browser:page
-        zcml:condition="installed Products.Archetypes"
-        for="Products.Archetypes.interfaces.IBaseObject"
-        name="people_overview"
-        class="pcp.contenttypes.browser.summary_views.PeopleOverview"
-        template="summary_views.pt"
-        permission="cmf.ManagePortal"
-        />
-
  <browser:page
         for="plone.dexterity.interfaces.IDexterityContainer"
         name="people_overview"
@@ -304,30 +225,12 @@
         />
 
   <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="customer_overview"
-	class="pcp.contenttypes.browser.summary_views.CustomerOverview"
-	template="summary_views.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
 	for="plone.dexterity.interfaces.IDexterityContainer"
 	name="customer_overview"
 	class="pcp.contenttypes.browser.summary_views.CustomerOverview"
 	template="summary_views.pt"
 	permission="zope2.View"
 	/>
-
-  <browser:page
-	zcml:condition="installed Products.ATContentTypes"
-    for="Products.ATContentTypes.interfaces.IATFolder"
-	name="provider_overview"
-	class="pcp.contenttypes.browser.summary_views.ProviderOverview"
-	template="summary_views.pt"
-	permission="zope2.View"
-  />
 
   <browser:page
 	for="plone.dexterity.interfaces.IDexterityContainer"
@@ -346,48 +249,12 @@
   />
 
   <browser:page
-	zcml:condition="installed Products.ATContentTypes"
-    for="Products.ATContentTypes.interfaces.IATFolder"
-	name="provider_registered_service_components"
-	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
-	template="provider_registered_service_components.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	zcml:condition="installed Products.ATContentTypes"
-    for="Products.ATContentTypes.interfaces.IATFolder"
-	name="notify-outdated-implementation-details"
-	class="pcp.contenttypes.browser.provider.RegisteredServiceComponents"
-    attribute="notify_outdated"
-	permission="cmf.ManagePortal"
-	/>
-
-  <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="service_overview"
-	class="pcp.contenttypes.browser.summary_views.ServiceOverview"
-	template="summary_views.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
     for="plone.dexterity.interfaces.IDexterityContainer"
     name="service_overview"
     class="pcp.contenttypes.browser.summary_views.ServiceOverview"
     template="summary_views.pt"
     permission="zope2.View"
     />
-
-  <browser:page
-	zcml:condition="installed Products.Archetypes"
-    for="Products.Archetypes.interfaces.IBaseObject"
-	name="projects.csv"
-	class="pcp.contenttypes.browser.project_summary_view.CsvView"
-	attribute="csv_export"
-	permission="zope2.View"
-	/>
 
   <browser:page
 	for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
@@ -406,14 +273,6 @@
 	/>
 
   <browser:page
-	for="pcp.contenttypes.interfaces.IProvider"
-	name="engagement"
-	class="pcp.contenttypes.browser.provider_engagement.ProviderEngagement"
-	template="provider_engagement.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
 	for="pcp.contenttypes.content_dx.registeredstorageresource.IRegisteredStorageResource"
 	name="star"
 	class="pcp.contenttypes.browser.star_view_dx.StarView"
@@ -426,39 +285,6 @@
 	name="star_records"
 	class="pcp.contenttypes.browser.star_view.RecordsView"
 	attribute="star"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="pcp.contenttypes.interfaces.IRegisteredServiceComponent"
-	name="xml"
-	class="pcp.contenttypes.browser.gocdb_views.ServiceView"
-	attribute="xml"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="pcp.contenttypes.interfaces.IRegisteredService"
-	name="xml"
-	class="pcp.contenttypes.browser.gocdb_views.ServiceGroupView"
-	attribute="xml"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="pcp.contenttypes.interfaces.IProvider"
-	name="xml"
-	class="pcp.contenttypes.browser.gocdb_views.ProviderView"
-	attribute="xml"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-    zcml:condition="installed Products.ATVocabularyManager"
-	for="Products.ATVocabularyManager.interfaces.ISimpleVocabularyTerm"
-	name="xml"
-	class="pcp.contenttypes.browser.gocdb_views.TermView"
-	attribute="xml"
 	permission="zope2.View"
 	/>
 
@@ -484,22 +310,6 @@
 	class="pcp.contenttypes.browser.gocdb_views.SiteContactsView"
 	template="gocdb_sitecontacts.xml.pt"
 	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="pcp.contenttypes.interfaces.IAccountable"
-	name="list-account-records"
-	class=".accounting.Accounting"
-        template="accounting.pt"
-	permission="zope2.View"
-	/>
-
-  <browser:page
-	for="pcp.contenttypes.interfaces.IAccountable"
-	name="create-account"
-	class=".accounting.Accounting"
-        attribute="create_account"
-	permission="cmf.ModifyPortalContent"
 	/>
 
   <browser:page

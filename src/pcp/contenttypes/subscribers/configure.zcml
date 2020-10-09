@@ -10,22 +10,17 @@
     <subscriber
         for="plone.app.workflow.events.LocalrolesModifiedEvent"
         handler=".sharing.SharingHandler"
-    />
-<!--
+        />
+
     <subscriber
-        for="..interfaces.IAccountable
-             zope.lifecycleevent.IObjectCreatedEvent"
-        handler=".accountable.create_accounting_account"
-    />
-    -->
-    <subscriber
-        for="..interfaces.IAccountable
+        for="pcp.contenttypes.content_dx.accountable.IAccountable
              zope.lifecycleevent.IObjectModifiedEvent"
         handler=".accountable.create_accounting_account"
-    />
+        />
 
-  <subscriber
-    for="Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
-    handler=".principal_created.principal_created"
-    />
+    <subscriber
+        for="Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
+        handler=".principal_created.principal_created"
+        />
+
 </configure>

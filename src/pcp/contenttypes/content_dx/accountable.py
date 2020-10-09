@@ -1,15 +1,19 @@
 """Mixin class for content that is accountable (like resources)
 """
+from pcp.contenttypes.interfaces.settings import ISettings
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+from zope.interface import Interface
 
-import os
 import furl
 import json
+import os
 import requests
 
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 
-from ..interfaces.settings import ISettings
+
+class IAccountable(Interface):
+    """ Marker interface for content items that are accountable """
 
 
 class Accountable(object):
@@ -27,7 +31,7 @@ class Accountable(object):
         settings = registry.forInterface(ISettings, check=False)
         #f = furl.furl(settings.accounting_url + '/addAccount')
         f = furl.furl(f_base + '/addAccount')
-        credentials = (registry['dpmt.accounting_username'], 
+        credentials = (registry['dpmt.accounting_username'],
                        registry['dpmt.accounting_password'])
         data = dict(id=self.UID(), owner=owner_id)
         result = requests.post(f, data=data, auth=credentials)
