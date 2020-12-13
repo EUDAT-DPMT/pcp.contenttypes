@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 @implementer(IDefaultDashboard)
 class PCPDefaultDashboard(DefaultDashboard):
-    """A overrride of the default dashboard.
+    """A override of the default dashboard.
     """
 
     def __call__(self):

@@ -48,7 +48,7 @@ class ImportForm(BrowserView):
                 status = 'error'
                 msg = e
                 api.portal.show_message(
-                    f'Fehler beim Dateiuplad: {e}', request=self.request,
+                    'Fehler beim Dateiuplad: {}'.format(e), request=self.request,
                 )
             else:
                 msg = self.do_import(data)
@@ -84,7 +84,7 @@ class ImportForm(BrowserView):
             container = api.content.get(path=container_path)
             if not container:
                 raise RuntimeError(
-                    f'Target folder {container_path} for type {self.portal_type} is missing'
+                    'Target folder {} for type {} is missing'.format(container_path, self.portal_type)
                 )
         for index, item in enumerate(data, start=1):
             skip = False
@@ -95,7 +95,7 @@ class ImportForm(BrowserView):
                 continue
 
             if not index % 100:
-                logger.info(f'Imported {index} items...')
+                logger.info('Imported {} items...'.format(index))
 
             new_id = item['id']
             uuid = item['UID']
@@ -106,11 +106,11 @@ class ImportForm(BrowserView):
 
             container = self.handle_container(item) or container
             if not container:
-                logger.info(f'No container found for {item["@id"]}')
+                logger.info('No container found for {}'.format(item["@id"]))
                 continue
 
             if new_id in container:
-                logger.info(f'{new_id} already exists')
+                logger.info('{} already exists'.format(new_id))
                 continue
 
             container.invokeFactory(self.portal_type, item['id'])
@@ -138,7 +138,7 @@ class ImportForm(BrowserView):
             modified = datetime.strptime(item['modified'], '%Y-%m-%dT%H:%M:%S%z')
             new.modification_date = DateTime(modified)
             new.reindexObject(idxs=['modified'])
-            logger.info(f'Created {self.portal_type} {new.absolute_url()}')
+            logger.info('Created {} {}'.format(self.portal_type, new.absolute_url()))
             added.append(new.absolute_url())
         return added
 
@@ -148,7 +148,7 @@ class ImportForm(BrowserView):
             return item
         for key, value in BUGS[item['id']].items():
             logger.info(
-                f'Replaced {item[key]} with {value} for field {key} of {item["id"]}'
+                'Replaced {} with {} for field {} of {}'.format(item[key], value, key, item["id"])
             )
             item[key] = value
         return item
@@ -171,19 +171,19 @@ class ImportForm(BrowserView):
 
     def custom_dict_modifier(self, item):
         modifier = getattr(
-            self, f'fixup_{self.portal_type.lower().replace(".", "_")}_dict', None
+            self, 'fixup_{}_dict'.format(self.portal_type.lower().replace(".", "_")), None
         )
         if modifier and callable(modifier):
             item = modifier(item)
         return item
 
     def custom_modifier(self, obj):
-        modifier = getattr(self, f'fixup_{self.portal_type.lower().replace(".", "_")}', None)
+        modifier = getattr(self, 'fixup_{}'.format(self.portal_type.lower().replace(".", "_")), None)
         if modifier and callable(modifier):
             modifier(obj)
 
     def handle_container(self, item):
-        method = getattr(self, f'handle_{self.portal_type.lower().replace(".", "_")}_container', None)
+        method = getattr(self, 'handle_{}_container'.format(self.portal_type.lower().replace(".", "_")), None)
         if method and callable(method):
             return method(item)
 
@@ -201,4 +201,4 @@ class ImportForm(BrowserView):
         if parent:
             return parent
         else:
-            logger.info(f'No Parent found for {item["@id"]}')
+            logger.info('No Parent found for {}'.format(item["@id"]))
