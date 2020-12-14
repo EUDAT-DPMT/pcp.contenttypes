@@ -40,7 +40,7 @@
       <legend tal:content="group/label" />
       <table class="listing">
         <tal:field tal:repeat="widget group/widgets/values">
-        <tr tal:condition="widget/value">
+        <tr tal:condition="python: widget.value or ('BackrelWidget' in str(type(widget)) and widget.items())">
           <td>
             <label tal:content="widget/label" />
           </td>
