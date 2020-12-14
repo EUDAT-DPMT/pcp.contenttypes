@@ -23,7 +23,7 @@
       <tal:block repeat="widget view/widgets/values">
         <tal:field
              tal:condition="python:widget.__name__ not in ('IBasic.title', 'IBasic.description', 'title', 'description',)">
-          <tr tal:condition="python: widget.value">
+          <tr tal:condition="python: widget.value or ('BackrelWidget' in str(type(widget)) and widget.items())">
             <td>
               <label tal:content="python: widget.label" />
             </td>
