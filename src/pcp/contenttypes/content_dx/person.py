@@ -142,7 +142,7 @@ class IPerson(model.Schema):
 
     manager_of_registered_service = BackrelField(
         title=u'Manager of registered services',
-        relation='managers_for',
+        relation='managers',
         )
 
 @implementer(IPerson)
