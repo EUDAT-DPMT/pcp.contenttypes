@@ -13,6 +13,7 @@ from DateTime.DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from Products.Archetypes import atapi
 from Products.ATExtensions import ateapi
+from Products.ATVocabularyManager import NamedVocabulary
 
 from Products.ATBackRef import BackReferenceField
 from Products.ATBackRef import BackReferenceWidget
@@ -237,6 +238,14 @@ RequestFields = atapi.Schema((
 
 
 ConditionsFields = atapi.Schema((
+    atapi.LinesField('scopes',
+                      required=1,
+                      vocabulary=NamedVocabulary('scope_vocabulary'),
+                      widget=atapi.MultiSelectionWidget(description='Tick all that apply. '
+                                                        'If in doubt, select "EUDAT".',
+                                                        format='checkbox',
+                                                    ),
+                      ),
     ateapi.CommentField('conditions',
                         comment='Any constraints that need to be satisfied by the '
                         'customer:',
