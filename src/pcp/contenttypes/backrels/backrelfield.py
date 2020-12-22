@@ -24,7 +24,7 @@ class IBackrelField(ITextLine):
         title=u'Relation',
         description=u'The relation to display',
         required=False,
-        )
+    )
 
 
 @implementer(IBackrelField)
@@ -34,10 +34,13 @@ class BackrelField(TextLine):
     In Add-Forms it shows nothing. In Edit and View it shows the relations
     as links the same way as RelationChoice and RelationList fields do.
     """
+
     def __init__(self, **kw):
         self.relation = kw.pop('relation', '')
         if not self.relation:
-            raise ValueError(u'BackrelField requires a relation, e.g. relation="relatedItems"')
+            raise ValueError(
+                u'BackrelField requires a relation, e.g. relation="relatedItems"'
+            )
         super(BackrelField, self).__init__(required=False, **kw)
 
 

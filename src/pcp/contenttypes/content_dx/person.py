@@ -20,8 +20,8 @@ from zope.interface import Interface
 
 
 class IPhone(Interface):
-    """Schema for Datagrid field phone
-    """
+    """Schema for Datagrid field phone"""
+
     number_type = schema.Choice(
         title=u'Type',
         values=[
@@ -31,19 +31,19 @@ class IPhone(Interface):
             u'Mobile',
             u'Fax',
             u'Private',
-            ],
+        ],
         required=False,
-        )
+    )
 
     number = schema.TextLine(
         title=u'Number',
         required=False,
-        )
+    )
 
 
 class IPerson(model.Schema):
-    """Dexterity Schema for Persons
-    """
+    """Dexterity Schema for Persons"""
+
     dexteritytextindexer.searchable('email')
 
     name = schema.TextLine(title=u'Name', readonly=True)
@@ -67,7 +67,7 @@ class IPerson(model.Schema):
         "affiliation",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["provider_dx","community_dx"],
+            "selectableTypes": ["provider_dx", "community_dx"],
             "basePath": make_relation_root_path,
         },
     )
@@ -83,67 +83,68 @@ class IPerson(model.Schema):
     manages = BackrelField(
         title=u'Managed by',
         relation='managed_by',
-        )
+    )
 
     provider_contact_for = BackrelField(
         title=u'General contact for',
         relation='contact',
-        )
+    )
 
     business_contact_for = BackrelField(
         title=u'Business contact for',
         relation='business_contact',
-        )
+    )
 
     security_contact_for = BackrelField(
         title=u'Security contact for',
         relation='security_contact',
-        )
+    )
 
     provider_admin = BackrelField(
         title=u'Administrator for',
         relation='admins',
-        )
+    )
 
     she_contact = BackrelField(
         title=u'SHE contact for',
         relation='contact_for',
-        )
+    )
 
     community_contact_for = BackrelField(
         title=u'Customer contact for',
         relation='community_contact',
-        )
+    )
 
     community_representative = BackrelField(
         title=u'Customer representative for',
         relation='representative',
-        )
+    )
 
     community_admin = BackrelField(
         title=u'Customer administrator for',
         relation='community_admins',
-        )
+    )
 
     enables = BackrelField(
         title=u'Project enabler for',
         relation='project_enabler',
-        )
+    )
 
     service_owner_of = BackrelField(
         title=u'Service owner of',
         relation='service_owner',
-        )
+    )
 
     principal_investigator_of = BackrelField(
         title=u'Principal investigator of',
         relation='principal_investigator',
-        )
+    )
 
     manager_of_registered_service = BackrelField(
         title=u'Manager of registered services',
         relation='managers',
-        )
+    )
+
 
 @implementer(IPerson)
 class Person(Container):

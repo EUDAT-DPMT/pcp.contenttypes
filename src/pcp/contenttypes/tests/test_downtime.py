@@ -51,18 +51,28 @@ class TestDowntime(unittest.TestCase):
         self.request = self.layer['request']
 
     def fillInDateWidget(self, browser, field, date):
-        browser.getControl(name=field+'-year').displayValue = [date[0]]
-        browser.getControl(name=field+'-month').displayValue = [date[1]]
-        browser.getControl(name=field+'-day').displayValue = [date[2]]
-        browser.getControl(name=field+'-hour').displayValue = [date[3]]
-        browser.getControl(name=field+'-minute').displayValue = [date[4]]
+        browser.getControl(name=field + '-year').displayValue = [date[0]]
+        browser.getControl(name=field + '-month').displayValue = [date[1]]
+        browser.getControl(name=field + '-day').displayValue = [date[2]]
+        browser.getControl(name=field + '-hour').displayValue = [date[3]]
+        browser.getControl(name=field + '-minute').displayValue = [date[4]]
 
     def assertDateWidget(self, browser, field, date):
-        self.assertEquals(browser.getControl(name=field+'-year').displayValue[0], date[0])
-        self.assertEquals(browser.getControl(name=field+'-month').displayValue[0], date[1])
-        self.assertEquals(browser.getControl(name=field+'-day').displayValue[0], date[2])
-        self.assertEquals(browser.getControl(name=field+'-hour').displayValue[0], date[3])
-        self.assertEquals(browser.getControl(name=field+'-minute').displayValue[0], date[4])
+        self.assertEquals(
+            browser.getControl(name=field + '-year').displayValue[0], date[0]
+        )
+        self.assertEquals(
+            browser.getControl(name=field + '-month').displayValue[0], date[1]
+        )
+        self.assertEquals(
+            browser.getControl(name=field + '-day').displayValue[0], date[2]
+        )
+        self.assertEquals(
+            browser.getControl(name=field + '-hour').displayValue[0], date[3]
+        )
+        self.assertEquals(
+            browser.getControl(name=field + '-minute').displayValue[0], date[4]
+        )
 
     def assertContainsDowntimeFull(self, browser):
         self.assertContainsDowntimeShort(browser)
@@ -84,7 +94,13 @@ class TestDowntime(unittest.TestCase):
         _getUtcnow.return_value = datetime.datetime(2017, 4, 13, 15, 37, 0, 0, pytz.utc)
 
         # Allow user create content.
-        setRoles(self.portal, TEST_USER_ID, ['Manager',])
+        setRoles(
+            self.portal,
+            TEST_USER_ID,
+            [
+                'Manager',
+            ],
+        )
 
         # Create the provider folder and two providers.
         self.portal.invokeFactory('Folder', 'Providers')
@@ -95,14 +111,22 @@ class TestDowntime(unittest.TestCase):
         self.portal.Providers.provider.invokeFactory('Downtime', 'downtime')
 
         # Setup default workflow.
-        getToolByName(self.portal, 'portal_workflow').setDefaultChain('intranet_workflow')
+        getToolByName(self.portal, 'portal_workflow').setDefaultChain(
+            'intranet_workflow'
+        )
 
         # Setup downtime portlet.
         column = getUtility(IPortletManager, 'plone.leftcolumn')
         manager = getMultiAdapter((self.portal, column), IPortletAssignmentMapping)
         assignment = Assignment()
         chooser = INameChooser(manager)
-        setRoles(self.portal, TEST_USER_ID, ['Manager',])
+        setRoles(
+            self.portal,
+            TEST_USER_ID,
+            [
+                'Manager',
+            ],
+        )
         manager[chooser.chooseName(None, assignment)] = assignment
 
         # Setup secondary provider and it's downtimes:
@@ -113,15 +137,19 @@ class TestDowntime(unittest.TestCase):
 
         otherProvider.invokeFactory('Downtime', self.TEST_OTHER_DOWNTIME)
         otherDowntime = otherProvider[self.TEST_OTHER_DOWNTIME]
-        otherDowntime.update(title=self.TEST_OTHER_DOWNTIME,
-                             startDateTime=self.TEST_OTHER_DOWNTIME_START,
-                             endDateTime=self.TEST_OTHER_DOWNTIME_END)
+        otherDowntime.update(
+            title=self.TEST_OTHER_DOWNTIME,
+            startDateTime=self.TEST_OTHER_DOWNTIME_START,
+            endDateTime=self.TEST_OTHER_DOWNTIME_END,
+        )
 
         otherProvider.invokeFactory('Downtime', self.TEST_PAST_DOWNTIME)
         pastDowntime = otherProvider[self.TEST_PAST_DOWNTIME]
-        pastDowntime.update(title=self.TEST_PAST_DOWNTIME,
-                            startDateTime=self.TEST_PAST_DOWNTIME_START,
-                            endDateTime=self.TEST_PAST_DOWNTIME_END)
+        pastDowntime.update(
+            title=self.TEST_PAST_DOWNTIME,
+            startDateTime=self.TEST_PAST_DOWNTIME_START,
+            endDateTime=self.TEST_PAST_DOWNTIME_END,
+        )
 
         plone.api.content.transition(obj=otherDowntime, transition='publish')
         plone.api.content.transition(obj=pastDowntime, transition='publish')
@@ -131,6 +159,7 @@ class TestDowntime(unittest.TestCase):
         # Start actual interaction via browser
 
         from plone.testing.z2 import Browser
+
         browser = Browser(self.app)
         browser.handleErrors = False
 
@@ -157,8 +186,12 @@ class TestDowntime(unittest.TestCase):
 
         browser.getControl(name="title").value = self.TEST_PROVIDER_NAME
         browser.getControl(name='provider_userid').value = self.TEST_PROVIDER_ID
-        browser.getControl(name='address.city:record:ignore_empty').value = self.TEST_PROVIDER_CITY
-        browser.getControl(name='address.country:record:ignore_empty').displayValue = [self.TEST_PROVIDER_COUNTRY]
+        browser.getControl(
+            name='address.city:record:ignore_empty'
+        ).value = self.TEST_PROVIDER_CITY
+        browser.getControl(name='address.country:record:ignore_empty').displayValue = [
+            self.TEST_PROVIDER_COUNTRY
+        ]
         browser.getControl(name="form.button.save").click()
 
         # Create downtime
@@ -197,22 +230,32 @@ class TestDowntime(unittest.TestCase):
         browser.open(portal_url)
         self.assertTrue('All Downtimes...' in browser.contents)
         self.assertContainsDowntimeShort(browser)
-        self.assertFalse(re.search('Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents))
+        self.assertFalse(
+            re.search(
+                'Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents
+            )
+        )
         self.assertTrue(self.TEST_OTHER_DOWNTIME in browser.contents)
         self.assertFalse(self.TEST_PAST_DOWNTIME in browser.contents)
 
         # Check portlet on provider overview site
         browser.follow('Providers')
         self.assertContainsDowntimeShort(browser)
-        self.assertFalse(re.search('Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents))
+        self.assertFalse(
+            re.search(
+                'Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents
+            )
+        )
         self.assertTrue(self.TEST_OTHER_DOWNTIME in browser.contents)
         self.assertFalse(self.TEST_PAST_DOWNTIME in browser.contents)
 
         # Check portlet on provider detail site
         browser.follow(self.TEST_PROVIDER_NAME)
         self.assertContainsDowntimeShort(browser)
-        self.assertTrue(re.search('Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents))
+        self.assertTrue(
+            re.search(
+                'Upcoming Downtimes\\s+?\\(' + self.TEST_PROVIDER_NAME, browser.contents
+            )
+        )
         self.assertFalse(self.TEST_OTHER_DOWNTIME in browser.contents)
         self.assertFalse(self.TEST_PAST_DOWNTIME in browser.contents)
-
-

@@ -13,9 +13,9 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
+
 class IServiceOffer(model.Schema):
-    """Dexterity Schema for ServiceOffer
-    """
+    """Dexterity Schema for ServiceOffer"""
 
     service_offered = RelationChoice(
         title=u"Service offered",
@@ -78,6 +78,7 @@ class IServiceOffer(model.Schema):
             "basePath": make_relation_root_path,
         },
     )
+
 
 @implementer(IServiceOffer)
 class ServiceOffer(Container, OfferUtilities):

@@ -28,6 +28,7 @@ class TestFunctional(unittest.TestCase):
         transaction.commit()
 
         from plone.testing.z2 import Browser
+
         browser = Browser(self.app)
         browser.handleErrors = False
 
@@ -112,8 +113,14 @@ class TestFunctional(unittest.TestCase):
 
         def assertMailsSent(subject, template):
             self.assertEquals(3, send_mail.call_count)
-            self.assertEquals({'mfn-admin-1@example.com', 'mfn-admin-2@example.com', 'g.m.hagedorn@gmail.com'},
-                              {args[1]['recipients'][0] for args in send_mail.call_args_list})
+            self.assertEquals(
+                {
+                    'mfn-admin-1@example.com',
+                    'mfn-admin-2@example.com',
+                    'g.m.hagedorn@gmail.com',
+                },
+                {args[1]['recipients'][0] for args in send_mail.call_args_list},
+            )
             for args in send_mail.call_args_list:
                 self.assertEquals(1, len(args[1]['recipients']))
                 self.assertIsNone(args[1]['sender'])
@@ -122,15 +129,19 @@ class TestFunctional(unittest.TestCase):
 
             send_mail.reset_mock()
 
-        affectedRegisteredServiceComponent = self.folder['irods0--eudat.esc.rzg.mpg.de_24']
+        affectedRegisteredServiceComponent = self.folder[
+            'irods0--eudat.esc.rzg.mpg.de_24'
+        ]
         provider = self.folder['MPCDF']
         provider.invokeFactory('Downtime', 'downtime')
         downtime = provider['downtime']
-        downtime.update(title='Downtime Title',
-                        description='Downtime Description',
-                        startDateTime='2017-05-13 12:56 UTC',
-                        endDateTime='2018-06-17 09:45 UTC',
-                        affected_registered_serivces=(affectedRegisteredServiceComponent,))
+        downtime.update(
+            title='Downtime Title',
+            description='Downtime Description',
+            startDateTime='2017-05-13 12:56 UTC',
+            endDateTime='2018-06-17 09:45 UTC',
+            affected_registered_serivces=(affectedRegisteredServiceComponent,),
+        )
 
         # Take a tour through the workflow graph and check for mails being sent
         # if and only if they shall be sent.
@@ -184,15 +195,15 @@ class TestFunctional(unittest.TestCase):
 
     # Keep order!
     ACCOUNTING_DATA = [
-            {
-                "core": {"value": "123", "unit": "B", "type": "storage"},
-                "meta": {"submission_time": "2017-11-23 17:23:29", "ts": 17},
-            },
-            {
-                "core": {"value": "124", "unit": "B", "type": "storage"},
-                "meta": {"submission_time": "2017-11-23 16:23:29", "ts": 13},
-            },
-        ]
+        {
+            "core": {"value": "123", "unit": "B", "type": "storage"},
+            "meta": {"submission_time": "2017-11-23 17:23:29", "ts": 17},
+        },
+        {
+            "core": {"value": "124", "unit": "B", "type": "storage"},
+            "meta": {"submission_time": "2017-11-23 16:23:29", "ts": 13},
+        },
+    ]
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingCache(self, get):
@@ -293,8 +304,10 @@ class TestFunctional(unittest.TestCase):
     def test_rolerequest(self, send_mail):
         def assertMailsSent(subject):
             self.assertEquals(1, send_mail.call_count)
-            self.assertEquals({'mfn-admin-1@example.com', 'mfn-admin-2@example.com'},
-                              send_mail.call_args[1]['recipients'])
+            self.assertEquals(
+                {'mfn-admin-1@example.com', 'mfn-admin-2@example.com'},
+                send_mail.call_args[1]['recipients'],
+            )
             for args in send_mail.call_args_list:
                 self.assertEquals(2, len(args[1]['recipients']))
                 self.assertIsNone(args[1]['sender'])
@@ -321,11 +334,13 @@ class TestFunctional(unittest.TestCase):
         self.portal.invokeFactory('RoleRequest', 'rolerequest')
         rolerequest = self.portal.rolerequest
 
-        rolerequest.update(Title='Role Request for Peter Lustig',
-                           userid=username_receiver,
-                           role=role,
-                           context=location,
-                           motivation='Motivation')
+        rolerequest.update(
+            Title='Role Request for Peter Lustig',
+            userid=username_receiver,
+            role=role,
+            context=location,
+            motivation='Motivation',
+        )
 
         # Switch back to TEST_USER
         logout()
@@ -337,28 +352,48 @@ class TestFunctional(unittest.TestCase):
 
         self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
         self.assertEquals(0, send_mail.call_count)
-        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertFalse(
+            role
+            in plone.api.user.get_roles(
+                username=username_receiver, obj=location, inherit=False
+            )
+        )
         self.assertEquals(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='reject')
 
         self.assertEquals('rejected', plone.api.content.get_state(rolerequest))
         assertMailsSent('[DPMT] Role request rejected')
-        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertFalse(
+            role
+            in plone.api.user.get_roles(
+                username=username_receiver, obj=location, inherit=False
+            )
+        )
         self.assertEquals(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='submit')
 
         self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
         self.assertEquals(0, send_mail.call_count)
-        self.assertFalse(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertFalse(
+            role
+            in plone.api.user.get_roles(
+                username=username_receiver, obj=location, inherit=False
+            )
+        )
         self.assertEquals(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='accept')
 
         self.assertEquals('accepted', plone.api.content.get_state(rolerequest))
         assertMailsSent('[DPMT] Role request accepted')
-        self.assertTrue(role in plone.api.user.get_roles(username=username_receiver, obj=location, inherit=False))
+        self.assertTrue(
+            role
+            in plone.api.user.get_roles(
+                username=username_receiver, obj=location, inherit=False
+            )
+        )
         self.assertEquals(1, len(logger.entries))
 
     def test_SummaryView_noCrashes(self):
@@ -366,20 +401,31 @@ class TestFunctional(unittest.TestCase):
         # that their rendering does not crash.
         # This test does not check if the output is correct.
 
-        getToolByName(self.portal, 'portal_workflow').setDefaultChain('intranet_workflow')
+        getToolByName(self.portal, 'portal_workflow').setDefaultChain(
+            'intranet_workflow'
+        )
 
-        view_types = ((self.folder, 'customer_overview', 'Community'),
-                      (self.folder, 'provider_overview', 'Provider'),
-                      (self.folder, 'service_overview', 'Service'),
-                      (self.portal, 'project_overview', 'Project'),
-                      (self.portal, 'registered_service_overview', 'RegisteredService'),
-                      (self.portal, 'registered_service_component_overview', 'RegisteredServiceComponent'),
-                      (self.portal, 'request_overview', 'ServiceRequest'),
-                      (self.portal, 'approved_requests', 'ServiceRequest'),
-                      (self.portal, 'registered_storage_resource_overview', 'RegisteredStorageResource'),
-                      (self.portal, 'resource_offer_overview', 'ResourceOffer'),
-                      (self.portal, 'downtime_overview', 'Downtime'),
-                      )
+        view_types = (
+            (self.folder, 'customer_overview', 'Community'),
+            (self.folder, 'provider_overview', 'Provider'),
+            (self.folder, 'service_overview', 'Service'),
+            (self.portal, 'project_overview', 'Project'),
+            (self.portal, 'registered_service_overview', 'RegisteredService'),
+            (
+                self.portal,
+                'registered_service_component_overview',
+                'RegisteredServiceComponent',
+            ),
+            (self.portal, 'request_overview', 'ServiceRequest'),
+            (self.portal, 'approved_requests', 'ServiceRequest'),
+            (
+                self.portal,
+                'registered_storage_resource_overview',
+                'RegisteredStorageResource',
+            ),
+            (self.portal, 'resource_offer_overview', 'ResourceOffer'),
+            (self.portal, 'downtime_overview', 'Downtime'),
+        )
 
         portal_types = getToolByName(self.portal, 'portal_types')
         index = 0
@@ -396,11 +442,16 @@ class TestFunctional(unittest.TestCase):
                 text = view()
             except KeyError as e:
                 # Here we get mismatches between overview's fields and schema
-                self.fail('Rendering %s failed: maybe a typo of the field name: %s' % (obj_type, e))
+                self.fail(
+                    'Rendering %s failed: maybe a typo of the field name: %s'
+                    % (obj_type, e)
+                )
             except Exception as e:
                 # We get here most probably if something went wrong
                 # when using a wrong renderer (i.e. if original is not available) for a field.
-                self.fail('Rendering %s failed: maybe a missing renderer: %s' % (obj_type, e))
+                self.fail(
+                    'Rendering %s failed: maybe a missing renderer: %s' % (obj_type, e)
+                )
 
             self.assertTrue(obj_id in text)
 
@@ -409,10 +460,13 @@ class TestFunctional(unittest.TestCase):
             for field in test_object.Schema().fields():
                 name = field.getName()
                 from Products.Archetypes.interfaces import IReferenceField
-                self.assertTrue(name not in view.fields() or
-                                name in view.simple_fields() or
-                                name in view.render_methods or
-                                IReferenceField.providedBy(field))
+
+                self.assertTrue(
+                    name not in view.fields()
+                    or name in view.simple_fields()
+                    or name in view.render_methods
+                    or IReferenceField.providedBy(field)
+                )
 
             index += 1
 
@@ -436,26 +490,39 @@ class TestFunctional(unittest.TestCase):
         TEST_REQUEST_PREFERRED_PROVIDERS = (self.folder['MPCDF'],)
         TEST_REQUEST_TITLE = 'test-request-title'
         TEST_REQUEST_START_DATE = '2013/11/29'
-        TEST_REQUEST_STORAGE_RESOURCES = ({'value': '17888', 'unit': 'EiB', 'storage class': 'nearline+'},)
-        TEST_REQUEST_COMPUTE_RESOURCES = ({'nCores': '134861', 'ram': '456634',
-                                           'diskspace': '7456314', 'system': 'Windows 3.1'},)
+        TEST_REQUEST_STORAGE_RESOURCES = (
+            {'value': '17888', 'unit': 'EiB', 'storage class': 'nearline+'},
+        )
+        TEST_REQUEST_COMPUTE_RESOURCES = (
+            {
+                'nCores': '134861',
+                'ram': '456634',
+                'diskspace': '7456314',
+                'system': 'Windows 3.1',
+            },
+        )
 
-        resourceRequest.update(parent_project=TEST_REQUEST_PARENT_PROJECT,
-                               title=TEST_REQUEST_TITLE,
-                               startDate=TEST_REQUEST_START_DATE,
-                               preferred_providers=TEST_REQUEST_PREFERRED_PROVIDERS,
-                               storage_resources=TEST_REQUEST_STORAGE_RESOURCES,
-                               compute_resources=TEST_REQUEST_COMPUTE_RESOURCES)
+        resourceRequest.update(
+            parent_project=TEST_REQUEST_PARENT_PROJECT,
+            title=TEST_REQUEST_TITLE,
+            startDate=TEST_REQUEST_START_DATE,
+            preferred_providers=TEST_REQUEST_PREFERRED_PROVIDERS,
+            storage_resources=TEST_REQUEST_STORAGE_RESOURCES,
+            compute_resources=TEST_REQUEST_COMPUTE_RESOURCES,
+        )
 
         # get a unique string to check for
         plone.api.content.transition(obj=resourceRequest, transition='submit')
 
         # get view and run it
-        view = getMultiAdapter((self.portal, self.portal.REQUEST), name='request_overview')
+        view = getMultiAdapter(
+            (self.portal, self.portal.REQUEST), name='request_overview'
+        )
         text = view()
 
         def assertNumOccurences(expectedCount, pattern):
             import re
+
             actualCount = len(re.findall(pattern, text))
             self.assertEquals(actualCount, expectedCount)
 
@@ -465,12 +532,16 @@ class TestFunctional(unittest.TestCase):
         assertNumOccurences(1, 'Resource Request')
         # render_reference_field
         assertNumOccurences(1, TEST_REQUEST_PREFERRED_PROVIDERS[0].absolute_url())
-        assertNumOccurences(2, TEST_REQUEST_PREFERRED_PROVIDERS[0].title)  # also in provider.absolute_url()
+        assertNumOccurences(
+            2, TEST_REQUEST_PREFERRED_PROVIDERS[0].title
+        )  # also in provider.absolute_url()
         # render_with_link
         assertNumOccurences(1, TEST_REQUEST_TITLE)
         assertNumOccurences(1, resourceRequest.absolute_url())
         # render_parent
-        assertNumOccurences(2, theFolder.absolute_url())  # also in serviceRequest.absolute_url()
+        assertNumOccurences(
+            2, theFolder.absolute_url()
+        )  # also in serviceRequest.absolute_url()
         assertNumOccurences(1, 'ResourceRequestFolder')
         # render_date
         assertNumOccurences(1, TEST_REQUEST_START_DATE)

@@ -11,75 +11,74 @@ from zope.interface import implementer
 
 
 class IIrodsEndpoint(model.Schema):
-    """Dexterity Schema for Irods endpoint
-    """
+    """Dexterity Schema for Irods endpoint"""
 
     host = schema.TextLine(
         title=u'Host',
         required=False,
-        )
+    )
 
     ip = schema.TextLine(
         title=u'IP',
         required=False,
-        )
+    )
 
     zone_name = schema.TextLine(
         title=u'Zone name',
         required=False,
-        )
+    )
 
     zone_key = schema.TextLine(
         title=u'Zone key',
         required=False,
-        )
+    )
 
     monitored = schema.TextLine(
         title=u'Monitored?',
         description=u'Yes or no ',
         required=True,
-        )
+    )
 
     monitoring_user = schema.TextLine(
         title=u'Monitoring user',
         required=False,
-        )
+    )
 
     system_operations_user = schema.TextLine(
         title=u'Sytem operations user',
         required=False,
-        )
+    )
 
     remote_user = schema.TextLine(
         title=u'Remote user names',
         description=u'Comma separated list of remote user names to be used.',
         required=False,
-        )
+    )
 
     primary_path = schema.TextLine(
         title=u'Path',
         required=False,
-        )
+    )
 
     path_description = schema.TextLine(
-        title = u'Path description',
-        required = False,
-        )
+        title=u'Path description',
+        required=False,
+    )
 
     alternative_path = schema.TextLine(
         title=u'Alternative path',
         required=False,
-        )
+    )
 
     alt_path_description = schema.TextLine(
         title=u'Alternative path description',
         required=False,
-        )
+    )
 
     contacts = schema.TextLine(
         title=u'Contacts',
         required=False,
-        )
+    )
 
     related_project = RelationChoice(
         title=u"Related project",
@@ -112,7 +111,7 @@ class IIrodsEndpoint(model.Schema):
     text = RichText(
         title=u'Text',
         description=u'Anything else to further describe this endpoint.',
-        required=False
+        required=False,
     )
 
 

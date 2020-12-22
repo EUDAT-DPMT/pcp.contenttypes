@@ -1,7 +1,9 @@
 from DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
+from pcp.contenttypes.content_dx.registeredservicecomponent import (
+    IRegisteredServiceComponent,
+)
 from Products.CMFCore.MemberDataTool import MemberData
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
@@ -10,7 +12,7 @@ from zope.schema.interfaces import IVocabularyFactory
 import plone
 
 
-header =  """<?xml version="1.0" encoding="UTF-8"?>
+header = """<?xml version="1.0" encoding="UTF-8"?>
 <results>"""
 
 footer = """</results>"""
@@ -119,7 +121,7 @@ def getExtensions(data):
 def addState(context, data):
     """Add review state to list of additional key/value pairs"""
     state = context.portal_workflow.getInfoFor(context, 'review_state')
-    data.append({'key':'state', 'value':state})
+    data.append({'key': 'state', 'value': state})
     return data
 
 
@@ -178,7 +180,7 @@ class ProviderView(BrowserView):
             result['extensions'] = getExtensions(additional)
         else:
             result['extensions'] = '<EXTENSIONS/>'
-        #result[''] = 1
+        # result[''] = 1
         return result
 
     def xml(self, core=False, indent=2):
@@ -222,12 +224,15 @@ class ServiceView(BrowserView):
         result['dpmt_url'] = context.absolute_url()
         result['creg_url'] = context.getCregURL(url_only=True)
         # the following ought to be simpler but it seems to work anyway
-        result['service_type'] = context.Schema()['service_type'].vocabulary.getVocabularyDict(context).get(context.getService_type(),'')
+        result['service_type'] = (
+            context.Schema()['service_type']
+            .vocabulary.getVocabularyDict(context)
+            .get(context.getService_type(), '')
+        )
         result['host_ip'] = context.getHost_ip4()
         result['monitored'] = context.getMonitored()
         contacts = context.getContacts()
-        result['email'] = ','.join([contact.getEmail() for
-                                    contact in contacts])
+        result['email'] = ','.join([contact.getEmail() for contact in contacts])
         result['url'] = context.getService_url()
         result['hostname'] = context.getHost_name()
         # the below assumes that our acquisition parent is a provider
@@ -258,6 +263,7 @@ class ServiceView(BrowserView):
         full = full.replace('&', '&amp;')
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
+
 
 class ServiceGroupView(BrowserView):
     """Render a registered service info like GOCDB does."""
@@ -310,7 +316,7 @@ class ServiceGroupView(BrowserView):
 
 class TermView(BrowserView):
     """Render a simple vocabulary term info like GOCDB does.
-       This is needed for teh service types.
+    This is needed for teh service types.
     """
 
     def collect_data(self):
@@ -335,7 +341,6 @@ class TermView(BrowserView):
 
 
 class DowntimeView(BrowserView):
-
     def secsSinceEpoch(self, datetime):
         return datetime.millis() / 1000
 
@@ -343,7 +348,12 @@ class DowntimeView(BrowserView):
         return downtime.getEffectiveDate() or downtime.created()
 
     def getHosters(self, registeredComponent):
-        return ','.join([x.Title() if x else '?' for x in registeredComponent.getService_providers()])
+        return ','.join(
+            [
+                x.Title() if x else '?'
+                for x in registeredComponent.getService_providers()
+            ]
+        )
 
     def getServiceType(self, component):
         serviceType = component.getService_type()
@@ -389,7 +399,9 @@ class DowntimeView(BrowserView):
         windowend = self.request.form.get('windowend', None)
         windowend = DateTime(windowend) if windowend else None
         if windowstart:
-            start_max = windowend  # query['start'] = dict(query=windowend+1, range='max')
+            start_max = (
+                windowend  # query['start'] = dict(query=windowend+1, range='max')
+            )
 
         ongoing_only = self.request.form.get('ongoing_only', 'no')
         if ongoing_only == 'yes':
@@ -424,7 +436,6 @@ class DowntimeView(BrowserView):
 
 
 class SiteContactsView(BrowserView):
-
     def getSites(self):
         query = dict(
             portal_type='Provider',
@@ -439,8 +450,17 @@ class SiteContactsView(BrowserView):
 
     def getSiteContacts(self, site):
         roletype = self.request.get('roletype', None)
-        allowed_roles = ('Administrator', 'Can review', 'CDI Manager', 'CDI Member', 'Customer Relationship Manager',
-                         'Enabler', 'Principal', 'Project Manager', 'Site Manager',)
+        allowed_roles = (
+            'Administrator',
+            'Can review',
+            'CDI Manager',
+            'CDI Member',
+            'Customer Relationship Manager',
+            'Enabler',
+            'Principal',
+            'Project Manager',
+            'Site Manager',
+        )
 
         if roletype:
             allowed_roles = (roletype,) if roletype in allowed_roles else ()
@@ -448,5 +468,7 @@ class SiteContactsView(BrowserView):
         def filter_roles(rs):
             return [r for r in rs if r in allowed_roles]
 
-        return [(plone.api.user.get(userid=userid), filter_roles(roles)) for userid, roles in site.get_local_roles()]
-
+        return [
+            (plone.api.user.get(userid=userid), filter_roles(roles))
+            for userid, roles in site.get_local_roles()
+        ]

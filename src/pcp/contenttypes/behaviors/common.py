@@ -18,7 +18,6 @@ from zope.interface import Interface
 from zope.interface import provider
 
 
-
 # parts for the data grid type fields
 class IIdentifierRowSchema(Interface):
 
@@ -26,12 +25,12 @@ class IIdentifierRowSchema(Interface):
         title=u"Identifier Type",
         vocabulary='dpmt.identifier_types',
         required=False,
-        )
+    )
 
     value = schema.TextLine(
         title=u"Identifier Value",
         required=False,
-        )
+    )
 
 
 class IAdditionalRowSchema(Interface):
@@ -39,18 +38,17 @@ class IAdditionalRowSchema(Interface):
     key = schema.TextLine(
         title=u"Key",
         required=True,
-        )
+    )
 
     value = schema.TextLine(
         title=u"Value",
         required=True,
-        )
+    )
 
 
 @provider(IFormFieldProvider)
 class IDPMTCommon(model.Schema):
-    """Add fields shared by most content types
-    """
+    """Add fields shared by most content types"""
 
     fieldset(
         'details',
@@ -78,8 +76,7 @@ class IDPMTCommon(model.Schema):
     additional = schema.List(
         title=u"Additional Properties",
         description=u"Further key/value pairs describing this item",
-        value_type=DictRow(title=u"Additional Property",
-                           schema=IAdditionalRowSchema),
+        value_type=DictRow(title=u"Additional Property", schema=IAdditionalRowSchema),
         required=False,
         missing_value=[],
     )
@@ -89,8 +86,7 @@ class IDPMTCommon(model.Schema):
 @implementer(IDPMTCommon)
 @adapter(IDexterityContent)
 class DPMTCommon(object):
-    """Support for computed fields and controlled vocabularies(?)
-    """
+    """Support for computed fields and controlled vocabularies(?)"""
 
     def __init__(self, context):
         self.context = context

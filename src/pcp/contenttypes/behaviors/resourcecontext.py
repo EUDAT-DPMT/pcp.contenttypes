@@ -23,25 +23,24 @@ from z3c.relationfield.schema import RelationList
 
 @provider(IFormFieldProvider)
 class IDPMTResourceContext(model.Schema):
-    """Add fields to describe the context of a resource
-    """
+    """Add fields to describe the context of a resource"""
 
     project = RelationChoice(
-            title=u"Project",
-            description=u"The project for which this resource is provided.",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Project",
+        description=u"The project for which this resource is provided.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "project",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["project_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "project",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["project_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-# scopes (comp)
+    # scopes (comp)
     scopes = schema.TextLine(
         title=u"Scope(s)",
         description=u"The project's scope(s) in which this resource is provided",
@@ -51,54 +50,53 @@ class IDPMTResourceContext(model.Schema):
     directives.mode(scopes='display')
 
     customer = RelationChoice(
-            title=u"Customer",
-            description=u"Main customer for whom the resource is provided.",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Customer",
+        description=u"Main customer for whom the resource is provided.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "customer",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["community_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "customer",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["community_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     contact = RelationChoice(
-            title=u"Contact",
-            description=u"The primary contact for this resource.",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Contact",
+        description=u"The primary contact for this resource.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "contact",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["person_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "contact",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["person_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     request = RelationChoice(
-            title=u"Request",
-            description=u"The request that triggered the establishment of this resource.",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Request",
+        description=u"The request that triggered the establishment of this resource.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "request",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["resourcerequest_dx", "servicerequest_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
-
+        "request",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["resourcerequest_dx", "servicerequest_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     services = RelationList(
         title=u"Services(s)",
-        description=u"Registered service(s) or service component(s) "\
+        description=u"Registered service(s) or service component(s) "
         u"through which this resource can be accessed.",
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
@@ -109,8 +107,10 @@ class IDPMTResourceContext(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredservice_dx",
-                                "registeredservicecomponent_dx"],
+            "selectableTypes": [
+                "registeredservice_dx",
+                "registeredservicecomponent_dx",
+            ],
             "basePath": make_relation_root_path,
         },
     )
@@ -127,25 +127,28 @@ class IDPMTResourceContext(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredresource_dx",
-                                "registeredcomputeresource_dx",
-                                "registeredstorageresource_dx"],
+            "selectableTypes": [
+                "registeredresource_dx",
+                "registeredcomputeresource_dx",
+                "registeredstorageresource_dx",
+            ],
             "basePath": make_relation_root_path,
         },
     )
 
+
 # XXX how to include backlinks of the same relation as above?
+
 
 @implementer(IDPMTResourceContext)
 @adapter(IDexterityContent)
 class DPMTResourceContext(object):
-    """Support for computed fields and controlled vocabularies(?)
-    """
+    """Support for computed fields and controlled vocabularies(?)"""
 
     def __init__(self, context):
         self.context = context
 
-    def _getScopeValues(self, asString = 0):
+    def _getScopeValues(self, asString=0):
         """Return the human readable values of the scope keys"""
         project = self.project.to_object
         if project is None:
@@ -156,9 +159,9 @@ class DPMTResourceContext(object):
         scopes = []
         scopes.extend(project.getScopeValues())
         s = set(scopes)
-        if  asString:
+        if asString:
             return u", ".join(s)
-        return s # tuple(s)
+        return s  # tuple(s)
 
     @property
     def scopes(self):
@@ -176,7 +179,6 @@ class DPMTResourceContext(object):
 
     project = property(_get_project, _set_project)
 
-
     def _get_customer(self):
         return self.context.customer
 
@@ -184,7 +186,6 @@ class DPMTResourceContext(object):
         self.context.customer = value
 
     customer = property(_get_customer, _set_customer)
-
 
     def _get_contact(self):
         return self.context.contact
@@ -194,15 +195,13 @@ class DPMTResourceContext(object):
 
     contact = property(_get_contact, _set_contact)
 
-
     def _get_request(self):
         return self.context.request
 
     def _set_request(self, value):
         self.context.request = value
 
-    request= property(_get_request, _set_request)
-
+    request = property(_get_request, _set_request)
 
     def _get_services(self):
         return self.context.services
@@ -212,7 +211,6 @@ class DPMTResourceContext(object):
 
     services = property(_get_services, _set_services)
 
-
     def _get_linked_resources(self):
         return self.context.linked_resources
 
@@ -220,11 +218,6 @@ class DPMTResourceContext(object):
         self.context.linked_resources = value
 
     linked_resources = property(_get_linked_resources, _set_linked_resources)
-
-
-
-
-
 
 
 class IDPMTResourceContextMarker(Interface):

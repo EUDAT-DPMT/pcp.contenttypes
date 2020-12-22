@@ -13,8 +13,7 @@ from zope.interface import implementer
 
 
 class IService(model.Schema):
-    """Dexterity Schema for Services
-    """
+    """Dexterity Schema for Services"""
 
     dexteritytextindexer.searchable(
         "url",
@@ -24,30 +23,54 @@ class IService(model.Schema):
         "risks",
         "funders_for_service",
         "request_procedures",
-        "helpdesk"
+        "helpdesk",
     )
 
     description_internal = schema.TextLine(
-        title=u"Internal description", required=False,
+        title=u"Internal description",
+        required=False,
     )
 
-    url = schema.URI(title=u"Url", required=False,)
+    url = schema.URI(
+        title=u"Url",
+        required=False,
+    )
 
-    service_area = schema.TextLine(title=u"Service area", required=False,)
+    service_area = schema.TextLine(
+        title=u"Service area",
+        required=False,
+    )
 
-    service_type = schema.TextLine(title=u"Service type", required=False,)
+    service_type = schema.TextLine(
+        title=u"Service type",
+        required=False,
+    )
 
-    value_to_customer = schema.TextLine(title=u"Value to customer", required=False,)
+    value_to_customer = schema.TextLine(
+        title=u"Value to customer",
+        required=False,
+    )
 
-    risks = schema.TextLine(title=u"Risks", required=False,)
+    risks = schema.TextLine(
+        title=u"Risks",
+        required=False,
+    )
 
     funders_for_service = schema.TextLine(
-        title=u"Funders", description=u"Funders for this service", required=False,
+        title=u"Funders",
+        description=u"Funders for this service",
+        required=False,
     )
 
-    request_procedures = schema.TextLine(title=u"Request procedures", required=False,)
-   
-    helpdesk = schema.URI(title=u"Helpdesk", required=False,)
+    request_procedures = schema.TextLine(
+        title=u"Request procedures",
+        required=False,
+    )
+
+    helpdesk = schema.URI(
+        title=u"Helpdesk",
+        required=False,
+    )
 
     managed_by = RelationChoice(
         title=u"Managed by",
@@ -91,39 +114,44 @@ class IService(model.Schema):
         },
     )
 
-    service_complete_link = schema.URI(title=u"Link to SPMT", required=False,)
-    #ateapi.UrlField
-    #read_permission='View internals',
-    #write_permission='Modify internals',
+    service_complete_link = schema.URI(
+        title=u"Link to SPMT",
+        required=False,
+    )
+    # ateapi.UrlField
+    # read_permission='View internals',
+    # write_permission='Modify internals',
 
-    competitors = schema.TextLine(title=u"Competitors", 
-            required=False,)
-    #read_permission='View internals',
-    #write_permission='Modify internals',
-    #macro_view='trusted_string',
-    
+    competitors = schema.TextLine(
+        title=u"Competitors",
+        required=False,
+    )
+    # read_permission='View internals',
+    # write_permission='Modify internals',
+    # macro_view='trusted_string',
+
     resources_used = BackrelField(
         title=u'Resources used',
         relation='used_by',
-        #invisible
+        # invisible
     )
 
     used_by_project = BackrelField(
         title=u'Used by projects',
         relation='using',
-        #invisible
+        # invisible
     )
 
     offered_by = BackrelField(
         title=u'Offered by',
         relation='service_offered',
-        #invisible
+        # invisible
     )
 
     service_requests = BackrelField(
         title=u'Service requests',
         relation='service',
-        #invisible
+        # invisible
     )
 
 

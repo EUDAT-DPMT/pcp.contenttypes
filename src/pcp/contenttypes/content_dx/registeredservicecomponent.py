@@ -25,8 +25,7 @@ class IImplementationConfiguration(Interface):
 
 
 class IRegisteredServiceComponent(model.Schema):
-    """Dexterity Schema for Registered Service Component
-    """
+    """Dexterity Schema for Registered Service Component"""
 
     dexteritytextindexer.searchable(
         "service_component_implementation_details",
@@ -108,7 +107,7 @@ class IRegisteredServiceComponent(model.Schema):
     parent_services = BackrelField(
         title=u'Part of these registered services',
         relation='service_components',
-        )
+    )
 
     scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
 
@@ -148,7 +147,10 @@ class IRegisteredServiceComponent(model.Schema):
         required=False,
     )
 
-    monitored = schema.Bool(title=u"Monitored", required=False,)
+    monitored = schema.Bool(
+        title=u"Monitored",
+        required=False,
+    )
 
     registrylink = schema.TextLine(title=u'Central Registry', readonly=True)
 
@@ -165,7 +167,7 @@ class IRegisteredServiceComponent(model.Schema):
     resources = BackrelField(
         title=u"Registered service component's resources",
         relation='services',
-        )
+    )
 
 
 @implementer(IRegisteredServiceComponent)
@@ -176,20 +178,26 @@ class RegisteredServiceComponent(Container):
     def scopes(self):
         return self.getScopeValues(asString=1)
 
-    def getScopeValues(self, asString = 0):
+    def getScopeValues(self, asString=0):
         """Return the human readable values of the scope keys"""
-        parent_services = relapi.get_backrelations(self, 'service_components', fullobj=True)
+        parent_services = relapi.get_backrelations(
+            self, 'service_components', fullobj=True
+        )
         projects = []
         for parent_service in parent_services:
             p_service = parent_service['fullobj']
-            projects.extend(relapi.get_backrelations(p_service, 'registered_services_used', fullobj=True))
+            projects.extend(
+                relapi.get_backrelations(
+                    p_service, 'registered_services_used', fullobj=True
+                )
+            )
 
         scopes = []
         [scopes.extend(p['fullobj'].scopes) for p in projects]
         s = set(scopes)
-        if  asString:
+        if asString:
             return ", ".join(s)
-        return s # tuple(s)
+        return s  # tuple(s)
 
     @property
     def registrylink(self):

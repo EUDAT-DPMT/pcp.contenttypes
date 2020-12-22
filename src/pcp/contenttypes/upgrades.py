@@ -30,13 +30,13 @@ RELATIONS_KEY = 'ALL_REFERENCES'
 
 
 def after_plone5_upgrade(context=None):
-    """Various cleanup tasks after upgrade from Plone 4.3 to 5.2
-    """
+    """Various cleanup tasks after upgrade from Plone 4.3 to 5.2"""
     # reinstall pcp.contenttypes to enable new dx types
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal_setup = api.portal.get_tool('portal_setup')
     portal_setup.runAllImportStepsFromProfile(
-        'profile-pcp.contenttypes:default', purge_old=False)
+        'profile-pcp.contenttypes:default', purge_old=False
+    )
 
     loadMigrationProfile(
         context,
@@ -55,6 +55,7 @@ def after_plone5_upgrade(context=None):
 
 def store_references(context=None):
     from plone.app.contenttypes.migration.utils import store_references
+
     portal = api.portal.get()
     store_references(portal)
     relapi.purge_relations()
@@ -62,8 +63,7 @@ def store_references(context=None):
 
 
 def install_pac(context=None):
-    """Run this in Plone 5.2
-    """
+    """Run this in Plone 5.2"""
     portal = api.portal.get()
     request = getRequest()
     installer = api.content.get_view('installer', portal, request)
@@ -126,6 +126,7 @@ def custom_at_migration(context=None):
             api.content.delete(obj, check_linkintegrity=False)
 
     from pcp.contenttypes import custom_migration
+
     custom_migration.migrate_project()
     custom_migration.migrate_community()
     custom_migration.migrate_downtime()
@@ -184,25 +185,30 @@ RELATIONSHIP_FIELD_MAPPING = {
 
 def get_from_attribute(rel):
     source_obj = uuidToObject(rel['from_uuid'])
-    if source_obj.portal_type == 'serviceoffer_dx' and rel['relationship'] == 'contact_for':
+    if (
+        source_obj.portal_type == 'serviceoffer_dx'
+        and rel['relationship'] == 'contact_for'
+    ):
         return 'contact'
-    if source_obj.portal_type == 'registeredservice_dx' and rel['relationship'] == 'contact_for':
+    if (
+        source_obj.portal_type == 'registeredservice_dx'
+        and rel['relationship'] == 'contact_for'
+    ):
         return 'contact'
-    if source_obj.portal_type == 'environment_dx' and rel['relationship'] == 'contact_for':
+    if (
+        source_obj.portal_type == 'environment_dx'
+        and rel['relationship'] == 'contact_for'
+    ):
         return 'contact'
     # normal mapping
-    return RELATIONSHIP_FIELD_MAPPING.get(
-        rel['relationship'], rel['relationship'])
-
+    return RELATIONSHIP_FIELD_MAPPING.get(rel['relationship'], rel['relationship'])
 
 
 def restore_references(context=None):
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     all_stored_relations = IAnnotations(portal)[RELATIONS_KEY]
-    log.info('Loaded {0} relations to restore'.format(
-        len(all_stored_relations))
-    )
+    log.info('Loaded {0} relations to restore'.format(len(all_stored_relations)))
     all_fixed_relations = []
     # pac exports references with 'relationship' relapi expects 'from_attribute'
     # also some fields have special relationship-names in AT
@@ -235,7 +241,7 @@ def remove_archetypes(context=None):
         'TreeVocabulary',
         'TreeVocabularyTerm',
         'VdexFileVocabulary',
-        ]
+    ]
     for portal_type in to_drop:
         for brain in portal_catalog(portal_type=portal_type):
             obj = brain.getObject()
@@ -247,8 +253,9 @@ def remove_archetypes(context=None):
         'TempFolder',
         'Discussion Item',
         'VocabularyLibrary',
-        ]
+    ]
     from plone.dexterity.interfaces import IDexterityFTI
+
     for fti in portal_types.listTypeInfo():
         if IDexterityFTI.providedBy(fti) or fti.id in KEEP:
             continue
@@ -312,6 +319,7 @@ def rebuild_relations(context=None):
         raise RuntimeError('This needs top run in Python 2!')
     try:
         from Products.Archetypes import atapi
+
         raise RuntimeError('This needs top run without AT!')
     except:
         pass
@@ -345,6 +353,7 @@ def fix_stuff(context=None):
             log.info(u'Fix conversation for {}'.format(obj.absolute_url()))
         else:
             log.info(u'Conversation parent ok: {}'.format(conversation.__parent__))
+
     portal.ZopeFindAndApply(portal, search_sub=True, apply_func=fix_at_remains)
 
     # remove openid plugin
@@ -416,6 +425,7 @@ def remove_utilities(context=None):
     sm = portal.getSiteManager()
 
     from Products.CMFCore.interfaces import IMetadataTool
+
     if IMetadataTool in sm.utilities._adapters[0]:
         del sm.utilities._adapters[0][IMetadataTool]
         log.info(u'Unregistering adapter for MetadataTool')
@@ -433,6 +443,7 @@ def remove_utilities(context=None):
         log.info(u'Drop subscriber for MetadataTool')
 
     from Products.CMFCore.interfaces import IDiscussionTool
+
     for util in sm.getAllUtilitiesRegisteredFor(IDiscussionTool):
         sm.unregisterUtility(util, IDiscussionTool)
         log.info(u'Removed IDiscussionTool utility')
@@ -459,8 +470,7 @@ def remove_all_revisions(context=None):
 
 
 def disable_versioning(context=None):
-    """disable_versioning for all DX types
-    """
+    """disable_versioning for all DX types"""
     portal_types = api.portal.get_tool('portal_types')
     versioning = 'plone.versioning'
     for fti in portal_types.listTypeInfo():
@@ -507,7 +517,7 @@ def cleanup_skins(context=None):
         'migrateOffers',
         'backreferencewidget',
         'trusted_string',
-        ]
+    ]
     portal_skins = api.portal.get_tool('portal_skins')
     custom = portal_skins.custom
     for item in to_delete:
@@ -544,8 +554,7 @@ def remove_broken_steps(context=None):
 
 
 def fix_portlets(context=None):
-    """Fix portlets that use ComputedValue for path-storage instead of a UUID.
-    """
+    """Fix portlets that use ComputedValue for path-storage instead of a UUID."""
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     catalog = api.portal.get_tool('portal_catalog')
     portal = api.portal.get()
@@ -566,14 +575,21 @@ def fix_portlets_for(obj):
         'search_base_uid',
         'uid',
     ]
-    if getattr(obj.aq_base, 'getLayout', None) is not None and obj.getLayout() is not None:
+    if (
+        getattr(obj.aq_base, 'getLayout', None) is not None
+        and obj.getLayout() is not None
+    ):
         try:
             view = obj.restrictedTraverse(obj.getLayout())
         except KeyError:
             view = obj.restrictedTraverse('@@view')
     else:
         view = obj.restrictedTraverse('@@view')
-    for manager_name in ['plone.leftcolumn', 'plone.rightcolumn', 'plone.footerportlets']:
+    for manager_name in [
+        'plone.leftcolumn',
+        'plone.rightcolumn',
+        'plone.footerportlets',
+    ]:
         manager = queryUtility(IPortletManager, name=manager_name, context=obj)
         if not manager:
             continue
@@ -582,10 +598,20 @@ def fix_portlets_for(obj):
             continue
         for key, assignment in mappings.items():
             for attr in attrs_to_fix:
-                if getattr(assignment, attr, None) is not None and isinstance(getattr(assignment, attr), ComputedAttribute):
+                if getattr(assignment, attr, None) is not None and isinstance(
+                    getattr(assignment, attr), ComputedAttribute
+                ):
                     setattr(assignment, attr, None)
-                    log.info('Reset {} for portlet {} assigned at {} in {}'.format(attr, key, obj.absolute_url(), manager_name))  # noqa: E501
-                    log.info('You may need to configure it manually at {}/@@manage-portlets'.format(obj.absolute_url()))  # noqa: E501
+                    log.info(
+                        'Reset {} for portlet {} assigned at {} in {}'.format(
+                            attr, key, obj.absolute_url(), manager_name
+                        )
+                    )  # noqa: E501
+                    log.info(
+                        'You may need to configure it manually at {}/@@manage-portlets'.format(
+                            obj.absolute_url()
+                        )
+                    )  # noqa: E501
 
 
 def fix_recent_portlet(context=None):
@@ -596,6 +622,7 @@ def fix_recent_portlet(context=None):
     from zope.component import getUtilitiesFor
     from plone.portlets.interfaces import IPortletManager
     from zope.container import contained
+
     portal = api.portal.get()
     fixing_up = contained.fixing_up
     contained.fixing_up = True
@@ -608,7 +635,9 @@ def fix_recent_portlet(context=None):
                 for key in mapping:
                     if 'recent-items' in key or 'calendar' in key:
                         del mapping[key]
-                        log.info(u'removed recent items portlet from {}'.format(manager_name))
+                        log.info(
+                            u'removed recent items portlet from {}'.format(manager_name)
+                        )
     contained.fixing_up = fixing_up
     loadMigrationProfile(
         context,
@@ -627,7 +656,10 @@ def configure_autousermaker(context=None):
         ('prefix', ''),
         ('strip_domain_names', 1),
         ('strip_domain_name_list', ()),
-        ('http_remote_user', ('HTTP_EUDAT_ID', 'HTTP_X_REMOTE_USER', 'HTTP_REMOTE_USER')),
+        (
+            'http_remote_user',
+            ('HTTP_EUDAT_ID', 'HTTP_X_REMOTE_USER', 'HTTP_REMOTE_USER'),
+        ),
         ('http_commonname', ('HTTP_CN', 'HTTP_SHIB_PERSON_COMMONNAME')),
         ('http_description', ('HTTP_DN', 'HTTP_SHIB_ORGPERSON_TITLE')),
         ('http_email', ('HTTP_MAIL', 'HTTP_SHIB_INETORGPERSON_MAIL')),
@@ -655,14 +687,14 @@ def configure_autousermaker(context=None):
     for key, value in settings:
         plugin.manage_changeProperties({key: value})
 
+
 def set_frontpage(context=None):
     portal = api.portal.get()
     portal.setLayout('@@dashboard')
 
 
 def enable_versioning(context=None):
-    """enable versioning for all DX types
-    """
+    """enable versioning for all DX types"""
     portal_types = api.portal.get_tool('portal_types')
     versioning = 'plone.versioning'
     unversioned = ['Folder', 'Collection', 'File', 'Image', 'Plone Site']

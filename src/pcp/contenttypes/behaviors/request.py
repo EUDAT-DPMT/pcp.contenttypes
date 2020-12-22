@@ -19,8 +19,7 @@ from z3c.relationfield.schema import RelationList
 
 @provider(IFormFieldProvider)
 class IDPMTRequest(model.Schema):
-    """Add fields common to all request types
-    """
+    """Add fields common to all request types"""
 
     startDate = schema.Datetime(
         title=u"Start date",
@@ -46,7 +45,7 @@ class IDPMTRequest(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        'preferred_providers', 
+        'preferred_providers',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
@@ -62,5 +61,3 @@ class IDPMTRequest(model.Schema):
         u"here for easy reference.",
         required=False,
     )
-
-

@@ -15,18 +15,18 @@ from zope.interface import implementer
 
 
 class IServiceComponentImplementation(model.Schema):
-    """Dexterity Schema for ServiceComponentImplementation
-    """
+    """Dexterity Schema for ServiceComponentImplementation"""
 
     offered_by = BackrelField(
         title=u'Offered by',
         relation='service_component_implementations_offered',
-        )
+    )
 
     requested_by = BackrelField(
         title=u'Requested by',
         relation='requested_component_implementations',
-        )
+    )
+
 
 @implementer(IServiceComponentImplementation)
 class ServiceComponentImplementation(Container):

@@ -13,44 +13,43 @@ from zope.interface import implementer
 
 
 class IHandleEndpoint(model.Schema):
-    """Dexterity Schema for Handle endpoint
-    """
+    """Dexterity Schema for Handle endpoint"""
 
     host = schema.TextLine(
         title=u'Host',
         required=False,
-        )
+    )
 
     ip = schema.TextLine(
         title=u'IP',
         required=False,
-        )
+    )
 
     monitored = schema.TextLine(
         title=u'Monitored',
         description=u'Yes or no',
         required=False,
-        )
+    )
 
     monitoring_user = schema.TextLine(
         title=u'Monitoring user',
         required=False,
-        )
+    )
 
     system_operations_user = schema.TextLine(
         title=u'Sytem operations user',
         required=False,
-        )
+    )
 
     remote_user = schema.TextLine(
         title=u'Remote user names',
         description=u'Comma separated list of remote user names to be used.',
         required=False,
-        )
+    )
 
     prefix = schema.TextLine(
         title=u'Prefix',
-        )
+    )
 
     mirrored_to = RelationList(
         title=u'Mirror(s)',
@@ -59,7 +58,7 @@ class IHandleEndpoint(model.Schema):
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
-        )
+    )
     directives.widget(
         'mirrored_to',
         RelatedItemsFieldWidget,
@@ -73,8 +72,7 @@ class IHandleEndpoint(model.Schema):
     contacts = schema.TextLine(
         title=u'Contacts',
         required=False,
-        )
-
+    )
 
     related_project = RelationChoice(
         title=u'Related project',
@@ -107,7 +105,7 @@ class IHandleEndpoint(model.Schema):
     text = RichText(
         title=u'Text',
         description=u'Anything else to further describe this endpoint.',
-        required=False
+        required=False,
     )
 
 

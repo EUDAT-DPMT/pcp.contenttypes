@@ -69,7 +69,7 @@ class RequestUtilities(object):
         return template.format(**comp)
 
     def storage2string(self, storage):
-        storage['class'] = storage.get('storage class','(not specified)')
+        storage['class'] = storage.get('storage class', '(not specified)')
         template = "{value} {unit} {class}"
         return template.format(**storage)
 
@@ -190,7 +190,6 @@ class CommonUtilities(object):
             except KeyError:
                 pass
 
-
     # Enable backlinks to the central registry
 
     url_pattern = 'https://creg.eudat.eu/view_portal/index.php?Page_Type=%s&id=%s'
@@ -233,8 +232,7 @@ class CommonUtilities(object):
         if url_only:
             return url
         title = 'Link to the corresponding entry in the central registry'
-        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (
-            url, title, url)
+        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (url, title, url)
         return anchor
 
     def convert(self, raw, target_unit='auto'):
@@ -247,9 +245,9 @@ class CommonUtilities(object):
 
     def convert_pure(self, raw, target_unit='auto'):
         """Convert value to target_unit.
-           If a particular target_unit (i.e. in unit_map) is stated then convert to that.
-           If target_unit == 'auto' then determine a unit that is 'human readable'.
-           If target_unit is None then keep current unit.
+        If a particular target_unit (i.e. in unit_map) is stated then convert to that.
+        If target_unit == 'auto' then determine a unit that is 'human readable'.
+        If target_unit is None then keep current unit.
         """
         if raw is None:
             return raw
@@ -258,9 +256,10 @@ class CommonUtilities(object):
 
         v = raw.get('value', '')
         u = raw.get('unit', '')
-        result = {'value': v,
-                  'unit': u,
-                  }
+        result = {
+            'value': v,
+            'unit': u,
+        }
 
         try:
             # ensure valid target unit
@@ -276,8 +275,24 @@ class CommonUtilities(object):
             if target_unit == 'auto':
                 value = self.pint_convert(float(v or '1') or 1.0, u, 'B')['value']
 
-                units_2 = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB',)
-                units_10 = ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB',)
+                units_2 = (
+                    'B',
+                    'KiB',
+                    'MiB',
+                    'GiB',
+                    'TiB',
+                    'PiB',
+                    'EiB',
+                )
+                units_10 = (
+                    'B',
+                    'kB',
+                    'MB',
+                    'GB',
+                    'TB',
+                    'PB',
+                    'EB',
+                )
 
                 if u in units_2 or u in ('byte', 'bit'):
                     unit_magnitude = int(math.log(value, 1024))
@@ -317,15 +332,17 @@ class CommonUtilities(object):
     def pint_add_dicts(self, values):
         """ Sum all values in our memory quantity dict format using pint. """
         return self.pint_to_dict(
-            sum(
-                [self.pint_from_dict(d) for d in values],
-                0 * ur.byte))
+            sum([self.pint_from_dict(d) for d in values], 0 * ur.byte)
+        )
 
     def getStorageResourcesUsedSummary(self, resources):
-        """ Get sum of all resources' usage. If this value can not be determined
-            (i.e. some resource's values are not available) then None is returned.
+        """Get sum of all resources' usage. If this value can not be determined
+        (i.e. some resource's values are not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import (
+            IRegisteredStorageResource,
+        )
+
         usages = []
 
         for resource in resources:
@@ -339,10 +356,13 @@ class CommonUtilities(object):
         return self.pint_add_dicts(usages)
 
     def getStorageResourcesSizeSummary(self, resources):
-        """ Get sum of all resources' size. If this value can not be determined
-            (i.e. size of a resource is not available) then None is returned.
+        """Get sum of all resources' size. If this value can not be determined
+        (i.e. size of a resource is not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import (
+            IRegisteredStorageResource,
+        )
+
         sizes = []
 
         for resource in resources:
@@ -368,8 +388,7 @@ class CommonUtilities(object):
         return '%0.2f %s' % (value, unit)
 
     def renderResourceUsage(self, used, size):
-        """ Render resource usage string.
-        """
+        """Render resource usage string."""
         if size:
             size = self.convert(size)
             size_value = float(size['value'])
@@ -406,7 +425,10 @@ class CommonUtilities(object):
 
     def listResourceUsage(self, resources):
         """ List usage of resources, i.e. all resource's usage. """
-        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import (
+            IRegisteredStorageResource,
+        )
+
         usages = []
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
@@ -416,7 +438,10 @@ class CommonUtilities(object):
 
     def registeredObjectsTotal(self):
         """ Sum of all registered objects across related registered storage resources """
-        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import (
+            IRegisteredStorageResource,
+        )
+
         total = 0
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
@@ -433,9 +458,10 @@ class CommonUtilities(object):
         source = float(value) * source_unit
         target = source.to(target_unit)
 
-        result = {'value': target.magnitude,
-                  'unit': to_unit,
-                  }
+        result = {
+            'value': target.magnitude,
+            'unit': to_unit,
+        }
 
         return result
 
@@ -452,28 +478,31 @@ class CommonUtilities(object):
         else:
             return 'unknown size'
 
+
 # we don't want to use eval so we define an explicit mapping of supported units
 
 from pint import UnitRegistry
+
 ur = UnitRegistry()
 
-unit_map = {'bit': ur.bit,
-            'kb':  ur.kilobit,
-            'byte': ur.byte,
-            'B':   ur.byte,
-            'kB':  ur.kilobyte,
-            'Kb':  ur.kilobyte,  # handle a nasty typo in an accounting record
-            'MB':  ur.megabyte,
-            'GB':  ur.gigabyte,
-            'TB':  ur.terabyte,
-            'PB':  ur.petabyte,
-            'EB':  ur.exabyte,
-            'KiB': ur.kibibyte,
-            'MiB': ur.mebibyte,
-            'GiB': ur.gibibyte,
-            'TiB': ur.tebibyte,
-            'PiB': ur.pebibyte,
-            'EiB': ur.exbibyte,
-            }
+unit_map = {
+    'bit': ur.bit,
+    'kb': ur.kilobit,
+    'byte': ur.byte,
+    'B': ur.byte,
+    'kB': ur.kilobyte,
+    'Kb': ur.kilobyte,  # handle a nasty typo in an accounting record
+    'MB': ur.megabyte,
+    'GB': ur.gigabyte,
+    'TB': ur.terabyte,
+    'PB': ur.petabyte,
+    'EB': ur.exabyte,
+    'KiB': ur.kibibyte,
+    'MiB': ur.mebibyte,
+    'GiB': ur.gibibyte,
+    'TiB': ur.tebibyte,
+    'PiB': ur.pebibyte,
+    'EiB': ur.exbibyte,
+}
 
 unit_map_inverse = {v: k for k, v in unit_map.items()}

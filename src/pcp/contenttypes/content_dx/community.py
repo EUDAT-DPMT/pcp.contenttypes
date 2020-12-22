@@ -20,12 +20,14 @@ from zope.interface import implementer
 
 
 class ICommunity(model.Schema):
-    """Dexterity Schema for Communities
-    """
+    """Dexterity Schema for Communities"""
 
     dexteritytextindexer.searchable("VAT")
 
-    url = schema.URI(title=u"Url", required=False,)
+    url = schema.URI(
+        title=u"Url",
+        required=False,
+    )
 
     # hide adress fields from display. instead show a condensed view from the property 'address'
     directives.omitted(IDisplayForm, 'street1', 'street2', 'zip', 'city', 'country')
@@ -58,7 +60,10 @@ class ICommunity(model.Schema):
     address = schema.TextLine(title=u'Adress', readonly=True)
     directives.widget('address', TrustedTextWidget)
 
-    VAT = schema.TextLine(title=u"VAT", required=False,)
+    VAT = schema.TextLine(
+        title=u"VAT",
+        required=False,
+    )
 
     representative = RelationChoice(
         title=u"Representative",
@@ -95,23 +100,23 @@ class ICommunity(model.Schema):
     affiliated = BackrelField(
         title=u'Affiliated',
         relation='affiliation',
-        )
+    )
 
     projects_involved = BackrelField(
         title=u'Projects involved',
         description=u'Projects involving this customer',
         relation='community',
-        )
+    )
 
     primary_provider = BackrelField(
         title=u'Primary_provider',
         relation='primary_provider_for',
-        )
+    )
 
     secondary_provider = BackrelField(
         title=u'Secondary_provider',
         relation='secondary_provider_for',
-        )
+    )
 
     topics = schema.TextLine(
         title=u"Topics",
@@ -122,7 +127,7 @@ class ICommunity(model.Schema):
     resources = BackrelField(
         title=u'Customer\'s Resources',
         relation='customer',
-        )
+    )
 
     usage_summary = schema.TextLine(title=u'Usage', readonly=True)
 

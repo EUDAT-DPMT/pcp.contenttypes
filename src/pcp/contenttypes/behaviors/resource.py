@@ -18,35 +18,34 @@ from zope.interface import Interface
 from zope.interface import provider
 
 
-
 # parts for the data grid type fields
 class IComputeResourceRowSchema(Interface):
 
     nCores = schema.TextLine(
         title=u"Number of cores",
         required=False,
-        )
+    )
 
     ram = schema.TextLine(
         title=u"RAM",
         required=False,
-        )
+    )
 
     diskspace = schema.TextLine(
         title=u"Diskspace",
         required=False,
-        )
+    )
 
     system = schema.TextLine(
         title=u"requires OS/software",
         required=False,
-        )
+    )
 
     virtualization = schema.Choice(
         title=u"Virtualization OK?",
         values=[u'Yes', u'No'],
         required=False,
-        )
+    )
 
 
 class IStorageResourceRowSchema(Interface):
@@ -54,25 +53,24 @@ class IStorageResourceRowSchema(Interface):
     value = schema.TextLine(
         title=u"Value",
         required=False,
-        )
+    )
 
     unit = schema.Choice(
         title=u"Unit",
         vocabulary="dpmt.information_units",
         required=False,
-        )
+    )
 
     storage_class = schema.Choice(
         title=u"Storage class",
         vocabulary="dpmt.storage_types",
         required=False,
-        )
+    )
 
 
 @provider(IFormFieldProvider)
 class IDPMTResource(model.Schema):
-    """Add fields to specify resource amounts
-    """
+    """Add fields to specify resource amounts"""
 
     fieldset(
         'resources',
@@ -83,8 +81,9 @@ class IDPMTResource(model.Schema):
     compute_resources = schema.List(
         title=u"Compute resources",
         description=u"Specification of the compute resources",
-        value_type=DictRow(title=u"Compute resources",
-                           schema=IComputeResourceRowSchema),
+        value_type=DictRow(
+            title=u"Compute resources", schema=IComputeResourceRowSchema
+        ),
         required=False,
         missing_value=[],
     )
@@ -93,8 +92,9 @@ class IDPMTResource(model.Schema):
     storage_resources = schema.List(
         title=u"Storage resources",
         description=u"Specification of the storage resources",
-        value_type=DictRow(title=u"Storage resources",
-                           schema=IStorageResourceRowSchema),
+        value_type=DictRow(
+            title=u"Storage resources", schema=IStorageResourceRowSchema
+        ),
         required=False,
         missing_value=[],
     )

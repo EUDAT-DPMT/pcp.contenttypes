@@ -48,7 +48,8 @@ class ImportForm(BrowserView):
                 status = 'error'
                 msg = e
                 api.portal.show_message(
-                    f'Fehler beim Dateiuplad: {e}', request=self.request,
+                    f'Fehler beim Dateiuplad: {e}',
+                    request=self.request,
                 )
             else:
                 msg = self.do_import(data)
@@ -64,7 +65,9 @@ class ImportForm(BrowserView):
         end = datetime.now()
         delta = end - start
         msg = 'Imported {} {} in {} seconds'.format(
-            len(added), self.portal_type, delta.seconds,
+            len(added),
+            self.portal_type,
+            delta.seconds,
         )
         logger.info(msg)
         return msg
@@ -123,7 +126,9 @@ class ImportForm(BrowserView):
             if api.content.find(UID=uuid):
                 logger.warn(
                     'UID {} of {} already in use by {}'.format(
-                        uuid, item['id'], api.content.get(UID=uuid).absolute_url(),
+                        uuid,
+                        item['id'],
+                        api.content.get(UID=uuid).absolute_url(),
                     ),
                 )
             else:
@@ -178,12 +183,16 @@ class ImportForm(BrowserView):
         return item
 
     def custom_modifier(self, obj):
-        modifier = getattr(self, f'fixup_{self.portal_type.lower().replace(".", "_")}', None)
+        modifier = getattr(
+            self, f'fixup_{self.portal_type.lower().replace(".", "_")}', None
+        )
         if modifier and callable(modifier):
             modifier(obj)
 
     def handle_container(self, item):
-        method = getattr(self, f'handle_{self.portal_type.lower().replace(".", "_")}_container', None)
+        method = getattr(
+            self, f'handle_{self.portal_type.lower().replace(".", "_")}_container', None
+        )
         if method and callable(method):
             return method(item)
 

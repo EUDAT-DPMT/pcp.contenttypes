@@ -1,4 +1,3 @@
-
 import furl
 import requests
 from plone.protect.interfaces import IDisableCSRFProtection
@@ -12,14 +11,13 @@ from ..interfaces.settings import ISettings
 
 
 class Accounting(BrowserView):
-
     def has_account(self):
         registry = getUtility(IRegistry)
-        #settings = registry.forInterface(ISettings, check=False)
-        #f = furl.furl(settings.accounting_url)
-        #if settings.accounting_username:
+        # settings = registry.forInterface(ISettings, check=False)
+        # f = furl.furl(settings.accounting_url)
+        # if settings.accounting_username:
         #    f.username = settings.accounting_username
-        #if settings.accounting_password:
+        # if settings.accounting_password:
         #    f.password = settings.accounting_password
         f = furl.furl(registry['dpmt.accounting_url'])
         f.username = registry['dpmt.accounting_username']
@@ -40,7 +38,8 @@ class Accounting(BrowserView):
 
         self.context.addAccount()
         self.request.response.redirect(
-            self.context.absolute_url() + '/list-account-records')
+            self.context.absolute_url() + '/list-account-records'
+        )
 
     def records(self):
         resource = self.context
@@ -50,16 +49,15 @@ class Accounting(BrowserView):
         else:
             return getattr(resource, 'cached_records', ())
 
-
     def fetch_records(self, uid):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings, check=False)
         f = furl.furl(registry['dpmt.accounting_url'])
         f.username = registry['dpmt.accounting_username']
         f.password = registry['dpmt.accounting_password']
-        #if settings.accounting_username:
+        # if settings.accounting_username:
         #    f.username = settings.accounting_username
-        #if settings.accounting_password:
+        # if settings.accounting_password:
         #    f.password = settings.accounting_password
         f.path = str(f.path) + '/' + uid + '/listRecords'
         url = str(f)
@@ -69,13 +67,13 @@ class Accounting(BrowserView):
             return results
         return ()
 
-
     def update_record_caches(self):
         alsoProvides(self.request, IDisableCSRFProtection)
 
         catalog = self.context.portal_catalog
-        resource_brains = catalog(portal_type=['RegisteredStorageResource',
-                                               'registeredstorageresource_dx'])
+        resource_brains = catalog(
+            portal_type=['RegisteredStorageResource', 'registeredstorageresource_dx']
+        )
         updated_resources = []
 
         for brain in resource_brains:

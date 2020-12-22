@@ -21,8 +21,7 @@ from zope.interface import implementer
 
 
 class IProvider(model.Schema):
-    """Dexterity Schema for Providers
-    """
+    """Dexterity Schema for Providers"""
 
     dexteritytextindexer.searchable(
         "url",
@@ -48,7 +47,7 @@ class IProvider(model.Schema):
         title=u'Provider type',
         vocabulary='dpmt.provider_types',
         required=False,
-        )
+    )
 
     provider_userid = schema.TextLine(title=u"Provider user ID", required=True)
 
@@ -56,7 +55,7 @@ class IProvider(model.Schema):
         title=u'Provider status',
         vocabulary='dpmt.provider_stati',
         required=False,
-        )
+    )
 
     status_details = schema.TextLine(title=u"Status details/comment", required=False)
 
@@ -209,7 +208,7 @@ class IProvider(model.Schema):
     affiliated = BackrelField(
         title=u'Affiliated',
         relation=u'affiliated',
-        )
+    )
 
     # obsolete since ct Resource are removed?
     # hosts = BackrelField(
@@ -220,7 +219,7 @@ class IProvider(model.Schema):
     projects_involved = BackrelField(
         title=u'Projects involved',
         relation=u'service_providers',
-        )
+    )
 
     getAccount = schema.URI(
         title=u"Account",
@@ -248,8 +247,7 @@ class Provider(Container, CommonUtilities):
             return u'No offers found'
         url = offers.absolute_url()
         title = u"Resources offered by {}".format(self.title)
-        anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(
-            url, title, title)
+        anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(url, title, title)
         return anchor
 
     @property

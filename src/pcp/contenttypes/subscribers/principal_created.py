@@ -11,12 +11,14 @@ def principal_created(event):
         return
 
     principal = event.principal
-    user = plone.api.portal.get_tool('portal_membership').getMemberById(principal.getId())
+    user = plone.api.portal.get_tool('portal_membership').getMemberById(
+        principal.getId()
+    )
 
     params = {
         'fullname': user.getProperty('fullname'),
         'email': user.getProperty('email'),
-        'id': principal.getId()
+        'id': principal.getId(),
     }
     email_from_address = api.portal.get_registry_record('plone.email_from_address')
 
@@ -26,4 +28,5 @@ def principal_created(event):
         subject='A new user visited DPMT',
         template='user-created-by-auto-user-maker.txt',
         params=params,
-        context=None)
+        context=None,
+    )

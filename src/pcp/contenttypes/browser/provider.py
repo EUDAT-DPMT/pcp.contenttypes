@@ -1,5 +1,3 @@
-
-
 from datetime import datetime
 
 import plone.api
@@ -17,7 +15,6 @@ RESEND_AFTER_DAYS = 7
 
 
 class RegisteredServiceComponents(BrowserView):
-
     def items(self):
         """ Accumulatated view over all RegisteredServiceComponents """
 
@@ -27,15 +24,16 @@ class RegisteredServiceComponents(BrowserView):
         for brain in catalog(portal_type='Provider'):
             provider = brain.getObject()
 
-            for brain2 in catalog(portal_type='RegisteredServiceComponent', path='/'.join(provider.getPhysicalPath())):
+            for brain2 in catalog(
+                portal_type='RegisteredServiceComponent',
+                path='/'.join(provider.getPhysicalPath()),
+            ):
                 rsc = brain2.getObject()
                 version_info = rsc.check_versions()
 
-            result.append(dict(
-                provider=provider,
-                component=rsc,
-                version_info=version_info
-            ))
+            result.append(
+                dict(provider=provider, component=rsc, version_info=version_info)
+            )
 
         return result
 
@@ -61,8 +59,11 @@ class RegisteredServiceComponents(BrowserView):
                 continue
 
             # preserve notification dates
-            notification_key = (item['component'].getId(), version_info[
-                                'current_version'], version_info['latest_version'])
+            notification_key = (
+                item['component'].getId(),
+                version_info['current_version'],
+                version_info['latest_version'],
+            )
             dt = annotations[NOTIFICATION_KEY].get(notification_key)
             if dt and (datetime.utcnow() - dt).days < RESEND_AFTER_DAYS:
                 continue
@@ -71,10 +72,13 @@ class RegisteredServiceComponents(BrowserView):
             annotations._p_changed = True
 
             # build and send notification email
-            dest_email = item['provider'].getAlarm_email(
-            ) or item['provider'].getHelpdesk_email()
+            dest_email = (
+                item['provider'].getAlarm_email()
+                or item['provider'].getHelpdesk_email()
+            )
             subject = '[DPMT] New version for "{}" available'.format(
-                item['component'].Title())
+                item['component'].Title()
+            )
 
             params = dict(
                 component_name=item['component'].Title(),
@@ -88,5 +92,6 @@ class RegisteredServiceComponents(BrowserView):
                 subject=subject,
                 template='implementation-outdated.txt',
                 params=params,
-                context=item['provider'])
+                context=item['provider'],
+            )
         return 'DONE'

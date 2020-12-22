@@ -16,57 +16,59 @@ from zope.interface import implementer
 
 
 class IProject(model.Schema):
-    """Dexterity Schema for Projects
-    """
+    """Dexterity Schema for Projects"""
 
-    website = schema.URI(title=u"Website", required=False,)
+    website = schema.URI(
+        title=u"Website",
+        required=False,
+    )
 
     community = RelationChoice(
-            title=u"Customer",
-            description=u"Main customer involved in this project.",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Customer",
+        description=u"Main customer involved in this project.",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "community",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["community_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "community",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["community_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     community_contact = RelationChoice(
-            title=u"Customer contact",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
-            )
+        title=u"Customer contact",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
     directives.widget(
-            "community_contact",
-            RelatedItemsFieldWidget,
-            pattern_options={
-                "selectableTypes": ["person_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "community_contact",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["person_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
     registered_services_used = RelationList(
-            title=u"Registered services used",
-            description=u"Select all registered services the project requires",
-            default=[],
-            value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
-            missing_value=[],
-            required=False,
-            )
+        title=u"Registered services used",
+        description=u"Select all registered services the project requires",
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        missing_value=[],
+        required=False,
+    )
     directives.widget(
-            "registered_services_used",
-            RelatedItemsFieldWidget,
-            vocabulary='plone.app.vocabularies.Catalog',
-            pattern_options={
-                "selectableTypes": ["registeredservice_dx"],
-                "basePath": make_relation_root_path,
-            },
-        )
+        "registered_services_used",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["registeredservice_dx"],
+            "basePath": make_relation_root_path,
+        },
+    )
     # TODO: Add custom edit-form: https://community.plone.org/t/conditional-fields-in-dexterity-schema/12248/5
     # condition='python:here.stateIn(["enabling","pre_production","production","terminated"])' <-- Where does that fit?
 
@@ -75,10 +77,10 @@ class IProject(model.Schema):
     used_new = schema.TextLine(title=u'Used', readonly=True)
 
     general_provider = RelationChoice(
-            title=u"General provider",
-            description=u"General provider for this project (chose EUDAT Ltd if in doubt)",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
+        title=u"General provider",
+        description=u"General provider for this project (chose EUDAT Ltd if in doubt)",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
     )
     directives.widget(
         "general_provider",
@@ -90,9 +92,9 @@ class IProject(model.Schema):
     )
 
     project_enabler = RelationChoice(
-            title=u"Project enabled by",
-            vocabulary='plone.app.vocabularies.Catalog',
-            required=False,
+        title=u"Project enabled by",
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
     )
     directives.widget(
         "project_enabler",
@@ -104,10 +106,16 @@ class IProject(model.Schema):
     )
     # condition="python:here.stateNotIn(['considered'])" <-- Where does that fit?
 
-    start_date = schema.Date(title=u"Start date", required=False,)
+    start_date = schema.Date(
+        title=u"Start date",
+        required=False,
+    )
     directives.widget("start_date", DateFieldWidget)
 
-    end_date = schema.Date(title=u"End date", required=False,)
+    end_date = schema.Date(
+        title=u"End date",
+        required=False,
+    )
     directives.widget("end_date", DateFieldWidget)
 
     call_for_collaboration = schema.URI(
@@ -171,11 +179,15 @@ class Project(Container, CommonUtilities):
 
     @property
     def allocated_new(self):
-        return self.renderMemoryValue(self.convert(self.getStorageResourcesSizeSummary(self.get_resources())))
+        return self.renderMemoryValue(
+            self.convert(self.getStorageResourcesSizeSummary(self.get_resources()))
+        )
 
     @property
     def used_new(self):
-        return self.renderMemoryValue(self.convert(self.getStorageResourcesUsedSummary(self.get_resources())))
+        return self.renderMemoryValue(
+            self.convert(self.getStorageResourcesUsedSummary(self.get_resources()))
+        )
 
     def getScopeValues(self, asString=False):
         """Return the human readable values of the scope keys"""

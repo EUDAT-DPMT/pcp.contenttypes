@@ -14,9 +14,9 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
+
 class IServiceRequest(model.Schema):
-    """Dexterity Schema for ServiceRequest
-    """
+    """Dexterity Schema for ServiceRequest"""
 
     service = RelationChoice(
         title=u"Service",
@@ -59,12 +59,12 @@ class IServiceRequest(model.Schema):
             "selectableTypes": ["Document"],
             "basePath": make_relation_root_path,
         },
-    )   
+    )
 
     registered_service = BackrelField(
         title=u'Registered service',
         relation='original_request',
-        )
+    )
 
     # CommentField resource_comment
 

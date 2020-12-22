@@ -21,27 +21,26 @@ class IBBB(Interface):
 # stuff from incompletely uninstalled addons
 try:
     from collective.handleclient.interfaces import ICollectiveHandleclientLayer
+
     ICollectiveHandleclientLayer  # noqa
 except ImportError:
     alias_module(
-        'collective.handleclient.interfaces.ICollectiveHandleclientLayer',
-        IBBB)
+        'collective.handleclient.interfaces.ICollectiveHandleclientLayer', IBBB
+    )
 
 try:
     from App.interfaces import IPersistentExtra
+
     IPersistentExtra  # noqa
 except ImportError:
-    alias_module(
-        'App.interfaces.IPersistentExtra',
-        IBBB)
+    alias_module('App.interfaces.IPersistentExtra', IBBB)
 
 try:
     from App.interfaces import IUndoSupport
+
     IUndoSupport  # noqa
 except ImportError:
-    alias_module(
-        'App.interfaces.IUndoSupport',
-        IBBB)
+    alias_module('App.interfaces.IUndoSupport', IBBB)
 
 
 def initialize(context):

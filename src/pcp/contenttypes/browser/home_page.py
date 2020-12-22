@@ -8,8 +8,7 @@ class HomePage(BrowserView):
     """Logic needed for the homepage view"""
 
     def __init__(self, context, request):
-        """ Initialize context and request as view multi adaption parameters.
-        """
+        """Initialize context and request as view multi adaption parameters."""
         alsoProvides(request, IDisableCSRFProtection)
         self.context = context
         self.request = request

@@ -16,8 +16,8 @@ from zope.interface import implementer
 
 
 class IRegisteredService(model.Schema):
-    """Dexterity Schema for Registered services
-    """
+    """Dexterity Schema for Registered services"""
+
     general_provider = RelationChoice(
         title=u"General provider",
         description=u"General provider for this project (chose EUDAT Ltd if in doubt)",
@@ -110,14 +110,14 @@ class IRegisteredService(model.Schema):
     used_by_projects = BackrelField(
         title=u'Used by project',
         relation='registered_services_used',
-        )
+    )
 
     scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
 
     resources = BackrelField(
         title=u'Registered service\'s resources',
         relation='services',
-        )
+    )
 
 
 @implementer(IRegisteredService)
@@ -134,7 +134,9 @@ class RegisteredService(Container):
 
     def getScopeValues(self, asString=False):
         """Return the human readable values of the scope keys"""
-        projects = relapi.get_backrelations(self, 'registered_services_used', fullobj=True)
+        projects = relapi.get_backrelations(
+            self, 'registered_services_used', fullobj=True
+        )
         scopes = []
         [scopes.extend(p['fullobj'].getScopeValues()) for p in projects]
         s = set(scopes)

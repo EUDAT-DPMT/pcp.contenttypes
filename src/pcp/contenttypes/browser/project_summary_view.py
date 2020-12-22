@@ -20,20 +20,32 @@ class ProjectOverview(BrowserView):
 
     def fields(self):
         """hardcoded for a start"""
-        return ('title', 'registered_services_used',
-                'used_new', 'community',
-                'topics', 'start_date', 'state')
+        return (
+            'title',
+            'registered_services_used',
+            'used_new',
+            'community',
+            'topics',
+            'start_date',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start"""
-        return ('Title', 'Service',
-                'Used storage',
-                'Customer', 'Topics',
-                'Start date', 'State')
+        return (
+            'Title',
+            'Service',
+            'Used storage',
+            'Customer',
+            'Topics',
+            'Start date',
+            'State',
+        )
 
     def data(self):
-        projects = [element.getObject()
-                    for element in self.catalog(portal_type='Project')]
+        projects = [
+            element.getObject() for element in self.catalog(portal_type='Project')
+        ]
 
         results = []
 
@@ -43,7 +55,8 @@ class ProjectOverview(BrowserView):
                 value = {}
                 if field == 'state':
                     value['text'] = self.workflow_tool.getInfoFor(
-                        project, 'review_state')
+                        project, 'review_state'
+                    )
                     value['url'] = None
                     result.append(value)
                     continue
@@ -99,13 +112,14 @@ class ProjectOverview(BrowserView):
 class CsvView(ProjectOverview):
     """View class for the CSV output of projects"""
 
-    def csv_export(self,
-                   states=None,
-                   fields=None,
-                   filenamebase='projects',
-                   delimiter=',',
-                   newline='\r\n',
-                   ):
+    def csv_export(
+        self,
+        states=None,
+        fields=None,
+        filenamebase='projects',
+        delimiter=',',
+        newline='\r\n',
+    ):
         """Main method to be called for the csv export"""
 
         if fields is None:
@@ -130,9 +144,9 @@ class CsvView(ProjectOverview):
         timestamp = datetime.today().strftime("%Y%m%d%H%M")
         filename = filenamebase + timestamp + '.csv'
 
+        self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
         self.request.RESPONSE.setHeader(
-            'Content-Type', 'application/x-msexcel')
-        self.request.RESPONSE.setHeader("Content-Disposition",
-                                        "inline;filename=%s" % filename)
+            "Content-Disposition", "inline;filename=%s" % filename
+        )
 
         return value

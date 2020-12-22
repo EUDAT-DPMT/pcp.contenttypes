@@ -80,4 +80,3 @@ def severity_levels(context):
     name = 'dpmt.severity_levels'
     values = api.portal.get_registry_record(name)
     return safe_simplevocabulary_from_values(values)
-

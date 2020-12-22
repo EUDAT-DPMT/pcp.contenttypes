@@ -11,8 +11,7 @@ from zope.interface import implementer
 
 
 class IResourceRequest(model.Schema):
-    """Dexterity Schema for ResourceRequest
-    """
+    """Dexterity Schema for ResourceRequest"""
 
 
 @implementer(IResourceRequest)

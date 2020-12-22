@@ -15,36 +15,36 @@ from zope.interface import provider
 
 @provider(IFormFieldProvider)
 class IDPMTConstraints(model.Schema):
-    """Add fields to specify constraints
-    """
+    """Add fields to specify constraints"""
 
     fieldset(
         'constraints',
         label=u'Constraints',
-        fields=('regional_constraints', 
-                'thematic_constraints', 
-                'organizational_constraints',
-                'constraints',
-            ),
+        fields=(
+            'regional_constraints',
+            'thematic_constraints',
+            'organizational_constraints',
+            'constraints',
+        ),
     )
 
     regional_constraints = schema.TextLine(
         title=u"Regional constraints",
-        description=u"Does the customer need to be in a certain "\
+        description=u"Does the customer need to be in a certain "
         "country or region? If so, which one(s)",
         required=False,
     )
 
     thematic_constraints = schema.TextLine(
         title=u"Thematic constraints",
-        description=u"Does the customer need to active in a certain "\
+        description=u"Does the customer need to active in a certain "
         "scientific field? If so, which one(s)",
         required=False,
     )
 
     organizational_constraints = schema.TextLine(
         title=u"Organizational constraints",
-        description=u"Does the customer need to be of a certain "\
+        description=u"Does the customer need to be of a certain "
         "organizational type? If so, which one(s)",
         required=False,
     )
@@ -54,5 +54,3 @@ class IDPMTConstraints(model.Schema):
         description=u"Any other constraints not yet covered.",
         required=False,
     )
-
-

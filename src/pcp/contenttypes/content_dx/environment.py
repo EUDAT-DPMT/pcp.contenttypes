@@ -15,8 +15,7 @@ from zope.interface import implementer
 
 
 class IEnvironment(model.Schema):
-    """Dexterity Schema for Environment
-    """
+    """Dexterity Schema for Environment"""
 
     contact = RelationChoice(
         title=u"Contact",
@@ -32,15 +31,30 @@ class IEnvironment(model.Schema):
         },
     )
 
-    account = schema.TextLine(title=u"Account", required=False,)
+    account = schema.TextLine(
+        title=u"Account",
+        required=False,
+    )
 
-    terms_of_use = schema.URI(title=u"Terms of Use", required=False,)
+    terms_of_use = schema.URI(
+        title=u"Terms of Use",
+        required=False,
+    )
 
-    rootaccess = schema.Bool(title=u"Root Access", required=False,)
+    rootaccess = schema.Bool(
+        title=u"Root Access",
+        required=False,
+    )
 
-    setup_procedure = schema.TextLine(title=u"Setup Procedure", required=False,)
+    setup_procedure = schema.TextLine(
+        title=u"Setup Procedure",
+        required=False,
+    )
 
-    firewall_policy = schema.TextLine(title=u"Firewall Policy", required=False,)
+    firewall_policy = schema.TextLine(
+        title=u"Firewall Policy",
+        required=False,
+    )
 
 
 @implementer(IEnvironment)

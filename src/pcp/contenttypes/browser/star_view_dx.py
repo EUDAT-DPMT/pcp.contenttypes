@@ -1,4 +1,4 @@
-# provide a StAR (Storage Accounting Record) view for 
+# provide a StAR (Storage Accounting Record) view for
 # Registered Storage Components
 # For specification see: http://cds.cern.ch/record/1452920/files/GFD.201.pdf
 
@@ -17,8 +17,7 @@ multiple_star_template = """
  {}</sr:StorageUsageRecords>
 """
 
-body_star_template = \
-"""{ns}  
+body_star_template = """{ns}  
   <sr:RecordIdentity sr:createTime="{endtime}Z"
                      sr:recordId="accounting.eudat.eu/eudat/{rsr_id}/{record_id}"/>
   <sr:Site>EUDAT-{site}</sr:Site>
@@ -35,9 +34,10 @@ body_star_template = \
     <sr:GroupAttribute sr:attributeType='scope'>{project_scope}</sr:GroupAttribute>
   </sr:SubjectIdentity>"""
 
+
 class StarView(Accounting):
     """Render a StAR view for registered storage components"""
-    
+
     def collect_data(self):
         """Helper to collect the values to be rendered as XML"""
         context = self.context
@@ -51,8 +51,10 @@ class StarView(Accounting):
                 normalized['value'] = str(int(float(normalized['value'])))
                 latest['core'].update(normalized)
         else:
-            latest = {'core': {'value': '0', 'unit': 'byte'}, 
-                      'meta': {'ts': time.time()}}
+            latest = {
+                'core': {'value': '0', 'unit': 'byte'},
+                'meta': {'ts': time.time()},
+            }
 
         result = {}
         result['ns'] = ''
@@ -71,18 +73,22 @@ class StarView(Accounting):
         # the below assumes that our acquisition parent is a provider
         result['site'] = context.aq_parent.getId().upper()
         customer = context.customer.to_object
-        if customer is None: 
+        if customer is None:
             result['customer_title'] = "(no customer found)"
             result['customer_url'] = "(no customer found)"
-        else: 
-            result['customer_title'] = customer.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
+        else:
+            result['customer_title'] = (
+                customer.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
+            )
             result['customer_url'] = customer.absolute_url()
         project = context.project.to_object
         if project is None:
             result['project_title'] = "(no project found)"
             result['project_url'] = "(no project foumd)"
         else:
-            result['project_title'] = project.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
+            result['project_title'] = (
+                project.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
+            )
             result['project_url'] = project.absolute_url()
         result['project_scope'] = context.getScopeValues(asString=1) or "EUDAT"
         return result
@@ -91,7 +97,9 @@ class StarView(Accounting):
         """Render info using template"""
         data = self.collect_data()
         if with_ns:
-            data['ns'] = '\n  xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">'
+            data[
+                'ns'
+            ] = '\n  xmlns:sr="http://eu-emi.eu/namespaces/2011/02/storagerecord">'
         else:
             data['ns'] = '>'
         body = body_star_template.format(**data)
@@ -100,9 +108,10 @@ class StarView(Accounting):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
 
+
 class RecordsView(StarView):
     """Render a StAR view for all registered storage components"""
-    
+
     def all_rsr(self):
         """All registered storage resources"""
         catalog = self.context.portal_catalog
@@ -118,11 +127,9 @@ class RecordsView(StarView):
             record = o.unrestrictedTraverse('@@star')(with_ns=False)
             result.append(record)
         return ''.join(result)
-    
+
     def star(self):
         body = self.records()
         full = multiple_star_template.format(body)
         self.request.response.setHeader('Content-Type', 'text/xml')
         return full
-        
-

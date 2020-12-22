@@ -14,9 +14,9 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
+
 class IServiceComponentRequest(model.Schema):
-    """Dexterity Schema for Providers
-    """
+    """Dexterity Schema for Providers"""
 
     requested_component = RelationChoice(
         title=u"Service component",
@@ -25,10 +25,10 @@ class IServiceComponentRequest(model.Schema):
         required=False,
     )
     directives.widget(
-            "requested_component",
+        "requested_component",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicecomponent_dx"], 
+            "selectableTypes": ["servicecomponent_dx"],
             "basePath": make_relation_root_path,
         },
     )
@@ -67,9 +67,9 @@ class IServiceComponentRequest(model.Schema):
 
     resource_comment = CommentField(
         comment=u"If applicable and already known how much resources shall be provisioned "
-                "through this service then this should be specified here. Otherwise this "
-                "can be left empty (or added later).",
-        )
+        "through this service then this should be specified here. Otherwise this "
+        "can be left empty (or added later).",
+    )
 
 
 @implementer(IServiceComponentRequest)

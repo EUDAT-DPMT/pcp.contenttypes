@@ -15,8 +15,7 @@ from zope.interface import implementer
 
 
 class IServiceComponentOffer(model.Schema):
-    """Dexterity Schema for ServiceComponentOffer
-    """
+    """Dexterity Schema for ServiceComponentOffer"""
 
     service_component_offered = RelationChoice(
         title=u"Service component offered",
@@ -25,13 +24,13 @@ class IServiceComponentOffer(model.Schema):
         required=False,
     )
     directives.widget(
-            "service_component_offered",
+        "service_component_offered",
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicecomponent_dx"], 
+            "selectableTypes": ["servicecomponent_dx"],
             "basePath": make_relation_root_path,
         },
-    )   
+    )
 
     service_component_implementations_offered = RelationList(
         title=u"Implementations offered",
@@ -49,9 +48,9 @@ class IServiceComponentOffer(model.Schema):
             "selectableTypes": ["servicecomponentimplementation_dx"],
             "basePath": make_relation_root_path,
         },
-    )   
+    )
 
-    slas= RelationList(
+    slas = RelationList(
         title=u"SLAs/OLAs offered",
         description=u"Potential Service/Operational Level Agreements under which the service component is being offered.",
         default=[],

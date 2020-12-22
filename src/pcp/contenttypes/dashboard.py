@@ -8,13 +8,12 @@ from zope.interface import implementer
 
 @implementer(IDefaultDashboard)
 class PCPDefaultDashboard(DefaultDashboard):
-    """A overrride of the default dashboard.
-    """
+    """A overrride of the default dashboard."""
 
     def __call__(self):
         return {
-            'plone.dashboard1': (portlets.news.Assignment(), ),
-            'plone.dashboard2': (portlets.recent.Assignment(), ),
-            'plone.dashboard3': (downtimes.Assignment(), ),
-            'plone.dashboard4': (portlets.review.Assignment(), ),
+            'plone.dashboard1': (portlets.news.Assignment(),),
+            'plone.dashboard2': (portlets.recent.Assignment(),),
+            'plone.dashboard3': (downtimes.Assignment(),),
+            'plone.dashboard4': (portlets.review.Assignment(),),
         }

@@ -10,8 +10,7 @@ from zope.interface import implementer
 
 
 class IRegisteredComputeResource(model.Schema):
-    """Dexterity Schema for Registered Compute Resources
-    """
+    """Dexterity Schema for Registered Compute Resources"""
 
     dexteritytextindexer.searchable(
         "hostname",
@@ -24,21 +23,45 @@ class IRegisteredComputeResource(model.Schema):
         "software",
     )
 
-    hostname = schema.TextLine(title=u"Hostname", required=False,)
+    hostname = schema.TextLine(
+        title=u"Hostname",
+        required=False,
+    )
 
-    ip = schema.TextLine(title=u"IP", required=False,)
+    ip = schema.TextLine(
+        title=u"IP",
+        required=False,
+    )
 
-    cpus = schema.TextLine(title=u"CPUs", required=False,)
+    cpus = schema.TextLine(
+        title=u"CPUs",
+        required=False,
+    )
 
-    memory = schema.TextLine(title=u"Memory", required=False,)
+    memory = schema.TextLine(
+        title=u"Memory",
+        required=False,
+    )
 
-    localdisk = schema.TextLine(title=u"Local disk", required=False,)
+    localdisk = schema.TextLine(
+        title=u"Local disk",
+        required=False,
+    )
 
-    virtualization = schema.TextLine(title=u"Virtualization", required=False,)
+    virtualization = schema.TextLine(
+        title=u"Virtualization",
+        required=False,
+    )
 
-    os = schema.TextLine(title=u"OS", required=False,)
+    os = schema.TextLine(
+        title=u"OS",
+        required=False,
+    )
 
-    software = schema.TextLine(title=u"Software", required=False,)
+    software = schema.TextLine(
+        title=u"Software",
+        required=False,
+    )
 
 
 @implementer(IRegisteredComputeResource)

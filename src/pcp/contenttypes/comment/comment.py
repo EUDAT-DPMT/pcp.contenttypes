@@ -18,13 +18,13 @@ class ICommentField(ITextLine):
         title=u'Comment',
         description=u'The comment to display',
         required=False,
-        )
+    )
 
 
 @implementer(ICommentField, IFromUnicode)
 class CommentField(Field):
-    """A field that stores nothing but displays a comment defined in the schema.
-    """
+    """A field that stores nothing but displays a comment defined in the schema."""
+
     def __init__(self, **kw):
         self.comment = kw.pop('comment', '')
         if not self.comment:

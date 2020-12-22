@@ -1,9 +1,10 @@
 from Products.Five.browser import BrowserView
 
+
 class UpdateUID(BrowserView):
     """Provide utility to reset the uid of an item.
-    Use case: carry over the uids from EUDATs RCT specifically 
-    for accounted items, so the records carry over. 
+    Use case: carry over the uids from EUDATs RCT specifically
+    for accounted items, so the records carry over.
     May be useful for other item types as well, e.g. service components
     """
 

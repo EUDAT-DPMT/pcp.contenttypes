@@ -12,8 +12,7 @@ from pcp.contenttypes.content_dx.common import OfferUtilities
 
 
 class IResourceOffer(model.Schema):
-    """Dexterity Schema for ResourceOffer
-    """
+    """Dexterity Schema for ResourceOffer"""
 
 
 @implementer(IResourceOffer)

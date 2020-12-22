@@ -2,7 +2,9 @@
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
+from pcp.contenttypes.content_dx.registeredservicecomponent import (
+    IRegisteredServiceComponent,
+)
 from pcp.contenttypes.content_dx.provider import IProvider
 from pcp.contenttypes.mail import send_mail
 from plone import api
@@ -23,12 +25,9 @@ import pytz
 
 
 class IDowntime(model.Schema):
-    """Dexterity Schema for Downtimes
-    """
+    """Dexterity Schema for Downtimes"""
 
-    dexteritytextindexer.searchable(
-        "start", "end", "severity", "classification"
-    )
+    dexteritytextindexer.searchable("start", "end", "severity", "classification")
 
     start = schema.Datetime(
         title=u"Start date (UTC)",
@@ -64,7 +63,10 @@ class IDowntime(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredservice_dx","registeredservicecomponent_dx"],
+            "selectableTypes": [
+                "registeredservice_dx",
+                "registeredservicecomponent_dx",
+            ],
             "basePath": make_relation_root_path,
         },
     )
@@ -79,13 +81,13 @@ class IDowntime(model.Schema):
         title=u'Severity',
         vocabulary='dpmt.severity_levels',
         required=False,
-        )
+    )
 
     classification = schema.Choice(
         title=u'Classification',
         vocabulary='dpmt.downtime_classes',
         required=False,
-        )
+    )
 
 
 @implementer(IDowntime)
@@ -110,30 +112,52 @@ class Downtime(Container):
     def endDateTime(self):
         return self.end
 
-def findDowntimeRecipients(downtime):
-    affected_services_or_components = relapi.unrestricted_relations(downtime, 'affected_registered_services')
 
-    affected_components = [component for component in affected_services_or_components
-                           if IRegisteredServiceComponent.providedBy(component)]
+def findDowntimeRecipients(downtime):
+    affected_services_or_components = relapi.unrestricted_relations(
+        downtime, 'affected_registered_services'
+    )
+
+    affected_components = [
+        component
+        for component in affected_services_or_components
+        if IRegisteredServiceComponent.providedBy(component)
+    ]
 
     indirectly_affected_services = []
     for component in affected_components:
-        indirectly_affected_services += relapi.unrestricted_backrelations(component, 'service_components')
+        indirectly_affected_services += relapi.unrestricted_backrelations(
+            component, 'service_components'
+        )
 
     indirectly_affected_services = set(indirectly_affected_services)
 
-    directly_affected_services = set([service for service in affected_services_or_components
-                                      if IRegisteredService.providedBy(service)])
+    directly_affected_services = set(
+        [
+            service
+            for service in affected_services_or_components
+            if IRegisteredService.providedBy(service)
+        ]
+    )
 
-    affected_services = set.union(directly_affected_services, indirectly_affected_services)
+    affected_services = set.union(
+        directly_affected_services, indirectly_affected_services
+    )
 
     affected_projects = []
     for affected_service in affected_services:
-        affected_projects += relapi.unrestricted_backrelations(affected_service, 'registered_services_used')
+        affected_projects += relapi.unrestricted_backrelations(
+            affected_service, 'registered_services_used'
+        )
 
-    affected_communities = [relapi.relation(project, 'community') for project in affected_projects]
+    affected_communities = [
+        relapi.relation(project, 'community') for project in affected_projects
+    ]
 
-    project_contacts = [relapi.relation(project, 'community_contact', restricted=False) for project in affected_projects]
+    project_contacts = [
+        relapi.relation(project, 'community_contact', restricted=False)
+        for project in affected_projects
+    ]
     project_contacts_emails = set([i.email for i in project_contacts if i.email])
 
     community_admins = []
@@ -154,7 +178,7 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
         # do not send notifications for past downtimes
         return
 
-    affected_services = [i.to_object  for i in downtime.affected_registered_services]
+    affected_services = [i.to_object for i in downtime.affected_registered_services]
 
     chain = downtime.aq_chain
     provider = None
@@ -180,12 +204,13 @@ def notifyDowntimeRecipients(downtime, subject, template, recipients):
 
     for recipient in recipients:
         send_mail(
-                sender=None,
-                recipients=[recipient],
-                subject=subject,
-                template=template,
-                params=params,
-                context=downtime)
+            sender=None,
+            recipients=[recipient],
+            subject=subject,
+            template=template,
+            params=params,
+            context=downtime,
+        )
 
 
 def sendDowntimeMails(downtime, subject, template):
@@ -202,8 +227,9 @@ def retractDowntime(downtime):
 
 
 def handleDowntimeTransition(context, event):
-    assert event.workflow.id == 'downtime_workflow', \
-        'expecting Downtime Workflow being assigned to Downtime'
+    assert (
+        event.workflow.id == 'downtime_workflow'
+    ), 'expecting Downtime Workflow being assigned to Downtime'
 
     new_state = getattr(event.new_state, 'id', None)
     old_state = getattr(event.old_state, 'id', None)

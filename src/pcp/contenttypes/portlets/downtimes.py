@@ -13,7 +13,6 @@ class IDowntimePortlet(IPortletDataProvider):
 
 @implementer(IDowntimePortlet)
 class Assignment(base.Assignment):
-
     @property
     def title(self):
         return 'Upcoming Downtimes'
@@ -66,16 +65,15 @@ class Renderer(base.Renderer):
         now = self._getCurrentTimeInUtc()
         start = now + datetime.timedelta(-1)
         end = now + datetime.timedelta(365000)
-        date_query = {
-            'query': (start, end),
-            'range': 'min:max'
-        }
+        date_query = {'query': (start, end), 'range': 'min:max'}
 
-        downtimeBrains = catalog(portal_type='downtime_dx',
-                                 path=query_path,
-                                 end=date_query,
-                                 review_state='published',
-                                 sort_on='start',
-                                 sort_limit=10)
+        downtimeBrains = catalog(
+            portal_type='downtime_dx',
+            path=query_path,
+            end=date_query,
+            review_state='published',
+            sort_on='start',
+            sort_limit=10,
+        )
 
         return [brain.getObject() for brain in downtimeBrains]

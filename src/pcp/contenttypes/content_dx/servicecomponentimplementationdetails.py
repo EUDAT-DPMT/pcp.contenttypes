@@ -14,8 +14,8 @@ from zope.interface import implementer
 
 
 class IServiceComponentImplementationDetails(model.Schema):
-    """Dexterity Schema for ServiceComponentImplementationDetails
-    """
+    """Dexterity Schema for ServiceComponentImplementationDetails"""
+
 
 @implementer(IServiceComponentImplementationDetails)
 class ServiceComponentImplementationDetails(Container):

@@ -11,7 +11,6 @@ import os
 import requests
 
 
-
 class IAccountable(Interface):
     """ Marker interface for content items that are accountable """
 
@@ -29,15 +28,20 @@ class Accountable(object):
         registry = getUtility(IRegistry)
         f_base = registry['dpmt.accounting_url']
         settings = registry.forInterface(ISettings, check=False)
-        #f = furl.furl(settings.accounting_url + '/addAccount')
+        # f = furl.furl(settings.accounting_url + '/addAccount')
         f = furl.furl(f_base + '/addAccount')
-        credentials = (registry['dpmt.accounting_username'],
-                       registry['dpmt.accounting_password'])
+        credentials = (
+            registry['dpmt.accounting_username'],
+            registry['dpmt.accounting_password'],
+        )
         data = dict(id=self.UID(), owner=owner_id)
         result = requests.post(f, data=data, auth=credentials)
         if not result.ok:
-            raise RuntimeError('Unable to create account for {} on accounting server (reason: {})'.format(
-                owner_id, result.text))
+            raise RuntimeError(
+                'Unable to create account for {} on accounting server (reason: {})'.format(
+                    owner_id, result.text
+                )
+            )
 
     def getProvider(self):
         """The provider offering the accountable resource. """

@@ -41,7 +41,7 @@ hidden_fields = (
     'modification_date',
     'creators',
     'excludeFromNav',
-    'nextPreviousEnabled'
+    'nextPreviousEnabled',
 )
 
 
@@ -70,7 +70,6 @@ class JSONViewDX(BrowserView):
         pretty = json.dumps(data, sort_keys=True, indent=4)
         self.request.response.setHeader("Content-type", "application/json")
         return pretty
-
 
 
 class JSONView(BrowserView):
@@ -145,7 +144,7 @@ class JSONView(BrowserView):
             else:
                 try:
                     value = field.getRaw(context)
-                except AttributeError:   # happens for computed fields
+                except AttributeError:  # happens for computed fields
                     value = field.get(context)
             data[name] = self.convert(value)
         return data

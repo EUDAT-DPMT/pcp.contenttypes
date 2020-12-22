@@ -1,4 +1,3 @@
-
 from Products.Five.browser import BrowserView
 
 
@@ -30,13 +29,16 @@ class TableView(BrowserView):
         for field in self.context.Schema().fields():
             if field.getName() in hidden_fields:
                 continue
-            if field.widget.isVisible(self.context) in ['invisible','hidden']:
+            if field.widget.isVisible(self.context) in ['invisible', 'hidden']:
                 continue
             value = field.get(self.context)
             if value in (None, '', [], ()):
                 continue
-            result.append(dict(
-                field=field.getName(),
-                title=field.widget.Label(self.context),
-                value=value))
+            result.append(
+                dict(
+                    field=field.getName(),
+                    title=field.widget.Label(self.context),
+                    value=value,
+                )
+            )
         return result

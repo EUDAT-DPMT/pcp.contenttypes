@@ -1,11 +1,9 @@
-
 import plone.api
 
 from Products.Five.browser import BrowserView
 
 
 class Enabling(BrowserView):
-
     def getServices(self):
         """ For PFG enabling forms ('service' field) """
         catalog = plone.api.portal.get_tool('portal_catalog')
@@ -42,14 +40,17 @@ class Enabling(BrowserView):
                 save_adapter = form.objectValues('FormSaveData2ContentAdapter')[0]
                 saved_forms = len(save_adapter.objectIds())
                 save_adapter_url = save_adapter.absolute_url() + '/folder_contents'
-            result.append(dict(
-                saved_forms=saved_forms,
-                save_adapter_url=save_adapter_url,
-                has_service=has_service,
-                has_project=has_project,
-                has_save_adapter=has_save_adapter,
-                url=brain.getURL(),
-                title=brain.Title))
+            result.append(
+                dict(
+                    saved_forms=saved_forms,
+                    save_adapter_url=save_adapter_url,
+                    has_service=has_service,
+                    has_project=has_project,
+                    has_save_adapter=has_save_adapter,
+                    url=brain.getURL(),
+                    title=brain.Title,
+                )
+            )
         return result
 
     def process_enabling_form_data(self):
@@ -80,8 +81,9 @@ class Enabling(BrowserView):
         filter_method = 'filter_{}'.format(service_name)
         method = getattr(self, filter_method, None)
         if not method:
-            raise ValueError('No filtering method {}() implemented'.format(filter_method))
-
+            raise ValueError(
+                'No filtering method {}() implemented'.format(filter_method)
+            )
 
         action_lists = method(project, service, action_lists)
 
@@ -89,7 +91,6 @@ class Enabling(BrowserView):
             al.createPOI(target_path='/'.join(project.getPhysicalPath()))
 
         return 'DONE'
-
 
     def filter_B2SAFE(self, project, service, action_lists):
         """ Do some filtering...."""
@@ -115,7 +116,3 @@ class Enabling(BrowserView):
         """ Do some filtering...."""
 
         return action_lists
-
-
-
-

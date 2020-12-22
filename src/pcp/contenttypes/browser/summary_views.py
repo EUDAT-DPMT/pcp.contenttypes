@@ -5,12 +5,13 @@ from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
 import six
+
 try:
     from Products.Archetypes.BaseObject import BaseObject
+
     HAS_AT = True
 except ImportError:
     HAS_AT = False
-
 
 
 CSV_TEMPLATE = '"%s"'
@@ -28,10 +29,10 @@ def render_type(content, field_id):
 
 
 def render_reference_field(content, field_id, with_state=False):
-    try: # first the Archetypes way
+    try:  # first the Archetypes way
         field = content.schema[field_id]
         objs = field.get(content, aslist=True)
-    except AttributeError: # likely a dexterity type
+    except AttributeError:  # likely a dexterity type
         obj_refs = getattr(content, field_id, [])
         if type(obj_refs) != type([]):
             obj_refs = [obj_refs]
@@ -42,13 +43,14 @@ def render_reference_field(content, field_id, with_state=False):
     for item in objs:
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
-            text.append("<a href='%s'>%s</a> (%s)" %
-                        (item.absolute_url(), item.Title(), state))
+            text.append(
+                "<a href='%s'>%s</a> (%s)" % (item.absolute_url(), item.Title(), state)
+            )
 
         else:
-            text.append("<a href='%s'>%s</a>" %
-                        (item.absolute_url(), item.Title()))
+            text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
     return "<br />".join(text)
+
 
 def render_service_options(content, field_id, with_state=False):
     try:
@@ -65,28 +67,30 @@ def render_service_options(content, field_id, with_state=False):
             continue
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
-            text.append("<a href='%s'>%s</a> (%s)" %
-                        (item.absolute_url(), item.Title(), state))
+            text.append(
+                "<a href='%s'>%s</a> (%s)" % (item.absolute_url(), item.Title(), state)
+            )
 
         else:
-            text.append("<a href='%s'>%s</a>" %
-                        (item.absolute_url(), item.Title()))
+            text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
     return "<br />".join(text)
+
 
 def render_service_components(content, field_id):
     return render_reference_field(content, field_id, with_state=True)
 
 
 def render_with_link(content, field_id):
-    try: # first the Archetypes way
+    try:  # first the Archetypes way
         field = content.schema[field_id]
         value = field.get(content)
-    except AttributeError: # Dexterity way
+    except AttributeError:  # Dexterity way
         value = getattr(content, field_id, '<link>')
         if safe_callable(value):
             value = value()
     url = content.absolute_url()
     return "<a href='%s'>%s</a>" % (url, value)
+
 
 def render_with_link_dx(content, field_id):
     field_value = getattr(content, field_id, '')
@@ -122,7 +126,7 @@ def modification_date(content, field_id):
 
 
 def render_date(content, field_id):
-    try: # the Archetypes way
+    try:  # the Archetypes way
         field = content.schema[field_id]
         value = field.get(content)
     except AttributeError:
@@ -140,6 +144,7 @@ def render_resources(content, field_id):
     except AttributeError:
         return 'none specified'
 
+
 def render_number_of_objects(content, field_id):
     """
     Return the number of registered objects.
@@ -149,6 +154,7 @@ def render_number_of_objects(content, field_id):
         return content.getNumberOfRegisteredObjects()
     except AttributeError:
         return "none"
+
 
 def render_contact_email(content, field_id):
     """
@@ -165,6 +171,7 @@ def render_contact_email(content, field_id):
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
+
 def render_business_email(content, field_id):
     """
     Return the email address from the referenced business contact object
@@ -180,12 +187,14 @@ def render_business_email(content, field_id):
     email_link = '<a href="mailto:%s">%s</a>'
     return email_link % (email, email)
 
+
 def provider_contact_email(content, field_id):
     """
     Look up the parent provider and get to its contact email
     """
     parent = content.aq_inner.aq_parent
     return render_contact_email(parent, '')
+
 
 def provider_business_email(content, field_id):
     """
@@ -194,11 +203,13 @@ def provider_business_email(content, field_id):
     parent = content.aq_inner.aq_parent
     return render_business_email(parent, '')
 
+
 def render_constraints(content, field_id):
     """
     Return the aggregated constraints
     """
     return content.aggregated_constraints()
+
 
 class DetailedView(BrowserView):
     """Dispatcher to the more specific summary views"""
@@ -208,54 +219,53 @@ class DetailedView(BrowserView):
         id = self.context.getId()
 
         mapping = {
-            'projects':'project_summary_view',
-            'customers':'customer_overview',
-            'providers':'provider_overview',
-            'catalog':'service_overview'
+            'projects': 'project_summary_view',
+            'customers': 'customer_overview',
+            'providers': 'provider_overview',
+            'catalog': 'service_overview',
         }
 
         view = mapping.get(id, 'folder_summary_view')
 
-        target = '{base}/{view}'.format(base=self.context.absolute_url(),
-                                        view=view)
+        target = '{base}/{view}'.format(base=self.context.absolute_url(), view=view)
         return self.request.response.redirect(target)
-
 
 
 class BaseSummaryView(BrowserView):
     """Base class for various summary views"""
 
-    render_methods_dx = {'title': render_with_link_dx,
-                         'parent_rsc': render_parent,     # endpoint specific
-                         'provider': render_grandparent,  # endpoint specific
-                     }
+    render_methods_dx = {
+        'title': render_with_link_dx,
+        'parent_rsc': render_parent,  # endpoint specific
+        'provider': render_grandparent,  # endpoint specific
+    }
 
-    render_methods = {'state': render_state,
-                      'portal_type': render_type,
-                      'title': render_with_link,
-                      'parent_provider': render_parent,
-                      'parent_project': render_parent,
-                      'created': creation_date,
-                      'modified': modification_date,
-                      'startDate': render_date,
-                      'resources': render_resources,
-                      'service_options': render_service_options,
-                      'service_components': render_service_components,
-                      'number': render_number_of_objects,
-                      'contact_email': render_contact_email,
-                      'business_email': render_business_email,
-                      'provider_contact_email': provider_contact_email,
-                      'provider_business_email': provider_business_email,
-                      'constraints': render_constraints,
-                      # add more as needed; reference fields don't need to be
-                      # included here
-                      }
+    render_methods = {
+        'state': render_state,
+        'portal_type': render_type,
+        'title': render_with_link,
+        'parent_provider': render_parent,
+        'parent_project': render_parent,
+        'created': creation_date,
+        'modified': modification_date,
+        'startDate': render_date,
+        'resources': render_resources,
+        'service_options': render_service_options,
+        'service_components': render_service_components,
+        'number': render_number_of_objects,
+        'contact_email': render_contact_email,
+        'business_email': render_business_email,
+        'provider_contact_email': provider_contact_email,
+        'provider_business_email': provider_business_email,
+        'constraints': render_constraints,
+        # add more as needed; reference fields don't need to be
+        # included here
+    }
 
     def ATbased(self, obj):
         """Helper method to check if 'obj' is Archetypes based"""
         if HAS_AT:
             return isinstance(obj, BaseObject)
-
 
     def field_visible(self, obj, field_name):
         # XXX How to do the same for dexterity types ???
@@ -263,9 +273,8 @@ class BaseSummaryView(BrowserView):
         if field:
             permission = field.read_permission
             return plone.api.user.has_permission(
-                permission=permission,
-                user=plone.api.user.get_current(),
-                obj=obj)
+                permission=permission, user=plone.api.user.get_current(), obj=obj
+            )
         return True
 
     @property
@@ -278,30 +287,62 @@ class BaseSummaryView(BrowserView):
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title',
-                'community', 'registered_services_used', 'general_provider',
-                'topics', 'scopes', 'used_new', 'registered_objects',
-                'start_date', 'end_date', 'created', 'modified', 'state')
+        return (
+            'title',
+            'community',
+            'registered_services_used',
+            'general_provider',
+            'topics',
+            'scopes',
+            'used_new',
+            'registered_objects',
+            'start_date',
+            'end_date',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Title',
-                'Customer', 'Service(s)', 'General provider',
-                'Topics', 'Scope(s)', 'Used Storage', 'Objects',
-                'Start date', 'End date', 'Created', 'Modified', 'State')
+        return (
+            'Title',
+            'Customer',
+            'Service(s)',
+            'General provider',
+            'Topics',
+            'Scope(s)',
+            'Used Storage',
+            'Objects',
+            'Start date',
+            'End date',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('used_new', 'registered_objects', 'topics', 'scopes', 'start_date', 'end_date')
+        return (
+            'used_new',
+            'registered_objects',
+            'topics',
+            'scopes',
+            'start_date',
+            'end_date',
+        )
 
     def content_items(self, portal_type):
         """The content items to show"""
-        return [element.getObject() for element in self.catalog(portal_type=portal_type)]
+        return [
+            element.getObject() for element in self.catalog(portal_type=portal_type)
+        ]
 
     def render(self, content, field_id):
         """Dispatcher for rendering not-so-simple fields"""
         renderer = self.render_methods.get(field_id, render_reference_field)
         return renderer(content, field_id)
+
 
 class EndpointOverview(BaseSummaryView):
     """All specific endpoints"""
@@ -316,13 +357,29 @@ class EndpointOverview(BaseSummaryView):
 
     def fields(self):
         """Field names; needs to exist at all endpoint types"""
-        return ('title', 'parent_rsc','provider', 'host', 'monitored',
-                'system_operations_user', 'related_project','related_service')
+        return (
+            'title',
+            'parent_rsc',
+            'provider',
+            'host',
+            'monitored',
+            'system_operations_user',
+            'related_project',
+            'related_service',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Service endpoint', 'Service component','Provider', 'Host', 'Monitored',
-                'System operations user', 'Project','Service')
+        return (
+            'Service endpoint',
+            'Service component',
+            'Provider',
+            'Host',
+            'Monitored',
+            'System operations user',
+            'Project',
+            'Service',
+        )
 
     def render(self, content, field_id):
         """Dexterity type rendering of field values"""
@@ -352,25 +409,57 @@ class PeopleOverview(BaseSummaryView):
 
     def content_items(self):
         """All address book entries"""
-        return [element.getObject() for element in self.catalog(portal_type=['Person', 'person_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=['Person', 'person_dx'])
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for',
-               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for',
-               'community_representative', 'community_admin', 'enables', 'service_owner_of',
-               'principle_investigator_of','manager_of_registered_service')
+        return (
+            'title',
+            'email',
+            'affiliation',
+            'manages',
+            'provider_contact_for',
+            'business_contact_for',
+            'security_contact_for',
+            'provider_admin',
+            'she_contact',
+            'community_contact_for',
+            'community_representative',
+            'community_admin',
+            'enables',
+            'service_owner_of',
+            'principle_investigator_of',
+            'manager_of_registered_service',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classs"""
-        return ('title', 'email', 'affiliation', 'manages', 'provider_contact_for', 'business_contact_for',
-               'security_contact_for', 'provider_admin', 'she_contact', 'community_contact_for',
-               'community_representative', 'community_admin', 'enables', 'service_owner_of',
-               'principle_investigator_of','manager_of_registered_service')
+        return (
+            'title',
+            'email',
+            'affiliation',
+            'manages',
+            'provider_contact_for',
+            'business_contact_for',
+            'security_contact_for',
+            'provider_admin',
+            'she_contact',
+            'community_contact_for',
+            'community_representative',
+            'community_admin',
+            'enables',
+            'service_owner_of',
+            'principle_investigator_of',
+            'manager_of_registered_service',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ['email']
+
 
 class CustomerOverview(BaseSummaryView):
     """Overview of all customers/sponsors/communities"""
@@ -382,21 +471,45 @@ class CustomerOverview(BaseSummaryView):
     def content_items(self):
         """All customers regardless of location"""
         # customers were originally called communities
-        return [element.getObject() for element in self.catalog(portal_type=['Community', 'community_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=['Community', 'community_dx'])
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'topics', 'representative', 'projects_involved', 'primary_provider', 'usage_summary',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'topics',
+            'representative',
+            'projects_involved',
+            'primary_provider',
+            'usage_summary',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Customer', 'Topics', 'Representative', 'Projects', 'Provider', 'Usage Summary',
-                'Created', 'Modified', 'State')
+        return (
+            'Customer',
+            'Topics',
+            'Representative',
+            'Projects',
+            'Provider',
+            'Usage Summary',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('topics', 'usage_summary',)
+        return (
+            'topics',
+            'usage_summary',
+        )
 
 
 class ProviderOverview(BaseSummaryView):
@@ -408,34 +521,59 @@ class ProviderOverview(BaseSummaryView):
 
     def content_items(self):
         """All providers regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type=['Provider', 'provider_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=['Provider', 'provider_dx'])
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'url', 'contact', 'contact_email',
-                'business_contact', 'business_email',
-                'provider_type', 'provider_status', 'status_details',
-                'infrastructure',
-                'helpdesk_email',
-                'security_contact',
-                'created',
-                'modified')
+        return (
+            'title',
+            'url',
+            'contact',
+            'contact_email',
+            'business_contact',
+            'business_email',
+            'provider_type',
+            'provider_status',
+            'status_details',
+            'infrastructure',
+            'helpdesk_email',
+            'security_contact',
+            'created',
+            'modified',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Provider', 'Website', 'Operational Contact', 'Email',
-                'Business contact', 'Business email',
-                'Type', 'Status', 'Status details',
-                'Infrastructure Status',
-                'Helpdesk email',
-                'Security contact',
-                'Created',
-                'Modified')
+        return (
+            'Provider',
+            'Website',
+            'Operational Contact',
+            'Email',
+            'Business contact',
+            'Business email',
+            'Type',
+            'Status',
+            'Status details',
+            'Infrastructure Status',
+            'Helpdesk email',
+            'Security contact',
+            'Created',
+            'Modified',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('url', 'status_details', 'infrastructure', 'helpdesk_email',
-                'provider_status', 'provider_type')
+        return (
+            'url',
+            'status_details',
+            'infrastructure',
+            'helpdesk_email',
+            'provider_status',
+            'provider_type',
+        )
 
 
 class ServiceOverview(BaseSummaryView):
@@ -447,17 +585,38 @@ class ServiceOverview(BaseSummaryView):
 
     def content_items(self):
         """All services regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type=['Service', 'service_dx'], path='/pcp/catalog')]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=['Service', 'service_dx'], path='/pcp/catalog'
+            )
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_options', 'service_type', 'service_owner', 'contact',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'service_options',
+            'service_type',
+            'service_owner',
+            'contact',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in hte specific classes"""
-        return ('Title', 'Options', 'Type', 'Owner', 'Contact',
-                'Created', 'Modified', 'State')
+        return (
+            'Title',
+            'Options',
+            'Type',
+            'Owner',
+            'Contact',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -466,6 +625,7 @@ class ServiceOverview(BaseSummaryView):
 
 class ProjectOverview(BaseSummaryView):
     """Overview of all projects"""
+
     # almost identical to base class as this is the driving use case
     # implemented in the base class
 
@@ -475,7 +635,10 @@ class ProjectOverview(BaseSummaryView):
 
     def content_items(self):
         """All projects regardless of location"""
-        return [element.getObject() for element in self.catalog(portal_type=['Project', 'project_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=['Project', 'project_dx'])
+        ]
 
 
 class RegisteredServiceOverview(BaseSummaryView):
@@ -487,18 +650,42 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered services regardless of location"""
-        return [element.getObject() for element in
-                self.catalog(portal_type=['RegisteredService', 'registeredservice_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=['RegisteredService', 'registeredservice_dx']
+            )
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'general_provider', 'contact', 'managers', 'monitored', 'scopes', 'service_components',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'general_provider',
+            'contact',
+            'managers',
+            'monitored',
+            'scopes',
+            'service_components',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Service name', 'General provider', 'Contact', 'Manager(s)', 'Monitored', 'Project scope(s)', 'Service component(s)',
-                'Created', 'Modified', 'State')
+        return (
+            'Service name',
+            'General provider',
+            'Contact',
+            'Manager(s)',
+            'Monitored',
+            'Project scope(s)',
+            'Service component(s)',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -514,19 +701,45 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered service components regardless of location"""
-        return [element.getObject() for element in \
-                self.catalog(portal_type=['RegisteredServiceComponent', 'registeredservicecomponent_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=[
+                    'RegisteredServiceComponent',
+                    'registeredservicecomponent_dx',
+                ]
+            )
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'service_url', 'parent_provider', 'scopes', 'contacts',
-                'monitored', 'host_name',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'service_url',
+            'parent_provider',
+            'scopes',
+            'contacts',
+            'monitored',
+            'host_name',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Service component', 'URL', 'Provider', 'Project scope(s)', 'Contact(s)', 'Monitored', 'Host name',
-                'Created', 'Modified', 'State')
+        return (
+            'Service component',
+            'URL',
+            'Provider',
+            'Project scope(s)',
+            'Contact(s)',
+            'Monitored',
+            'Host name',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -542,19 +755,43 @@ class RequestOverview(BaseSummaryView):
 
     def content_items(self):
         """All requests regardless of location"""
-        types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest',
-                 'servicerequest_dx', 'servicecomponentrequest_dx', 'resourcerequest_dx']
+        types = [
+            'ServiceRequest',
+            'ServiceComponentRequest',
+            'ResourceRequest',
+            'servicerequest_dx',
+            'servicecomponentrequest_dx',
+            'resourcerequest_dx',
+        ]
         return [element.getObject() for element in self.catalog(portal_type=types)]
 
     def fields(self):
         """hardcoded for a starts"""
-        return ('parent_project', 'portal_type', 'title', 'resources', 'startDate',
-                'preferred_providers', 'created', 'modified', 'state')
+        return (
+            'parent_project',
+            'portal_type',
+            'title',
+            'resources',
+            'startDate',
+            'preferred_providers',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """Hardcoded label"""
-        return ('Requesting Project', 'Request Type', 'Request Title', 'Requested Resources',
-                'Requested Start Date', 'Preferred Provider(s)', 'Created', 'Modified', 'State')
+        return (
+            'Requesting Project',
+            'Request Type',
+            'Request Title',
+            'Requested Resources',
+            'Requested Start Date',
+            'Preferred Provider(s)',
+            'Created',
+            'Modified',
+            'State',
+        )
 
 
 class ApprovedRequests(RequestOverview):
@@ -562,13 +799,17 @@ class ApprovedRequests(RequestOverview):
 
     title = "Approved Requests"
 
-    description = "All appoved but unfulfilled requests, i.e., those that need to be acted upon"
+    description = (
+        "All appoved but unfulfilled requests, i.e., those that need to be acted upon"
+    )
 
     def content_items(self):
         """All approved requests regardless of location"""
         types = ['ServiceRequest', 'ServiceComponentRequest', 'ResourceRequest']
-        return [element.getObject() for element in
-                self.catalog(portal_type=types, review_state='approved')]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=types, review_state='approved')
+        ]
 
 
 class RegisteredResourceOverview(BaseSummaryView):
@@ -580,24 +821,47 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered resources regardless of location"""
-        return [element.getObject() for element in
-                self.catalog(portal_type=['RegisteredResource', 'registeredresource_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=['RegisteredResource', 'registeredresource_dx']
+            )
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
-                'compute_resources', 'storage_resources', 'scopes',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'parent_provider',
+            'provider_contact_email',
+            'provider_business_email',
+            'compute_resources',
+            'storage_resources',
+            'scopes',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Resource name', 'Provider', 'Operational contact (email)', 'Business contact (email)',
-                'Compute resources', 'Storage resources', 'Project scope(s)',
-                'Created', 'Modified', 'State')
+        return (
+            'Resource name',
+            'Provider',
+            'Operational contact (email)',
+            'Business contact (email)',
+            'Compute resources',
+            'Storage resources',
+            'Project scope(s)',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('compute_resources', 'storage_resources', 'scopes')
+
 
 class RegisteredStorageResourceOverview(BaseSummaryView):
     """Overview of all registered storage resources no matter where they are located"""
@@ -608,20 +872,51 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
 
     def content_items(self):
         """All registered storage resources regardless of location"""
-        return [element.getObject() for element in \
-                self.catalog(portal_type=['RegisteredStorageResource', 'registeredstorageresource_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=[
+                    'RegisteredStorageResource',
+                    'registeredstorageresource_dx',
+                ]
+            )
+        ]
 
     def fields(self):
         """Not yet complete - expand once we have accounting information"""
-        return ('title', 'customer', 'project', 'parent_provider', 'scopes', 'services', \
-                'storage_class', 'number',
-                'usage', 'allocated', 'created', 'modified', 'state')
+        return (
+            'title',
+            'customer',
+            'project',
+            'parent_provider',
+            'scopes',
+            'services',
+            'storage_class',
+            'number',
+            'usage',
+            'allocated',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Storage Name', 'Customer', 'Project', 'Provider', 'Project scope(s)', 'Deployed on', \
-                'Storage Class', 'Registered Objects',
-                'Used Storage', 'Allocated Storage', 'Created', 'Modified', 'State')
+        return (
+            'Storage Name',
+            'Customer',
+            'Project',
+            'Provider',
+            'Project scope(s)',
+            'Deployed on',
+            'Storage Class',
+            'Registered Objects',
+            'Used Storage',
+            'Allocated Storage',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
@@ -637,19 +932,39 @@ class ServiceOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service offers regardless of location"""
-        items= [element.getObject() for element in \
-                self.catalog(portal_type=['ServiceOffer', 'serviceoffer_dx'])]
+        items = [
+            element.getObject()
+            for element in self.catalog(portal_type=['ServiceOffer', 'serviceoffer_dx'])
+        ]
         return items
 
     def fields(self):
         """Fields to show in the overview"""
-        return ('title', 'service', 'parent_provider', 'slas', 'constraints', 'contact',
-                'state', 'created', 'modified')
+        return (
+            'title',
+            'service',
+            'parent_provider',
+            'slas',
+            'constraints',
+            'contact',
+            'state',
+            'created',
+            'modified',
+        )
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service (offer)', 'Service (in catalog)', 'Provider', 'SLAs/OLAs', 'Constraints', 'Contact',
-                'State', 'Created', 'Modified')
+        return (
+            'Service (offer)',
+            'Service (in catalog)',
+            'Provider',
+            'SLAs/OLAs',
+            'Constraints',
+            'Contact',
+            'State',
+            'Created',
+            'Modified',
+        )
 
 
 class ServiceComponentOfferOverview(BaseSummaryView):
@@ -661,20 +976,40 @@ class ServiceComponentOfferOverview(BaseSummaryView):
 
     def content_items(self):
         """All service component offers regardless of location"""
-        return [element.getObject() for element in
-                self.catalog(portal_type=['ServiceComponentOffer', 'servicecomponentoffer_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=['ServiceComponentOffer', 'servicecomponentoffer_dx']
+            )
+        ]
 
     def fields(self):
         """Fields to show in the overview"""
-        return ('title', 'service_component', 'implementations',
-                'parent_provider', 'slas', 'constraints',
-                'state', 'created', 'modified')
+        return (
+            'title',
+            'service_component',
+            'implementations',
+            'parent_provider',
+            'slas',
+            'constraints',
+            'state',
+            'created',
+            'modified',
+        )
 
     def field_labels(self):
         """Explicit labels fo rthe fields"""
-        return ('Service Component (offer)', 'Service Component (in catalog)', 'Implementations supported',
-                'Provider', 'SLAs/OLAs', 'Constraints',
-                'State', 'Created', 'Modified')
+        return (
+            'Service Component (offer)',
+            'Service Component (in catalog)',
+            'Implementations supported',
+            'Provider',
+            'SLAs/OLAs',
+            'Constraints',
+            'State',
+            'Created',
+            'Modified',
+        )
 
 
 class ResourceOfferOverview(RegisteredResourceOverview):
@@ -686,24 +1021,47 @@ class ResourceOfferOverview(RegisteredResourceOverview):
 
     def content_items(self):
         """All resource offers regardless of location"""
-        return [element.getObject() for element in
-                self.catalog(portal_type=['ResourceOffer', 'resourceoffer_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(
+                portal_type=['ResourceOffer', 'resourceoffer_dx']
+            )
+        ]
 
     def fields(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('title', 'parent_provider', 'provider_contact_email', 'provider_business_email',
-                'compute_resources', 'storage_resources', 'constraints',
-                'created', 'modified', 'state')
+        return (
+            'title',
+            'parent_provider',
+            'provider_contact_email',
+            'provider_business_email',
+            'compute_resources',
+            'storage_resources',
+            'constraints',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
-        return ('Resource offer', 'Provider', 'Operational contact (email)', 'Business contact (email)',
-                'Compute resources', 'Storage resources', 'Constraints',
-                'Created', 'Modified', 'State')
+        return (
+            'Resource offer',
+            'Provider',
+            'Operational contact (email)',
+            'Business contact (email)',
+            'Compute resources',
+            'Storage resources',
+            'Constraints',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
         return ('compute_resources', 'storage_resources')
+
 
 class DowntimeOverview(BaseSummaryView):
 
@@ -712,33 +1070,53 @@ class DowntimeOverview(BaseSummaryView):
     description = ""
 
     def content_items(self):
-        return [element.getObject() for element in
-                self.catalog(portal_type=['Downtime', 'downtime_dx'])]
+        return [
+            element.getObject()
+            for element in self.catalog(portal_type=['Downtime', 'downtime_dx'])
+        ]
 
     def fields(self):
-        return ('title', 'startDateTime', 'endDateTime',
-                'affected_registered_serivces',
-                'parent_provider', 'created', 'modified', 'state',)
+        return (
+            'title',
+            'startDateTime',
+            'endDateTime',
+            'affected_registered_serivces',
+            'parent_provider',
+            'created',
+            'modified',
+            'state',
+        )
 
     def field_labels(self):
-        return ('Title', 'Start Date (UTC)', 'End Date (UTC)',
-                'Affected Services and Components',
-                'Provider', 'Created', 'Modified', 'State',)
+        return (
+            'Title',
+            'Start Date (UTC)',
+            'End Date (UTC)',
+            'Affected Services and Components',
+            'Provider',
+            'Created',
+            'Modified',
+            'State',
+        )
 
     def simple_fields(self):
-        return ('startDateTime', 'endDateTime', )
+        return (
+            'startDateTime',
+            'endDateTime',
+        )
 
 
 class CsvView(ProjectOverview):
     """View class for the CSV output of projects"""
 
-    def csv_export(self,
-                   states=None,
-                   fields=None,
-                   filenamebase='projects',
-                   delimiter=',',
-                   newline='\r\n',
-                   ):
+    def csv_export(
+        self,
+        states=None,
+        fields=None,
+        filenamebase='projects',
+        delimiter=',',
+        newline='\r\n',
+    ):
         """Main method to be called for the csv export"""
 
         if fields is None:
@@ -763,9 +1141,9 @@ class CsvView(ProjectOverview):
         timestamp = datetime.today().strftime("%Y%m%d%H%M")
         filename = filenamebase + timestamp + '.csv'
 
+        self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
         self.request.RESPONSE.setHeader(
-            'Content-Type', 'application/x-msexcel')
-        self.request.RESPONSE.setHeader("Content-Disposition",
-                                        "inline;filename=%s" % filename)
+            "Content-Disposition", "inline;filename=%s" % filename
+        )
 
         return value

@@ -37,8 +37,8 @@ class ISize(Interface):
 
 
 class IRegisteredStorageResource(model.Schema):
-    """Dexterity Schema for Registered Storage Resources
-    """
+    """Dexterity Schema for Registered Storage Resources"""
+
     size = schema.List(
         title=u'Size',
         description=u'Maximal size and type of this storage resource',
@@ -67,7 +67,10 @@ class IRegisteredStorageResource(model.Schema):
         required=False,
     )
 
-    cost_factor = schema.Float(title=u"Cost factor", required=False,)
+    cost_factor = schema.Float(
+        title=u"Cost factor",
+        required=False,
+    )
 
     preserve_until = schema.Datetime(
         title=u"Preserve until",
@@ -76,6 +79,7 @@ class IRegisteredStorageResource(model.Schema):
     )
     directives.widget('preserve_until', DatetimeFieldWidget)
 
+
 @implementer(IRegisteredStorageResource)
 @implementer(IAccountable)
 class RegisteredStorageResource(Container, CommonUtilities, Accountable):
@@ -83,7 +87,9 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
 
     @property
     def usage(self):
-        return self.renderMemoryValue(self.getUsedMemory() and self.getUsedMemory()['core'])
+        return self.renderMemoryValue(
+            self.getUsedMemory() and self.getUsedMemory()['core']
+        )
 
     @property
     def number(self):
@@ -125,8 +131,10 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
         else:
             submission_time = '??'
 
-        return '%s (%s UTC)' % (self.renderResourceUsage(used and used['core'], size),
-                                submission_time)
+        return '%s (%s UTC)' % (
+            self.renderResourceUsage(used and used['core'], size),
+            submission_time,
+        )
 
     def getNumberOfRegisteredObjects(self, as_int=False):
         used = self.getUsedMemory()
@@ -140,7 +148,7 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
                 return int(number)
         return number
 
-    def getScopeValues(self, asString = 0):
+    def getScopeValues(self, asString=0):
         """Return the human readable values of the scope keys"""
         project = self.project
         if project is None:
@@ -151,6 +159,6 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
         scopes = []
         scopes.extend(project.getScopeValues())
         s = set(scopes)
-        if  asString:
+        if asString:
             return ", ".join(s)
-        return s # tuple(s)
+        return s  # tuple(s)
