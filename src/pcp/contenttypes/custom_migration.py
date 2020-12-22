@@ -33,9 +33,9 @@ def migrate_simple_datagrid(src_obj, dst_obj, src_fieldname, dst_fieldname):
         dx_value = {}
         for key, val in at_value.items():
             if isinstance(at_value, tuple):
-                val = tuple(safe_unicode(i) for i in val)
+                val = tuple(safe_text(i) for i in val)
             if isinstance(at_value, list):
-                val = [safe_unicode(i) for i in val]
+                val = [safe_text(i) for i in val]
             dx_value[key] = val
         dx_values.append(dx_value)
     setattr(dst_obj, dst_fieldname, dx_values)

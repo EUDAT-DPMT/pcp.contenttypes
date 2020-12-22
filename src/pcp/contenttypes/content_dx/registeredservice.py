@@ -1,9 +1,6 @@
-from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
-from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container

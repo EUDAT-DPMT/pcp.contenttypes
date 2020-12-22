@@ -6,8 +6,6 @@ from zope.component import getUtility
 from zope.interface import Interface
 
 import furl
-import json
-import os
 import requests
 
 

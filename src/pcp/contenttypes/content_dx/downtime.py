@@ -2,12 +2,9 @@ from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.content_dx.provider import IProvider
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import \
-    IRegisteredServiceComponent
+from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
 from pcp.contenttypes.mail import send_mail
-from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
@@ -131,9 +128,9 @@ def findDowntimeRecipients(downtime):
     indirectly_affected_services = set(indirectly_affected_services)
 
     directly_affected_services = {
-            service
-            for service in affected_services_or_components
-            if IRegisteredService.providedBy(service)
+        service
+        for service in affected_services_or_components
+        if IRegisteredService.providedBy(service)
     }
 
     affected_services = set.union(

@@ -340,8 +340,7 @@ class CommonUtilities:
         """Get sum of all resources' usage. If this value can not be determined
         (i.e. some resource's values are not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import \
-            IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
 
         usages = []
 
@@ -359,8 +358,7 @@ class CommonUtilities:
         """Get sum of all resources' size. If this value can not be determined
         (i.e. size of a resource is not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import \
-            IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
 
         sizes = []
 
@@ -424,8 +422,7 @@ class CommonUtilities:
 
     def listResourceUsage(self, resources):
         """ List usage of resources, i.e. all resource's usage. """
-        from pcp.contenttypes.content_dx.registeredstorageresource import \
-            IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
 
         usages = []
         for resource in self.getResources():
@@ -436,8 +433,7 @@ class CommonUtilities:
 
     def registeredObjectsTotal(self):
         """ Sum of all registered objects across related registered storage resources """
-        from pcp.contenttypes.content_dx.registeredstorageresource import \
-            IRegisteredStorageResource
+        from pcp.contenttypes.content_dx.registeredstorageresource import IRegisteredStorageResource
 
         total = 0
         for resource in self.getResources():

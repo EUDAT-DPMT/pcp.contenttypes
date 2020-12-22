@@ -5,7 +5,6 @@ specification of constraints where necessary
 """
 
 from plone.app.textfield import RichText
-from plone.autoform import directives
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset

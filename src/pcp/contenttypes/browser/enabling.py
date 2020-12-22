@@ -81,9 +81,7 @@ class Enabling(BrowserView):
         filter_method = f'filter_{service_name}'
         method = getattr(self, filter_method, None)
         if not method:
-            raise ValueError(
-                f'No filtering method {filter_method}() implemented'
-            )
+            raise ValueError(f'No filtering method {filter_method}() implemented')
 
         action_lists = method(project, service, action_lists)
 

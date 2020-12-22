@@ -1,9 +1,7 @@
 from DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import \
-    IRegisteredServiceComponent
-from Products.CMFCore.MemberDataTool import MemberData
+from pcp.contenttypes.content_dx.registeredservicecomponent import IRegisteredServiceComponent
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory

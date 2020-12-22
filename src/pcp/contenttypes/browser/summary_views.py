@@ -5,7 +5,6 @@ from Products.CMFPlone.utils import safe_callable
 from Products.Five.browser import BrowserView
 
 import plone.api
-import six
 
 
 try:
@@ -45,9 +44,7 @@ def render_reference_field(content, field_id, with_state=False):
     for item in objs:
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
-            text.append(
-                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
-            )
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})")
 
         else:
             text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
@@ -69,9 +66,7 @@ def render_service_options(content, field_id, with_state=False):
             continue
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
-            text.append(
-                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
-            )
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})")
 
         else:
             text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")

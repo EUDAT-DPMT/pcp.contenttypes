@@ -6,7 +6,6 @@ from zopyx.plone.persistentlogger.logger import PersistentLoggerAdapter
 
 import os
 import pkg_resources
-import six
 import string
 
 
@@ -60,7 +59,6 @@ def send_mail(
     if sender:
         msg['From'] = sender
     else:
-        portal = api.portal.get()
         msg['From'] = formataddr((email_from_name, email_from_address))
     if cc_admin:
         if admin_alternative_email:

@@ -55,14 +55,10 @@ def sharing_handle_form(self):
         if settings:
 
             old_settings = self.context.get_local_roles()
-            old_settings_dict = {
-                userid: set(roles) for userid, roles in old_settings
-            }
+            old_settings_dict = {userid: set(roles) for userid, roles in old_settings}
             settings_dict = {d['id']: set(d['roles']) for d in settings}
 
-            old_userids = {
-                tp[0] for tp in old_settings if list(tp[1]) != ['Owner']
-            }
+            old_userids = {tp[0] for tp in old_settings if list(tp[1]) != ['Owner']}
             new_userids = {d['id'] for d in settings if d['roles']}
             all_userids = old_userids | new_userids
 
@@ -122,8 +118,7 @@ from Products.PluggableAuthService.plugins.exportimport import getPackagePath
 try:
     from Products.GenericSetup.utils import PageTemplateResource
 except ImportError:  # BBB
-    from Products.PageTemplates.PageTemplateFile import \
-        PageTemplateFile as PageTemplateResource
+    from Products.PageTemplates.PageTemplateFile import PageTemplateFile as PageTemplateResource
 
 
 def export(self, export_context, subdir, root=False):

@@ -4,7 +4,6 @@ from pcp.contenttypes.content_dx.common import CommonUtilities
 from pcp.contenttypes.widgets import TrustedTextWidget
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container

@@ -1,12 +1,4 @@
-from ..interfaces.settings import ISettings
-from plone.protect.interfaces import IDisableCSRFProtection
-from plone.registry.interfaces import IRegistry
 from Products.Five.browser import BrowserView
-from zope.component import getUtility
-from zope.interface import alsoProvides
-
-import furl
-import requests
 
 
 # helper method for rendering reference fields
@@ -19,9 +11,7 @@ def render_reference_field(content, field_id, with_state=False):
     for item in objs:
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
-            text.append(
-                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
-            )
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})")
 
         else:
             text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")

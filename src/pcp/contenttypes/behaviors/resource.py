@@ -7,13 +7,9 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from plone.autoform import directives
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.interfaces import IDexterityContent
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
-from plone.uuid.interfaces import IUUID
 from zope import schema
-from zope.component import adapter
-from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import provider
 
@@ -81,9 +77,7 @@ class IDPMTResource(model.Schema):
     compute_resources = schema.List(
         title='Compute resources',
         description='Specification of the compute resources',
-        value_type=DictRow(
-            title='Compute resources', schema=IComputeResourceRowSchema
-        ),
+        value_type=DictRow(title='Compute resources', schema=IComputeResourceRowSchema),
         required=False,
         missing_value=[],
     )
@@ -92,9 +86,7 @@ class IDPMTResource(model.Schema):
     storage_resources = schema.List(
         title='Storage resources',
         description='Specification of the storage resources',
-        value_type=DictRow(
-            title='Storage resources', schema=IStorageResourceRowSchema
-        ),
+        value_type=DictRow(title='Storage resources', schema=IStorageResourceRowSchema),
         required=False,
         missing_value=[],
     )

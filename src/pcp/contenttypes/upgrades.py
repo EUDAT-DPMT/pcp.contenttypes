@@ -5,11 +5,9 @@ from plone import api
 from plone.app.upgrade.utils import loadMigrationProfile
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityFTI
-from plone.folder.interfaces import IOrdering
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.registry.interfaces import IRegistry
-from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFPlone.utils import get_installer
 from zExceptions import BadRequest
 from zope.annotation.interfaces import IAnnotations
@@ -17,7 +15,6 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
-from zope.interface import alsoProvides
 
 import logging
 import os
@@ -317,7 +314,7 @@ def remove_archetypes(context=None):
 def rebuild_relations(context=None):
     raise RuntimeError('This needs top run in Python 2!')
     try:
-        from Products.Archetypes import atapi
+        pass
 
         raise RuntimeError('This needs top run without AT!')
     except:
@@ -612,7 +609,6 @@ def fix_portlets_for(obj):
 
 def fix_recent_portlet(context=None):
     from plone.portlets.constants import CONTENT_TYPE_CATEGORY
-    from plone.portlets.constants import CONTEXT_CATEGORY
     from plone.portlets.constants import GROUP_CATEGORY
     from plone.portlets.constants import USER_CATEGORY
     from plone.portlets.interfaces import IPortletManager
@@ -631,9 +627,7 @@ def fix_recent_portlet(context=None):
                 for key in mapping:
                     if 'recent-items' in key or 'calendar' in key:
                         del mapping[key]
-                        log.info(
-                            f'removed recent items portlet from {manager_name}'
-                        )
+                        log.info(f'removed recent items portlet from {manager_name}')
     contained.fixing_up = fixing_up
     loadMigrationProfile(
         context,

@@ -4,8 +4,6 @@ Includes form fields common to all request types
 """
 
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.textfield import RichText
-from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives

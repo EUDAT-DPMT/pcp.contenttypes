@@ -1,5 +1,4 @@
 from DateTime import DateTime
-from unittest.mock import patch
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
@@ -9,6 +8,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from Products.CMFCore.utils import getToolByName
+from unittest.mock import patch
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
@@ -59,19 +59,19 @@ class TestDowntime(unittest.TestCase):
         browser.getControl(name=field + '-minute').displayValue = [date[4]]
 
     def assertDateWidget(self, browser, field, date):
-        self.assertEquals(
+        self.assertEqual(
             browser.getControl(name=field + '-year').displayValue[0], date[0]
         )
-        self.assertEquals(
+        self.assertEqual(
             browser.getControl(name=field + '-month').displayValue[0], date[1]
         )
-        self.assertEquals(
+        self.assertEqual(
             browser.getControl(name=field + '-day').displayValue[0], date[2]
         )
-        self.assertEquals(
+        self.assertEqual(
             browser.getControl(name=field + '-hour').displayValue[0], date[3]
         )
-        self.assertEquals(
+        self.assertEqual(
             browser.getControl(name=field + '-minute').displayValue[0], date[4]
         )
 

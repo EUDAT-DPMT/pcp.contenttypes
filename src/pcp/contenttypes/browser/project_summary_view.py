@@ -3,8 +3,6 @@ from io import StringIO
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
-import six
-
 
 CSV_TEMPLATE = '"%s"'
 

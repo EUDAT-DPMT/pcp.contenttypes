@@ -1,7 +1,4 @@
 from DateTime import DateTime
-from unittest.mock import call
-from unittest.mock import MagicMock
-from unittest.mock import patch
 from pcp.contenttypes.browser.accounting import Accounting
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
 from plone.app.testing import login
@@ -11,6 +8,8 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.utils import getToolByName
+from unittest.mock import MagicMock
+from unittest.mock import patch
 from zope.component import getMultiAdapter
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
@@ -114,8 +113,8 @@ class TestFunctional(unittest.TestCase):
         _getCurrentTime.return_value = DateTime('2017-04-18 13:34 UTC')
 
         def assertMailsSent(subject, template):
-            self.assertEquals(3, send_mail.call_count)
-            self.assertEquals(
+            self.assertEqual(3, send_mail.call_count)
+            self.assertEqual(
                 {
                     'mfn-admin-1@example.com',
                     'mfn-admin-2@example.com',
@@ -124,10 +123,10 @@ class TestFunctional(unittest.TestCase):
                 {args[1]['recipients'][0] for args in send_mail.call_args_list},
             )
             for args in send_mail.call_args_list:
-                self.assertEquals(1, len(args[1]['recipients']))
+                self.assertEqual(1, len(args[1]['recipients']))
                 self.assertIsNone(args[1]['sender'])
-                self.assertEquals(subject, args[1]['subject'])
-                self.assertEquals(template, args[1]['template'])
+                self.assertEqual(subject, args[1]['subject'])
+                self.assertEqual(template, args[1]['template'])
 
             send_mail.reset_mock()
 
@@ -148,52 +147,52 @@ class TestFunctional(unittest.TestCase):
         # Take a tour through the workflow graph and check for mails being sent
         # if and only if they shall be sent.
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+        self.assertEqual(plone.api.content.get_state(downtime), 'private')
 
         plone.api.content.transition(obj=downtime, transition='publish')
         assertMailsSent('[DPMT] Upcoming Downtime', 'announce-downtime.txt')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'published')
+        self.assertEqual(plone.api.content.get_state(downtime), 'published')
 
         plone.api.content.transition(obj=downtime, transition='retract')
         assertMailsSent('[DPMT] Retracted Downtime', 'retract-downtime.txt')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+        self.assertEqual(plone.api.content.get_state(downtime), 'private')
 
         plone.api.content.transition(obj=downtime, transition='submit')
-        self.assertEquals(plone.api.content.get_state(downtime), 'pending')
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual(plone.api.content.get_state(downtime), 'pending')
+        self.assertEqual(0, send_mail.call_count)
 
         plone.api.content.transition(obj=downtime, transition='reject')
-        self.assertEquals(plone.api.content.get_state(downtime), 'private')
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual(plone.api.content.get_state(downtime), 'private')
+        self.assertEqual(0, send_mail.call_count)
 
         plone.api.content.transition(obj=downtime, transition='submit')
-        self.assertEquals(plone.api.content.get_state(downtime), 'pending')
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual(plone.api.content.get_state(downtime), 'pending')
+        self.assertEqual(0, send_mail.call_count)
 
         plone.api.content.transition(obj=downtime, transition='publish')
         assertMailsSent('[DPMT] Upcoming Downtime', 'announce-downtime.txt')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'published')
+        self.assertEqual(plone.api.content.get_state(downtime), 'published')
 
         plone.api.content.transition(obj=downtime, transition='reject')
         assertMailsSent('[DPMT] Retracted Downtime', 'retract-downtime.txt')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'private')
+        self.assertEqual(plone.api.content.get_state(downtime), 'private')
 
         # also test filtering of notifications for past downtimes
         _getCurrentTime.return_value = DateTime('2020-03-04 18:34 UTC')
 
         plone.api.content.transition(obj=downtime, transition='publish')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'published')
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual(plone.api.content.get_state(downtime), 'published')
+        self.assertEqual(0, send_mail.call_count)
 
         plone.api.content.transition(obj=downtime, transition='retract')
 
-        self.assertEquals(plone.api.content.get_state(downtime), 'private')
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual(plone.api.content.get_state(downtime), 'private')
+        self.assertEqual(0, send_mail.call_count)
 
     # Keep order!
     ACCOUNTING_DATA = [
@@ -218,14 +217,14 @@ class TestFunctional(unittest.TestCase):
 
         response_text = Accounting(self.portal, self.request).update_record_caches()
 
-        self.assertEquals(1, get.call_count)
+        self.assertEqual(1, get.call_count)
         self.assertTrue(resource.UID() in get.call_args[0][0])
         self.assertTrue('/listRecords' in get.call_args[0][0])
 
         self.assertTrue(resource.title in response_text)
 
-        self.assertEquals(resource.cached_records, self.ACCOUNTING_DATA)
-        self.assertEquals(resource.cached_newest_record, self.ACCOUNTING_DATA[0])
+        self.assertEqual(resource.cached_records, self.ACCOUNTING_DATA)
+        self.assertEqual(resource.cached_newest_record, self.ACCOUNTING_DATA[0])
 
     @patch('pcp.contenttypes.browser.accounting.requests.get')
     def test_accountingTabLiveData(self, get):
@@ -305,16 +304,16 @@ class TestFunctional(unittest.TestCase):
     @patch('pcp.contenttypes.content.rolerequest.send_mail')
     def test_rolerequest(self, send_mail):
         def assertMailsSent(subject):
-            self.assertEquals(1, send_mail.call_count)
-            self.assertEquals(
+            self.assertEqual(1, send_mail.call_count)
+            self.assertEqual(
                 {'mfn-admin-1@example.com', 'mfn-admin-2@example.com'},
                 send_mail.call_args[1]['recipients'],
             )
             for args in send_mail.call_args_list:
-                self.assertEquals(2, len(args[1]['recipients']))
+                self.assertEqual(2, len(args[1]['recipients']))
                 self.assertIsNone(args[1]['sender'])
-                self.assertEquals(subject, args[1]['subject'])
-                self.assertEquals('role-request.txt', args[1]['template'])
+                self.assertEqual(subject, args[1]['subject'])
+                self.assertEqual('role-request.txt', args[1]['template'])
 
             send_mail.reset_mock()
 
@@ -352,19 +351,19 @@ class TestFunctional(unittest.TestCase):
 
         logger = IPersistentLogger(location)
 
-        self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual('submitted', plone.api.content.get_state(rolerequest))
+        self.assertEqual(0, send_mail.call_count)
         self.assertFalse(
             role
             in plone.api.user.get_roles(
                 username=username_receiver, obj=location, inherit=False
             )
         )
-        self.assertEquals(0, len(logger.entries))
+        self.assertEqual(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='reject')
 
-        self.assertEquals('rejected', plone.api.content.get_state(rolerequest))
+        self.assertEqual('rejected', plone.api.content.get_state(rolerequest))
         assertMailsSent('[DPMT] Role request rejected')
         self.assertFalse(
             role
@@ -372,23 +371,23 @@ class TestFunctional(unittest.TestCase):
                 username=username_receiver, obj=location, inherit=False
             )
         )
-        self.assertEquals(0, len(logger.entries))
+        self.assertEqual(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='submit')
 
-        self.assertEquals('submitted', plone.api.content.get_state(rolerequest))
-        self.assertEquals(0, send_mail.call_count)
+        self.assertEqual('submitted', plone.api.content.get_state(rolerequest))
+        self.assertEqual(0, send_mail.call_count)
         self.assertFalse(
             role
             in plone.api.user.get_roles(
                 username=username_receiver, obj=location, inherit=False
             )
         )
-        self.assertEquals(0, len(logger.entries))
+        self.assertEqual(0, len(logger.entries))
 
         plone.api.content.transition(obj=rolerequest, transition='accept')
 
-        self.assertEquals('accepted', plone.api.content.get_state(rolerequest))
+        self.assertEqual('accepted', plone.api.content.get_state(rolerequest))
         assertMailsSent('[DPMT] Role request accepted')
         self.assertTrue(
             role
@@ -396,7 +395,7 @@ class TestFunctional(unittest.TestCase):
                 username=username_receiver, obj=location, inherit=False
             )
         )
-        self.assertEquals(1, len(logger.entries))
+        self.assertEqual(1, len(logger.entries))
 
     def test_SummaryView_noCrashes(self):
         # This test checks that the fields referenced by the summaries actually exist and
@@ -451,9 +450,7 @@ class TestFunctional(unittest.TestCase):
             except Exception as e:
                 # We get here most probably if something went wrong
                 # when using a wrong renderer (i.e. if original is not available) for a field.
-                self.fail(
-                    f'Rendering {obj_type} failed: maybe a missing renderer: {e}'
-                )
+                self.fail(f'Rendering {obj_type} failed: maybe a missing renderer: {e}')
 
             self.assertTrue(obj_id in text)
 
@@ -526,7 +523,7 @@ class TestFunctional(unittest.TestCase):
             import re
 
             actualCount = len(re.findall(pattern, text))
-            self.assertEquals(actualCount, expectedCount)
+            self.assertEqual(actualCount, expectedCount)
 
         # render_state
         assertNumOccurences(1, 'submitted')

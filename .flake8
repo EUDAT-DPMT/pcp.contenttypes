@@ -1,5 +1,6 @@
 [flake8]
+ignore = E501,W503
 extend-ignore = N,P001
-max-line-length = 88
+max-line-length = 100
 max-complexity = 18
 exclude = docs,*.egg,setup.py,collective.*,plone.*

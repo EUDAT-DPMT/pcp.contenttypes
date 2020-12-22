@@ -19,7 +19,7 @@ multiple_star_template = """
  {}</sr:StorageUsageRecords>
 """
 
-body_star_template = """{ns}  
+body_star_template = """{ns}
   <sr:RecordIdentity sr:createTime="{endtime}Z"
                      sr:recordId="accounting.eudat.eu/eudat/{rsr_id}/{record_id}"/>
   <sr:Site>EUDAT-{site}</sr:Site>

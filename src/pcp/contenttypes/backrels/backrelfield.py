@@ -1,4 +1,4 @@
-from AccessControl.SecurityManagement import getSecurityManager
+from collective.relationhelpers import api as relapi
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.z3cform.interfaces import IPloneFormLayer
 from z3c.form.browser.text import TextWidget
@@ -6,14 +6,9 @@ from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import ITextWidget
 from z3c.form.widget import FieldWidget
-from zc.relation.interfaces import ICatalog
 from zope.component import adapter
-from zope.component import getUtility
 from zope.interface import implementer
-from zope.intid.interfaces import IIntIds
 from zope.schema import TextLine
-from zope.schema._bootstrapfields import TextLine
-from zope.schema.interfaces import IField
 from zope.schema.interfaces import ITextLine
 
 
@@ -58,25 +53,11 @@ class BackrelWidget(TextWidget):
         Uses IContentListing for easy access to MimeTypeIcon and more.
         The template is the same as for RelationChoice and RelationList.
         """
-        results = []
-        inaccessible_results = []
         if IAddForm.providedBy(self.form):
-            return results
-        from_attribute = self.field.relation
-        relation_catalog = getUtility(ICatalog)
-        intids = getUtility(IIntIds)
-        intid = intids.getId(self.context)
-        query = {'to_id': intid}
-        if from_attribute != 'all_relations':
-            query['from_attribute'] = from_attribute
-
-        sm = getSecurityManager()
-        checkPermission = getSecurityManager().checkPermission
-        for rel in relation_catalog.findRelations(query):
-            obj = rel.from_object
-            if checkPermission('View', obj):
-                results.append(obj)
-        return IContentListing(results)
+            return []
+        relations = relapi.backrelations(self.context, self.field.relation)
+        if relations:
+            return IContentListing(relations)
 
 
 @adapter(IBackrelField, IPloneFormLayer)
