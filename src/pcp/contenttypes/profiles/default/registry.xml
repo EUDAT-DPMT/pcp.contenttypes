@@ -53,7 +53,7 @@
   </record>
 
   <record name="plone.navigation_depth">
-      <value>2</value>
+      <value>3</value>
   </record>
 
   <record name="plone.available_languages">
