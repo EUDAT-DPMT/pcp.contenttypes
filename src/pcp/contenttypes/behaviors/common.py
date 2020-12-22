@@ -22,13 +22,13 @@ from zope.interface import provider
 class IIdentifierRowSchema(Interface):
 
     type = schema.Choice(
-        title=u"Identifier Type",
+        title='Identifier Type',
         vocabulary='dpmt.identifier_types',
         required=False,
     )
 
     value = schema.TextLine(
-        title=u"Identifier Value",
+        title='Identifier Value',
         required=False,
     )
 
@@ -36,12 +36,12 @@ class IIdentifierRowSchema(Interface):
 class IAdditionalRowSchema(Interface):
 
     key = schema.TextLine(
-        title=u"Key",
+        title='Key',
         required=True,
     )
 
     value = schema.TextLine(
-        title=u"Value",
+        title='Value',
         required=True,
     )
 
@@ -52,31 +52,31 @@ class IDPMTCommon(model.Schema):
 
     fieldset(
         'details',
-        label=u'Details',
+        label='Details',
         fields=('uid', 'identifiers', 'additional'),
     )
 
     uid = schema.TextLine(
-        title=u"UID",
-        description=u"The application internal UID",
+        title='UID',
+        description='The application internal UID',
         required=False,
         # allow_uncommon=True,  # what's this?
     )
     directives.mode(uid='display')
 
     identifiers = schema.List(
-        title=u"Identifiers",
-        description=u"Further identifiers for this item",
-        value_type=DictRow(title=u"Identifier", schema=IIdentifierRowSchema),
+        title='Identifiers',
+        description='Further identifiers for this item',
+        value_type=DictRow(title='Identifier', schema=IIdentifierRowSchema),
         required=False,
         missing_value=[],
     )
     directives.widget('identifiers', DataGridFieldFactory)
 
     additional = schema.List(
-        title=u"Additional Properties",
-        description=u"Further key/value pairs describing this item",
-        value_type=DictRow(title=u"Additional Property", schema=IAdditionalRowSchema),
+        title='Additional Properties',
+        description='Further key/value pairs describing this item',
+        value_type=DictRow(title='Additional Property', schema=IAdditionalRowSchema),
         required=False,
         missing_value=[],
     )
@@ -85,7 +85,7 @@ class IDPMTCommon(model.Schema):
 
 @implementer(IDPMTCommon)
 @adapter(IDexterityContent)
-class DPMTCommon(object):
+class DPMTCommon:
     """Support for computed fields and controlled vocabularies(?)"""
 
     def __init__(self, context):

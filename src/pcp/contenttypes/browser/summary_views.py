@@ -1,10 +1,12 @@
-import plone.api
 from datetime import datetime
 from io import StringIO
-from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
+from Products.Five.browser import BrowserView
+
+import plone.api
 import six
+
 
 try:
     from Products.Archetypes.BaseObject import BaseObject
@@ -39,27 +41,27 @@ def render_reference_field(content, field_id, with_state=False):
         objs = [o.to_object for o in obj_refs if o]
     text = []
     if objs == []:
-        return "no reference set"
+        return 'no reference set'
     for item in objs:
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
             text.append(
-                "<a href='%s'>%s</a> (%s)" % (item.absolute_url(), item.Title(), state)
+                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
             )
 
         else:
-            text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
-    return "<br />".join(text)
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
+    return '<br />'.join(text)
 
 
 def render_service_options(content, field_id, with_state=False):
     try:
         objs = content['options'].contentValues()
     except KeyError:
-        return "No options specified"
+        return 'No options specified'
     text = []
     if objs == []:
-        return "no options specified"
+        return 'no options specified'
     for item in objs:
         if item.portal_type != 'Document':
             # this assumes that all documents here describe options
@@ -68,12 +70,12 @@ def render_service_options(content, field_id, with_state=False):
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
             text.append(
-                "<a href='%s'>%s</a> (%s)" % (item.absolute_url(), item.Title(), state)
+                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
             )
 
         else:
-            text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
-    return "<br />".join(text)
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
+    return '<br />'.join(text)
 
 
 def render_service_components(content, field_id):
@@ -89,7 +91,7 @@ def render_with_link(content, field_id):
         if safe_callable(value):
             value = value()
     url = content.absolute_url()
-    return "<a href='%s'>%s</a>" % (url, value)
+    return f"<a href='{url}'>{value}</a>"
 
 
 def render_with_link_dx(content, field_id):
@@ -97,14 +99,14 @@ def render_with_link_dx(content, field_id):
     if safe_callable(field_value):
         field_value = field_value()
     url = content.absolute_url()
-    return "<a href='%s'>%s</a>" % (url, field_value)
+    return f"<a href='{url}'>{field_value}</a>"
 
 
 def render_parent(content, field_id):
     parent = content.aq_inner.aq_parent
     title = parent.Title()
     url = parent.absolute_url()
-    return "<a href='%s'>%s</a>" % (url, title)
+    return f"<a href='{url}'>{title}</a>"
 
 
 def render_grandparent(content, field_id):
@@ -112,7 +114,7 @@ def render_grandparent(content, field_id):
     grandparent = parent.aq_inner.aq_parent
     title = grandparent.Title()
     url = grandparent.absolute_url()
-    return "<a href='%s'>%s</a>" % (url, title)
+    return f"<a href='{url}'>{title}</a>"
 
 
 def creation_date(content, field_id):
@@ -153,7 +155,7 @@ def render_number_of_objects(content, field_id):
     try:
         return content.getNumberOfRegisteredObjects()
     except AttributeError:
-        return "none"
+        return 'none'
 
 
 def render_contact_email(content, field_id):
@@ -227,7 +229,7 @@ class DetailedView(BrowserView):
 
         view = mapping.get(id, 'folder_summary_view')
 
-        target = '{base}/{view}'.format(base=self.context.absolute_url(), view=view)
+        target = f'{self.context.absolute_url()}/{view}'
         return self.request.response.redirect(target)
 
 
@@ -347,8 +349,8 @@ class BaseSummaryView(BrowserView):
 class EndpointOverview(BaseSummaryView):
     """All specific endpoints"""
 
-    title = "Service Endpoints"
-    description = "All specific endpoints of services / service components"
+    title = 'Service Endpoints'
+    description = 'All specific endpoints of services / service components'
 
     def content_items(self):
         """All endpoint entries"""
@@ -393,7 +395,7 @@ class EndpointOverview(BaseSummaryView):
         if target is not None:
             title = target.Title()
             url = target.absolute_url()
-            return "<a href='%s'>%s</a>" % (url, title)
+            return f"<a href='{url}'>{title}</a>"
         if safe_callable(value):
             value = value()
 
@@ -403,9 +405,9 @@ class EndpointOverview(BaseSummaryView):
 class PeopleOverview(BaseSummaryView):
     """Overview of all people involved"""
 
-    title = "People"
+    title = 'People'
 
-    description = "All people/address book information stored in DPMT"
+    description = 'All people/address book information stored in DPMT'
 
     def content_items(self):
         """All address book entries"""
@@ -464,9 +466,9 @@ class PeopleOverview(BaseSummaryView):
 class CustomerOverview(BaseSummaryView):
     """Overview of all customers/sponsors/communities"""
 
-    title = "EUDAT Customers"
+    title = 'EUDAT Customers'
 
-    description = "All current and past EUDAT customers/sponsors/communities"
+    description = 'All current and past EUDAT customers/sponsors/communities'
 
     def content_items(self):
         """All customers regardless of location"""
@@ -515,9 +517,9 @@ class CustomerOverview(BaseSummaryView):
 class ProviderOverview(BaseSummaryView):
     """Overview of all providers of EUDAT services"""
 
-    title = "EUDAT Provider"
+    title = 'EUDAT Provider'
 
-    description = "All current and past providers of EUDAT CDI services"
+    description = 'All current and past providers of EUDAT CDI services'
 
     def content_items(self):
         """All providers regardless of location"""
@@ -579,9 +581,9 @@ class ProviderOverview(BaseSummaryView):
 class ServiceOverview(BaseSummaryView):
     """Overview of all EUDAT services"""
 
-    title = "EUDAT Catalog"
+    title = 'EUDAT Catalog'
 
-    description = "All current and past EUDAT services"
+    description = 'All current and past EUDAT services'
 
     def content_items(self):
         """All services regardless of location"""
@@ -629,9 +631,9 @@ class ProjectOverview(BaseSummaryView):
     # almost identical to base class as this is the driving use case
     # implemented in the base class
 
-    title = "Project Overview"
+    title = 'Project Overview'
 
-    description = "All current and past projects within the EUDAT CDI"
+    description = 'All current and past projects within the EUDAT CDI'
 
     def content_items(self):
         """All projects regardless of location"""
@@ -644,9 +646,9 @@ class ProjectOverview(BaseSummaryView):
 class RegisteredServiceOverview(BaseSummaryView):
     """Overview of all registered services no matter where they are"""
 
-    title = "Registered Services"
+    title = 'Registered Services'
 
-    description = "All registered services of the EUDAT CDI"
+    description = 'All registered services of the EUDAT CDI'
 
     def content_items(self):
         """All registered services regardless of location"""
@@ -695,9 +697,9 @@ class RegisteredServiceOverview(BaseSummaryView):
 class RegisteredServiceComponentOverview(BaseSummaryView):
     """Overview of all registered services components no matter where they are located"""
 
-    title = "Registered Service Components"
+    title = 'Registered Service Components'
 
-    description = "All registered service components of the EUDAT CDI"
+    description = 'All registered service components of the EUDAT CDI'
 
     def content_items(self):
         """All registered service components regardless of location"""
@@ -749,9 +751,9 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 class RequestOverview(BaseSummaryView):
     """Overview of all requests no matter what type or state or where they are located"""
 
-    title = "All Requests"
+    title = 'All Requests'
 
-    description = "All requests across the entire site."
+    description = 'All requests across the entire site.'
 
     def content_items(self):
         """All requests regardless of location"""
@@ -797,10 +799,10 @@ class RequestOverview(BaseSummaryView):
 class ApprovedRequests(RequestOverview):
     """All approved but unfulfilled requests"""
 
-    title = "Approved Requests"
+    title = 'Approved Requests'
 
     description = (
-        "All appoved but unfulfilled requests, i.e., those that need to be acted upon"
+        'All appoved but unfulfilled requests, i.e., those that need to be acted upon'
     )
 
     def content_items(self):
@@ -815,9 +817,9 @@ class ApprovedRequests(RequestOverview):
 class RegisteredResourceOverview(BaseSummaryView):
     """Overview of all registered resources no matter where they are located"""
 
-    title = "Registered Resources"
+    title = 'Registered Resources'
 
-    description = "All registered resources across the entire site."
+    description = 'All registered resources across the entire site.'
 
     def content_items(self):
         """All registered resources regardless of location"""
@@ -866,9 +868,9 @@ class RegisteredResourceOverview(BaseSummaryView):
 class RegisteredStorageResourceOverview(BaseSummaryView):
     """Overview of all registered storage resources no matter where they are located"""
 
-    title = "Registered Storage Resources"
+    title = 'Registered Storage Resources'
 
-    description = "All registered storage resources across the entire site."
+    description = 'All registered storage resources across the entire site.'
 
     def content_items(self):
         """All registered storage resources regardless of location"""
@@ -926,9 +928,9 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
 class ServiceOfferOverview(BaseSummaryView):
     """Overview of all service offers no matter which provider makes them"""
 
-    title = "Service Offers"
+    title = 'Service Offers'
 
-    description = "All service offers from all providers."
+    description = 'All service offers from all providers.'
 
     def content_items(self):
         """All service offers regardless of location"""
@@ -970,9 +972,9 @@ class ServiceOfferOverview(BaseSummaryView):
 class ServiceComponentOfferOverview(BaseSummaryView):
     """Overview of all service component offers no matter which provider makes them"""
 
-    title = "Service Component Offers"
+    title = 'Service Component Offers'
 
-    description = "All service component offers from all providers."
+    description = 'All service component offers from all providers.'
 
     def content_items(self):
         """All service component offers regardless of location"""
@@ -1015,9 +1017,9 @@ class ServiceComponentOfferOverview(BaseSummaryView):
 class ResourceOfferOverview(RegisteredResourceOverview):
     """Overview of all resource offers no matter which provider made them"""
 
-    title = "Resource Offers"
+    title = 'Resource Offers'
 
-    description = "All resource offers from all providers."
+    description = 'All resource offers from all providers.'
 
     def content_items(self):
         """All resource offers regardless of location"""
@@ -1065,9 +1067,9 @@ class ResourceOfferOverview(RegisteredResourceOverview):
 
 class DowntimeOverview(BaseSummaryView):
 
-    title = "Downtimes"
+    title = 'Downtimes'
 
-    description = ""
+    description = ''
 
     def content_items(self):
         return [
@@ -1129,7 +1131,7 @@ class CsvView(ProjectOverview):
             values = []
             for field in project:
                 text = field['text']
-                if isinstance(text, six.text_type):
+                if isinstance(text, str):
                     text = text.encode('utf8')
                 value = CSV_TEMPLATE % text
                 values.append(value)
@@ -1138,12 +1140,12 @@ class CsvView(ProjectOverview):
         value = out.getvalue()
         out.close()
 
-        timestamp = datetime.today().strftime("%Y%m%d%H%M")
+        timestamp = datetime.today().strftime('%Y%m%d%H%M')
         filename = filenamebase + timestamp + '.csv'
 
         self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
         self.request.RESPONSE.setHeader(
-            "Content-Disposition", "inline;filename=%s" % filename
+            'Content-Disposition', 'inline;filename=%s' % filename
         )
 
         return value

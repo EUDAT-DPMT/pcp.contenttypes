@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from Acquisition import aq_base
 from collective.relationhelpers import api as relapi
 from ComputedAttribute import ComputedAttribute
@@ -24,6 +23,7 @@ import logging
 import os
 import six
 import transaction
+
 
 log = logging.getLogger(__name__)
 RELATIONS_KEY = 'ALL_REFERENCES'
@@ -122,7 +122,7 @@ def custom_at_migration(context=None):
     for portal_type in obsolete:
         for brain in api.content.find(portal_type=portal_type):
             obj = brain.getObject()
-            log.info(u'Remove {} at {}'.format(portal_type, obj.absolute_url()))
+            log.info(f'Remove {portal_type} at {obj.absolute_url()}')
             api.content.delete(obj, check_linkintegrity=False)
 
     from pcp.contenttypes import custom_migration
@@ -208,7 +208,7 @@ def restore_references(context=None):
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     all_stored_relations = IAnnotations(portal)[RELATIONS_KEY]
-    log.info('Loaded {0} relations to restore'.format(len(all_stored_relations)))
+    log.info('Loaded {} relations to restore'.format(len(all_stored_relations)))
     all_fixed_relations = []
     # pac exports references with 'relationship' relapi expects 'from_attribute'
     # also some fields have special relationship-names in AT
@@ -245,7 +245,7 @@ def remove_archetypes(context=None):
     for portal_type in to_drop:
         for brain in portal_catalog(portal_type=portal_type):
             obj = brain.getObject()
-            log.info(u'Removing {} at {}'.format(portal_type, brain.getURL()))
+            log.info(f'Removing {portal_type} at {brain.getURL()}')
             api.content.delete(obj=obj, check_linkintegrity=False)
     KEEP = [
         'Plone Site',
@@ -261,10 +261,10 @@ def remove_archetypes(context=None):
             continue
         brains = portal_catalog(portal_type=fti.id)
         if brains:
-            log.info(u'{} existing Instances of Type {}!'.format(len(brains), fti.id))
+            log.info('{} existing Instances of Type {}!'.format(len(brains), fti.id))
         else:
             portal_types.manage_delObjects([fti.id])
-            log.info(u'Removed Type {}!'.format(fti.id))
+            log.info(f'Removed Type {fti.id}!')
 
     portal = api.portal.get()
     old_installer = api.portal.get_tool('portal_quickinstaller')
@@ -295,19 +295,19 @@ def remove_archetypes(context=None):
     ]
     for tool in tools:
         if tool not in portal.keys():
-            log.info('Tool {} not found'.format(tool))
+            log.info(f'Tool {tool} not found')
             continue
         try:
             portal.manage_delObjects([tool])
-            log.info('Deleted {}'.format(tool))
+            log.info(f'Deleted {tool}')
         except Exception as e:
-            log.info(u'Problem removing {}: {}'.format(tool, e))
+            log.info(f'Problem removing {tool}: {e}')
             try:
-                log.info(u'Fallback to remove without permission_checks')
+                log.info('Fallback to remove without permission_checks')
                 portal._delObject(tool)
-                log.info('Deleted {}'.format(tool))
+                log.info(f'Deleted {tool}')
             except Exception as e:
-                log.info(u'Another problem removing {}: {}'.format(tool, e))
+                log.info(f'Another problem removing {tool}: {e}')
 
     pprops = api.portal.get_tool('portal_properties')
     if 'extensions_properties' in pprops:
@@ -315,8 +315,7 @@ def remove_archetypes(context=None):
 
 
 def rebuild_relations(context=None):
-    if not six.PY2:
-        raise RuntimeError('This needs top run in Python 2!')
+    raise RuntimeError('This needs top run in Python 2!')
     try:
         from Products.Archetypes import atapi
 
@@ -331,8 +330,7 @@ def rebuild_relations(context=None):
 
 
 def fix_stuff(context=None):
-    if not six.PY2:
-        raise RuntimeError('This needs top run in Python 2!')
+    raise RuntimeError('This needs top run in Python 2!')
     os.environ['CATALOG_OPTIMIZATION_DISABLED'] = '1'
     portal = api.portal.get()
     annotations = IAnnotations(portal)
@@ -350,9 +348,9 @@ def fix_stuff(context=None):
         conversation = annotations['plone.app.discussion:conversation']
         if 'broken' in conversation.__parent__.__repr__():
             conversation.__parent__ = obj
-            log.info(u'Fix conversation for {}'.format(obj.absolute_url()))
+            log.info(f'Fix conversation for {obj.absolute_url()}')
         else:
-            log.info(u'Conversation parent ok: {}'.format(conversation.__parent__))
+            log.info(f'Conversation parent ok: {conversation.__parent__}')
 
     portal.ZopeFindAndApply(portal, search_sub=True, apply_func=fix_at_remains)
 
@@ -366,8 +364,7 @@ def fix_stuff(context=None):
 
 
 def remove_broken_registry_entries(context=None):
-    if not six.PY2:
-        raise RuntimeError('This needs top run in Python 2!')
+    raise RuntimeError('This needs top run in Python 2!')
     records = [
         'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_core',
         'collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_widget',
@@ -412,14 +409,13 @@ def remove_broken_registry_entries(context=None):
     for record in records:
         try:
             del registry.records[record]
-            log.info('Removed record {}'.format(record))
+            log.info(f'Removed record {record}')
         except KeyError:
             pass
 
 
 def remove_utilities(context=None):
-    if not six.PY2:
-        raise RuntimeError('This needs top run in Python 2!')
+    raise RuntimeError('This needs top run in Python 2!')
 
     portal = api.portal.get()
     sm = portal.getSiteManager()
@@ -428,25 +424,25 @@ def remove_utilities(context=None):
 
     if IMetadataTool in sm.utilities._adapters[0]:
         del sm.utilities._adapters[0][IMetadataTool]
-        log.info(u'Unregistering adapter for MetadataTool')
+        log.info('Unregistering adapter for MetadataTool')
 
     if IMetadataTool in sm.utilities._subscribers[0]:
         del sm.utilities._subscribers[0][IMetadataTool]
-        log.info(u'Unregistering subscriber for MetadataTool')
+        log.info('Unregistering subscriber for MetadataTool')
 
     if IMetadataTool in sm.utilities._provided:
         del sm.utilities._provided[IMetadataTool]
-        log.info(u'Unregistering subscriber for MetadataTool')
+        log.info('Unregistering subscriber for MetadataTool')
 
     if (IMetadataTool, '') in sm._utility_registrations:
         del sm._utility_registrations[(IMetadataTool, '')]
-        log.info(u'Drop subscriber for MetadataTool')
+        log.info('Drop subscriber for MetadataTool')
 
     from Products.CMFCore.interfaces import IDiscussionTool
 
     for util in sm.getAllUtilitiesRegisteredFor(IDiscussionTool):
         sm.unregisterUtility(util, IDiscussionTool)
-        log.info(u'Removed IDiscussionTool utility')
+        log.info('Removed IDiscussionTool utility')
 
     sm.utilities._p_changed = True
     transaction.commit()
@@ -480,7 +476,7 @@ def disable_versioning(context=None):
         behaviors.remove(versioning)
         behaviors = tuple(behaviors)
         fti._updateProperty('behaviors', behaviors)
-        log.info(u'Disabled versioning for {}'.format(fti.id))
+        log.info(f'Disabled versioning for {fti.id}')
 
 
 def rebuild_catalog(context=None):
@@ -523,7 +519,7 @@ def cleanup_skins(context=None):
     for item in to_delete:
         if item in custom:
             custom.manage_delObjects(item)
-            log.info(u'Removed {} from portal_skins/custom.'.format(item))
+            log.info(f'Removed {item} from portal_skins/custom.')
 
 
 def remove_broken_steps(context=None):
@@ -563,7 +559,7 @@ def fix_portlets(context=None):
         try:
             obj = brain.getObject()
         except KeyError:
-            log.info('Broken brain for {}'.format(brain.getPath()))
+            log.info(f'Broken brain for {brain.getPath()}')
             continue
         fix_portlets_for(obj)
 
@@ -619,8 +615,8 @@ def fix_recent_portlet(context=None):
     from plone.portlets.constants import CONTEXT_CATEGORY
     from plone.portlets.constants import GROUP_CATEGORY
     from plone.portlets.constants import USER_CATEGORY
-    from zope.component import getUtilitiesFor
     from plone.portlets.interfaces import IPortletManager
+    from zope.component import getUtilitiesFor
     from zope.container import contained
 
     portal = api.portal.get()
@@ -636,7 +632,7 @@ def fix_recent_portlet(context=None):
                     if 'recent-items' in key or 'calendar' in key:
                         del mapping[key]
                         log.info(
-                            u'removed recent items portlet from {}'.format(manager_name)
+                            f'removed recent items portlet from {manager_name}'
                         )
     contained.fixing_up = fixing_up
     loadMigrationProfile(
@@ -707,7 +703,7 @@ def enable_versioning(context=None):
         behaviors.append(versioning)
         behaviors = tuple(behaviors)
         fti._updateProperty('behaviors', behaviors)
-        log.info(u'Enabled versioning for {}'.format(fti.id))
+        log.info(f'Enabled versioning for {fti.id}')
     loadMigrationProfile(
         context,
         'profile-pcp.contenttypes:default',

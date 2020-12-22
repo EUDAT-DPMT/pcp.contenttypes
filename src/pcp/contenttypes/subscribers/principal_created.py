@@ -1,5 +1,5 @@
-from plone import api
 from pcp.contenttypes.mail import send_mail
+from plone import api
 
 import plone
 

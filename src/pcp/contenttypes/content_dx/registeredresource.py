@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.autoform import directives

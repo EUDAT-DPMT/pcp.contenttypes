@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.content_dx.common import OfferUtilities
 from plone import api
@@ -18,53 +17,53 @@ class IServiceComponentOffer(model.Schema):
     """Dexterity Schema for ServiceComponentOffer"""
 
     service_component_offered = RelationChoice(
-        title=u"Service component offered",
-        description=u"Reference to the catalog entry of the service component being offered.",
+        title='Service component offered',
+        description='Reference to the catalog entry of the service component being offered.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_component_offered",
+        'service_component_offered',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicecomponent_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicecomponent_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_component_implementations_offered = RelationList(
-        title=u"Implementations offered",
-        description=u"Reference to the catalog entry of the implementations(s) of the service component being offered.",
+        title='Implementations offered',
+        description='Reference to the catalog entry of the implementations(s) of the service component being offered.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "service_component_implementations_offered",
+        'service_component_implementations_offered',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["servicecomponentimplementation_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicecomponentimplementation_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     slas = RelationList(
-        title=u"SLAs/OLAs offered",
-        description=u"Potential Service/Operational Level Agreements under which the service component is being offered.",
+        title='SLAs/OLAs offered',
+        description='Potential Service/Operational Level Agreements under which the service component is being offered.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "slas",
+        'slas',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["Document"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['Document'],
+            'basePath': make_relation_root_path,
         },
     )
 

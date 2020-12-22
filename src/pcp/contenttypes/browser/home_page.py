@@ -1,7 +1,7 @@
-from zope.interface import alsoProvides
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
+from zope.interface import alsoProvides
 
 
 class HomePage(BrowserView):

@@ -1,9 +1,8 @@
-import unittest
-import doctest
-
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
-
 from plone.testing import layered
+
+import doctest
+import unittest
 
 
 def test_suite():

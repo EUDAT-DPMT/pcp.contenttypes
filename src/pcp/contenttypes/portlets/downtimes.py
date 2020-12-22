@@ -23,8 +23,8 @@ class AddForm(base.AddForm):
     # *  count of downtimes to display
     # *  query time range
     schema = IDowntimePortlet
-    label = u"Add Upcoming Downtime Portlet"
-    description = u"Display upcoming Downtimes."
+    label = 'Add Upcoming Downtime Portlet'
+    description = 'Display upcoming Downtimes.'
 
     def create(self, data):
         return Assignment()

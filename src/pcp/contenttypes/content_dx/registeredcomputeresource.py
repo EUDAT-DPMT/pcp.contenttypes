@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.autoform import directives
@@ -13,53 +12,53 @@ class IRegisteredComputeResource(model.Schema):
     """Dexterity Schema for Registered Compute Resources"""
 
     dexteritytextindexer.searchable(
-        "hostname",
-        "ip",
-        "cpus",
-        "memory",
-        "localdisk",
-        "virtualization",
-        "os",
-        "software",
+        'hostname',
+        'ip',
+        'cpus',
+        'memory',
+        'localdisk',
+        'virtualization',
+        'os',
+        'software',
     )
 
     hostname = schema.TextLine(
-        title=u"Hostname",
+        title='Hostname',
         required=False,
     )
 
     ip = schema.TextLine(
-        title=u"IP",
+        title='IP',
         required=False,
     )
 
     cpus = schema.TextLine(
-        title=u"CPUs",
+        title='CPUs',
         required=False,
     )
 
     memory = schema.TextLine(
-        title=u"Memory",
+        title='Memory',
         required=False,
     )
 
     localdisk = schema.TextLine(
-        title=u"Local disk",
+        title='Local disk',
         required=False,
     )
 
     virtualization = schema.TextLine(
-        title=u"Virtualization",
+        title='Virtualization',
         required=False,
     )
 
     os = schema.TextLine(
-        title=u"OS",
+        title='OS',
         required=False,
     )
 
     software = schema.TextLine(
-        title=u"Software",
+        title='Software',
         required=False,
     )
 

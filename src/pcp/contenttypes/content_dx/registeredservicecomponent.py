@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -20,143 +19,143 @@ from zope.interface import Interface
 
 class IImplementationConfiguration(Interface):
 
-    key = schema.TextLine(title=u'Key')
-    value = schema.TextLine(title=u'Value')
+    key = schema.TextLine(title='Key')
+    value = schema.TextLine(title='Value')
 
 
 class IRegisteredServiceComponent(model.Schema):
     """Dexterity Schema for Registered Service Component"""
 
     dexteritytextindexer.searchable(
-        "service_component_implementation_details",
-        "service_type",
-        "service_url",
-        "host_name",
-        "host_dn",
-        "host_os",
-        "host_architecture",
-        "emergency_phone",
-        "alarm_email",
-        "helpdesk_email",
-        "supported_os",
+        'service_component_implementation_details',
+        'service_type',
+        'service_url',
+        'host_name',
+        'host_dn',
+        'host_os',
+        'host_architecture',
+        'emergency_phone',
+        'alarm_email',
+        'helpdesk_email',
+        'supported_os',
     )
 
     service_component_implementation_details = RelationChoice(
-        title=u"Service Component Implementation Details",
-        description=u"Reference to specific implementation Details",
+        title='Service Component Implementation Details',
+        description='Reference to specific implementation Details',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_component_implementation_details",
+        'service_component_implementation_details',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicecomponentimplementationdetails_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicecomponentimplementationdetails_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_providers = RelationList(
-        title=u"Service provider(s)",
-        description=u"The provider(s) hosting this service component.",
+        title='Service provider(s)',
+        description='The provider(s) hosting this service component.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         missing_value=[],
         required=False,
     )
     directives.widget(
-        "service_providers",
+        'service_providers',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["provider_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['provider_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     contacts = RelationList(
-        title=u"Contact(s)",
-        description=u"Contact person(s) for this specific component.",
+        title='Contact(s)',
+        description='Contact person(s) for this specific component.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         missing_value=[],
         required=False,
     )
     directives.widget(
-        "contacts",
+        'contacts',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_type = schema.Choice(
-        title=u"Service component type",
+        title='Service component type',
         vocabulary='dpmt.service_types',
         required=False,
     )
 
     service_url = schema.TextLine(
-        title=u"Service URL",
-        description=u"[http|https|irods|gsiftp|ssh]://URL:port",
+        title='Service URL',
+        description='[http|https|irods|gsiftp|ssh]://URL:port',
         required=False,
     )
 
     parent_services = BackrelField(
-        title=u'Part of these registered services',
+        title='Part of these registered services',
         relation='service_components',
     )
 
-    scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
+    scopes = schema.TextLine(title='Project Scopes', readonly=True)
 
     host_name = schema.TextLine(
-        title=u"Host name",
-        description=u"In valid FQDN format (fully qualified domain name)",
+        title='Host name',
+        description='In valid FQDN format (fully qualified domain name)',
         required=False,
     )
 
     host_ip4 = schema.TextLine(
-        title=u"IP4 address",
-        description=u"Host's IP4 address (a.b.c.d)",
+        title='IP4 address',
+        description="Host's IP4 address (a.b.c.d)",
         required=False,
     )
 
     host_ip6 = schema.TextLine(
-        title=u"IP6 address",
-        description=u"Host's IP6 address (0000:0000:0000:0000:0000:0000:0000:0000[/int]) (optional [/int] range)))",
+        title='IP6 address',
+        description="Host's IP6 address (0000:0000:0000:0000:0000:0000:0000:0000[/int]) (optional [/int] range)))",
         required=False,
     )
 
     host_dn = schema.TextLine(
-        title=u"Distinguished name (DN)",
-        description=u"Host's DN (/C=.../OU=...?...)",
+        title='Distinguished name (DN)',
+        description="Host's DN (/C=.../OU=...?...)",
         required=False,
     )
 
     host_os = schema.TextLine(
-        title=u"Host operating system",
-        description=u"Alphanumeric and basic punctuation",
+        title='Host operating system',
+        description='Alphanumeric and basic punctuation',
         required=False,
     )
 
     host_architecture = schema.TextLine(
-        title=u"Host_architecture",
-        description=u"Alphanumeric and basic punctuation",
+        title='Host_architecture',
+        description='Alphanumeric and basic punctuation',
         required=False,
     )
 
     monitored = schema.Bool(
-        title=u"Monitored",
+        title='Monitored',
         required=False,
     )
 
-    registrylink = schema.TextLine(title=u'Central Registry', readonly=True)
+    registrylink = schema.TextLine(title='Central Registry', readonly=True)
 
     implementation_configuration = schema.List(
-        title=u'Implementation configuration',
-        description=u'Implementation specific configuration according to the referenced component details implementation',
+        title='Implementation configuration',
+        description='Implementation specific configuration according to the referenced component details implementation',
         value_type=DictRow(schema=IImplementationConfiguration),
         required=False,
         missing_value=[],
@@ -165,7 +164,7 @@ class IRegisteredServiceComponent(model.Schema):
     # TODO: Add custom form with condition="python:here.stateNotIn(['considered'])",
 
     resources = BackrelField(
-        title=u"Registered service component's resources",
+        title="Registered service component's resources",
         relation='services',
     )
 
@@ -196,7 +195,7 @@ class RegisteredServiceComponent(Container):
         [scopes.extend(p['fullobj'].scopes) for p in projects]
         s = set(scopes)
         if asString:
-            return ", ".join(s)
+            return ', '.join(s)
         return s  # tuple(s)
 
     @property

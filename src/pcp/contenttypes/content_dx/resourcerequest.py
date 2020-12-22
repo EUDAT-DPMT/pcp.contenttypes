@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.content_dx.common import RequestUtilities
 from plone.app.vocabularies.catalog import CatalogSource

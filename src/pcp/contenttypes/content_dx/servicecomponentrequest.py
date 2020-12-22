@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.comment.comment import CommentField
 from pcp.contenttypes.content_dx.common import RequestUtilities
@@ -19,56 +18,56 @@ class IServiceComponentRequest(model.Schema):
     """Dexterity Schema for Providers"""
 
     requested_component = RelationChoice(
-        title=u"Service component",
-        description=u"The service component being requested",
+        title='Service component',
+        description='The service component being requested',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "requested_component",
+        'requested_component',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicecomponent_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicecomponent_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     requested_component_implementations = RelationList(
-        title=u"Implementation",
-        description=u"If only certain implementations are acceptable, this can be specified here. Leave empty if any implementation is fine.",
+        title='Implementation',
+        description='If only certain implementations are acceptable, this can be specified here. Leave empty if any implementation is fine.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "requested_component_implementations",
+        'requested_component_implementations',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["servicecomponentimplementation_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicecomponentimplementation_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_hours = RelationChoice(
-        title=u"Service hours",
+        title='Service hours',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_hours",
+        'service_hours',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["Document"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['Document'],
+            'basePath': make_relation_root_path,
         },
     )
 
     resource_comment = CommentField(
-        comment=u"If applicable and already known how much resources shall be provisioned "
-        "through this service then this should be specified here. Otherwise this "
-        "can be left empty (or added later).",
+        comment='If applicable and already known how much resources shall be provisioned '
+        'through this service then this should be specified here. Otherwise this '
+        'can be left empty (or added later).',
     )
 
 

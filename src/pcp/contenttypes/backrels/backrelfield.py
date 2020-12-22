@@ -1,10 +1,9 @@
-# -*- coding: UTF-8 -*-
 from AccessControl.SecurityManagement import getSecurityManager
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.z3cform.interfaces import IPloneFormLayer
+from z3c.form.browser.text import TextWidget
 from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import IFieldWidget
-from z3c.form.browser.text import TextWidget
 from z3c.form.interfaces import ITextWidget
 from z3c.form.widget import FieldWidget
 from zc.relation.interfaces import ICatalog
@@ -21,8 +20,8 @@ from zope.schema.interfaces import ITextLine
 class IBackrelField(ITextLine):
 
     relation = TextLine(
-        title=u'Relation',
-        description=u'The relation to display',
+        title='Relation',
+        description='The relation to display',
         required=False,
     )
 
@@ -39,9 +38,9 @@ class BackrelField(TextLine):
         self.relation = kw.pop('relation', '')
         if not self.relation:
             raise ValueError(
-                u'BackrelField requires a relation, e.g. relation="relatedItems"'
+                'BackrelField requires a relation, e.g. relation="relatedItems"'
             )
-        super(BackrelField, self).__init__(required=False, **kw)
+        super().__init__(required=False, **kw)
 
 
 class IBackrelWidget(ITextWidget):

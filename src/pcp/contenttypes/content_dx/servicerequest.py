@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import RequestUtilities
@@ -19,50 +18,50 @@ class IServiceRequest(model.Schema):
     """Dexterity Schema for ServiceRequest"""
 
     service = RelationChoice(
-        title=u"Service",
-        description=u"The service being requested",
+        title='Service',
+        description='The service being requested',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service",
+        'service',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["service_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['service_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_option = RelationChoice(
-        title=u"Service option",
+        title='Service option',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_option",
+        'service_option',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["Document"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['Document'],
+            'basePath': make_relation_root_path,
         },
     )
 
     service_hours = RelationChoice(
-        title=u"Service hours",
+        title='Service hours',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "service_hours",
+        'service_hours',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["Document"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['Document'],
+            'basePath': make_relation_root_path,
         },
     )
 
     registered_service = BackrelField(
-        title=u'Registered service',
+        title='Registered service',
         relation='original_request',
     )
 

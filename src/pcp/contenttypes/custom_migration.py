@@ -1,12 +1,12 @@
-# -*- coding: UTF-8 -*-
 from collective.relationhelpers import api as relapi
 from plone import api
-from plone.app.contenttypes.migration.migration import migrateCustomAT
 from plone.app.contenttypes.migration.field_migrators import datetime_fixer
+from plone.app.contenttypes.migration.migration import migrateCustomAT
 from plone.event.utils import default_timezone
 from Products.CMFPlone.utils import safe_text
 
 import logging
+
 
 log = logging.getLogger(__name__)
 
@@ -279,7 +279,7 @@ def migrate_phone(src_obj, dst_obj, src_fieldname, dst_fieldname):
         if not at_value:
             continue
         dx_value = {}
-        dx_value['number_type'] = at_value.get('type', u'Office')
+        dx_value['number_type'] = at_value.get('type', 'Office')
         dx_value['number'] = at_value.get('number', None)
         dx_values.append(dx_value)
     setattr(dst_obj, dst_fieldname, dx_values)

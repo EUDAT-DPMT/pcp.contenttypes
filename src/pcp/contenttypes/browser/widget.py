@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
 Example use in a template:
 <div tal:define="widget_view nocall:context/@@widget_view">

@@ -1,13 +1,13 @@
-import os
-import six
-import string
-import pkg_resources
-from email.utils import formataddr
 from email.mime.text import MIMEText
+from email.utils import formataddr
 from plone import api
 from Products.CMFPlone.utils import safe_text
-
 from zopyx.plone.persistentlogger.logger import PersistentLoggerAdapter
+
+import os
+import pkg_resources
+import six
+import string
 
 
 class Formatter(string.Formatter):
@@ -15,11 +15,11 @@ class Formatter(string.Formatter):
         field_names = [tp[1] for tp in self.parse(fmt)]
         for name in field_names:
             if name not in kw:
-                kw[str(name)] = u''
+                kw[str(name)] = ''
             else:
                 kw[str(name)] = safe_text(kw[str(name)])
 
-        return super(Formatter, self).format(fmt, *args, **kw)
+        return super().format(fmt, *args, **kw)
 
 
 def send_mail(
@@ -73,7 +73,7 @@ def send_mail(
 
     if context:
         PersistentLoggerAdapter(context).log(
-            u'Mail "{}" to {}  + {}, Subject: "{}" sent'.format(
+            'Mail "{}" to {}  + {}, Subject: "{}" sent'.format(
                 subject, recipients, cc, subject
             )
         )

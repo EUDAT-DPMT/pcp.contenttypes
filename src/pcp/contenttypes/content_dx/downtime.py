@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
-from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import (
-    IRegisteredServiceComponent,
-)
 from pcp.contenttypes.content_dx.provider import IProvider
+from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
+from pcp.contenttypes.content_dx.registeredservicecomponent import \
+    IRegisteredServiceComponent
 from pcp.contenttypes.mail import send_mail
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
@@ -27,11 +25,11 @@ import pytz
 class IDowntime(model.Schema):
     """Dexterity Schema for Downtimes"""
 
-    dexteritytextindexer.searchable("start", "end", "severity", "classification")
+    dexteritytextindexer.searchable('start', 'end', 'severity', 'classification')
 
     start = schema.Datetime(
-        title=u"Start date (UTC)",
-        description=u"When does the downtime start? In UTC!",
+        title='Start date (UTC)',
+        description='When does the downtime start? In UTC!',
         required=True,
     )
     directives.widget(
@@ -41,8 +39,8 @@ class IDowntime(model.Schema):
     )
 
     end = schema.Datetime(
-        title=u"End date (UTC)",
-        description=u"When does the downtime end? In UTC!",
+        title='End date (UTC)',
+        description='When does the downtime end? In UTC!',
         required=True,
     )
     directives.widget(
@@ -52,39 +50,39 @@ class IDowntime(model.Schema):
     )
 
     affected_registered_services = RelationList(
-        title=u"Affected registered services",
+        title='Affected registered services',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "affected_registered_services",
+        'affected_registered_services',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": [
-                "registeredservice_dx",
-                "registeredservicecomponent_dx",
+            'selectableTypes': [
+                'registeredservice_dx',
+                'registeredservicecomponent_dx',
             ],
-            "basePath": make_relation_root_path,
+            'basePath': make_relation_root_path,
         },
     )
 
     reason = schema.URI(
-        title=u"Reason",
-        description=u"Optional URL to the change management document providing the reason for this downtime.",
+        title='Reason',
+        description='Optional URL to the change management document providing the reason for this downtime.',
         required=False,
     )
 
     severity = schema.Choice(
-        title=u'Severity',
+        title='Severity',
         vocabulary='dpmt.severity_levels',
         required=False,
     )
 
     classification = schema.Choice(
-        title=u'Classification',
+        title='Classification',
         vocabulary='dpmt.downtime_classes',
         required=False,
     )
@@ -97,11 +95,11 @@ class Downtime(Container):
     # for the GOCDB compatibility layer
     def naive_start(self):
         """'start' without explicit time zone"""
-        return self.start.strftime("%Y-%m-%d %H:%M")
+        return self.start.strftime('%Y-%m-%d %H:%M')
 
     def naive_end(self):
         """'end' without explicit time zone"""
-        return self.end.strftime("%Y-%m-%d %H:%M")
+        return self.end.strftime('%Y-%m-%d %H:%M')
 
     # BBB
     @property
@@ -132,13 +130,11 @@ def findDowntimeRecipients(downtime):
 
     indirectly_affected_services = set(indirectly_affected_services)
 
-    directly_affected_services = set(
-        [
+    directly_affected_services = {
             service
             for service in affected_services_or_components
             if IRegisteredService.providedBy(service)
-        ]
-    )
+    }
 
     affected_services = set.union(
         directly_affected_services, indirectly_affected_services
@@ -158,12 +154,12 @@ def findDowntimeRecipients(downtime):
         relapi.relation(project, 'community_contact', restricted=False)
         for project in affected_projects
     ]
-    project_contacts_emails = set([i.email for i in project_contacts if i.email])
+    project_contacts_emails = {i.email for i in project_contacts if i.email}
 
     community_admins = []
     for community in affected_communities:
         community_admins.extend(relapi.relations(community, 'community_admins'))
-    community_admin_emails = set([i.email for i in community_admins if i.email])
+    community_admin_emails = {i.email for i in community_admins if i.email}
 
     recipients = set.union(project_contacts_emails, community_admin_emails)
     return recipients

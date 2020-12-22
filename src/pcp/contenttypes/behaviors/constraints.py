@@ -19,7 +19,7 @@ class IDPMTConstraints(model.Schema):
 
     fieldset(
         'constraints',
-        label=u'Constraints',
+        label='Constraints',
         fields=(
             'regional_constraints',
             'thematic_constraints',
@@ -29,28 +29,28 @@ class IDPMTConstraints(model.Schema):
     )
 
     regional_constraints = schema.TextLine(
-        title=u"Regional constraints",
-        description=u"Does the customer need to be in a certain "
-        "country or region? If so, which one(s)",
+        title='Regional constraints',
+        description='Does the customer need to be in a certain '
+        'country or region? If so, which one(s)',
         required=False,
     )
 
     thematic_constraints = schema.TextLine(
-        title=u"Thematic constraints",
-        description=u"Does the customer need to active in a certain "
-        "scientific field? If so, which one(s)",
+        title='Thematic constraints',
+        description='Does the customer need to active in a certain '
+        'scientific field? If so, which one(s)',
         required=False,
     )
 
     organizational_constraints = schema.TextLine(
-        title=u"Organizational constraints",
-        description=u"Does the customer need to be of a certain "
-        "organizational type? If so, which one(s)",
+        title='Organizational constraints',
+        description='Does the customer need to be of a certain '
+        'organizational type? If so, which one(s)',
         required=False,
     )
 
     constraints = RichText(
-        title=u"Constraints",
-        description=u"Any other constraints not yet covered.",
+        title='Constraints',
+        description='Any other constraints not yet covered.',
         required=False,
     )

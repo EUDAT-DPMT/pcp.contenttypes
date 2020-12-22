@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone import api
@@ -18,41 +17,41 @@ class IEnvironment(model.Schema):
     """Dexterity Schema for Environment"""
 
     contact = RelationChoice(
-        title=u"Contact",
+        title='Contact',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "contact",
+        'contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     account = schema.TextLine(
-        title=u"Account",
+        title='Account',
         required=False,
     )
 
     terms_of_use = schema.URI(
-        title=u"Terms of Use",
+        title='Terms of Use',
         required=False,
     )
 
     rootaccess = schema.Bool(
-        title=u"Root Access",
+        title='Root Access',
         required=False,
     )
 
     setup_procedure = schema.TextLine(
-        title=u"Setup Procedure",
+        title='Setup Procedure',
         required=False,
     )
 
     firewall_policy = schema.TextLine(
-        title=u"Firewall Policy",
+        title='Firewall Policy',
         required=False,
     )
 

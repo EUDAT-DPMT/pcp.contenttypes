@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from pcp.contenttypes.content_dx.common import unit_map
 from plone import api
 from plone.app.vocabularies.terms import safe_simplevocabulary_from_values

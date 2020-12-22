@@ -6,26 +6,25 @@
 # for DX types use Plone's restapi (wasn't available before)
 #
 
-from zope.component import getMultiAdapter
-from plone.restapi.interfaces import ISerializeToJson
-
-import os
-import base64
-
-import json
-
-import plone.api
-from Products.Five.browser import BrowserView
-from Products.CMFCore.interfaces import IFolderish
 from DateTime import DateTime
+from plone.restapi.interfaces import ISerializeToJson
+from Products.CMFCore.interfaces import IFolderish
+from Products.Five.browser import BrowserView
+from zope.component import getMultiAdapter
+
+import base64
+import json
+import os
+import plone.api
+
 
 #: Private attributes we add to the export list
-EXPORT_ATTRIBUTES = ["portal_type", "id"]
+EXPORT_ATTRIBUTES = ['portal_type', 'id']
 
 #: Do we dump out binary data... default we do, but can be controlled with env var
-EXPORT_BINARY = os.getenv("EXPORT_BINARY", None)
+EXPORT_BINARY = os.getenv('EXPORT_BINARY', None)
 if EXPORT_BINARY:
-    EXPORT_BINARY = EXPORT_BINARY == "true"
+    EXPORT_BINARY = EXPORT_BINARY == 'true'
 else:
     EXPORT_BINARY = False
 
@@ -68,7 +67,7 @@ class JSONViewDX(BrowserView):
         serializer = getMultiAdapter((self.context, self.request), ISerializeToJson)
         data = serializer()
         pretty = json.dumps(data, sort_keys=True, indent=4)
-        self.request.response.setHeader("Content-type", "application/json")
+        self.request.response.setHeader('Content-type', 'application/json')
         return pretty
 
 
@@ -96,14 +95,14 @@ class JSONView(BrowserView):
             return value.ISO8601()
         # elif isinstance(value, FormattableName):
         #     return dict(value.items())
-        elif hasattr(value, "isBinary") and value.isBinary():
+        elif hasattr(value, 'isBinary') and value.isBinary():
 
             if not EXPORT_BINARY:
                 return None
 
             # Archetypes FileField and ImageField payloads
             # are binary as OFS.Image.File object
-            data = getattr(value.data, "data", None)
+            data = getattr(value.data, 'data', None)
             if not data:
                 return None
             return base64.b64encode(data)
@@ -175,5 +174,5 @@ class JSONView(BrowserView):
         context = self.context.aq_inner
         data = self.export(context, recursive=recursive)
         pretty = json.dumps(data, sort_keys=True, indent=4)
-        self.request.response.setHeader("Content-type", "application/json")
+        self.request.response.setHeader('Content-type', 'application/json')
         return pretty

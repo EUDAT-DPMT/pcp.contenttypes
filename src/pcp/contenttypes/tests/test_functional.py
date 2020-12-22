@@ -1,23 +1,25 @@
-import glob
-import json
-import os
-import unittest
-
-import plone
-import transaction
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from mock import patch, call, MagicMock
+from unittest.mock import call
+from unittest.mock import MagicMock
+from unittest.mock import patch
 from pcp.contenttypes.browser.accounting import Accounting
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
+from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
+
+import glob
+import json
+import os
+import plone
+import transaction
+import unittest
 
 
 class TestFunctional(unittest.TestCase):
@@ -196,12 +198,12 @@ class TestFunctional(unittest.TestCase):
     # Keep order!
     ACCOUNTING_DATA = [
         {
-            "core": {"value": "123", "unit": "B", "type": "storage"},
-            "meta": {"submission_time": "2017-11-23 17:23:29", "ts": 17},
+            'core': {'value': '123', 'unit': 'B', 'type': 'storage'},
+            'meta': {'submission_time': '2017-11-23 17:23:29', 'ts': 17},
         },
         {
-            "core": {"value": "124", "unit": "B", "type": "storage"},
-            "meta": {"submission_time": "2017-11-23 16:23:29", "ts": 13},
+            'core': {'value': '124', 'unit': 'B', 'type': 'storage'},
+            'meta': {'submission_time': '2017-11-23 16:23:29', 'ts': 13},
         },
     ]
 
@@ -431,7 +433,7 @@ class TestFunctional(unittest.TestCase):
         index = 0
         for context, view_name, obj_type in view_types:
             portal_types.getTypeInfo(obj_type).global_allow = True
-            obj_id = 'overview_test_object_%s_%s' % (obj_type, index)
+            obj_id = f'overview_test_object_{obj_type}_{index}'
 
             self.portal.invokeFactory(obj_type, obj_id)
             test_object = self.portal[obj_id]
@@ -450,7 +452,7 @@ class TestFunctional(unittest.TestCase):
                 # We get here most probably if something went wrong
                 # when using a wrong renderer (i.e. if original is not available) for a field.
                 self.fail(
-                    'Rendering %s failed: maybe a missing renderer: %s' % (obj_type, e)
+                    f'Rendering {obj_type} failed: maybe a missing renderer: {e}'
                 )
 
             self.assertTrue(obj_id in text)

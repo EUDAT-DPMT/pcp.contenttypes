@@ -20,4 +20,4 @@ class QualifiedTitleView(BrowserView):
         ]:
             return title
         # avoid unicode decoding errors by explictily encoding the type as UTF-8
-        return "%s: %s" % (type_info.Title().encode('utf-8'), title)
+        return '{}: {}'.format(type_info.Title().encode('utf-8'), title)

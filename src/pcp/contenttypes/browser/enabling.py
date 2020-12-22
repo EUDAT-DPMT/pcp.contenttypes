@@ -1,6 +1,6 @@
-import plone.api
-
 from Products.Five.browser import BrowserView
+
+import plone.api
 
 
 class Enabling(BrowserView):
@@ -62,7 +62,7 @@ class Enabling(BrowserView):
         path = '{}/catalog'.format('/'.join(plone.api.portal.get().getPhysicalPath()))
         brains = catalog(dict(portal_type='Service', getId=service_name, path=path))
         if not brains:
-            raise ValueError('Service {} not found'.format(service_name))
+            raise ValueError(f'Service {service_name} not found')
         service = brains[0].getObject()
 
         # find associated service
@@ -70,7 +70,7 @@ class Enabling(BrowserView):
         path = '{}/projects'.format('/'.join(plone.api.portal.get().getPhysicalPath()))
         brains = catalog(dict(portal_type='Project', getId=project_name, path=path))
         if not brains:
-            raise ValueError('Project {} not found'.format(project_name))
+            raise ValueError(f'Project {project_name} not found')
         project = brains[0].getObject()
 
         # find ActionLists associated with the service
@@ -78,11 +78,11 @@ class Enabling(BrowserView):
         action_lists = [brain.getObject() for brain in brains]
         action_lists = [al for al in action_lists if al.getService() == service]
 
-        filter_method = 'filter_{}'.format(service_name)
+        filter_method = f'filter_{service_name}'
         method = getattr(self, filter_method, None)
         if not method:
             raise ValueError(
-                'No filtering method {}() implemented'.format(filter_method)
+                f'No filtering method {filter_method}() implemented'
             )
 
         action_lists = method(project, service, action_lists)

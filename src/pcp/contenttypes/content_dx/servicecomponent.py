@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from plone import api
@@ -18,12 +17,12 @@ class IServiceComponent(model.Schema):
     """Dexterity Schema for ServiceComponent"""
 
     offered_by = BackrelField(
-        title=u'Offered by',
+        title='Offered by',
         relation='service_component_offered',
     )
 
     requested_by = BackrelField(
-        title=u'Requested by',
+        title='Requested by',
         relation='requested_component',
     )
 

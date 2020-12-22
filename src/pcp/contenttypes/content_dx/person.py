@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
@@ -23,20 +22,20 @@ class IPhone(Interface):
     """Schema for Datagrid field phone"""
 
     number_type = schema.Choice(
-        title=u'Type',
+        title='Type',
         values=[
-            u'Office',
-            u'Secretariat',
-            u'Laboratory',
-            u'Mobile',
-            u'Fax',
-            u'Private',
+            'Office',
+            'Secretariat',
+            'Laboratory',
+            'Mobile',
+            'Fax',
+            'Private',
         ],
         required=False,
     )
 
     number = schema.TextLine(
-        title=u'Number',
+        title='Number',
         required=False,
     )
 
@@ -46,34 +45,34 @@ class IPerson(model.Schema):
 
     dexteritytextindexer.searchable('email')
 
-    name = schema.TextLine(title=u'Name', readonly=True)
+    name = schema.TextLine(title='Name', readonly=True)
 
     directives.omitted(IDisplayForm, 'firstname', 'lastname')
-    firstname = schema.TextLine(title=u'First name(s)')
+    firstname = schema.TextLine(title='First name(s)')
 
-    lastname = schema.TextLine(title=u'Last name(s)')
+    lastname = schema.TextLine(title='Last name(s)')
 
     email = Email(
-        title=u"E-mail",
+        title='E-mail',
         required=False,
     )
 
     affiliation = RelationChoice(
-        title=u"Affiliation",
+        title='Affiliation',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "affiliation",
+        'affiliation',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["provider_dx", "community_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['provider_dx', 'community_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     phone = schema.List(
-        title=u"Phone",
+        title='Phone',
         value_type=DictRow(schema=IPhone),
         required=False,
         missing_value=[],
@@ -81,67 +80,67 @@ class IPerson(model.Schema):
     directives.widget('phone', DataGridFieldFactory)
 
     manages = BackrelField(
-        title=u'Managed by',
+        title='Managed by',
         relation='managed_by',
     )
 
     provider_contact_for = BackrelField(
-        title=u'General contact for',
+        title='General contact for',
         relation='contact',
     )
 
     business_contact_for = BackrelField(
-        title=u'Business contact for',
+        title='Business contact for',
         relation='business_contact',
     )
 
     security_contact_for = BackrelField(
-        title=u'Security contact for',
+        title='Security contact for',
         relation='security_contact',
     )
 
     provider_admin = BackrelField(
-        title=u'Administrator for',
+        title='Administrator for',
         relation='admins',
     )
 
     she_contact = BackrelField(
-        title=u'SHE contact for',
+        title='SHE contact for',
         relation='contact_for',
     )
 
     community_contact_for = BackrelField(
-        title=u'Customer contact for',
+        title='Customer contact for',
         relation='community_contact',
     )
 
     community_representative = BackrelField(
-        title=u'Customer representative for',
+        title='Customer representative for',
         relation='representative',
     )
 
     community_admin = BackrelField(
-        title=u'Customer administrator for',
+        title='Customer administrator for',
         relation='community_admins',
     )
 
     enables = BackrelField(
-        title=u'Project enabler for',
+        title='Project enabler for',
         relation='project_enabler',
     )
 
     service_owner_of = BackrelField(
-        title=u'Service owner of',
+        title='Service owner of',
         relation='service_owner',
     )
 
     principal_investigator_of = BackrelField(
-        title=u'Principal investigator of',
+        title='Principal investigator of',
         relation='principal_investigator',
     )
 
     manager_of_registered_service = BackrelField(
-        title=u'Manager of registered services',
+        title='Manager of registered services',
         relation='managers',
     )
 
@@ -152,4 +151,4 @@ class Person(Container):
 
     @property
     def name(self):
-        return u'{} {}'.format(self.firstname, self.lastname)
+        return f'{self.firstname} {self.lastname}'

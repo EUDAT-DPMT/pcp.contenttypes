@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from plone import api
 from plone.app.multilingual.browser.interfaces import make_relation_root_path

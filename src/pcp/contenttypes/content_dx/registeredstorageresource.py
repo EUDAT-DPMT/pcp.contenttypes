@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from pcp.contenttypes.content_dx.accountable import Accountable
-from pcp.contenttypes.content_dx.common import CommonUtilities
 from pcp.contenttypes.content_dx.accountable import IAccountable
+from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import DatetimeFieldWidget
 from plone.autoform import directives
@@ -19,18 +18,18 @@ from zope.interface import Interface
 class ISize(Interface):
 
     value = schema.TextLine(
-        title=u'Value',
+        title='Value',
         required=False,
     )
 
     unit = schema.Choice(
-        title=u'Unit',
+        title='Unit',
         vocabulary='dpmt.information_units',
         required=False,
     )
 
     storage_class = schema.Choice(
-        title=u'Storage class',
+        title='Storage class',
         vocabulary='dpmt.storage_types',
         required=False,
     )
@@ -40,9 +39,9 @@ class IRegisteredStorageResource(model.Schema):
     """Dexterity Schema for Registered Storage Resources"""
 
     size = schema.List(
-        title=u'Size',
-        description=u'Maximal size and type of this storage resource',
-        value_type=DictRow(title=u'Foo', schema=ISize),
+        title='Size',
+        description='Maximal size and type of this storage resource',
+        value_type=DictRow(title='Foo', schema=ISize),
         default=[{'value': None, 'unit': None, 'storage_class': None}],
         required=False,
     )
@@ -53,28 +52,28 @@ class IRegisteredStorageResource(model.Schema):
         allow_insert=False,
     )
 
-    usage = schema.TextLine(title=u'Current usage', readonly=True)
+    usage = schema.TextLine(title='Current usage', readonly=True)
 
-    number = schema.TextLine(title=u'Registered objects', readonly=True)
+    number = schema.TextLine(title='Registered objects', readonly=True)
 
-    allocated = schema.TextLine(title=u'Allocated storage', readonly=True)
+    allocated = schema.TextLine(title='Allocated storage', readonly=True)
 
-    storage_class = schema.TextLine(title=u'Storage class', readonly=True)
+    storage_class = schema.TextLine(title='Storage class', readonly=True)
 
     max_objects = schema.Int(
-        title=u"Max. Objects",
-        description=u"Allocated (maximum) number of objects",
+        title='Max. Objects',
+        description='Allocated (maximum) number of objects',
         required=False,
     )
 
     cost_factor = schema.Float(
-        title=u"Cost factor",
+        title='Cost factor',
         required=False,
     )
 
     preserve_until = schema.Datetime(
-        title=u"Preserve until",
-        description=u"Until when does this resource need to be allocated?",
+        title='Preserve until',
+        description='Until when does this resource need to be allocated?',
         required=False,
     )
     directives.widget('preserve_until', DatetimeFieldWidget)
@@ -131,7 +130,7 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
         else:
             submission_time = '??'
 
-        return '%s (%s UTC)' % (
+        return '{} ({} UTC)'.format(
             self.renderResourceUsage(used and used['core'], size),
             submission_time,
         )
@@ -160,5 +159,5 @@ class RegisteredStorageResource(Container, CommonUtilities, Accountable):
         scopes.extend(project.getScopeValues())
         s = set(scopes)
         if asString:
-            return ", ".join(s)
+            return ', '.join(s)
         return s  # tuple(s)

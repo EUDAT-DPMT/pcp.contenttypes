@@ -1,13 +1,12 @@
-import furl
-import requests
+from ..interfaces.settings import ISettings
 from plone.protect.interfaces import IDisableCSRFProtection
-
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.Five.browser import BrowserView
+from zope.component import getUtility
 from zope.interface import alsoProvides
 
-from ..interfaces.settings import ISettings
+import furl
+import requests
 
 
 class Accounting(BrowserView):
@@ -85,4 +84,4 @@ class Accounting(BrowserView):
                 resource.cached_newest_record = newest_record
             updated_resources.append(resource.title)
 
-        return "Updated resource record caches:\n\n" + '\n'.join(updated_resources)
+        return 'Updated resource record caches:\n\n' + '\n'.join(updated_resources)

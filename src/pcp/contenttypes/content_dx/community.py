@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
@@ -22,116 +21,116 @@ from zope.interface import implementer
 class ICommunity(model.Schema):
     """Dexterity Schema for Communities"""
 
-    dexteritytextindexer.searchable("VAT")
+    dexteritytextindexer.searchable('VAT')
 
     url = schema.URI(
-        title=u"Url",
+        title='Url',
         required=False,
     )
 
     # hide adress fields from display. instead show a condensed view from the property 'address'
     directives.omitted(IDisplayForm, 'street1', 'street2', 'zip', 'city', 'country')
     street1 = schema.TextLine(
-        title=u'Street 1',
+        title='Street 1',
         required=False,
     )
 
     street2 = schema.TextLine(
-        title=u'Street 2',
+        title='Street 2',
         required=False,
     )
 
     zip = schema.TextLine(
-        title=u'ZIP code',
+        title='ZIP code',
         required=False,
     )
 
     city = schema.TextLine(
-        title=u'City',
+        title='City',
         required=True,
     )
 
     country = schema.Choice(
-        title=u'Country',
+        title='Country',
         vocabulary='dpmt.country_names',
         required=True,
     )
 
-    address = schema.TextLine(title=u'Adress', readonly=True)
+    address = schema.TextLine(title='Adress', readonly=True)
     directives.widget('address', TrustedTextWidget)
 
     VAT = schema.TextLine(
-        title=u"VAT",
+        title='VAT',
         required=False,
     )
 
     representative = RelationChoice(
-        title=u"Representative",
-        description=u"Main person representing the Customer.",
+        title='Representative',
+        description='Main person representing the Customer.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "representative",
+        'representative',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     community_admins = RelationList(
-        title=u"Administrators",
+        title='Administrators',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "community_admins",
+        'community_admins',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     affiliated = BackrelField(
-        title=u'Affiliated',
+        title='Affiliated',
         relation='affiliation',
     )
 
     projects_involved = BackrelField(
-        title=u'Projects involved',
-        description=u'Projects involving this customer',
+        title='Projects involved',
+        description='Projects involving this customer',
         relation='community',
     )
 
     primary_provider = BackrelField(
-        title=u'Primary_provider',
+        title='Primary_provider',
         relation='primary_provider_for',
     )
 
     secondary_provider = BackrelField(
-        title=u'Secondary_provider',
+        title='Secondary_provider',
         relation='secondary_provider_for',
     )
 
     topics = schema.TextLine(
-        title=u"Topics",
-        description=u"If applicable, please mention the scientific field(s) this customer is focussing on.",
+        title='Topics',
+        description='If applicable, please mention the scientific field(s) this customer is focussing on.',
         required=False,
     )
 
     resources = BackrelField(
-        title=u'Customer\'s Resources',
+        title='Customer\'s Resources',
         relation='customer',
     )
 
-    usage_summary = schema.TextLine(title=u'Usage', readonly=True)
+    usage_summary = schema.TextLine(title='Usage', readonly=True)
 
-    resource_usage = schema.TextLine(title=u'Resource Usage', readonly=True)
+    resource_usage = schema.TextLine(title='Resource Usage', readonly=True)
 
 
 @implementer(ICommunity)
@@ -142,15 +141,15 @@ class Community(Container, CommonUtilities):
     def address(self):
         street = None
         if self.street1 and self.street2:
-            street = u'{} {}'.format(self.street1, self.street2)
+            street = f'{self.street1} {self.street2}'
         elif self.street1 and not self.street2:
             street = self.street1
         elif not self.street1 and self.street2:
             street = self.street2
 
-        city = u'{} {}'.format(self.zip, self.city) if self.zip else self.city
+        city = f'{self.zip} {self.city}' if self.zip else self.city
         items = [street, city, self.country]
-        return u'<br />'.join(safe_text(i) for i in items if i)
+        return '<br />'.join(safe_text(i) for i in items if i)
 
     def get_resources(self):
         return relapi.backrelations(self, 'customer')

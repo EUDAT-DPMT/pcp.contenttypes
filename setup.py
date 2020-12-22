@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 This module contains the tool of pcp.contenttypes
 """
+from setuptools import find_packages
+from setuptools import setup
+
 import os
-from setuptools import setup, find_packages
 
 
 def read(*rnames):
@@ -35,7 +36,7 @@ tests_require = [
 setup(
     name='pcp.contenttypes',
     version=version,
-    description="Content types for the Project Coordination Portal application",
+    description='Content types for the Project Coordination Portal application',
     long_description=long_description,
     # Get more strings from
     # http://pypi.python.org/pypi?:action=list_classifiers
@@ -83,6 +84,6 @@ setup(
             'renames = pcp.contenttypes:zodbupdate_rename_dict',
         ],
     },
-    setup_requires=["PasteScript"],
-    paster_plugins=["templer.localcommands"],
+    setup_requires=['PasteScript'],
+    paster_plugins=['templer.localcommands'],
 )

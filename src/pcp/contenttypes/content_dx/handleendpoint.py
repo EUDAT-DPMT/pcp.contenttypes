@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
@@ -16,44 +15,44 @@ class IHandleEndpoint(model.Schema):
     """Dexterity Schema for Handle endpoint"""
 
     host = schema.TextLine(
-        title=u'Host',
+        title='Host',
         required=False,
     )
 
     ip = schema.TextLine(
-        title=u'IP',
+        title='IP',
         required=False,
     )
 
     monitored = schema.TextLine(
-        title=u'Monitored',
-        description=u'Yes or no',
+        title='Monitored',
+        description='Yes or no',
         required=False,
     )
 
     monitoring_user = schema.TextLine(
-        title=u'Monitoring user',
+        title='Monitoring user',
         required=False,
     )
 
     system_operations_user = schema.TextLine(
-        title=u'Sytem operations user',
+        title='Sytem operations user',
         required=False,
     )
 
     remote_user = schema.TextLine(
-        title=u'Remote user names',
-        description=u'Comma separated list of remote user names to be used.',
+        title='Remote user names',
+        description='Comma separated list of remote user names to be used.',
         required=False,
     )
 
     prefix = schema.TextLine(
-        title=u'Prefix',
+        title='Prefix',
     )
 
     mirrored_to = RelationList(
-        title=u'Mirror(s)',
-        description=u'Other Handle server(s) mirroring this prefix.',
+        title='Mirror(s)',
+        description='Other Handle server(s) mirroring this prefix.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
@@ -70,12 +69,12 @@ class IHandleEndpoint(model.Schema):
     )
 
     contacts = schema.TextLine(
-        title=u'Contacts',
+        title='Contacts',
         required=False,
     )
 
     related_project = RelationChoice(
-        title=u'Related project',
+        title='Related project',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
@@ -89,7 +88,7 @@ class IHandleEndpoint(model.Schema):
     )
 
     related_service = RelationChoice(
-        title=u'Related service',
+        title='Related service',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
@@ -103,8 +102,8 @@ class IHandleEndpoint(model.Schema):
     )
 
     text = RichText(
-        title=u'Text',
-        description=u'Anything else to further describe this endpoint.',
+        title='Text',
+        description='Anything else to further describe this endpoint.',
         required=False,
     )
 

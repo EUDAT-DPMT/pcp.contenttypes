@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
@@ -19,103 +18,103 @@ class IRegisteredService(model.Schema):
     """Dexterity Schema for Registered services"""
 
     general_provider = RelationChoice(
-        title=u"General provider",
-        description=u"General provider for this project (chose EUDAT Ltd if in doubt)",
+        title='General provider',
+        description='General provider for this project (chose EUDAT Ltd if in doubt)',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "general_provider",
+        'general_provider',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["provider_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['provider_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     contact = RelationChoice(
-        title=u"Contact",
-        description=u"The person responsible for this registered service.",
+        title='Contact',
+        description='The person responsible for this registered service.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "contact",
+        'contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     managers = RelationList(
-        title=u"Manager(s)",
-        description=u"Other people who can change access rights and similar critical controls.",
+        title='Manager(s)',
+        description='Other people who can change access rights and similar critical controls.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "managers",
+        'managers',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     monitored = schema.Bool(
-        title=u"Monitored",
-        description=u"Should this service be monitored?",
+        title='Monitored',
+        description='Should this service be monitored?',
         required=False,
     )
 
     service_components = RelationList(
-        title=u"Service components",
-        description=u"The service components providing the service.",
+        title='Service components',
+        description='The service components providing the service.',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "service_components",
+        'service_components',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredservicecomponent_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['registeredservicecomponent_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     original_request = RelationChoice(
-        title=u"Request",
-        description=u"The original request that triggered the establishment of this service.",
+        title='Request',
+        description='The original request that triggered the establishment of this service.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "original_request",
+        'original_request',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["servicerequest_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['servicerequest_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
-    registry_link = schema.TextLine(title=u'Central Registry', readonly=True)
+    registry_link = schema.TextLine(title='Central Registry', readonly=True)
 
     used_by_projects = BackrelField(
-        title=u'Used by project',
+        title='Used by project',
         relation='registered_services_used',
     )
 
-    scopes = schema.TextLine(title=u'Project Scopes', readonly=True)
+    scopes = schema.TextLine(title='Project Scopes', readonly=True)
 
     resources = BackrelField(
-        title=u'Registered service\'s resources',
+        title='Registered service\'s resources',
         relation='services',
     )
 
@@ -141,5 +140,5 @@ class RegisteredService(Container):
         [scopes.extend(p['fullobj'].getScopeValues()) for p in projects]
         s = set(scopes)
         if asString:
-            return u', '.join(s)
+            return ', '.join(s)
         return s  # tuple(s)

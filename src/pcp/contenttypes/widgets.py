@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from z3c.form.browser.text import TextWidget
 from z3c.form.interfaces import ITextWidget
 from zope.interface import implementer_only

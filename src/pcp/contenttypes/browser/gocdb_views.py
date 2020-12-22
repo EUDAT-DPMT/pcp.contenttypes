@@ -1,9 +1,8 @@
 from DateTime import DateTime
 from incf.countryutils.datatypes import Country
 from pcp.contenttypes.content_dx.registeredservice import IRegisteredService
-from pcp.contenttypes.content_dx.registeredservicecomponent import (
-    IRegisteredServiceComponent,
-)
+from pcp.contenttypes.content_dx.registeredservicecomponent import \
+    IRegisteredServiceComponent
 from Products.CMFCore.MemberDataTool import MemberData
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
@@ -115,7 +114,7 @@ def getExtensions(data):
         ext = extension_template.format(**d)
         result.append(ext)
     result.append('    </EXTENSIONS>')
-    return "\n".join(result)
+    return '\n'.join(result)
 
 
 def addState(context, data):
@@ -145,7 +144,7 @@ class ProviderView(BrowserView):
         try:
             result['creg_url'] = context.getCregURL(url_only=True)
         except KeyError:
-            result['creg_url'] = ""
+            result['creg_url'] = ''
         result['url'] = context.getUrl()
         country = context.getAddress().get('country', 'not set')
         if country == 'not set':

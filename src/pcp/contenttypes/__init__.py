@@ -1,6 +1,7 @@
-from zope.i18nmessageid import MessageFactory
 from plone.app.upgrade.utils import alias_module
+from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
+
 
 # Define a message factory for when this product is internationalised.
 # This will be imported with the special name "_" in most modules. Strings

@@ -1,23 +1,24 @@
-import re
-import datetime
-import unittest
-
-import plone
-import pytz
-import transaction
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from mock import patch
+from unittest.mock import patch
 from pcp.contenttypes.portlets.downtimes import Assignment
 from pcp.contenttypes.testing import PCP_CONTENTTYPES_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
-from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
+
+import datetime
+import plone
+import pytz
+import re
+import transaction
+import unittest
 
 
 class TestDowntime(unittest.TestCase):
@@ -181,10 +182,10 @@ class TestDowntime(unittest.TestCase):
         self.assertTrue('Add new item' in browser.contents)
         self.assertTrue('Compute or data service provider' in browser.contents)
 
-        browser.getControl("Provider").click()
+        browser.getControl('Provider').click()
         browser.getControl(name='form.button.Add').click()
 
-        browser.getControl(name="title").value = self.TEST_PROVIDER_NAME
+        browser.getControl(name='title').value = self.TEST_PROVIDER_NAME
         browser.getControl(name='provider_userid').value = self.TEST_PROVIDER_ID
         browser.getControl(
             name='address.city:record:ignore_empty'
@@ -192,7 +193,7 @@ class TestDowntime(unittest.TestCase):
         browser.getControl(name='address.country:record:ignore_empty').displayValue = [
             self.TEST_PROVIDER_COUNTRY
         ]
-        browser.getControl(name="form.button.save").click()
+        browser.getControl(name='form.button.save').click()
 
         # Create downtime
         browser.follow('Add new')

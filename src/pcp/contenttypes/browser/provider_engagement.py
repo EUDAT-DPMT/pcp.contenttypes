@@ -1,13 +1,13 @@
-import furl
-import requests
+from ..interfaces.settings import ISettings
 from plone.protect.interfaces import IDisableCSRFProtection
-
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.Five.browser import BrowserView
+from zope.component import getUtility
 from zope.interface import alsoProvides
 
-from ..interfaces.settings import ISettings
+import furl
+import requests
+
 
 # helper method for rendering reference fields
 def render_reference_field(content, field_id, with_state=False):
@@ -15,17 +15,17 @@ def render_reference_field(content, field_id, with_state=False):
     objs = field.get(content, aslist=True)
     text = []
     if objs == []:
-        return "no reference set"
+        return 'no reference set'
     for item in objs:
         if with_state:
             state = content.portal_workflow.getInfoFor(item, 'review_state')
             text.append(
-                "<a href='%s'>%s</a> (%s)" % (item.absolute_url(), item.Title(), state)
+                f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})"
             )
 
         else:
-            text.append("<a href='%s'>%s</a>" % (item.absolute_url(), item.Title()))
-    return "<br />".join(text)
+            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
+    return '<br />'.join(text)
 
 
 class ProviderEngagement(BrowserView):
@@ -33,19 +33,19 @@ class ProviderEngagement(BrowserView):
         return self.context.getBRefs('general_provider')
 
     def projects(self):
-        return [p for p in self.backlinks() if p.portal_type == "Project"]
+        return [p for p in self.backlinks() if p.portal_type == 'Project']
 
     def services(self):
-        return [s for s in self.backlinks() if s.portal_type == "RegisteredService"]
+        return [s for s in self.backlinks() if s.portal_type == 'RegisteredService']
 
     def components(self):
         return self.context.listFolderContents(
-            contentFilter={"portal_type": "RegisteredServiceComponent"}
+            contentFilter={'portal_type': 'RegisteredServiceComponent'}
         )
 
     def storage(self):
         return self.context.listFolderContents(
-            contentFilter={"portal_type": "RegisteredStorageResource"}
+            contentFilter={'portal_type': 'RegisteredStorageResource'}
         )
 
     def project_data(self):
@@ -54,13 +54,13 @@ class ProviderEngagement(BrowserView):
             data = {}
             data['title'] = p.Title()
             data['url'] = p.absolute_url()
-            data['title_with_link'] = '<a href="%s">%s</a>' % (
+            data['title_with_link'] = '<a href="{}">{}</a>'.format(
                 p.absolute_url(),
                 p.Title(),
             )
             customer = p.getCommunity()
             if customer not in [None, '']:
-                data['customer_with_link'] = '<a href="%s">%s</a>' % (
+                data['customer_with_link'] = '<a href="{}">{}</a>'.format(
                     customer.absolute_url(),
                     customer.Title(),
                 )
@@ -80,7 +80,7 @@ class ProviderEngagement(BrowserView):
             data = {}
             data['title'] = s.Title()
             data['url'] = s.absolute_url()
-            data['title_with_link'] = '<a href="%s">%s</a>' % (
+            data['title_with_link'] = '<a href="{}">{}</a>'.format(
                 s.absolute_url(),
                 s.Title(),
             )
@@ -102,11 +102,11 @@ class ProviderEngagement(BrowserView):
             data = {}
             data['title'] = c.Title()
             data['url'] = c.absolute_url()
-            data['title_with_link'] = '<a href="%s">%s</a>' % (
+            data['title_with_link'] = '<a href="{}">{}</a>'.format(
                 c.absolute_url(),
                 c.Title(),
             )
-            data['service_url'] = '<a href="%s">%s</a>' % (
+            data['service_url'] = '<a href="{}">{}</a>'.format(
                 c.getService_url(),
                 c.getService_url(),
             )
@@ -123,7 +123,7 @@ class ProviderEngagement(BrowserView):
             data = {}
             data['title'] = r.Title()
             data['url'] = r.absolute_url()
-            data['title_with_link'] = '<a href="%s">%s</a>' % (
+            data['title_with_link'] = '<a href="{}">{}</a>'.format(
                 r.absolute_url(),
                 r.Title(),
             )

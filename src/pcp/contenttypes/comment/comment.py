@@ -1,9 +1,8 @@
-# -*- coding: UTF-8 -*-
 from plone.app.z3cform.interfaces import IPloneFormLayer
-from z3c.form.widget import Widget
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IWidget
 from z3c.form.widget import FieldWidget
+from z3c.form.widget import Widget
 from zope.component import adapter
 from zope.interface import implementer
 from zope.schema import Field
@@ -15,8 +14,8 @@ from zope.schema.interfaces import ITextLine
 class ICommentField(ITextLine):
 
     comment = TextLine(
-        title=u'Comment',
-        description=u'The comment to display',
+        title='Comment',
+        description='The comment to display',
         required=False,
     )
 
@@ -28,8 +27,8 @@ class CommentField(Field):
     def __init__(self, **kw):
         self.comment = kw.pop('comment', '')
         if not self.comment:
-            raise ValueError(u'CommentField requires a comment, e.g. comment="Foo"')
-        super(CommentField, self).__init__(required=False, **kw)
+            raise ValueError('CommentField requires a comment, e.g. comment="Foo"')
+        super().__init__(required=False, **kw)
 
 
 class ICommentWidget(IWidget):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from pcp.contenttypes.portlets import downtimes
 from plone.app.portlets import portlets
 from plone.app.portlets.dashboard import DefaultDashboard

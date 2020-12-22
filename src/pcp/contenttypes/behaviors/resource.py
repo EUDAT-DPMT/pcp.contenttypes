@@ -22,28 +22,28 @@ from zope.interface import provider
 class IComputeResourceRowSchema(Interface):
 
     nCores = schema.TextLine(
-        title=u"Number of cores",
+        title='Number of cores',
         required=False,
     )
 
     ram = schema.TextLine(
-        title=u"RAM",
+        title='RAM',
         required=False,
     )
 
     diskspace = schema.TextLine(
-        title=u"Diskspace",
+        title='Diskspace',
         required=False,
     )
 
     system = schema.TextLine(
-        title=u"requires OS/software",
+        title='requires OS/software',
         required=False,
     )
 
     virtualization = schema.Choice(
-        title=u"Virtualization OK?",
-        values=[u'Yes', u'No'],
+        title='Virtualization OK?',
+        values=['Yes', 'No'],
         required=False,
     )
 
@@ -51,19 +51,19 @@ class IComputeResourceRowSchema(Interface):
 class IStorageResourceRowSchema(Interface):
 
     value = schema.TextLine(
-        title=u"Value",
+        title='Value',
         required=False,
     )
 
     unit = schema.Choice(
-        title=u"Unit",
-        vocabulary="dpmt.information_units",
+        title='Unit',
+        vocabulary='dpmt.information_units',
         required=False,
     )
 
     storage_class = schema.Choice(
-        title=u"Storage class",
-        vocabulary="dpmt.storage_types",
+        title='Storage class',
+        vocabulary='dpmt.storage_types',
         required=False,
     )
 
@@ -74,15 +74,15 @@ class IDPMTResource(model.Schema):
 
     fieldset(
         'resources',
-        label=u'Resources',
+        label='Resources',
         fields=('compute_resources', 'storage_resources'),
     )
 
     compute_resources = schema.List(
-        title=u"Compute resources",
-        description=u"Specification of the compute resources",
+        title='Compute resources',
+        description='Specification of the compute resources',
         value_type=DictRow(
-            title=u"Compute resources", schema=IComputeResourceRowSchema
+            title='Compute resources', schema=IComputeResourceRowSchema
         ),
         required=False,
         missing_value=[],
@@ -90,10 +90,10 @@ class IDPMTResource(model.Schema):
     directives.widget('compute_resources', DataGridFieldFactory)
 
     storage_resources = schema.List(
-        title=u"Storage resources",
-        description=u"Specification of the storage resources",
+        title='Storage resources',
+        description='Specification of the storage resources',
         value_type=DictRow(
-            title=u"Storage resources", schema=IStorageResourceRowSchema
+            title='Storage resources', schema=IStorageResourceRowSchema
         ),
         required=False,
         missing_value=[],

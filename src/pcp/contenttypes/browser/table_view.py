@@ -18,7 +18,7 @@ hidden_fields = (
     'nextPreviousEnabled',
 )
 
-hidden_fields = dict([(f, 0) for f in hidden_fields])
+hidden_fields = {f: 0 for f in hidden_fields}
 
 
 class TableView(BrowserView):

@@ -1,5 +1,6 @@
-import plone.api
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
+
+import plone.api
 
 
 def SharingHandler(event):
@@ -10,11 +11,11 @@ def SharingHandler(event):
 
     user = plone.api.user.get_current()
     username = user.getUserName()
-    info_url = '/@@user-information?userid={}'.format(username)
+    info_url = f'/@@user-information?userid={username}'
     email = user.getProperty('email')
     fullname = user.getProperty('fullname')
     if fullname and email:
-        username = '{} ({}, {})'.format(username, fullname, email)
+        username = f'{username} ({fullname}, {email})'
 
     logger.log(
         'Sharing updated',

@@ -1,5 +1,4 @@
 from ZODB.POSException import ConflictError
-
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 

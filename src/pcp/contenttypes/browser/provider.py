@@ -1,13 +1,12 @@
-from datetime import datetime
-
-import plone.api
+from ..mail import send_mail
 from BTrees.OOBTree import OOBTree
-from zope.interface import alsoProvides
+from datetime import datetime
+from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from zope.annotation.interfaces import IAnnotations
-from plone.protect.interfaces import IDisableCSRFProtection
+from zope.interface import alsoProvides
 
-from ..mail import send_mail
+import plone.api
 
 
 NOTIFICATION_KEY = 'pcp.contenttypes.provider.outdated-components'

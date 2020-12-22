@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -14,103 +13,103 @@ class IIrodsEndpoint(model.Schema):
     """Dexterity Schema for Irods endpoint"""
 
     host = schema.TextLine(
-        title=u'Host',
+        title='Host',
         required=False,
     )
 
     ip = schema.TextLine(
-        title=u'IP',
+        title='IP',
         required=False,
     )
 
     zone_name = schema.TextLine(
-        title=u'Zone name',
+        title='Zone name',
         required=False,
     )
 
     zone_key = schema.TextLine(
-        title=u'Zone key',
+        title='Zone key',
         required=False,
     )
 
     monitored = schema.TextLine(
-        title=u'Monitored?',
-        description=u'Yes or no ',
+        title='Monitored?',
+        description='Yes or no ',
         required=True,
     )
 
     monitoring_user = schema.TextLine(
-        title=u'Monitoring user',
+        title='Monitoring user',
         required=False,
     )
 
     system_operations_user = schema.TextLine(
-        title=u'Sytem operations user',
+        title='Sytem operations user',
         required=False,
     )
 
     remote_user = schema.TextLine(
-        title=u'Remote user names',
-        description=u'Comma separated list of remote user names to be used.',
+        title='Remote user names',
+        description='Comma separated list of remote user names to be used.',
         required=False,
     )
 
     primary_path = schema.TextLine(
-        title=u'Path',
+        title='Path',
         required=False,
     )
 
     path_description = schema.TextLine(
-        title=u'Path description',
+        title='Path description',
         required=False,
     )
 
     alternative_path = schema.TextLine(
-        title=u'Alternative path',
+        title='Alternative path',
         required=False,
     )
 
     alt_path_description = schema.TextLine(
-        title=u'Alternative path description',
+        title='Alternative path description',
         required=False,
     )
 
     contacts = schema.TextLine(
-        title=u'Contacts',
+        title='Contacts',
         required=False,
     )
 
     related_project = RelationChoice(
-        title=u"Related project",
+        title='Related project',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "related_project",
+        'related_project',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["project_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['project_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     related_service = RelationChoice(
-        title=u"Related service",
+        title='Related service',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "related_service",
+        'related_service',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["registeredservice_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['registeredservice_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     text = RichText(
-        title=u'Text',
-        description=u'Anything else to further describe this endpoint.',
+        title='Text',
+        description='Anything else to further describe this endpoint.',
         required=False,
     )
 

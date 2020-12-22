@@ -1,8 +1,10 @@
 from datetime import datetime
 from io import StringIO
-from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+
 import six
+
 
 CSV_TEMPLATE = '"%s"'
 
@@ -89,7 +91,7 @@ class ProjectOverview(BrowserView):
                     data = f.get(project)
                     values = []
                     for k, v in data.items():
-                        values.append('%s: %s' % (k, v))
+                        values.append(f'{k}: {v}')
                     value['text'] = '<br />'.join(values)
                     value['url'] = None
                 elif field in ['allocated', 'used']:
@@ -132,7 +134,7 @@ class CsvView(ProjectOverview):
             values = []
             for field in project:
                 text = field['text']
-                if isinstance(text, six.text_type):
+                if isinstance(text, str):
                     text = text.encode('utf8')
                 value = CSV_TEMPLATE % text
                 values.append(value)
@@ -141,12 +143,12 @@ class CsvView(ProjectOverview):
         value = out.getvalue()
         out.close()
 
-        timestamp = datetime.today().strftime("%Y%m%d%H%M")
+        timestamp = datetime.today().strftime('%Y%m%d%H%M')
         filename = filenamebase + timestamp + '.csv'
 
         self.request.RESPONSE.setHeader('Content-Type', 'application/x-msexcel')
         self.request.RESPONSE.setHeader(
-            "Content-Disposition", "inline;filename=%s" % filename
+            'Content-Disposition', 'inline;filename=%s' % filename
         )
 
         return value

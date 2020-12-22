@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
@@ -19,133 +18,133 @@ class IProject(model.Schema):
     """Dexterity Schema for Projects"""
 
     website = schema.URI(
-        title=u"Website",
+        title='Website',
         required=False,
     )
 
     community = RelationChoice(
-        title=u"Customer",
-        description=u"Main customer involved in this project.",
+        title='Customer',
+        description='Main customer involved in this project.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "community",
+        'community',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["community_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['community_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     community_contact = RelationChoice(
-        title=u"Customer contact",
+        title='Customer contact',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "community_contact",
+        'community_contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     registered_services_used = RelationList(
-        title=u"Registered services used",
-        description=u"Select all registered services the project requires",
+        title='Registered services used',
+        description='Select all registered services the project requires',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         missing_value=[],
         required=False,
     )
     directives.widget(
-        "registered_services_used",
+        'registered_services_used',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["registeredservice_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['registeredservice_dx'],
+            'basePath': make_relation_root_path,
         },
     )
     # TODO: Add custom edit-form: https://community.plone.org/t/conditional-fields-in-dexterity-schema/12248/5
     # condition='python:here.stateIn(["enabling","pre_production","production","terminated"])' <-- Where does that fit?
 
-    allocated_new = schema.TextLine(title=u'Allocated', readonly=True)
+    allocated_new = schema.TextLine(title='Allocated', readonly=True)
 
-    used_new = schema.TextLine(title=u'Used', readonly=True)
+    used_new = schema.TextLine(title='Used', readonly=True)
 
     general_provider = RelationChoice(
-        title=u"General provider",
-        description=u"General provider for this project (chose EUDAT Ltd if in doubt)",
+        title='General provider',
+        description='General provider for this project (chose EUDAT Ltd if in doubt)',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "general_provider",
+        'general_provider',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["provider_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['provider_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     project_enabler = RelationChoice(
-        title=u"Project enabled by",
+        title='Project enabled by',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "project_enabler",
+        'project_enabler',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
     # condition="python:here.stateNotIn(['considered'])" <-- Where does that fit?
 
     start_date = schema.Date(
-        title=u"Start date",
+        title='Start date',
         required=False,
     )
-    directives.widget("start_date", DateFieldWidget)
+    directives.widget('start_date', DateFieldWidget)
 
     end_date = schema.Date(
-        title=u"End date",
+        title='End date',
         required=False,
     )
-    directives.widget("end_date", DateFieldWidget)
+    directives.widget('end_date', DateFieldWidget)
 
     call_for_collaboration = schema.URI(
-        title=u"Call for collaboration",
-        description=u"URL to the call that triggered this project",
+        title='Call for collaboration',
+        description='URL to the call that triggered this project',
         required=False,
     )
 
     uptake_plan = schema.URI(
-        title=u"Uptake plan",
-        description=u"URL to the project uptake plan (if not available on this site). Otherwise, often found on the confluence site.",
+        title='Uptake plan',
+        description='URL to the project uptake plan (if not available on this site). Otherwise, often found on the confluence site.',
         required=False,
     )
 
     repository = schema.TextLine(
-        title=u"Repository",
-        description=u"If the data to be dealt with here are in a web-accessible repository already you should specify its URL here.",
+        title='Repository',
+        description='If the data to be dealt with here are in a web-accessible repository already you should specify its URL here.',
         required=False,
     )
 
     topics = schema.TextLine(
-        title=u"Topics",
-        description=u"Please mention the scientific field(s) the data originate from.",
+        title='Topics',
+        description='Please mention the scientific field(s) the data originate from.',
         required=False,
     )
 
     directives.widget(scopes=CheckBoxFieldWidget)
     scopes = schema.List(
-        title=u'Scope',
-        description=u'Tick all that apply. If in doubt, select "EUDAT".',
+        title='Scope',
+        description='Tick all that apply. If in doubt, select "EUDAT".',
         value_type=schema.Choice(vocabulary='dpmt.scope_vocabulary'),
         missing_value=[],
         default=[],
@@ -153,13 +152,13 @@ class IProject(model.Schema):
     )
 
     resources = BackrelField(
-        title=u'Resources',
+        title='Resources',
         relation='project',
     )
 
-    resource_usage = schema.TextLine(title=u'Resource usage', readonly=True)
+    resource_usage = schema.TextLine(title='Resource usage', readonly=True)
 
-    registered_objects = schema.TextLine(title=u'Registered objects', readonly=True)
+    registered_objects = schema.TextLine(title='Registered objects', readonly=True)
 
 
 @implementer(IProject)
@@ -194,6 +193,6 @@ class Project(Container, CommonUtilities):
         # BBB
         scopes = list(self.scopes)
         if asString:
-            return u', '.join(scopes)
+            return ', '.join(scopes)
         else:
             return scopes

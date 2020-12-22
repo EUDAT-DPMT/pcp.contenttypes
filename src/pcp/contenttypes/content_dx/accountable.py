@@ -15,7 +15,7 @@ class IAccountable(Interface):
     """ Marker interface for content items that are accountable """
 
 
-class Accountable(object):
+class Accountable:
     """Mixin class for things that are accountable"""
 
     def addAccount(self):

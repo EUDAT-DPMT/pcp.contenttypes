@@ -2,10 +2,12 @@
 # Registered Storage Components
 # For specification see: http://cds.cern.ch/record/1452920/files/GFD.201.pdf
 
-import time
-from datetime import datetime, timedelta
-
+from datetime import datetime
+from datetime import timedelta
 from pcp.contenttypes.browser.accounting import Accounting
+
+import time
+
 
 single_star_template = """<sr:StorageUsageRecord{}
 </sr:StorageUsageRecord>
@@ -74,8 +76,8 @@ class StarView(Accounting):
         result['site'] = context.aq_parent.getId().upper()
         customer = context.getCustomer()
         if customer is None:
-            result['customer_title'] = "(no customer found)"
-            result['customer_url'] = "(no customer found)"
+            result['customer_title'] = '(no customer found)'
+            result['customer_url'] = '(no customer found)'
         else:
             result['customer_title'] = (
                 customer.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
@@ -83,14 +85,14 @@ class StarView(Accounting):
             result['customer_url'] = customer.absolute_url()
         project = context.getProject()
         if project is None:
-            result['project_title'] = "(no project found)"
-            result['project_url'] = "(no project foumd)"
+            result['project_title'] = '(no project found)'
+            result['project_url'] = '(no project foumd)'
         else:
             result['project_title'] = (
                 project.Title().decode('utf-8').encode('ascii', 'xmlcharrefreplace')
             )
             result['project_url'] = project.absolute_url()
-        result['project_scope'] = context.getScopeValues(asString=1) or "EUDAT"
+        result['project_scope'] = context.getScopeValues(asString=1) or 'EUDAT'
         return result
 
     def star(self, with_ns=True):

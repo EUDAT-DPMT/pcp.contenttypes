@@ -2,11 +2,12 @@
 # $HOME/.buildout/eggs/plone.app.workflow-2.1.9-py2.7.egg/plone/app/workflow/browser/sharing.py
 ##########################################################################
 
-import plone.api
-from plone.app.workflow.events import LocalrolesModifiedEvent
 from plone.app.workflow import PloneMessageFactory as _
+from plone.app.workflow.events import LocalrolesModifiedEvent
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.event import notify
+
+import plone.api
 
 
 def sharing_handle_form(self):
@@ -54,15 +55,15 @@ def sharing_handle_form(self):
         if settings:
 
             old_settings = self.context.get_local_roles()
-            old_settings_dict = dict(
-                [(userid, set(roles)) for userid, roles in old_settings]
-            )
-            settings_dict = dict([(d['id'], set(d['roles'])) for d in settings])
+            old_settings_dict = {
+                userid: set(roles) for userid, roles in old_settings
+            }
+            settings_dict = {d['id']: set(d['roles']) for d in settings}
 
-            old_userids = set(
-                [tp[0] for tp in old_settings if list(tp[1]) != ['Owner']]
-            )
-            new_userids = set([d['id'] for d in settings if d['roles']])
+            old_userids = {
+                tp[0] for tp in old_settings if list(tp[1]) != ['Owner']
+            }
+            new_userids = {d['id'] for d in settings if d['roles']}
             all_userids = old_userids | new_userids
 
             reindex = self.update_role_settings(settings, reindex=False) or reindex
@@ -100,7 +101,7 @@ def sharing_handle_form(self):
             event.diff_context = diff_context
             notify(event)
 
-        IStatusMessage(self.request).addStatusMessage(_(u"Changes saved."), type='info')
+        IStatusMessage(self.request).addStatusMessage(_('Changes saved.'), type='info')
 
     # Other buttons return to the sharing page
     if cancel_button:
@@ -111,17 +112,18 @@ def sharing_handle_form(self):
 
 from plone.app.workflow.browser.sharing import SharingView
 
+
 SharingView.handle_form = sharing_handle_form
 
 
 from Products.PluggableAuthService.plugins.exportimport import getPackagePath
 
+
 try:
     from Products.GenericSetup.utils import PageTemplateResource
 except ImportError:  # BBB
-    from Products.PageTemplates.PageTemplateFile import (
-        PageTemplateFile as PageTemplateResource,
-    )
+    from Products.PageTemplates.PageTemplateFile import \
+        PageTemplateFile as PageTemplateResource
 
 
 def export(self, export_context, subdir, root=False):
@@ -173,5 +175,6 @@ def export(self, export_context, subdir, root=False):
 
 
 from Products.PluggableAuthService.plugins.exportimport import SimpleXMLExportImport
+
 
 SimpleXMLExportImport.export = export

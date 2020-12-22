@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collective import dexteritytextindexer
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
@@ -24,181 +23,181 @@ class IProvider(model.Schema):
     """Dexterity Schema for Providers"""
 
     dexteritytextindexer.searchable(
-        "url",
-        "provider_type",
-        "provider_status",
-        "status_details",
-        "infrastructure",
-        "domain",
-        "VAT",
-        "emergency_phone",
-        "alarm_email",
-        "helpdesk_email",
-        "supported_os",
+        'url',
+        'provider_type',
+        'provider_status',
+        'status_details',
+        'infrastructure',
+        'domain',
+        'VAT',
+        'emergency_phone',
+        'alarm_email',
+        'helpdesk_email',
+        'supported_os',
     )
 
-    url = schema.URI(title=u"Url", required=False)
+    url = schema.URI(title='Url', required=False)
 
-    link2offers = schema.TextLine(title=u'Offers', readonly=True)
+    link2offers = schema.TextLine(title='Offers', readonly=True)
     directives.widget('link2offers', TrustedTextWidget)
 
     directives.widget(provider_type=RadioFieldWidget)
     provider_type = schema.Choice(
-        title=u'Provider type',
+        title='Provider type',
         vocabulary='dpmt.provider_types',
         required=False,
     )
 
-    provider_userid = schema.TextLine(title=u"Provider user ID", required=True)
+    provider_userid = schema.TextLine(title='Provider user ID', required=True)
 
     provider_status = schema.Choice(
-        title=u'Provider status',
+        title='Provider status',
         vocabulary='dpmt.provider_stati',
         required=False,
     )
 
-    status_details = schema.TextLine(title=u"Status details/comment", required=False)
+    status_details = schema.TextLine(title='Status details/comment', required=False)
 
-    infrastructure = schema.TextLine(title=u"Infrastructure", required=False)
+    infrastructure = schema.TextLine(title='Infrastructure', required=False)
 
-    domain = schema.TextLine(title=u"Domain", required=False)
+    domain = schema.TextLine(title='Domain', required=False)
 
     # hide adress fields from display. instead show a condensed view from the property 'address'
     directives.omitted(IDisplayForm, 'street1', 'street2', 'zip', 'city', 'country')
     street1 = schema.TextLine(
-        title=u'Street 1',
+        title='Street 1',
         required=False,
     )
 
     street2 = schema.TextLine(
-        title=u'Street 2',
+        title='Street 2',
         required=False,
     )
 
     zip = schema.TextLine(
-        title=u'ZIP code',
+        title='ZIP code',
         required=False,
     )
 
     city = schema.TextLine(
-        title=u'City',
+        title='City',
         required=True,
     )
 
     country = schema.Choice(
-        title=u'Country',
+        title='Country',
         vocabulary='dpmt.country_names',
         required=True,
     )
 
-    address = schema.TextLine(title=u'Adress', readonly=True)
+    address = schema.TextLine(title='Adress', readonly=True)
     directives.widget('address', TrustedTextWidget)
 
-    VAT = schema.TextLine(title=u"VAT", required=False)
+    VAT = schema.TextLine(title='VAT', required=False)
 
-    timezone = schema.TextLine(title=u"Time zone", required=False)
+    timezone = schema.TextLine(title='Time zone', required=False)
 
     latitude = schema.TextLine(
-        title=u"Latitude",
-        description=u"If known; GOCDB can use this. (-90 <= number <= 90)",
+        title='Latitude',
+        description='If known; GOCDB can use this. (-90 <= number <= 90)',
         required=False,
     )
 
     longitude = schema.TextLine(
-        title=u"Longitude",
-        description=u"If known; GOCDB can use this. (-180 <= number <= 180)",
+        title='Longitude',
+        description='If known; GOCDB can use this. (-180 <= number <= 180)',
         required=False,
     )
 
     ip4range = schema.TextLine(
-        title=u"IPv4 range", description=u"(a.b.c.d/e.f.g.h)", required=False
+        title='IPv4 range', description='(a.b.c.d/e.f.g.h)', required=False
     )
 
-    ip6range = schema.TextLine(title=u"IPv6 range", required=False)
+    ip6range = schema.TextLine(title='IPv6 range', required=False)
 
     contact = RelationChoice(
-        title=u"Contact",
-        description=u"Main contact person for the operations of this provider.",
+        title='Contact',
+        description='Main contact person for the operations of this provider.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "contact",
+        'contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     business_contact = RelationChoice(
-        title=u"Business contact",
-        description=u"Main contact person for the financial matters of this provider.",
+        title='Business contact',
+        description='Main contact person for the financial matters of this provider.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "business_contact",
+        'business_contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     security_contact = RelationChoice(
-        title=u"Security contact",
-        description=u"Person specifically to be contacted for security-related matters.",
+        title='Security contact',
+        description='Person specifically to be contacted for security-related matters.',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "security_contact",
+        'security_contact',
         RelatedItemsFieldWidget,
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     admins = RelationList(
-        title=u"Administrators",
+        title='Administrators',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
         required=False,
         missing_value=[],
     )
     directives.widget(
-        "admins",
+        'admins',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "selectableTypes": ["person_dx"],
-            "basePath": make_relation_root_path,
+            'selectableTypes': ['person_dx'],
+            'basePath': make_relation_root_path,
         },
     )
 
     emergency_phone = schema.TextLine(
-        title=u"Emergency telephone number",
-        description=u"Include international prefix and area code",
+        title='Emergency telephone number',
+        description='Include international prefix and area code',
         required=False,
     )
 
     alarm_email = Email(
-        title=u"Alarm E-mail",
-        description=u"To be used in emergencies",
+        title='Alarm E-mail',
+        description='To be used in emergencies',
         required=False,
     )
 
     helpdesk_email = Email(
-        title=u"Helpdesk E-mail",
-        description=u"Generic helpdesk email address of this provider; not specific to any service.",
+        title='Helpdesk E-mail',
+        description='Generic helpdesk email address of this provider; not specific to any service.',
         required=False,
     )
 
     directives.widget(supported_os=CheckBoxFieldWidget)
     supported_os = schema.List(
-        title=u'Supported Operating Systems',
+        title='Supported Operating Systems',
         value_type=schema.Choice(vocabulary='dpmt.operating_systems'),
         required=False,
         missing_value=[],
@@ -206,8 +205,8 @@ class IProvider(model.Schema):
     )
 
     affiliated = BackrelField(
-        title=u'Affiliated',
-        relation=u'affiliated',
+        title='Affiliated',
+        relation='affiliated',
     )
 
     # obsolete since ct Resource are removed?
@@ -217,17 +216,17 @@ class IProvider(model.Schema):
     #     )
 
     projects_involved = BackrelField(
-        title=u'Projects involved',
-        relation=u'service_providers',
+        title='Projects involved',
+        relation='service_providers',
     )
 
     getAccount = schema.URI(
-        title=u"Account",
-        description=u"URL to instructions on how to get an account",
+        title='Account',
+        description='URL to instructions on how to get an account',
         required=False,
     )
 
-    registry_link = schema.TextLine(title=u'Central Registry', readonly=True)
+    registry_link = schema.TextLine(title='Central Registry', readonly=True)
     directives.widget('registry_link', TrustedTextWidget)
 
 
@@ -244,10 +243,10 @@ class Provider(Container, CommonUtilities):
         try:
             offers = wrapped['offers']
         except KeyError:
-            return u'No offers found'
+            return 'No offers found'
         url = offers.absolute_url()
-        title = u"Resources offered by {}".format(self.title)
-        anchor = u"<a href='{}?unit=TiB' title='{}'>{}</a>".format(url, title, title)
+        title = f'Resources offered by {self.title}'
+        anchor = f"<a href='{url}?unit=TiB' title='{title}'>{title}</a>"
         return anchor
 
     @property
@@ -258,12 +257,12 @@ class Provider(Container, CommonUtilities):
     def address(self):
         street = None
         if self.street1 and self.street2:
-            street = u'{} {}'.format(self.street1, self.street2)
+            street = f'{self.street1} {self.street2}'
         elif self.street1 and not self.street2:
             street = self.street1
         elif not self.street1 and self.street2:
             street = self.street2
 
-        city = u'{} {}'.format(self.zip, self.city) if self.zip else self.city
+        city = f'{self.zip} {self.city}' if self.zip else self.city
         items = [street, city, self.country]
-        return u'<br />'.join(i for i in items if i)
+        return '<br />'.join(i for i in items if i)

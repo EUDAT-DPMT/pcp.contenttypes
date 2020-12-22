@@ -9,10 +9,11 @@ from zope.globalrequest import getRequest
 
 import math
 
-END_OF_EUDAT2020 = "2018-02-28"
+
+END_OF_EUDAT2020 = '2018-02-28'
 
 
-class OfferUtilities(object):
+class OfferUtilities:
     """
     Mixin class to provide shared functionality across offer types
     such as aggregated constraints
@@ -35,18 +36,18 @@ class OfferUtilities(object):
         result = ''
 
         if regional:
-            result += "<em>Regional:</em> %s <br />" % regional
+            result += '<em>Regional:</em> %s <br />' % regional
         if thematic:
-            result += "<em>Thematic:</em> %s <br />" % thematic
+            result += '<em>Thematic:</em> %s <br />' % thematic
         if organizational:
-            result += "<em>Organizational:</em> %s <br />" % organizational
+            result += '<em>Organizational:</em> %s <br />' % organizational
         if general:
             result += general[:60]
 
         return result
 
 
-class RequestUtilities(object):
+class RequestUtilities:
     """Mixin class to provide shared functionality across request types"""
 
     def request_details(self):
@@ -57,28 +58,28 @@ class RequestUtilities(object):
         if compute:
             for c in compute:
                 formatted = self.comp2string(c)
-                values.append("Compute: " + formatted)
+                values.append('Compute: ' + formatted)
         if storage:
             for s in storage:
                 formatted = self.storage2string(s)
-                values.append("Storage: " + formatted)
-        return "\n".join(values)
+                values.append('Storage: ' + formatted)
+        return '\n'.join(values)
 
     def comp2string(self, comp):
-        template = "{nCores} Cores, {ram} RAM, {diskspace} disk, {system}"
+        template = '{nCores} Cores, {ram} RAM, {diskspace} disk, {system}'
         return template.format(**comp)
 
     def storage2string(self, storage):
         storage['class'] = storage.get('storage class', '(not specified)')
-        template = "{value} {unit} {class}"
+        template = '{value} {unit} {class}'
         return template.format(**storage)
 
     def providers2string(self):
         """Helper method used for string interpolation"""
         providers = relapi.relations(self, 'preferred_providers')
         if not providers:
-            return "not specified"
-        return u", ".join([p.title for p in providers])
+            return 'not specified'
+        return ', '.join([p.title for p in providers])
 
     def users_to_notify(self):
         """Email addresses to be notified infered from the preferred providers"""
@@ -100,7 +101,7 @@ class RequestUtilities(object):
         return contacts
 
 
-class CommonUtilities(object):
+class CommonUtilities:
     """Mixin class to provide shared functionality across content types"""
 
     def ids(self):
@@ -133,8 +134,8 @@ class CommonUtilities(object):
         if not country:
             return
         # a hard-coded exception
-        if country == "United Kingdom":
-            return "UK"
+        if country == 'United Kingdom':
+            return 'UK'
         return Country(country).alpha2
 
     def additional_content(self):
@@ -184,7 +185,7 @@ class CommonUtilities(object):
         if option is None:
             self.schema['service'].set(self, [])
         else:
-            service = option.unrestrictedTraverse("../..")
+            service = option.unrestrictedTraverse('../..')
             try:
                 self.schema['service'].set(self, service.UID())
             except KeyError:
@@ -196,9 +197,9 @@ class CommonUtilities(object):
 
     # Type mapping (DP -> CREG)
     dptype2cregtype = {
-        "provider_dx": "Site",
-        "registeredservice_dx": "Service_Group",
-        "registeredservicecomponent_dx": "Service",
+        'provider_dx': 'Site',
+        'registeredservice_dx': 'Service_Group',
+        'registeredservicecomponent_dx': 'Service',
     }
 
     def getCregId(self, id_key='creg_id'):
@@ -227,12 +228,12 @@ class CommonUtilities(object):
         try:
             ctype = self.dptype2cregtype[self.portal_type]
         except KeyError:
-            return "No corresponding type known"
+            return 'No corresponding type known'
         url = self.url_pattern % (ctype, creg_id)
         if url_only:
             return url
         title = 'Link to the corresponding entry in the central registry'
-        anchor = "<a href='%s' title='%s' target='_blank'>%s</a>" % (url, title, url)
+        anchor = f"<a href='{url}' title='{title}' target='_blank'>{url}</a>"
         return anchor
 
     def convert(self, raw, target_unit='auto'):
@@ -339,9 +340,8 @@ class CommonUtilities(object):
         """Get sum of all resources' usage. If this value can not be determined
         (i.e. some resource's values are not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import (
-            IRegisteredStorageResource,
-        )
+        from pcp.contenttypes.content_dx.registeredstorageresource import \
+            IRegisteredStorageResource
 
         usages = []
 
@@ -359,9 +359,8 @@ class CommonUtilities(object):
         """Get sum of all resources' size. If this value can not be determined
         (i.e. size of a resource is not available) then None is returned.
         """
-        from pcp.contenttypes.content_dx.registeredstorageresource import (
-            IRegisteredStorageResource,
-        )
+        from pcp.contenttypes.content_dx.registeredstorageresource import \
+            IRegisteredStorageResource
 
         sizes = []
 
@@ -377,15 +376,15 @@ class CommonUtilities(object):
 
     def renderMemoryValue(self, d):
         if not d:
-            return ""
+            return ''
         try:
             d = self.convert(d)
         except ValueError:
-            return ""
+            return ''
         request = getRequest()
         value = float(d['value'])
         unit = d['unit'] if request.get('unit') not in unit_map else ''
-        return '%0.2f %s' % (value, unit)
+        return f'{value:0.2f} {unit}'
 
     def renderResourceUsage(self, used, size):
         """Render resource usage string."""
@@ -393,7 +392,7 @@ class CommonUtilities(object):
             size = self.convert(size)
             size_value = float(size['value'])
             size_unit = size['unit']
-            size_str = '%0.2f %s' % (size_value, size_unit)
+            size_str = f'{size_value:0.2f} {size_unit}'
         else:
             size_str = '??'
             size_value = None
@@ -404,7 +403,7 @@ class CommonUtilities(object):
             core_value_in_size_unit = float(core_in_size_unit['value'])
             used = self.convert(used)
             core_value = float(used['value'])
-            used_str = '%0.2f %s' % (core_value, used['unit'])
+            used_str = '{:0.2f} {}'.format(core_value, used['unit'])
         else:
             core_value = None
             used_str = '??'
@@ -414,7 +413,7 @@ class CommonUtilities(object):
         else:
             rel_usage_str = '??'
 
-        return '%s / %s (%s%%)' % (used_str, size_str, rel_usage_str)
+        return f'{used_str} / {size_str} ({rel_usage_str}%)'
 
     def getResourceUsageSummary(self, resources):
         """ Create usage summary for resources. """
@@ -425,22 +424,20 @@ class CommonUtilities(object):
 
     def listResourceUsage(self, resources):
         """ List usage of resources, i.e. all resource's usage. """
-        from pcp.contenttypes.content_dx.registeredstorageresource import (
-            IRegisteredStorageResource,
-        )
+        from pcp.contenttypes.content_dx.registeredstorageresource import \
+            IRegisteredStorageResource
 
         usages = []
         for resource in self.getResources():
             if IRegisteredStorageResource.providedBy(resource):
-                usages.append('%s: %s' % (resource.title, resource.getResourceUsage()))
+                usages.append(f'{resource.title}: {resource.getResourceUsage()}')
 
         return '<br>'.join(usages)
 
     def registeredObjectsTotal(self):
         """ Sum of all registered objects across related registered storage resources """
-        from pcp.contenttypes.content_dx.registeredstorageresource import (
-            IRegisteredStorageResource,
-        )
+        from pcp.contenttypes.content_dx.registeredstorageresource import \
+            IRegisteredStorageResource
 
         total = 0
         for resource in self.getResources():
@@ -472,7 +469,7 @@ class CommonUtilities(object):
     def sizeToString(self, size):
         if size:
             try:
-                return '%0.2f %s' % (float(size['value']), size['unit'])
+                return '{:0.2f} {}'.format(float(size['value']), size['unit'])
             except (ValueError, KeyError):
                 return 'invalid size'
         else:
@@ -482,6 +479,7 @@ class CommonUtilities(object):
 # we don't want to use eval so we define an explicit mapping of supported units
 
 from pint import UnitRegistry
+
 
 ur = UnitRegistry()
 
