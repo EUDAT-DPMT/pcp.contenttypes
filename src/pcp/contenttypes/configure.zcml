@@ -120,4 +120,12 @@
       name="dpmt.severity_levels"
       component="pcp.contenttypes.vocabularies.severity_levels" />
 
+  <adapter
+      factory="pcp.contenttypes.indexers.RelationChoiceFieldConverter"
+      />
+
+  <adapter
+      factory="pcp.contenttypes.indexers.RelationListFieldConverter"
+      />
+
 </configure>
