@@ -1,3 +1,4 @@
+from collective import dexteritytextindexer
 from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
@@ -16,6 +17,21 @@ from zope.interface import implementer
 
 class IProject(model.Schema):
     """Dexterity Schema for Projects"""
+
+    dexteritytextindexer.searchable(
+        'website',
+        'community',
+        'community_contact',
+        'registered_services_used',
+        'general_provider',
+        'project_enabler',
+        'call_for_collaboration',
+        'uptake_plan',
+        'repository',
+        'topics',
+        'scopes',
+        'resources',
+    )
 
     website = schema.URI(
         title='Website',
