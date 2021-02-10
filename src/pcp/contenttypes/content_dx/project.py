@@ -3,8 +3,9 @@ from collective.relationhelpers import api as relapi
 from pcp.contenttypes.backrels.backrelfield import BackrelField
 from pcp.contenttypes.content_dx.common import CommonUtilities
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
+from plone.app.vocabularies.catalog import StaticCatalogVocabulary
 from plone.app.z3cform.widget import DateFieldWidget
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -41,48 +42,37 @@ class IProject(model.Schema):
     community = RelationChoice(
         title='Customer',
         description='Main customer involved in this project.',
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary=StaticCatalogVocabulary({'portal_type': 'community_dx'}),
         required=False,
     )
     directives.widget(
         'community',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'selectableTypes': ['community_dx'],
-            'basePath': make_relation_root_path,
-        },
+        SelectFieldWidget,
     )
 
     community_contact = RelationChoice(
         title='Customer contact',
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary=StaticCatalogVocabulary({'portal_type': 'person_dx'}),
         required=False,
     )
     directives.widget(
         'community_contact',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'selectableTypes': ['person_dx'],
-            'basePath': make_relation_root_path,
-        },
+        SelectFieldWidget,
     )
 
     registered_services_used = RelationList(
         title='Registered services used',
         description='Select all registered services the project requires',
         default=[],
-        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        value_type=RelationChoice(
+            vocabulary=StaticCatalogVocabulary({'portal_type': 'registeredservice_dx'}),
+        ),
         missing_value=[],
         required=False,
     )
     directives.widget(
         'registered_services_used',
-        RelatedItemsFieldWidget,
-        vocabulary='plone.app.vocabularies.Catalog',
-        pattern_options={
-            'selectableTypes': ['registeredservice_dx'],
-            'basePath': make_relation_root_path,
-        },
+        SelectFieldWidget,
     )
     # TODO: Add custom edit-form: https://community.plone.org/t/conditional-fields-in-dexterity-schema/12248/5
     # condition='python:here.stateIn(["enabling","pre_production","production","terminated"])' <-- Where does that fit?
@@ -94,30 +84,22 @@ class IProject(model.Schema):
     general_provider = RelationChoice(
         title='General provider',
         description='General provider for this project (chose EUDAT Ltd if in doubt)',
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary=StaticCatalogVocabulary({'portal_type': 'provider_dx'}),
         required=False,
     )
     directives.widget(
         'general_provider',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'selectableTypes': ['provider_dx'],
-            'basePath': make_relation_root_path,
-        },
+        SelectFieldWidget,
     )
 
     project_enabler = RelationChoice(
         title='Project enabled by',
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary=StaticCatalogVocabulary({'portal_type': 'person_dx'}),
         required=False,
     )
     directives.widget(
         'project_enabler',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'selectableTypes': ['person_dx'],
-            'basePath': make_relation_root_path,
-        },
+        SelectFieldWidget,
     )
     # condition="python:here.stateNotIn(['considered'])" <-- Where does that fit?
 
