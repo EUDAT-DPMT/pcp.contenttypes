@@ -348,4 +348,11 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    for="*"
+    name="relationfieldhelper"
+    class="pcp.contenttypes.browser.widget.RelationFieldHelper"
+    permission="zope2.View"
+    />
+
 </configure>

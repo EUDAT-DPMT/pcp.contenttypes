@@ -10,4 +10,20 @@
       template="trusted_text_display.pt"
       />
 
+  <z3c:widgetTemplate
+      mode="display"
+      widget="z3c.form.interfaces.ISelectWidget"
+      field="z3c.relationfield.interfaces.IRelationChoice"
+      layer="pcp.contenttypes.interfaces.IPcpContenttypesLayer"
+      template="select_relation_display.pt"
+      />
+
+  <z3c:widgetTemplate
+      mode="display"
+      widget="z3c.form.interfaces.ISelectWidget"
+      field="z3c.relationfield.interfaces.IRelationList"
+      layer="pcp.contenttypes.interfaces.IPcpContenttypesLayer"
+      template="select_relation_display.pt"
+      />
+
 </configure>

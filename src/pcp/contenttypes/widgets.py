@@ -9,6 +9,9 @@ class ITrustedTextWidget(ITextWidget):
 
 @implementer_only(ITrustedTextWidget)
 class TrustedTextWidget(TextWidget):
-    """Same a a TextLine Widget but does not escape code.
+    """Same as a TextLine Widget but does not escape code.
     The template uses content="structure view/value" instead of content="view/value"
+
+    This is used to allow computed fields (i.e. fields with readonly=True and a @property of the same name)
+    to return html-structures.
     """
