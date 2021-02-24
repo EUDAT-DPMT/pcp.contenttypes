@@ -1,9 +1,10 @@
+from collective.relationhelpers import api as relapi
 from datetime import datetime
 from io import StringIO
+from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
 from Products.Five.browser import BrowserView
-from plone.dexterity.utils import iterSchemataForType
 
 import plone.api
 
@@ -33,9 +34,8 @@ def render_type(content, field_id):
 def render_reference_field(content, field_id, with_state=False):
     field, schema = get_field_and_schema_for_fieldname(field_id, content.portal_type)
     from pcp.contenttypes.backrels.backrelfield import IBackrelField
-    # import pdb; pdb.set_trace()
     if IBackrelField.providedBy(field):
-        objs = relapi.backreferences(content, field_id)
+        objs = relapi.backreferences(content, field.relation)
     else:
         obj_refs = getattr(content, field_id, [])
         if not isinstance(obj_refs, list):
