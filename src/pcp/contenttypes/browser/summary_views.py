@@ -3,6 +3,7 @@ from io import StringIO
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
 from Products.Five.browser import BrowserView
+from plone.dexterity.utils import iterSchemataForType
 
 import plone.api
 
@@ -30,12 +31,14 @@ def render_type(content, field_id):
 
 
 def render_reference_field(content, field_id, with_state=False):
-    try:  # first the Archetypes way
-        field = content.schema[field_id]
-        objs = field.get(content, aslist=True)
-    except AttributeError:  # likely a dexterity type
+    field, schema = get_field_and_schema_for_fieldname(field_id, content.portal_type)
+    from pcp.contenttypes.backrels.backrelfield import IBackrelField
+    # import pdb; pdb.set_trace()
+    if IBackrelField.providedBy(field):
+        objs = relapi.backreferences(content, field_id)
+    else:
         obj_refs = getattr(content, field_id, [])
-        if type(obj_refs) != type([]):
+        if not isinstance(obj_refs, list):
             obj_refs = [obj_refs]
         objs = [o.to_object for o in obj_refs if o]
     text = []
@@ -255,6 +258,7 @@ class BaseSummaryView(BrowserView):
         'provider_contact_email': provider_contact_email,
         'provider_business_email': provider_business_email,
         'constraints': render_constraints,
+        # 'projects': render_backref
         # add more as needed; reference fields don't need to be
         # included here
     }
@@ -1144,3 +1148,14 @@ class CsvView(ProjectOverview):
         )
 
         return value
+
+
+def get_field_and_schema_for_fieldname(field_id, portal_type):
+    """Get field and its schema from a portal_type.
+    """
+    # Turn form.widgets.IDublinCore.title into title
+    field_id = field_id.split('.')[-1]
+    for schema in iterSchemataForType(portal_type):
+        field = schema.get(field_id, None)
+        if field is not None:
+            return (field, schema)
