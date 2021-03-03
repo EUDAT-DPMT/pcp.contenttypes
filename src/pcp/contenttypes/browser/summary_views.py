@@ -35,7 +35,7 @@ def render_reference_field(content, field_id, with_state=False):
     field, schema = get_field_and_schema_for_fieldname(field_id, content.portal_type)
     from pcp.contenttypes.backrels.backrelfield import IBackrelField
     if IBackrelField.providedBy(field):
-        objs = relapi.backreferences(content, field.relation)
+        objs = relapi.backrelations(content, field.relation)
     else:
         obj_refs = getattr(content, field_id, [])
         if not isinstance(obj_refs, list):
