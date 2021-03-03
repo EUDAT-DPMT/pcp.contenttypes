@@ -39,16 +39,17 @@ class Accounting(BrowserView):
         self.request.response.redirect(
             self.context.absolute_url() + '/list-account-records')
 
-    def records(self):
+    def records(self, n=10):
+        n = self.request.get('n', n)
         resource = self.context
-        records = self.fetch_records(resource.UID())
+        records = self.fetch_records(resource.UID(), n)
         if records:
             return records
         else:
             return getattr(resource, 'cached_records', ())
 
 
-    def fetch_records(self, uid):
+    def fetch_records(self, uid, n=11):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISettings)
         f = furl.furl(settings.accounting_url)
@@ -57,6 +58,7 @@ class Accounting(BrowserView):
         if settings.accounting_password:
             f.password = settings.accounting_password
         f.path = str(f.path) + '/' + uid + '/listRecords'
+        f.args['n'] = n
         url = str(f)
         result = requests.get(url)
         if result.ok:
