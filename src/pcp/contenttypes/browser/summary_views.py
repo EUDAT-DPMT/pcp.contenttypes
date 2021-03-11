@@ -290,9 +290,9 @@ class EndpointOverview(BaseSummaryView):
 class PeopleOverview(BaseSummaryView):
     """Overview of all people involved"""
 
-    title = "People"
+    title = "Contacts"
 
-    description = "All people/address book information stored in DPMT"
+    description = "The address book: All people/contact information"
 
     def content_items(self):
         """All address book entries"""
@@ -319,9 +319,9 @@ class PeopleOverview(BaseSummaryView):
 class CustomerOverview(BaseSummaryView):
     """Overview of all customers/sponsors/communities"""
 
-    title = "EUDAT Customers"
+    title = "Customers"
 
-    description = "All current and past EUDAT customers/sponsors/communities"
+    description = "All current and past customers/sponsors/communities"
 
     def content_items(self):
         """All customers regardless of location"""
@@ -346,9 +346,9 @@ class CustomerOverview(BaseSummaryView):
 class ProviderOverview(BaseSummaryView):
     """Overview of all providers of EUDAT services"""
 
-    title = "EUDAT Provider"
+    title = "Providers"
 
-    description = "All current and past providers of EUDAT CDI services"
+    description = "All current and past providers of services"
 
     def content_items(self):
         """All providers regardless of location"""
@@ -385,9 +385,9 @@ class ProviderOverview(BaseSummaryView):
 class ServiceOverview(BaseSummaryView):
     """Overview of all EUDAT services"""
 
-    title = "EUDAT Catalog"
+    title = "Catalog"
 
-    description = "All current and past EUDAT services"
+    description = "All current and past services that are available in principle"
 
     def content_items(self):
         """All services regardless of location"""
@@ -415,7 +415,7 @@ class ProjectOverview(BaseSummaryView):
 
     title = "Project Overview"
 
-    description = "All current and past projects within the EUDAT CDI"
+    description = "All current and past projects"
 
     def content_items(self):
         """All projects regardless of location"""
@@ -427,7 +427,7 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     title = "Registered Services"
 
-    description = "All registered services of the EUDAT CDI"
+    description = "All registered services - aka running somewhere for someone"
 
     def content_items(self):
         """All registered services regardless of location"""
@@ -453,7 +453,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     title = "Registered Service Components"
 
-    description = "All registered service components of the EUDAT CDI"
+    description = "All registered service components - building blocks of services"
 
     def content_items(self):
         """All registered service components regardless of location"""
@@ -478,7 +478,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 class RequestOverview(BaseSummaryView):
     """Overview of all requests no matter what type or state or where they are located"""
 
-    title = "All Requests"
+    title = "Requests"
 
     description = "All requests across the entire site."
 
