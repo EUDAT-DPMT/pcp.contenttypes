@@ -161,7 +161,8 @@ def render_contact_email(content, field_id):
     Return the email address from the referenced contact object
     """
     try:
-        email = content.getContact().getEmail()
+        #email = content.getContact().getEmail()
+        email = content.contact.to_object.email
     except AttributeError:
         try:
             contact = getattr(content, 'contact')
@@ -177,7 +178,8 @@ def render_business_email(content, field_id):
     Return the email address from the referenced business contact object
     """
     try:
-        email = content.getBusiness_contact().getEmail()
+        #email = content.getBusiness_contact().getEmail()
+        email = content.business_contact.to_object.email
     except AttributeError:
         try:
             contact = getattr(content, 'business_contact')
@@ -258,6 +260,7 @@ class BaseSummaryView(BrowserView):
         'provider_contact_email': provider_contact_email,
         'provider_business_email': provider_business_email,
         'constraints': render_constraints,
+        'helpdesk_email': render_contact_email
         # 'projects': render_backref
         # add more as needed; reference fields don't need to be
         # included here
@@ -571,7 +574,7 @@ class ProviderOverview(BaseSummaryView):
             'url',
             'status_details',
             'infrastructure',
-            'helpdesk_email',
+        #    'helpdesk_email',
             'provider_status',
             'provider_type',
         )
