@@ -212,6 +212,15 @@ def render_constraints(content, field_id):
     """
     return content.aggregated_constraints()
 
+def render_scopes(content, field_id):
+    try:
+        scopes=content.scopes
+        if isinstance(scopes, list):
+            return "\n".join(scopes)
+        else:
+            return str(scopes)
+    except AttributeError:
+         return ""
 
 class DetailedView(BrowserView):
     """Dispatcher to the more specific summary views"""
@@ -260,7 +269,8 @@ class BaseSummaryView(BrowserView):
         'provider_contact_email': provider_contact_email,
         'provider_business_email': provider_business_email,
         'constraints': render_constraints,
-        'helpdesk_email': render_contact_email
+        'helpdesk_email': render_contact_email,
+        'scopes': render_scopes
         # 'projects': render_backref
         # add more as needed; reference fields don't need to be
         # included here
@@ -331,7 +341,6 @@ class BaseSummaryView(BrowserView):
             'used_new',
             'registered_objects',
             'topics',
-            'scopes',
             'start_date',
             'end_date',
         )
@@ -693,7 +702,7 @@ class RegisteredServiceOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('monitored', 'scopes')
+        return ('monitored')
 
 
 class RegisteredServiceComponentOverview(BaseSummaryView):
@@ -728,7 +737,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
             'created',
             'modified',
             'state',
-        )
+        ) 
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
@@ -747,7 +756,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('service_url', 'monitored', 'host_name', 'scopes')
+        return ('service_url', 'monitored', 'host_name')
 
 
 class RequestOverview(BaseSummaryView):
@@ -864,7 +873,7 @@ class RegisteredResourceOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('compute_resources', 'storage_resources', 'scopes')
+        return ('compute_resources', 'storage_resources')
 
 
 class RegisteredStorageResourceOverview(BaseSummaryView):
@@ -924,7 +933,7 @@ class RegisteredStorageResourceOverview(BaseSummaryView):
 
     def simple_fields(self):
         """Manually maintained subset of fields where it is safe to just render the widget."""
-        return ('usage', 'allocated', 'storage_class', 'scopes')
+        return ('usage', 'allocated', 'storage_class')
 
 
 class ServiceOfferOverview(BaseSummaryView):
