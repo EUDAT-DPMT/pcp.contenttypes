@@ -1,5 +1,6 @@
 from collective.relationhelpers import api as relapi
 from datetime import datetime
+from datetime import date
 from io import StringIO
 from pcp.contenttypes.backrels.backrelfield import IBackrelField
 from plone.dexterity.utils import iterSchemataForType
@@ -117,10 +118,9 @@ def modification_date(content, field_id):
 
 def render_date(content, field_id):
     value = getattr(content, field_id, '')
-    try:
-        return value.Date()
-    except AttributeError:
-        return 'not set'
+    if isinstance(value, (date, datetime)):
+        return value.strftime('%Y/%m/%d')
+    return 'not set'
 
 
 def render_resources(content, field_id):
@@ -245,6 +245,8 @@ class BaseSummaryView(BrowserView):
         'parent_project': render_parent,
         'created': creation_date,
         'modified': modification_date,
+        'start_date': render_date,
+        'end_date': render_date,
         'startDate': render_date,
         'resources': render_resources,
         'service_options': render_service_options,
@@ -312,8 +314,6 @@ class BaseSummaryView(BrowserView):
             'used_new',
             'registered_objects',
             'topics',
-            'start_date',
-            'end_date',
         )
 
     def content_items(self, portal_type):
