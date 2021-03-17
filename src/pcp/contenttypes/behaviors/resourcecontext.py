@@ -2,7 +2,7 @@
 
 Includes form fields to describe the context of a resource
 """
-
+from collective.relationhelpers import api as relapi
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives
@@ -147,12 +147,13 @@ class DPMTResourceContext:
 
     def _getScopeValues(self, asString=0):
         """Return the human readable values of the scope keys"""
-        project = self.project.to_object
-        if project is None:
+        project = relapi.relations(self.context, 'project')
+        if not project:
             if asString:
                 return ''
             else:
                 return ('',)
+        project = project[0]
         scopes = []
         scopes.extend(project.getScopeValues())
         s = set(scopes)
