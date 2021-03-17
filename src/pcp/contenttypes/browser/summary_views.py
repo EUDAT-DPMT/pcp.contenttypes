@@ -1,6 +1,7 @@
 from collective.relationhelpers import api as relapi
 from datetime import datetime
 from io import StringIO
+from pcp.contenttypes.backrels.backrelfield import IBackrelField
 from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_callable
@@ -32,8 +33,10 @@ def render_type(content, field_id):
 
 
 def render_reference_field(content, field_id, with_state=False):
-    field, schema = get_field_and_schema_for_fieldname(field_id, content.portal_type)
-    from pcp.contenttypes.backrels.backrelfield import IBackrelField
+    field_and_schema = get_field_and_schema_for_fieldname(field_id, content.portal_type)
+    if not field_and_schema:
+        return
+    field, schema = field_and_schema
     if IBackrelField.providedBy(field):
         objs = relapi.backrelations(content, field.relation)
     else:
@@ -737,7 +740,7 @@ class RegisteredServiceComponentOverview(BaseSummaryView):
             'created',
             'modified',
             'state',
-        ) 
+        )
 
     def field_labels(self):
         """hardcoded for a start - to be overwritten in the specific classes"""
