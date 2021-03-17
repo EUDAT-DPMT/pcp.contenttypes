@@ -39,39 +39,17 @@
       </thead>
       <tbody>
       <tr tal:repeat="content view/content_items">
-          <tal:if condition="python: view.ATbased(content)">
-            <td tal:repeat="field python:fields">
-
-                <tal:def define="field_visible python: view.field_visible(content, field)">
-                    <tal:if condition="field_visible">
-                      <div tal:condition="python:field in simple_fields">
-                        <metal:field use-macro="python:content.widget(field, mode='view')">
-                          Field value
-                        </metal:field>
-                      </div>
-                      <div tal:condition="python:field not in simple_fields"
-                           tal:define="field python:field.__name__ if not isinstance(field, str) else field"
-                           tal:content="structure python:view.render(content, field)">
-                        field value
-                      </div>
-                   </tal:if>
-                   <span tal:condition="not: field_visible">hidden</span>
-               </tal:def>
-            </td>
-          </tal:if>
-          <tal:if condition="not: python:view.ATbased(content)">
-            <td tal:repeat="field python:fields">
-                      <div tal:condition="python:field in simple_fields"
-                           tal:content="python:getattr(content, field, '')">
-                          Field value
-                      </div>
-                      <div tal:condition="python:field not in simple_fields"
-                           tal:define="field python:field.__name__ if not isinstance(field, str) else field"
-                           tal:content="structure python:view.render(content, field)">
-                        field value
-                      </div>
-            </td>
-          </tal:if>
+          <td tal:repeat="field python:fields">
+              <div tal:condition="python:field in simple_fields"
+                   tal:content="python:getattr(content, field, '')">
+                  Field value
+              </div>
+              <div tal:condition="python:field not in simple_fields"
+                   tal:define="field python:field.__name__ if not isinstance(field, str) else field"
+                   tal:content="structure python:view.render(content, field)">
+                field value
+              </div>
+          </td>
         </tr>
       </tbody>
       <tfoot>

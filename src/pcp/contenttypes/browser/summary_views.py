@@ -9,15 +9,6 @@ from Products.Five.browser import BrowserView
 
 import plone.api
 
-
-try:
-    from Products.Archetypes.BaseObject import BaseObject
-
-    HAS_AT = True
-except ImportError:
-    HAS_AT = False
-
-
 CSV_TEMPLATE = '"%s"'
 
 # helper functions to render not so simple fields
@@ -84,13 +75,9 @@ def render_service_components(content, field_id):
 
 
 def render_with_link(content, field_id):
-    try:  # first the Archetypes way
-        field = content.schema[field_id]
-        value = field.get(content)
-    except AttributeError:  # Dexterity way
-        value = getattr(content, field_id, '<link>')
-        if safe_callable(value):
-            value = value()
+    value = getattr(content, field_id, '<link>')
+    if safe_callable(value):
+        value = value()
     url = content.absolute_url()
     return f"<a href='{url}'>{value}</a>"
 
@@ -129,11 +116,7 @@ def modification_date(content, field_id):
 
 
 def render_date(content, field_id):
-    try:  # the Archetypes way
-        field = content.schema[field_id]
-        value = field.get(content)
-    except AttributeError:
-        value = getattr(content, field_id, '')
+    value = getattr(content, field_id, '')
     try:
         return value.Date()
     except AttributeError:
@@ -278,21 +261,6 @@ class BaseSummaryView(BrowserView):
         # add more as needed; reference fields don't need to be
         # included here
     }
-
-    def ATbased(self, obj):
-        """Helper method to check if 'obj' is Archetypes based"""
-        if HAS_AT:
-            return isinstance(obj, BaseObject)
-
-    def field_visible(self, obj, field_name):
-        # XXX How to do the same for dexterity types ???
-        field = obj.getField(field_name)
-        if field:
-            permission = field.read_permission
-            return plone.api.user.has_permission(
-                permission=permission, user=plone.api.user.get_current(), obj=obj
-            )
-        return True
 
     @property
     def catalog(self):
