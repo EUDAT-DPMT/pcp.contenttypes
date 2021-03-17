@@ -216,7 +216,7 @@ def render_scopes(content, field_id):
     try:
         scopes=content.scopes
         if isinstance(scopes, list):
-            return "\n".join(scopes)
+            return ", ".join(scopes)
         else:
             return str(scopes)
     except AttributeError:
