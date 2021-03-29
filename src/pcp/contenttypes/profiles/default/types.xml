@@ -23,4 +23,5 @@
   <object name="servicecomponentimplementationdetails_dx" meta_type="Dexterity FTI"/>
   <object name="endpoint_handle" meta_type="Dexterity FTI"/>
   <object name="endpoint_irods" meta_type="Dexterity FTI"/>
+  <object name="participation_dx" meta_type="Dexterity FTI"/>
 </object>
