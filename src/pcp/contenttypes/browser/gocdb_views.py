@@ -88,7 +88,7 @@ service_group_template = """
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
     {endpoints}
     <SCOPES>
-      <SCOPE>EUDAT</SCOPE>
+      <SCOPE>TBD</SCOPE>
     </SCOPES>
     <EXTENSIONS/>
   </SERVICE_GROUP>
