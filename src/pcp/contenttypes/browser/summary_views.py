@@ -45,7 +45,10 @@ def render_reference_field(content, field_id, with_state=False):
             text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a> ({state})")
 
         else:
-            text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
+            try:
+                text.append(f"<a href='{item.absolute_url()}'>{item.Title()}</a>")
+            except AttributeError:
+                text.append(f"Broken reference")
     return '<br />'.join(text)
 
 
