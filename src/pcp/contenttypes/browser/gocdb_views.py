@@ -88,7 +88,7 @@ service_group_template = """
     <GOCDB_PORTAL_URL>{creg_url}</GOCDB_PORTAL_URL>
     {endpoints}
     <SCOPES>
-      <SCOPE>TBD</SCOPE>
+      {scopes}
     </SCOPES>
     <EXTENSIONS/>
   </SERVICE_GROUP>
@@ -285,6 +285,15 @@ class ServiceGroupView(BrowserView):
         else:
             result['email'] = '(no contact information available)'
         result['endpoints'] = self.getEndpoints()
+        scopes = context.getScopeValues()
+        if not scopes:
+            result['scopes'] = "<SCOPE>EUDAT</SCOPE>"  # hard-coded default
+        else:
+            scopelist = []
+            for scope in scopes:
+                scopelist.append("      <SCOPE>{}</SCOPE>".format(scope))
+            scopeXML = "\n".join(scopelist)
+            result['scopes'] = scopeXML
         additional = context.getAdditional()
         addState(context, additional)
         if additional:
